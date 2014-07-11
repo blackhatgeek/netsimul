@@ -13,4 +13,16 @@ public partial class MainWindow: Gtk.Window
 		Application.Quit ();
 		a.RetVal = true;
 	}
+
+	protected void btnAclicked (object sender, EventArgs e)
+	{
+		GuiLite.NodeParam apar = new GuiLite.NodeParam ("A");
+		apar.Show ();
+	}
+
+	protected void btnBclicked (object sender, EventArgs e)
+	{
+		GuiLite.NodeParam bpar = new GuiLite.NodeParam ("B");
+		bpar.Show ();
+	}
 }
