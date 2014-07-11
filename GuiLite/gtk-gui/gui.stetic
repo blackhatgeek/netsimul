@@ -144,7 +144,7 @@
                 <child>
                   <widget class="Gtk.Label" id="label1">
                     <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes">Time to run</property>
+                    <property name="LabelProp" translatable="yes">Doba behu</property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>

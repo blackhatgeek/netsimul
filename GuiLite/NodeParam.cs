@@ -5,12 +5,12 @@ namespace GuiLite
 	public partial class NodeParam : Gtk.Dialog
 	{
 		private Node node;
-		public NodeParam (String name,Node n)
+		public NodeParam (Node n)
 		{
 			this.node = n;
-			this.Title = name;
+			this.Title = n.Name;
 			this.Build ();
-			this.label2.Text = name;
+			this.label2.Text = n.Name;
 			this.spinbutton3.Value = n.PacksPerTic;
 		}
 

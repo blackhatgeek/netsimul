@@ -116,7 +116,7 @@ public partial class MainWindow
 		// Container child hbox3.Gtk.Box+BoxChild
 		this.label1 = new global::Gtk.Label ();
 		this.label1.Name = "label1";
-		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("Time to run");
+		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("Doba behu");
 		this.hbox3.Add (this.label1);
 		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.label1]));
 		w9.Position = 1;
