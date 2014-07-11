@@ -1,10 +1,14 @@
 using System;
 using Gtk;
+using GuiLite;
 
 public partial class MainWindow: Gtk.Window
 {	
+	private GuiLite.Node a, b;
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
+		a = new Node ();
+		b = new Node ();
 		Build ();
 	}
 
@@ -16,13 +20,13 @@ public partial class MainWindow: Gtk.Window
 
 	protected void btnAclicked (object sender, EventArgs e)
 	{
-		GuiLite.NodeParam apar = new GuiLite.NodeParam ("A");
+		GuiLite.NodeParam apar = new GuiLite.NodeParam ("A",a);
 		apar.Show ();
 	}
 
 	protected void btnBclicked (object sender, EventArgs e)
 	{
-		GuiLite.NodeParam bpar = new GuiLite.NodeParam ("B");
+		GuiLite.NodeParam bpar = new GuiLite.NodeParam ("B",b);
 		bpar.Show ();
 	}
 }

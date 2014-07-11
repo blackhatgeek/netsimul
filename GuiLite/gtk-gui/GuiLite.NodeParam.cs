@@ -8,7 +8,7 @@ namespace GuiLite
 		private global::Gtk.Label label2;
 		private global::Gtk.HBox hbox6;
 		private global::Gtk.Label label3;
-		private global::Gtk.Entry entry3;
+		private global::Gtk.SpinButton spinbutton3;
 		private global::Gtk.Button buttonCancel;
 		private global::Gtk.Button buttonOk;
 
@@ -49,14 +49,17 @@ namespace GuiLite
 			w3.Expand = false;
 			w3.Fill = false;
 			// Container child hbox6.Gtk.Box+BoxChild
-			this.entry3 = new global::Gtk.Entry ();
-			this.entry3.CanFocus = true;
-			this.entry3.Name = "entry3";
-			this.entry3.IsEditable = true;
-			this.entry3.InvisibleChar = '●';
-			this.hbox6.Add (this.entry3);
-			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox6 [this.entry3]));
+			this.spinbutton3 = new global::Gtk.SpinButton (0, 100, 1);
+			this.spinbutton3.CanFocus = true;
+			this.spinbutton3.Name = "spinbutton3";
+			this.spinbutton3.Adjustment.PageIncrement = 10;
+			this.spinbutton3.ClimbRate = 1;
+			this.spinbutton3.Numeric = true;
+			this.hbox6.Add (this.spinbutton3);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox6 [this.spinbutton3]));
 			w4.Position = 1;
+			w4.Expand = false;
+			w4.Fill = false;
 			this.vbox3.Add (this.hbox6);
 			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox6]));
 			w5.Position = 1;
@@ -101,8 +104,8 @@ namespace GuiLite
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 468;
-			this.DefaultHeight = 110;
+			this.DefaultWidth = 398;
+			this.DefaultHeight = 125;
 			this.Show ();
 			this.buttonCancel.Clicked += new global::System.EventHandler (this.btn_cancel_click);
 			this.buttonOk.Clicked += new global::System.EventHandler (this.btn_ok_click);

@@ -187,7 +187,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="GuiLite.NodeParam" design-size="468 110">
+  <widget class="Gtk.Dialog" id="GuiLite.NodeParam" design-size="398 125">
     <property name="MemberName" />
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Buttons">2</property>
@@ -229,15 +229,20 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Entry" id="entry3">
+                  <widget class="Gtk.SpinButton" id="spinbutton3">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="IsEditable">True</property>
-                    <property name="InvisibleChar">●</property>
+                    <property name="Upper">100</property>
+                    <property name="PageIncrement">10</property>
+                    <property name="StepIncrement">1</property>
+                    <property name="ClimbRate">1</property>
+                    <property name="Numeric">True</property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
                     <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
                   </packing>
                 </child>
               </widget>
