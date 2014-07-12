@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Debug/GuiLite.exe" internal="true" />
+    <widget-library name="../bin/Release/GuiLite.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="1375 800">
     <property name="MemberName" />
@@ -101,14 +101,14 @@
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Button" id="button7">
+              <widget class="Gtk.Button" id="button69">
                 <property name="MemberName" />
-                <property name="WidthRequest">300</property>
-                <property name="HeightRequest">100</property>
+                <property name="WidthRequest">200</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Spustit simulaci</property>
+                <property name="Label" translatable="yes">Konec</property>
                 <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnButton69Clicked" />
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -132,13 +132,21 @@
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Fixed" id="fixed5">
+                  <widget class="Gtk.Button" id="button7">
                     <property name="MemberName" />
-                    <property name="HasWindow">False</property>
+                    <property name="WidthRequest">300</property>
+                    <property name="HeightRequest">100</property>
+                    <property name="CanFocus">True</property>
+                    <property name="Type">TextOnly</property>
+                    <property name="Label" translatable="yes">Spustit simulaci</property>
+                    <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButton7Clicked" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
                     <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
                   </packing>
                 </child>
                 <child>
@@ -174,6 +182,8 @@
               <packing>
                 <property name="Position">2</property>
                 <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
               </packing>
             </child>
           </widget>

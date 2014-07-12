@@ -9,10 +9,10 @@ public partial class MainWindow
 	private global::Gtk.Button button5;
 	private global::Gtk.HBox hbox5;
 	private global::Gtk.HBox hbox2;
-	private global::Gtk.Button button7;
+	private global::Gtk.Button button69;
 	private global::Gtk.Fixed fixed6;
 	private global::Gtk.HBox hbox3;
-	private global::Gtk.Fixed fixed5;
+	private global::Gtk.Button button7;
 	private global::Gtk.Label label1;
 	private global::Gtk.SpinButton spinbutton1;
 
@@ -83,15 +83,14 @@ public partial class MainWindow
 		this.hbox2.Name = "hbox2";
 		this.hbox2.Spacing = 6;
 		// Container child hbox2.Gtk.Box+BoxChild
-		this.button7 = new global::Gtk.Button ();
-		this.button7.WidthRequest = 300;
-		this.button7.HeightRequest = 100;
-		this.button7.CanFocus = true;
-		this.button7.Name = "button7";
-		this.button7.UseUnderline = true;
-		this.button7.Label = global::Mono.Unix.Catalog.GetString ("Spustit simulaci");
-		this.hbox2.Add (this.button7);
-		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button7]));
+		this.button69 = new global::Gtk.Button ();
+		this.button69.WidthRequest = 200;
+		this.button69.CanFocus = true;
+		this.button69.Name = "button69";
+		this.button69.UseUnderline = true;
+		this.button69.Label = global::Mono.Unix.Catalog.GetString ("Konec");
+		this.hbox2.Add (this.button69);
+		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button69]));
 		w6.Position = 0;
 		w6.Expand = false;
 		w6.Fill = false;
@@ -107,12 +106,18 @@ public partial class MainWindow
 		this.hbox3.Name = "hbox3";
 		this.hbox3.Spacing = 6;
 		// Container child hbox3.Gtk.Box+BoxChild
-		this.fixed5 = new global::Gtk.Fixed ();
-		this.fixed5.Name = "fixed5";
-		this.fixed5.HasWindow = false;
-		this.hbox3.Add (this.fixed5);
-		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.fixed5]));
+		this.button7 = new global::Gtk.Button ();
+		this.button7.WidthRequest = 300;
+		this.button7.HeightRequest = 100;
+		this.button7.CanFocus = true;
+		this.button7.Name = "button7";
+		this.button7.UseUnderline = true;
+		this.button7.Label = global::Mono.Unix.Catalog.GetString ("Spustit simulaci");
+		this.hbox3.Add (this.button7);
+		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.button7]));
 		w8.Position = 0;
+		w8.Expand = false;
+		w8.Fill = false;
 		// Container child hbox3.Gtk.Box+BoxChild
 		this.label1 = new global::Gtk.Label ();
 		this.label1.Name = "label1";
@@ -137,6 +142,8 @@ public partial class MainWindow
 		this.hbox2.Add (this.hbox3);
 		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.hbox3]));
 		w11.Position = 2;
+		w11.Expand = false;
+		w11.Fill = false;
 		this.vbox1.Add (this.hbox2);
 		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
 		w12.Position = 2;
@@ -152,5 +159,7 @@ public partial class MainWindow
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.button4.Clicked += new global::System.EventHandler (this.btnAclicked);
 		this.button5.Clicked += new global::System.EventHandler (this.btnBclicked);
+		this.button69.Clicked += new global::System.EventHandler (this.OnButton69Clicked);
+		this.button7.Clicked += new global::System.EventHandler (this.OnButton7Clicked);
 	}
 }

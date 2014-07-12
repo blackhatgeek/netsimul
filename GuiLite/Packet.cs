@@ -2,16 +2,11 @@ using System;
 
 namespace GuiLite
 {
-	public class Packet:Proces
+	public class Packet
 	{
-		private Stav stav;
-		public Stav State{
-			get { return this.stav; }
-			set { this.stav = value; }
-		}
+		//toto ponese informace ohledne prenasenych dat, na zaklade kterych se node bude rozhodovat, co posle
 		public Packet ()
 		{
-			this.stav = Stav.WAITING_FOR_SEND;
 		}
 	}
 }

@@ -31,4 +31,15 @@ public partial class MainWindow: Gtk.Window
 		GuiLite.NodeParam bpar = new GuiLite.NodeParam (b);
 		bpar.Show ();
 	}
+
+	protected void OnButton7Clicked (object sender, EventArgs e)
+	{
+		Model m = new Model (new Node[]{a,b},spinbutton1.ValueAsInt);
+		m.Simulace ();
+	}
+
+	protected void OnButton69Clicked (object sender, EventArgs e)
+	{
+		Application.Quit ();
+	}
 }

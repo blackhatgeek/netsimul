@@ -75,8 +75,9 @@
     <Compile Include="Stav.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Proces.cs" />
-    <Compile Include="Fronta.cs" />
     <Compile Include="Kalendar.cs" />
+    <Compile Include="Udalost.cs" />
+    <Compile Include="Model.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
