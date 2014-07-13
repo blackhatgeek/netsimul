@@ -9,8 +9,8 @@ public partial class MainWindow: Gtk.Window
 	private GuiLite.Node a, b;
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
-		a = new Node ("A");
-		b = new Node ("B");
+		a = new SampleNode ("A");
+		b = new SampleNode ("B");
 		a.LinkedTo = b;
 		b.LinkedTo = a;
 		Build ();
@@ -37,12 +37,14 @@ public partial class MainWindow: Gtk.Window
 	protected void OnButton7Clicked (object sender, EventArgs e)
 	{
 		lock (zamek) {
-			Node bak_a = a.Clone (), bak_b = b.Clone ();
+			NodeProperties bak_a = a.ExportProperties (), bak_b = b.ExportProperties ();
 			Model m = new Model (new Node[] { a, b }, spinbutton1.ValueAsInt);
 			m.Simulace ();
-			a = bak_a;
+			a = new SampleNode ("A");
+			b = new SampleNode ("B");
+			a.ImportProperties (bak_a);
 			a.LinkedTo = b;
-			b = bak_b;
+			b.ImportProperties(bak_b);
 			b.LinkedTo = a;
 			m = null;
 		}

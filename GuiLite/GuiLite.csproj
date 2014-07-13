@@ -78,6 +78,8 @@
     <Compile Include="Udalost.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Frame.cs" />
+    <Compile Include="SampleNode.cs" />
+    <Compile Include="NodeProperties.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

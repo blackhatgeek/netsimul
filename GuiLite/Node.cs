@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GuiLite
 {
-	public class Node:Proces
+	public abstract class Node:Proces
 	{
 		private const int DEFAULT_WAIT_TIME=3;
 		private const int DEFAULT_FSPT=4;
@@ -109,19 +109,27 @@ namespace GuiLite
 			}
 		}
 
+		public void SendFrame(Frame f,Model m){
+			Console.WriteLine ("Node " + name + " sent a frame #" + f.ID + " to " + linkedTo.Name + " at time " + m.Cas);
+			q_out.Enqueue (f);
+		}
+
+		public abstract int ProcessFrame (Frame f, Model m);
+
 		public override void ZpracujUdalost(Stav u,Model m){
 			Console.WriteLine ("Node " + this.name + " now " + u);
-			int processed = 0;
+			int processed = 0;int kdy = -255;
 			if (u == Stav.RECEIVING) {
 				//prijem ramce - projdeme vstupni frontu a napiseme na vystup hlasku o zpracovani ramce
 				//pro kazdy ramec pripravime Confirmation
+				kdy = m.Cas+1;
 				while ((q_in.Count>0)&&(processed<framesProcessPerTic)) {
 					Frame f=q_in.Dequeue ();
 					q_out.Enqueue(new ServiceFrame (f.ID,ServiceFrame.Type.CONFIRMATION));
 					Console.WriteLine ("Node " + name + " processed a frame at time " + m.Cas+" and prepared confirmation frame #"+f.ID);
+					kdy+=ProcessFrame (f, m);//process frame vraci casovou slozitost zpracovani
 				}
 				//naplanovani
-				int kdy = m.Cas + 1;//zatim neresime cas nutny na zpracovani packetu
 				if ((nearest_sending_scheduled < m.Cas) || (nearest_sending_scheduled > kdy)) {
 					this.Naplanuj (m.K, Stav.SENDING, kdy);
 					nearest_sending_scheduled = kdy;
@@ -148,46 +156,45 @@ namespace GuiLite
 					}
 					//pozdeji bude jen while cyklus a for cyklus bude jinde a metoda SendFrame(Frame,Model) bude naplnovat frontu podle algoritmu pro dany node
 					//v modelu, kdy se v kazdem kroku pouze posle urcity pocet packetu se v pripade, ze node neni dostupny jen zdrzi odesilani
-					for (int i=j; i<framesSentPerTic; i++) {
+					/*for (int i=j; i<framesSentPerTic; i++) {
 						Frame f = new Frame (fid);
 						sent_frames_not_confirmed.Add (fid, f);
 						sent_frames_time.Add (fid, m.Cas);
 						fid++;
 						Console.WriteLine ("Node " + name + " sent a frame #" + fid + " to " + linkedTo.Name + " at time " + m.Cas);
 						linkedTo.ReceiveFrame (f, m);
-					}
-				} else {
+					}*/
+				}/* else {
 					for(int i=0;i<framesSentPerTic;i++){
 						q_out.Enqueue (new Frame (fid));
 						fid++;
+					}*/
+			}
+			//prokud nebylo potvrzeno prijeti ramce, poslat znova
+			//chci vsechny ramce z sent_frames_time s time=m.Cas-wait-1, ktere jsou not_confirmed
+			Queue<int> frames_to_remove = new Queue<int> ();
+			foreach (KeyValuePair<int,Frame> kvp in sent_frames_not_confirmed) {
+				int t,T=m.Cas-wait-1;
+				if(sent_frames_time.TryGetValue(kvp.Key,out t)){
+					if (t == T) {
+						Console.WriteLine ("Frame " + kvp.Key + " was not confirmed since time " + t + ", scheduling resend in next round");
+						q_out.Enqueue (kvp.Value);
+						sent_frames_time.Remove (kvp.Key);
+						//int k = kvp.Key;
+						//sent_frames_not_confirmed.Remove (k);
+						//.... out of sync
+						frames_to_remove.Enqueue (kvp.Key);
 					}
 				}
-				//prokud nebylo potvrzeno prijeti ramce, poslat znova
-				//chci vsechny ramce z sent_frames_time s time=m.Cas-wait-1, ktere jsou not_confirmed
-				Queue<int> frames_to_remove = new Queue<int> ();
-				foreach (KeyValuePair<int,Frame> kvp in sent_frames_not_confirmed) {
-					int t,T=m.Cas-wait-1;
-					if(sent_frames_time.TryGetValue(kvp.Key,out t)){
-						if (t == T) {
-							Console.WriteLine ("Frame " + kvp.Key + " was not confirmed since time " + t + ", scheduling resend in next round");
-							q_out.Enqueue (kvp.Value);
-							sent_frames_time.Remove (kvp.Key);
-							//int k = kvp.Key;
-							//sent_frames_not_confirmed.Remove (k);
-							//.... out of sync
-							frames_to_remove.Enqueue (kvp.Key);
-						}
-					}
-				}
-				while (frames_to_remove.Count>0)
-					sent_frames_not_confirmed.Remove (frames_to_remove.Dequeue ());
+			}
+			while (frames_to_remove.Count>0)
+				sent_frames_not_confirmed.Remove (frames_to_remove.Dequeue ());
 
-				//naplanovani
-				int kdy = m.Cas + 1;
-				if ((nearest_receiving_scheduled < m.Cas) || (nearest_receiving_scheduled > kdy)) {
-					this.Naplanuj (m.K, Stav.RECEIVING, kdy);
-					nearest_receiving_scheduled = kdy;
-				}
+			//naplanovani
+			kdy = m.Cas + 1;
+			if ((nearest_receiving_scheduled < m.Cas) || (nearest_receiving_scheduled > kdy)) {
+				this.Naplanuj (m.K, Stav.RECEIVING, kdy);
+				nearest_receiving_scheduled = kdy;
 			}
 		}
 
@@ -220,16 +227,21 @@ namespace GuiLite
 			q_out.Clear();
 			sent_frames_time.Clear();
 			sent_frames_not_confirmed.Clear ();
-
 		}
 
-		public Node Clone(){
-			Node n = new Node (this.name);
-			n.WaitTime = this.WaitTime;
-			n.FramesProcessPerTic = this.FramesProcessPerTic;
-			n.FramesSentPerTic = this.FramesSentPerTic;
+		public NodeProperties ExportProperties(){
+			NodeProperties n = new NodeProperties(this.name);
+			n.Wait = this.WaitTime;
+			n.FPPT = this.FramesProcessPerTic;
+			n.FSPT = this.FramesSentPerTic;
 			return n;
+		}
+
+		public void ImportProperties(NodeProperties n){
+			this.name = n.Name;
+			this.WaitTime = n.Wait;
+			this.framesProcessPerTic = n.FPPT;
+			this.framesSentPerTic = n.FSPT;
 		}
 	}
 }
-
