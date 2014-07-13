@@ -134,6 +134,7 @@ public partial class MainWindow
 		this.spinbutton1.Adjustment.PageIncrement = 10;
 		this.spinbutton1.ClimbRate = 1;
 		this.spinbutton1.Numeric = true;
+		this.spinbutton1.Value = 1;
 		this.hbox3.Add (this.spinbutton1);
 		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.spinbutton1]));
 		w10.Position = 2;

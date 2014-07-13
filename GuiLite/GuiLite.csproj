@@ -73,11 +73,11 @@
     <Compile Include="gtk-gui\GuiLite.NodeParam.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Stav.cs" />
-    <Compile Include="Packet.cs" />
     <Compile Include="Proces.cs" />
     <Compile Include="Kalendar.cs" />
     <Compile Include="Udalost.cs" />
     <Compile Include="Model.cs" />
+    <Compile Include="Frame.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,7 +11,9 @@ namespace GuiLite
 			this.Title = n.Name;
 			this.Build ();
 			this.label2.Text = n.Name;
-			this.spinbutton3.Value = n.PacksPerTic;
+			this.spinbutton1.Value = n.WaitTime;
+			this.spinbutton2.Value = n.FramesProcessPerTic;
+			this.spinbutton3.Value = n.FramesSentPerTic;
 		}
 
 		protected void btn_cancel_click (object sender, EventArgs e)
@@ -21,7 +23,9 @@ namespace GuiLite
 
 		protected void btn_ok_click (object sender, EventArgs e)
 		{
-			node.PacksPerTic = this.spinbutton3.ValueAsInt;
+			node.WaitTime = this.spinbutton1.ValueAsInt;
+			node.FramesProcessPerTic = this.spinbutton2.ValueAsInt;
+			node.FramesSentPerTic = this.spinbutton3.ValueAsInt;
 			this.Destroy ();
 		}
 	}

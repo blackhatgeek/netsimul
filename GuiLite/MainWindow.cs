@@ -4,6 +4,8 @@ using GuiLite;
 
 public partial class MainWindow: Gtk.Window
 {	
+	private object zamek=new object();
+
 	private GuiLite.Node a, b;
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -34,8 +36,16 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnButton7Clicked (object sender, EventArgs e)
 	{
-		Model m = new Model (new Node[]{a,b},spinbutton1.ValueAsInt);
-		m.Simulace ();
+		lock (zamek) {
+			Node bak_a = a.Clone (), bak_b = b.Clone ();
+			Model m = new Model (new Node[] { a, b }, spinbutton1.ValueAsInt);
+			m.Simulace ();
+			a = bak_a;
+			a.LinkedTo = b;
+			b = bak_b;
+			b.LinkedTo = a;
+			m = null;
+		}
 	}
 
 	protected void OnButton69Clicked (object sender, EventArgs e)
