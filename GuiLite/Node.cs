@@ -55,9 +55,11 @@ namespace GuiLite
 
 		public Node(String name,int wait_time, int frames_send_per_tic, int frames_process_per_tic)
 		{
-			if (wait_time <= 0)	throw new ArgumentException ("Attempting to create node "+name+" with wait_time <=0");
+			if (wait_time <= 0)	throw new ArgumentOutOfRangeException ("Attempting to create node "+name+" with wait_time <=0");
 			if (frames_process_per_tic < 0)
-				throw new ArgumentException ("Attempting to create node " + name + " with negative frames to process per tic");
+				throw new ArgumentOutOfRangeException ("Attempting to create node " + name + " with negative frames to process per tic");
+			if (frames_send_per_tic < 0)
+				throw new ArgumentOutOfRangeException ("Attempting to create node " + name + " sending negative number of frames per tic");
 			this.name = name;
 			this.framesSentPerTic = frames_send_per_tic;
 			this.framesProcessPerTic = frames_process_per_tic;
@@ -128,6 +130,13 @@ namespace GuiLite
 					q_out.Enqueue(new ServiceFrame (f.ID,ServiceFrame.Type.CONFIRMATION));
 					Console.WriteLine ("Node " + name + " processed a frame at time " + m.Cas+" and prepared confirmation frame #"+f.ID);
 					kdy+=ProcessFrame (f, m);//process frame vraci casovou slozitost zpracovani
+				}
+				//uz jsme schopni prijimat dalsi ramce, sdelit sousedovi
+				if (req_flood_stop) {
+					q_out.Enqueue (new ServiceFrame (fid, ServiceFrame.Type.READY));
+					Console.WriteLine ("Node " + name + " now ready to receive frames and prepared notice frame #" + fid + " for " + linkedTo.Name);
+					req_flood_stop = false;
+					fid++;
 				}
 				//naplanovani
 				if ((nearest_sending_scheduled < m.Cas) || (nearest_sending_scheduled > kdy)) {
