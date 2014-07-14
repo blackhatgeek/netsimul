@@ -80,6 +80,8 @@
     <Compile Include="Frame.cs" />
     <Compile Include="SampleNode.cs" />
     <Compile Include="NodeProperties.cs" />
+    <Compile Include="Link.cs" />
+    <Compile Include="MACaddr.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

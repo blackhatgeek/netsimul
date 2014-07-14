@@ -7,12 +7,12 @@ public partial class MainWindow: Gtk.Window
 	private object zamek=new object();
 
 	private GuiLite.Node a, b;
+	private GuiLite.Link link;
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		a = new SampleNode ("A");
 		b = new SampleNode ("B");
-		a.LinkedTo = b;
-		b.LinkedTo = a;
+		link = new Link (10, a, b);
 		Build ();
 	}
 
@@ -43,9 +43,9 @@ public partial class MainWindow: Gtk.Window
 			a = new SampleNode ("A");
 			b = new SampleNode ("B");
 			a.ImportProperties (bak_a);
-			a.LinkedTo = b;
 			b.ImportProperties(bak_b);
-			b.LinkedTo = a;
+			link.setA (a);
+			link.setB (b);
 			m = null;
 		}
 	}

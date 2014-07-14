@@ -2,37 +2,43 @@ using System;
 
 namespace GuiLite
 {
-	public class Frame
-	{
-		private int id;
-		public int ID{
-			get{ return id;}
-		}
-		//toto ponese informace ohledne prenasenych dat, na zaklade kterych se node bude rozhodovat, co posle
-		public Frame (int id)
-		{
-			this.id = id;
-		}
-	}
+	public class EtherFrame{
+		//TODO: omezeni velikosti pro size
 
-	public class ServiceFrame:Frame
-	{
-		public ServiceFrame(int id):base(id){
-			this.t=Type.CONFIRMATION;
-		}
+		private MACaddr source;
+		private MACaddr destination;
+		private object data;//TODO
+		private int size;//octets .. bytes
 
-		public ServiceFrame(int id,Type t):base(id){
-			this.t=t;
+		private bool crc;
+
+		public EtherFrame(MACaddr source,MACaddr destination,object data,int size){
+			this.source=source;
+			this.destination = destination;
+			this.data = data;
+			this.size = size;
+			this.crc = true;
 		}
 
-		public enum Type{
-			CONFIRMATION, STOP_SENDING, READY
-			//confirmation ma stejne frame id jako prichozi packet
+		public MACaddr Source{
+			get{return source;}
 		}
 
-		private Type t;
-		public Type type{
-			get{return t;}
+		public MACaddr Destination{
+			get{return destination;}
+		}
+
+		public object Data{
+			get{return data;}
+		}
+
+		public object Size{
+			get{return size;}
+		}
+
+		public bool CRC{
+			get{return crc;}
+			set{ crc = value;}
 		}
 	}
 }
