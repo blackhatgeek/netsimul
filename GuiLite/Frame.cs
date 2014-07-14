@@ -4,6 +4,10 @@ namespace GuiLite
 {
 	public class EtherFrame{
 		//TODO: omezeni velikosti pro size
+		public const int UPPER_BOUND_SIZE=1;
+		public const int LOWER_BOUND_SIZE=0;
+		public const int CONSTANT_DATA_SIZE=0;
+
 
 		private MACaddr source;
 		private MACaddr destination;
@@ -16,7 +20,12 @@ namespace GuiLite
 			this.source=source;
 			this.destination = destination;
 			this.data = data;
-			this.size = size;
+			if (size <= UPPER_BOUND_SIZE)
+				this.size = size;
+			else
+				throw new ArgumentOutOfRangeException ("Max velikost ramce " + UPPER_BOUND_SIZE);
+			if (size <= LOWER_BOUND_SIZE)
+				this.size = LOWER_BOUND_SIZE;
 			this.crc = true;
 		}
 
@@ -32,8 +41,9 @@ namespace GuiLite
 			get{return data;}
 		}
 
-		public object Size{
+		public int Size{
 			get{return size;}
+			set{ size = value;}//POZOR
 		}
 
 		public bool CRC{
