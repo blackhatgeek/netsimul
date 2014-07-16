@@ -44,6 +44,7 @@ namespace GuiLite
 		public int Size{
 			get{return size;}
 			set{ size = value;}//POZOR
+
 		}
 
 		public bool CRC{

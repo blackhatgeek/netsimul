@@ -8,18 +8,20 @@ namespace GuiLite
 		}
 	}
 
+	//Simplex: Link smeruje k konkretnimu uzlu
 	public class Link:Proces
 	{
+		private readonly string NAME;
 		private int OPT;//octets per tic
 		private int carryOctets;//kolik prepravuji v dalsim kroku
-		private double failureProb;
-		private Queue<EtherFrame> queue;
+		private double failureProb,errProb;
+		private Queue<EtherFrame> queue,pool;
 		private EtherFrame last;
-		private Node a, b;
+		private Node destination;
 		private int k;
 		private bool k_lock;
 
-		public Node A{
+		/*public Node A{
 			set{ this.a = value;}
 			get{ return this.a;}
 		}
@@ -27,15 +29,21 @@ namespace GuiLite
 		public Node B{
 			set{ this.b = value;}
 			get{return this.b;}
+		}*/
+		public Node Destination{
+			set{ this.destination = value;}
+			get{ return this.destination;}
 		}
 
-		public Link (int octets_per_tic,double drop_probability)
+		public Link (String name,int octets_per_tic,double drop_probability,double damage_probability)
 		{
+			this.NAME = name;
 			this.OPT = octets_per_tic;
 			this.carryOctets = 0;
 			this.queue = new Queue<EtherFrame> ();
-			this.a = null;
-			this.b = null;
+			//this.a = null;
+			//this.b = null;
+			this.destination = null;
 			this.last = null;
 			this.k = 1;
 			this.k_lock = false;
@@ -43,25 +51,41 @@ namespace GuiLite
 				this.failureProb = drop_probability;
 			else
 				throw new ArgumentOutOfRangeException ("drop_probability must be between 0.0 and 1.0");
+		if ((damage_probability >= 0.0) && (damage_probability <= 1.0))
+			this.errProb = damage_probability;
+		else
+			throw new ArgumentOutOfRangeException ("damage_probability must be between 0.0 and 1.0");
 		}
 		public bool Volno{
 			get{
-				return (a!=null)&&(b!=null)&&(carryOctets < OPT)&&(!k_lock);
+				//return (a!=null)&&(b!=null)&&(carryOctets < OPT)&&(!k_lock);
+				return (destination != null) && (carryOctets < OPT) && (!k_lock);
+			}
+		}
+		public string Name{
+			get{
+				return this.NAME;
 			}
 		}
 
 		//prijima data kdyz je volno
 		public void Doprav(EtherFrame f){
 			if (this.Volno) {//mj. carryOctets<OPT - lze vkladat
-				if (new Random().NextDouble () > failureProb) {//pravdepodobnost zahozeni
+				//mozne poskozeni ramce
+				if (new Random ().NextDouble () <= errProb) {
+					f.CRC = false;
+					Console.WriteLine ("Ramec se cestou poskodil");
+				}
+
+				//mozne zahozeni
+				if (new Random ().NextDouble () > failureProb) {
 					queue.Enqueue (f);
-					last=f;
+					last = f;
 					carryOctets += f.Size;
 				} else {
 					Console.WriteLine ("Zahazuji ramec");
 				}
-			} else
-				throw new LinkException ("Plna linka");
+			} 
 		}
 
 		public override void ZpracujUdalost (Stav u, Model m)
@@ -84,9 +108,7 @@ namespace GuiLite
 					Console.WriteLine ("Cekam dalsich " + k + " kroku");
 					k_lock = true;
 					//snizim ramec o d, ktere jsem "poslal ted" a k*OPT
-					EtherFrame ef = queue.Dequeue ();
-					ef.Size -= (d + k * OPT);
-					queue.Enqueue (ef);
+					last.Size -= (d + k * OPT);
 					//ramec ma zbytkovou velikost naplanuji se do stavu sending v case m.Cas+k+1
 					this.Naplanuj (m.K, Stav.UNLOCK, m.Cas + k);
 				}
@@ -102,11 +124,12 @@ namespace GuiLite
 				Console.WriteLine ("Dorucuji " + frames + " ramcu");
 				for (int i=0; i<frames; i++) {
 					EtherFrame ef = queue.Dequeue();
-					if (ef.Destination.Equals (a.MAC)) {
+					/*if (ef.Destination.Equals (a.MAC)) {
 						a.ReceiveFrame (ef, m);
 					} else if (last.Destination.Equals (b.MAC)) {
 						b.ReceiveFrame (ef, m);
-					}
+					}*/
+					destination.ReceiveFrame (ef, m);
 					carryOctets -= ef.Size;
 				}
 				this.Naplanuj (m.K, Stav.SENDING, m.Cas + 1);

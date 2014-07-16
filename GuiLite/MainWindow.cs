@@ -12,9 +12,9 @@ public partial class MainWindow: Gtk.Window
 	{
 		a = new SampleNode ("A");
 		b = new SampleNode ("B");
-		link = new Link (10, 0.0);
-		link.A = a;
-		link.B = b;
+		link = new Link ("L1",10, 0.0, 0.0);
+		//link.A = a;
+		//link.B = b;
 		Build ();
 	}
 
@@ -46,8 +46,8 @@ public partial class MainWindow: Gtk.Window
 			b = new SampleNode ("B");
 			a.ImportProperties (bak_a);
 			b.ImportProperties(bak_b);
-			link.A = a;
-			link.B = b;
+			//link.A = a;
+			//link.B = b;
 			m = null;
 		}
 	}

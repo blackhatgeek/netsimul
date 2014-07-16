@@ -23,20 +23,25 @@ namespace GuiLite
 		}
 	}
 
-	public class MACaddrFactory
+	public sealed class MACaddrFactory
 	{
 		//cil je zajistit unicitu MAC adres
 		private int n;
 		private MACaddrFactory(){
 			n=0;
+			Console.WriteLine (n);
 		}
-		private static MACaddrFactory factory = new MACaddrFactory();
-		public static MACaddrFactory GetInstance(){
-			return factory;
+		private static readonly MACaddrFactory instance=new MACaddrFactory();
+		public static MACaddrFactory Instance{
+			get{
+				return instance;
+			}
 		}
 
 		public MACaddr GetMAC(){
+			Console.WriteLine("Creating MAC "+n);
 			MACaddr gen = new MACaddr(n);
+			Console.WriteLine ("Created " + gen);
 			n++;
 			return gen;
 		}
