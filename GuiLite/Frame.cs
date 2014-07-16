@@ -2,38 +2,54 @@ using System;
 
 namespace GuiLite
 {
-	public class Frame
-	{
-		private int id;
-		public int ID{
-			get{ return id;}
-		}
-		//toto ponese informace ohledne prenasenych dat, na zaklade kterych se node bude rozhodovat, co posle
-		public Frame (int id)
-		{
-			this.id = id;
-		}
-	}
+	public class EtherFrame{
+		//TODO: omezeni velikosti pro size
+		public const int UPPER_BOUND_SIZE=1;
+		public const int LOWER_BOUND_SIZE=0;
+		public const int CONSTANT_DATA_SIZE=0;
 
-	public class ServiceFrame:Frame
-	{
-		public ServiceFrame(int id):base(id){
-			this.t=Type.CONFIRMATION;
+
+		private MACaddr source;
+		private MACaddr destination;
+		private object data;//TODO
+		private int size;//octets .. bytes
+
+		private bool crc;
+
+		public EtherFrame(MACaddr source,MACaddr destination,object data,int size){
+			this.source=source;
+			this.destination = destination;
+			this.data = data;
+			if (size <= UPPER_BOUND_SIZE)
+				this.size = size;
+			else
+				throw new ArgumentOutOfRangeException ("Max velikost ramce " + UPPER_BOUND_SIZE);
+			if (size <= LOWER_BOUND_SIZE)
+				this.size = LOWER_BOUND_SIZE;
+			this.crc = true;
 		}
 
-		public ServiceFrame(int id,Type t):base(id){
-			this.t=t;
+		public MACaddr Source{
+			get{return source;}
 		}
 
-		public enum Type{
-			CONFIRMATION, STOP_SENDING, READY
-			//confirmation ma stejne frame id jako prichozi packet
+		public MACaddr Destination{
+			get{return destination;}
 		}
 
-		private Type t;
-		public Type type{
-			get{return t;}
+		public object Data{
+			get{return data;}
+		}
+
+		public int Size{
+			get{return size;}
+			set{ size = value;}//POZOR
+
+		}
+
+		public bool CRC{
+			get{return crc;}
+			set{ crc = value;}
 		}
 	}
 }
-

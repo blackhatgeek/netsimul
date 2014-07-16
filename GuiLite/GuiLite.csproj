@@ -78,6 +78,12 @@
     <Compile Include="Udalost.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Frame.cs" />
+    <Compile Include="SampleNode.cs" />
+    <Compile Include="NodeProperties.cs" />
+    <Compile Include="Link.cs" />
+    <Compile Include="MACaddr.cs" />
+    <Compile Include="NetworkInterface.cs" />
+    <Compile Include="Hub.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

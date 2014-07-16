@@ -3,12 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiLite", "GuiLite\GuiLite.csproj", "{F8938224-ABC7-4211-BB62-B9D9690FB53A}"
 EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Packages", "Packages.mdproj", "{9F84017F-80B4-41A2-B79F-5B8A2B0FE76B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F84017F-80B4-41A2-B79F-5B8A2B0FE76B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9F84017F-80B4-41A2-B79F-5B8A2B0FE76B}.Release|x86.ActiveCfg = Release|Any CPU
 		{F8938224-ABC7-4211-BB62-B9D9690FB53A}.Debug|x86.ActiveCfg = Debug|x86
 		{F8938224-ABC7-4211-BB62-B9D9690FB53A}.Debug|x86.Build.0 = Debug|x86
 		{F8938224-ABC7-4211-BB62-B9D9690FB53A}.Release|x86.ActiveCfg = Release|x86

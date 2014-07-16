@@ -11,4 +11,3 @@ namespace GuiLite
 		{ this.kdo = kdo; this.co = co; this.kdy = kdy; }
 	}
 }
-
