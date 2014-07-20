@@ -3,11 +3,29 @@ using System.Collections.Generic;
 
 namespace GuiLite
 {
+	public class InterfaceException:NullReferenceException{
+		public InterfaceException(String name):base(name){
+		}
+	}
 	public class NetworkInterface
 	{
 		private Link link;
 		private MACaddr mac;
 		private Queue<EtherFrame> out_q;
+		private String name;
+
+		public NetworkInterface(String name,MACaddr mac){
+			this.out_q = new Queue<EtherFrame> ();
+			this.name = name;
+			this.mac = mac;
+		}
+
+		public NetworkInterface(String name):this(name,MACaddr.Factory.Instance.GetMAC()){//!! MACException
+		}
+
+		public NetworkInterface():this(null){//!! MACException
+			this.name = this.mac.ToString ();
+		}
 
 		public Link Linka{
 			set{this.link=value;}
@@ -19,47 +37,18 @@ namespace GuiLite
 			get { return this.mac;}
 		}
 
-		public void GenerateMac(){
-			MACaddrFactory f = MACaddrFactory.Instance;
-			this.mac = f.GetMAC ();
-		}
-
 		public bool InUse{
 			get{
 				return link != null;
 			}
 		}
 
-		public Queue<EtherFrame> Out_q{
-			get{
-				return out_q;
-			}
-		}
-
-		public NetworkInterface ()
-		{
-			mac = MACaddrFactory.Instance.GetMAC ();
-		}
-
-		public NetworkInterface (MACaddr a){
-			mac = a;
-		}
-
-		public void Dispatch(Queue<EtherFrame> q_out,String name,Model m){
-			//prapuvodni komentar:
-			//odeslani packetu - projdeme vystupni frontu a napiseme na vystup hlasku o zpracovani ramce
-			//pokud ready=true, jinak cekame az prijemce bude pripraven a zatim ukladame ramce do vystupni fronty
-			while (this.link.Volno&&(this.out_q.Count>0)) {
-				EtherFrame f = q_out.Dequeue ();
-				Console.WriteLine ("Node " + name + " sent a frame to " + f.Destination + " at time " + m.Cas);
-				try{
-					this.link.Doprav (f);
-				}catch(LinkException e){
-					Console.WriteLine ("Oops! link trouble:" + e.Message);
-				}
-			}
-			if (!this.link.Volno)
-				Console.WriteLine ("Link busy");
+		public void Dispatch(EtherFrame f,Model m){
+			Console.WriteLine ("Network interface " + name + " sent a frame to " + f.Destination + " at time " + m.Cas);
+			if (link != null)
+				this.link.Doprav (f);
+			else
+				throw new InterfaceException ("Link not connected");
 		}
 	}
 }

@@ -34,5 +34,8 @@ namespace GuiLite
 			foreach (Udalost u in kalendar)
 				if (u.kdo == p) { kalendar.Remove(u); break; }
 		}
+		public List<Udalost> GetK(){
+			return kalendar;
+		}
 	}
 }

@@ -21,15 +21,6 @@ namespace GuiLite
 		private int k;
 		private bool k_lock;
 
-		/*public Node A{
-			set{ this.a = value;}
-			get{ return this.a;}
-		}
-
-		public Node B{
-			set{ this.b = value;}
-			get{return this.b;}
-		}*/
 		public Node Destination{
 			set{ this.destination = value;}
 			get{ return this.destination;}
@@ -41,8 +32,6 @@ namespace GuiLite
 			this.OPT = octets_per_tic;
 			this.carryOctets = 0;
 			this.queue = new Queue<EtherFrame> ();
-			//this.a = null;
-			//this.b = null;
 			this.destination = null;
 			this.last = null;
 			this.k = 1;
@@ -58,7 +47,6 @@ namespace GuiLite
 		}
 		public bool Volno{
 			get{
-				//return (a!=null)&&(b!=null)&&(carryOctets < OPT)&&(!k_lock);
 				return (destination != null) && (carryOctets < OPT) && (!k_lock);
 			}
 		}
@@ -68,24 +56,40 @@ namespace GuiLite
 			}
 		}
 
-		//prijima data kdyz je volno
+		//prijima data 
+		//kdyz je volno rovnou do fronty
+		//jinak do poolu
 		public void Doprav(EtherFrame f){
-			if (this.Volno) {//mj. carryOctets<OPT - lze vkladat
-				//mozne poskozeni ramce
-				if (new Random ().NextDouble () <= errProb) {
-					f.CRC = false;
-					Console.WriteLine ("Ramec se cestou poskodil");
-				}
+			//mozne poskozeni ramce
+			if (new Random ().NextDouble () <= errProb) {
+				f.CRC = false;
+				Console.WriteLine ("Ramec se cestou poskodil");
+			}
 
-				//mozne zahozeni
-				if (new Random ().NextDouble () > failureProb) {
+			//mozne zahozeni
+			if (new Random ().NextDouble () > failureProb) {
+				if (this.Volno) {
 					queue.Enqueue (f);
 					last = f;
 					carryOctets += f.Size;
 				} else {
-					Console.WriteLine ("Zahazuji ramec");
+					//vezme do bufferu a az bude volno prepise do spravne fronty
+					pool.Enqueue (f);
 				}
-			} 
+			} else {
+				Console.WriteLine ("Zahazuji ramec");
+			}
+		}
+
+		//pokud je pripojen destination, doplnim queue z poolu az do OPT
+		private void pool2Queue(){
+			if (destination!=null)
+				while ((carryOctets<OPT)&&(pool.Count>0)) {
+					EtherFrame f = pool.Dequeue ();
+					queue.Enqueue (f);
+					last = f;
+					carryOctets += f.Size;
+				}
 		}
 
 		public override void ZpracujUdalost (Stav u, Model m)
@@ -93,6 +97,7 @@ namespace GuiLite
 			if (u.Equals (Stav.SENDING)) {
 				if (carryOctets <= OPT) {
 					this.deliver (queue.Count, m);
+					pool2Queue ();//pokud se dostaly packety do poolu, premistime do fronty
 					this.Naplanuj (m.K, Stav.SENDING, m.Cas + 1);
 				} else {
 					//linka se zavre, kdyz je plna
@@ -114,6 +119,7 @@ namespace GuiLite
 				}
 			} else if (u.Equals (Stav.UNLOCK)) {
 				k_lock = false;
+				pool2Queue ();//pokud se mezi tim dostaly packety do poolu, premistime do fronty
 				this.Naplanuj (m.K, Stav.SENDING, m.Cas + 1);
 			}
 		}
@@ -124,11 +130,6 @@ namespace GuiLite
 				Console.WriteLine ("Dorucuji " + frames + " ramcu");
 				for (int i=0; i<frames; i++) {
 					EtherFrame ef = queue.Dequeue();
-					/*if (ef.Destination.Equals (a.MAC)) {
-						a.ReceiveFrame (ef, m);
-					} else if (last.Destination.Equals (b.MAC)) {
-						b.ReceiveFrame (ef, m);
-					}*/
 					destination.ReceiveFrame (ef, m);
 					carryOctets -= ef.Size;
 				}

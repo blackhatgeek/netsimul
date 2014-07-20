@@ -12,19 +12,9 @@ namespace GuiLite
 			set{ this.name = value;}
 		}
 
-		public int Wait{
-			get{return this.wait;}
-			set{ this.wait = value;}
-		}
-
 		public int FPPT{
 			get{return this.fppt;}
 			set{ this.fppt = value;}
-		}
-
-		public int FSPT{
-			get{return this.fspt;}
-			set{ this.fspt = value;}
 		}
 
 		public NodeProperties (String name)

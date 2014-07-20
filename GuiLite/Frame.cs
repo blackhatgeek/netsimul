@@ -43,8 +43,11 @@ namespace GuiLite
 
 		public int Size{
 			get{return size;}
-			set{ size = value;}//POZOR
-
+			set{ 
+ 				if ((value<0)||(value>UPPER_BOUND_SIZE)) Console.WriteLine("Not changing!");
+				else if (value<=LOWER_BOUND_SIZE) size=LOWER_BOUND_SIZE;
+				else size = value;
+			}
 		}
 
 		public bool CRC{

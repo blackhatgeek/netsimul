@@ -17,24 +17,32 @@ namespace GuiLite
 			this.uzly=uzly;
 			this.doba_behu = beh;
 			//node jiz maji nactena data, potreba dopravit node do modelu
-			foreach (Node n in uzly) n.Init (this);
+			if(uzly!=null)
+				foreach (Node n in uzly) n.Init (this);
 		}
 
 		public int Simulace()
 		{
-			foreach(Node n in uzly) Console.WriteLine(n.Name+"\t"+n.FramesProcessPerTic);
-			Console.WriteLine ("Simulation started");
-			while (!Konec)
-			{
-				Udalost u = K.Prvni ();
-				Cas = u.kdy;
-				if (Cas >= doba_behu)
-					Konec = true;
-				u.kdo.ZpracujUdalost (u.co, this);
+			if (uzly != null) {
+				foreach (Node n in uzly)
+					Console.WriteLine (n.Name + "\t" + n.FramesProcessPerTic);
+				Console.WriteLine ("Simulation started");
+				while (!Konec) {
+					Udalost u = K.Prvni ();
+					if (u != null) {
+						Cas = u.kdy;
+						if (Cas >= doba_behu)
+							Konec = true;
+						u.kdo.ZpracujUdalost (u.co, this);
+					} else {
+						Konec = true;
+						Console.WriteLine ("Prazdny kalendar!");
+					}
+				}
+				foreach (Node n in uzly)
+					n.Fin ();
+				Console.WriteLine ("Simulation finished");
 			}
-			foreach (Node n in uzly)
-				n.Fin ();
-			Console.WriteLine ("Simulation finished");
 			return Cas;
 		}
 	}

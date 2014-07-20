@@ -11,7 +11,7 @@ namespace GuiLite
 		{
 		}
 
-		public Hub (String name,int ports,int wait_time, int frames_send_per_tic, int frames_process_per_tic):base(name,ports,wait_time,frames_send_per_tic,frames_process_per_tic)
+		public Hub (String name,int ports, int frames_process_per_tic):base(name,ports,frames_process_per_tic)
 		{
 		}
 
@@ -21,20 +21,12 @@ namespace GuiLite
 			return 1;
 		}
 
-		/*protected void Dispatch (EtherFrame f){
-			foreach (EtherFrame ef in queue) {
-				foreach (NetworkInterface ni in interfaces) {
-					if (ni.InUse) ni.Linka.Doprav (ef);
-				}
-			}
-		}*/
-
 		public override void ZpracujUdalost (Stav u, Model m)
 		{
 			base.ZpracujUdalost (u, m);
 		}
 
-		protected override void sending (Model m)
+		/*protected override int sending (Model m)
 		{
 			//pro kazdy port je potreba vystupni fronta - je soucasti rozhrani
 			//z q_out se ramec nakopiruje do jednotlivych vystupnich front
@@ -55,17 +47,19 @@ namespace GuiLite
 
 			//odeslani packetu - projdeme vystupni frontu a napiseme na vystup hlasku o zpracovani ramce
 			//pokud ready=true, jinak cekame az prijemce bude pripraven a zatim ukladame ramce do vystupni fronty
-			/*while ((this.Link.Volno)&&(q_out.Count>0))
+			return 0;
+		}*/
+		protected override int multiport_sending (Model m)
+		{
+			int processed = 0;
+			while ((q_out.Count>0)&&processed<FramesProcessPerTic) {
 				EtherFrame f = q_out.Dequeue ();
-				Console.WriteLine ("Node " + name + " sent a frame to " + f.Destination + " at time " + m.Cas);
-			try{
-				this.net.Linka.Doprav (f);
-			}catch(LinkException e){
-				Console.WriteLine ("Oops! link trouble:" + e.Message);
+				foreach (NetworkInterface ni in interfaces) {
+					ni.Dispatch (f, m);
+				}
+				processed++;
 			}
-			if (!this.Link.Volno)
-				Console.WriteLine ("Link busy");
-			*/
+			return 1;
 		}
 	}
 }

@@ -24,8 +24,8 @@ namespace GuiLite
 			this.buddy = null;
 		}
 
-		public SampleNode(String name,int wait_time,int frames_per_tic,int frames_process_per_tic,int respond_to_each_n,int send_each_m_tics):
-			base(name,wait_time,frames_per_tic,frames_process_per_tic){
+		public SampleNode(String name,int frames_process_per_tic,int respond_to_each_n,int send_each_m_tics):
+			base(name,frames_process_per_tic){
 			this.respond_to_each_n = respond_to_each_n;
 			this.send_each_m_tics = send_each_m_tics;
 			this.buddy = null;
