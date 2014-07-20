@@ -13,6 +13,7 @@ namespace GuiLite
 		private MACaddr destination;
 		private object data;//TODO
 		private int size;//octets .. bytes
+		private int processingCost;
 
 		private bool crc;
 
@@ -47,6 +48,17 @@ namespace GuiLite
  				if ((value<0)||(value>UPPER_BOUND_SIZE)) Console.WriteLine("Not changing!");
 				else if (value<=LOWER_BOUND_SIZE) size=LOWER_BOUND_SIZE;
 				else size = value;
+			}
+		}
+
+		public int ProcessingCost{
+			get{
+				return processingCost;
+			}set{
+				if (value >= 0) 
+					this.processingCost = value;
+				else
+					Console.WriteLine ("Not changing");
 			}
 		}
 

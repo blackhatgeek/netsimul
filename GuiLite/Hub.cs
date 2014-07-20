@@ -26,40 +26,13 @@ namespace GuiLite
 			base.ZpracujUdalost (u, m);
 		}
 
-		/*protected override int sending (Model m)
-		{
-			//pro kazdy port je potreba vystupni fronta - je soucasti rozhrani
-			//z q_out se ramec nakopiruje do jednotlivych vystupnich front
-			//pro kazdy port bezi cyklus:
-				//dokud je volno a jeho vystupni fronta neco obsahuje
-					//vem etherframe z fronty a zkus ho poslat prislusnou linkou
-				//kdyz neni volno je linka zaneprazdnena
-			while (q_out.Count>0) {
-				EtherFrame ef = q_out.Dequeue ();
-				foreach(NetworkInterface ni in interfaces){
-					ni.Out_q.Enqueue (ef);
-				}
-			}
-			foreach (NetworkInterface ni in interfaces) {
-
-			}
-
-
-			//odeslani packetu - projdeme vystupni frontu a napiseme na vystup hlasku o zpracovani ramce
-			//pokud ready=true, jinak cekame az prijemce bude pripraven a zatim ukladame ramce do vystupni fronty
-			return 0;
-		}*/
-		protected override int multiport_sending (Model m)
+		protected override void multiport_sending (EtherFrame f,Model m)
 		{
 			int processed = 0;
-			while ((q_out.Count>0)&&processed<FramesProcessPerTic) {
-				EtherFrame f = q_out.Dequeue ();
-				foreach (NetworkInterface ni in interfaces) {
-					ni.Dispatch (f, m);
-				}
-				processed++;
+			foreach (NetworkInterface ni in interfaces) {
+				ni.Dispatch (f, m);
 			}
-			return 1;
+			processed++;
 		}
 	}
 }

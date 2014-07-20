@@ -3,6 +3,7 @@ using System;
 namespace GuiLite
 {
 	public enum Stav{
-		SENDING,PROCESSING,UNLOCK
+		SENDING,UNLOCK,//link
+		PROCESSING//node
 	}
 }

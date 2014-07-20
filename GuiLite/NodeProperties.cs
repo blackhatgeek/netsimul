@@ -5,16 +5,16 @@ namespace GuiLite
 	public class NodeProperties
 	{
 		private String name;
-		private int wait,fppt,fspt;
+		private int power;
 
 		public String Name{
 			get{return this.name;}
 			set{ this.name = value;}
 		}
 
-		public int FPPT{
-			get{return this.fppt;}
-			set{ this.fppt = value;}
+		public int POWER{
+			get{return this.power;}
+			set{ this.power = value;}
 		}
 
 		public NodeProperties (String name)

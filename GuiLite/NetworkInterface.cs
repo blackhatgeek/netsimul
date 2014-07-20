@@ -11,11 +11,11 @@ namespace GuiLite
 	{
 		private Link link;
 		private MACaddr mac;
-		private Queue<EtherFrame> out_q;
+		//private Queue<EtherFrame> out_q;
 		private String name;
 
 		public NetworkInterface(String name,MACaddr mac){
-			this.out_q = new Queue<EtherFrame> ();
+		//	this.out_q = new Queue<EtherFrame> ();
 			this.name = name;
 			this.mac = mac;
 		}

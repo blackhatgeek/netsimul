@@ -17,15 +17,15 @@ namespace GuiLite
 			this.uzly=uzly;
 			this.doba_behu = beh;
 			//node jiz maji nactena data, potreba dopravit node do modelu
-			if(uzly!=null)
-				foreach (Node n in uzly) n.Init (this);
+			//if(uzly!=null)
+			//	foreach (Node n in uzly) n.Init (this);
 		}
 
 		public int Simulace()
 		{
 			if (uzly != null) {
 				foreach (Node n in uzly)
-					Console.WriteLine (n.Name + "\t" + n.FramesProcessPerTic);
+					Console.WriteLine (n.Name + "\t" + n.Power);
 				Console.WriteLine ("Simulation started");
 				while (!Konec) {
 					Udalost u = K.Prvni ();
