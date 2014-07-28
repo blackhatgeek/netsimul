@@ -81,6 +81,75 @@ namespace NetTrafficSimulator
 			nm.SetConnected (2, 2,1);
 			Assert.False (nm.Valid);
 		}
+
+		[Test()]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		/**
+		 * Create model with two end nodes, attempt to set connection between them with negative capacity
+		 */
+		public void CapacityNegative(){
+			NetworkModel nm = new NetworkModel (2);
+			nm.SetNodeType (0, NetworkModel.END_NODE);
+			nm.SetNodeType (1, NetworkModel.END_NODE);
+			nm.SetConnected (0, 1, -1);
+		}
+
+		[Test()]
+		/**
+		 * Create model with two end nodes, set connection between them with capacity 1
+		 */
+		public void CapacityPositive(){
+			NetworkModel nm = new NetworkModel (2);
+			nm.SetNodeType (0, NetworkModel.END_NODE);
+			nm.SetNodeType (1, NetworkModel.END_NODE);
+			Assert.AreEqual (0, nm.LinkCapacity (0, 1));
+			nm.SetConnected (0, 1, 1);
+			Assert.AreEqual (1, nm.LinkCapacity (0, 1));
+			nm.SetDisconnected (0, 1);
+			Assert.AreEqual(0,nm.LinkCapacity(0,1));
+		}
+
+		[Test()]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		/**
+		 * Create model with two nodes, attempt to set connection between them with capacity 0
+		 */
+		public void CapacityZero(){
+			NetworkModel nm = new NetworkModel (2);
+			nm.SetNodeType (0, NetworkModel.END_NODE);
+			nm.SetNodeType (1, NetworkModel.END_NODE);
+			nm.SetConnected (0, 1, 0);
+		}
+
+		[Test()]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		/**
+		 * Create model, try to connect non-existent nodes
+		 */
+		public void ConnectNonExistent(){
+			NetworkModel nm = new NetworkModel (0);
+			nm.SetConnected (1, 2, 0);
+		}
+
+		[Test()]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		/**
+		 * Create model, try to set node type of non-exitstent node
+		 */
+		public void SetTypeNonExistent1(){
+			NetworkModel nm = new NetworkModel (0);
+			nm.SetNodeType (0,NetworkModel.END_NODE);
+		}
+
+		[Test()]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		/**
+		 * Create model with 1 node, attempt to set node type to -1
+		 */
+		public void SetTypeNonExistent2(){
+			NetworkModel nm = new NetworkModel (1);
+			nm.SetNodeType (1, -1);
+		}
 	}
 }
 

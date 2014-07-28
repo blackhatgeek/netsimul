@@ -193,9 +193,28 @@ Here is the caller graph for this function\-:\nopagebreak
 \item[{int}]{y}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModel_aeb2db05cbda72d2e220fe53550e4d598}
-Returns capacity of a link between two nodes \begin{DoxyReturn}{Returns}
+Returns capacity of a link between two nodes 
+\begin{DoxyParams}{Parameters}
+{\em x} & node \\
+\hline
+{\em y} & node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
 link capacity (positive integer) or zero if there's no link between particular nodes 
 \end{DoxyReturn}
+
+
+Here is the caller graph for this function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1NetworkModel_aeb2db05cbda72d2e220fe53550e4d598_icgraph}
+\end{center}
+\end{figure}
+
+
 \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a724d036cf0dbadefaba005aa853630be}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Print@{Print}}
 \index{Print@{Print}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{Print}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Network\-Model.\-Print (
@@ -297,7 +316,7 @@ Message string added to any illegal argument exception thrown \hypertarget{class
 link\-\_\-count\mbox{[}x\mbox{]} is amount of links connected to a node x \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a3b9f06cc5ec93f59a6bf7e4042b70e48}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!links@{links}}
 \index{links@{links}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{links}]{\setlength{\rightskip}{0pt plus 5cm}int \mbox{[},\mbox{]} Net\-Traffic\-Simulator.\-Network\-Model.\-links\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a3b9f06cc5ec93f59a6bf7e4042b70e48}
-Adjacency matrix of the network\-: links\mbox{[}x,y\mbox{]} is true if there is a direct connection between nodes x and y \hypertarget{classNetTrafficSimulator_1_1NetworkModel_ab2882fa4fe981780f78f822b12677f88}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E@{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E}}
+Adjacency matrix of the network\-: links\mbox{[}x,y\mbox{]} is positive if there is a direct connection between nodes x and y and the number represents the link capacity \hypertarget{classNetTrafficSimulator_1_1NetworkModel_ab2882fa4fe981780f78f822b12677f88}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E@{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E}}
 \index{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E@{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}const int Net\-Traffic\-Simulator.\-Network\-Model.\-N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E = 2}}\label{classNetTrafficSimulator_1_1NetworkModel_ab2882fa4fe981780f78f822b12677f88}
 N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E is router / switch on the network \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a9e0ef364abc36d5bd8ebda5d703dc76b}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N@{N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N}}

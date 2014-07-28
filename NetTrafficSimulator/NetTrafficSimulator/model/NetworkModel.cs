@@ -48,7 +48,8 @@ namespace NetTrafficSimulator
 		 */
 		private int node_count;
 		/**
-		 * Adjacency matrix of the network: links[x,y] is true if there is a direct connection between nodes x and y
+		 * Adjacency matrix of the network: links[x,y] is positive if there is a direct connection between nodes x and y
+		 * and the number represents the link capacity
 		 */
 		private int[,] links;
 		/**

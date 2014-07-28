@@ -10,6 +10,8 @@ var searchData=
   ['setconnected',['SetConnected',['../classNetTrafficSimulator_1_1NetworkModel.html#a32b086f665dbacb1ce48c244b28d6d3a',1,'NetTrafficSimulator::NetworkModel']]],
   ['setdisconnected',['SetDisconnected',['../classNetTrafficSimulator_1_1NetworkModel.html#acf61bc6091630b26455868a2575d34c7',1,'NetTrafficSimulator::NetworkModel']]],
   ['setnodetype',['SetNodeType',['../classNetTrafficSimulator_1_1NetworkModel.html#ac8457d8aa77448caa2212020f48eec20',1,'NetTrafficSimulator::NetworkModel']]],
+  ['settypenonexistent1',['SetTypeNonExistent1',['../classNetTrafficSimulator_1_1NetworkModelTest.html#abd1f2f4cabb9fcce56d20b807f662a8b',1,'NetTrafficSimulator::NetworkModelTest']]],
+  ['settypenonexistent2',['SetTypeNonExistent2',['../classNetTrafficSimulator_1_1NetworkModelTest.html#ac9cd8811b6011919d81dda53abb887c1',1,'NetTrafficSimulator::NetworkModelTest']]],
   ['setup',['SetUp',['../classNetTrafficSimulator_1_1SimulationModelTest.html#ae392974e4037e2199fbdb83a3d5da739',1,'NetTrafficSimulator::SimulationModelTest']]],
   ['simulate',['Simulate',['../classMFF__NPRG031_1_1Model.html#a8ebc56d74c6e2c7e7481a9c413a27254',1,'MFF_NPRG031::Model']]],
   ['simulationcontroller',['SimulationController',['../classNetTrafficSimulator_1_1SimulationController.html#a30890df3e3b1ce4cef47fe597afa58f2',1,'NetTrafficSimulator::SimulationController']]],

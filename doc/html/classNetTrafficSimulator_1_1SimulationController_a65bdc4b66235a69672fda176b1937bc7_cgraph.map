@@ -1,3 +1,4 @@
 <map id="NetTrafficSimulator.SimulationController.createLinks" name="NetTrafficSimulator.SimulationController.createLinks">
 <area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1NetworkModel.html#a5d2d13396e4df9e45146b8a7f02a9b67" title="NetTrafficSimulator.Network\lModel.AreConnected" alt="" coords="254,5,442,46"/>
+<area shape="rect" id="node3" href="$classNetTrafficSimulator_1_1NetworkModel.html#aeb2db05cbda72d2e220fe53550e4d598" title="NetTrafficSimulator.Network\lModel.LinkCapacity" alt="" coords="254,70,442,111"/>
 </map>

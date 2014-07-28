@@ -91,7 +91,6 @@ namespace NetTrafficSimulator
 		/**
 		 * <p>For each pair of nodes where connection is marked, create a new Link instance and register the link to each node. New links are stored in LinkedList<Link> links 
 		 * initialized here (as their count is unknown)</p>
-		 * <p>As link capacities are not supported by NetworkModel yet, all are set for 0 at this point.</p>
 		 * <p>Test is necessary to verify links are created properly according to the model</p>
 		 * @throws InvalidOperationException if any node is of unidentified type, the network model is null, the nodes array is null or length of the nodes array don't match node 
 		 * count in the network model
@@ -105,9 +104,8 @@ namespace NetTrafficSimulator
 					while (j<network_model.NodeCount) {
 						Node y = nodes [j];
 						if (network_model.AreConnected (i, j)){
-							//TODO Link capacities!!
 							//TESTME links parsed correctly??
-							Link l = new Link (x + " - " + y + " link", 0, x, y);
+							Link l = new Link (x + " - " + y + " link", network_model.LinkCapacity(i,j), x, y);
 							if (x is EndNode)
 								(x as EndNode).Link = l;
 							else if (x is NetworkNode)
