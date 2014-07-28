@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('classNetTrafficSimulator_1_1NetworkMod
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -114,6 +114,11 @@ $(document).ready(function(){initNavTree('classNetTrafficSimulator_1_1NetworkMod
 <div class="title">NetTrafficSimulator.NetworkModel Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Collaboration diagram for NetTrafficSimulator.NetworkModel:</div>
+<div class="dyncontent">
+<div class="center"><img src="classNetTrafficSimulator_1_1NetworkModel__coll__graph.png" border="0" usemap="#NetTrafficSimulator_8NetworkModel_coll__map" alt="Collaboration graph"/></div>
+</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -174,7 +179,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classNetTrafficSimulator_1_1NetworkModel.html">NetworkModel</a> generates network map based on data provided by user.</p>
 <p>Network map is a graph represented as adjacency matrix.</p>
-<p>Node can be of type END_NODE, SERVER_NODE, NETWORK_NODE or UNIDENTIFIED_NODE</p>
+<p><a class="el" href="classNetTrafficSimulator_1_1Node.html">Node</a> can be of type END_NODE, SERVER_NODE, NETWORK_NODE or UNIDENTIFIED_NODE</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a271752106d40e56f0f55def7f0e1bf0d"></a>
 <div class="memitem">
@@ -261,6 +266,15 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classNetTrafficSimulator_1_1NetworkModel_a5d2d13396e4df9e45146b8a7f02a9b67_icgraph.png" border="0" usemap="#classNetTrafficSimulator_1_1NetworkModel_a5d2d13396e4df9e45146b8a7f02a9b67_icgraph" alt=""/></div>
+<map name="classNetTrafficSimulator_1_1NetworkModel_a5d2d13396e4df9e45146b8a7f02a9b67_icgraph" id="classNetTrafficSimulator_1_1NetworkModel_a5d2d13396e4df9e45146b8a7f02a9b67_icgraph">
+<area shape="rect" id="node2" href="classNetTrafficSimulator_1_1SimulationController.html#a65bdc4b66235a69672fda176b1937bc7" title="NetTrafficSimulator.Simulation\lController.createLinks" alt="" coords="243,5,443,46"/><area shape="rect" id="node3" href="classNetTrafficSimulator_1_1SimulationController.html#aee0204844a793fc1e26e1940f8c3f1e3" title="NetTrafficSimulator.Simulation\lController.InitializeFramework" alt="" coords="491,5,691,46"/><area shape="rect" id="node4" href="classNetTrafficSimulator_1_1SimulationController.html#a22dedb5c0d0233bfa7acfc858af4a0cf" title="NetTrafficSimulator.Simulation\lController.Run" alt="" coords="739,5,939,46"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ae32e3d246753b51152124af9df9372ee"></a>
@@ -336,6 +350,15 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classNetTrafficSimulator_1_1NetworkModel_a3d8f3112c2cc4b21fe8070a0896652fa_icgraph.png" border="0" usemap="#classNetTrafficSimulator_1_1NetworkModel_a3d8f3112c2cc4b21fe8070a0896652fa_icgraph" alt=""/></div>
+<map name="classNetTrafficSimulator_1_1NetworkModel_a3d8f3112c2cc4b21fe8070a0896652fa_icgraph" id="classNetTrafficSimulator_1_1NetworkModel_a3d8f3112c2cc4b21fe8070a0896652fa_icgraph">
+<area shape="rect" id="node2" href="classNetTrafficSimulator_1_1SimulationController.html#aaa2dfff1b6c614ec8202cac5f0aea58c" title="NetTrafficSimulator.Simulation\lController.createNodes" alt="" coords="243,5,443,46"/><area shape="rect" id="node3" href="classNetTrafficSimulator_1_1SimulationController.html#aee0204844a793fc1e26e1940f8c3f1e3" title="NetTrafficSimulator.Simulation\lController.InitializeFramework" alt="" coords="491,5,691,46"/><area shape="rect" id="node4" href="classNetTrafficSimulator_1_1SimulationController.html#a22dedb5c0d0233bfa7acfc858af4a0cf" title="NetTrafficSimulator.Simulation\lController.Run" alt="" coords="739,5,939,46"/></map>
+</div>
+</p>
 
 </div>
 </div>
@@ -795,7 +818,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceNetTrafficSimulator.html">NetTrafficSimulator</a></li><li class="navelem"><a class="el" href="classNetTrafficSimulator_1_1NetworkModel.html">NetworkModel</a></li>
-    <li class="footer">Generated on Sun Jul 27 2014 00:18:38 for Network traffic simulator by
+    <li class="footer">Generated on Mon Jul 28 2014 06:09:29 for Network traffic simulator by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

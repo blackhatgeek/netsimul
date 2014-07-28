@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['types',['types',['../classNetTrafficSimulator_1_1NetworkModel.html#aa8f0b62fb9e9029f0068135b56a46a9c',1,'NetTrafficSimulator::NetworkModel']]]
+  ['finish',['Finish',['../classMFF__NPRG031_1_1Model.html#ab1ba01c979484275f2e4707ea8cdbaa3',1,'MFF_NPRG031::Model']]],
+  ['framework_5fmodel',['framework_model',['../classNetTrafficSimulator_1_1SimulationController.html#a3037a65e37c5c5e894bc584b8fe5c12d',1,'NetTrafficSimulator::SimulationController']]]
 ];

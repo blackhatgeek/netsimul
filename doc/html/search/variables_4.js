@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['server_5fnode',['SERVER_NODE',['../classNetTrafficSimulator_1_1NetworkModel.html#a9f536ecef65ce9ef55b52afa90ae8438',1,'NetTrafficSimulator::NetworkModel']]]
+  ['end_5fnode',['END_NODE',['../classNetTrafficSimulator_1_1NetworkModel.html#a1335e5ee160345ac2f849998d94f2934',1,'NetTrafficSimulator::NetworkModel']]],
+  ['endnodecounter',['endNodeCounter',['../classNetTrafficSimulator_1_1SimulationController.html#a9d07f9372ee5eeacefcb4d0448122f6d',1,'NetTrafficSimulator::SimulationController']]]
 ];

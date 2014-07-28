@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['illegal_5fparameter',['ILLEGAL_PARAMETER',['../classNetTrafficSimulator_1_1NetworkModel.html#a9ff3800009133089edb0744d2771b0b9',1,'NetTrafficSimulator::NetworkModel']]]
+  ['b',['b',['../classNetTrafficSimulator_1_1Link.html#af85461b8b8d35adb1d8fc80849c0717d',1,'NetTrafficSimulator::Link']]]
 ];

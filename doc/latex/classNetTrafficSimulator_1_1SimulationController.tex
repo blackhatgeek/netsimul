@@ -1,0 +1,334 @@
+\hypertarget{classNetTrafficSimulator_1_1SimulationController}{\section{Net\-Traffic\-Simulator.\-Simulation\-Controller Class Reference}
+\label{classNetTrafficSimulator_1_1SimulationController}\index{Net\-Traffic\-Simulator.\-Simulation\-Controller@{Net\-Traffic\-Simulator.\-Simulation\-Controller}}
+}
+
+
+Collaboration diagram for Net\-Traffic\-Simulator.\-Simulation\-Controller\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classNetTrafficSimulator_1_1SimulationController_a30890df3e3b1ce4cef47fe597afa58f2}{Simulation\-Controller} (\hyperlink{classNetTrafficSimulator_1_1NetworkModel}{Network\-Model} nm, \hyperlink{classNetTrafficSimulator_1_1SimulationModel}{Simulation\-Model} sm)
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_a22dedb5c0d0233bfa7acfc858af4a0cf}{Run} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_aee0204844a793fc1e26e1940f8c3f1e3}{Initialize\-Framework} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_aaa2dfff1b6c614ec8202cac5f0aea58c}{create\-Nodes} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_a65bdc4b66235a69672fda176b1937bc7}{create\-Links} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_ad23685dbec3fce89fc4fa615edef1150}{create\-Model} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_a893854760ab4e24a432ab72aa1f20d1a}{initialize\-Processes} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_ac72e9edb9b5ab11d579be22ee0029294}{Run\-Simulation} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1SimulationController_ae40f65ccc6e418355c89294d3dddca5a}{Populate\-Result\-Model} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classNetTrafficSimulator_1_1NetworkModel}{Network\-Model} \hyperlink{classNetTrafficSimulator_1_1SimulationController_a80c4b1d3b982e591f530bf5877b259fa}{network\-\_\-model}
+\item 
+\hyperlink{classNetTrafficSimulator_1_1SimulationModel}{Simulation\-Model} \hyperlink{classNetTrafficSimulator_1_1SimulationController_a26441a135203881caae479f93f17e288}{simulation\-\_\-model}
+\item 
+\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} \hyperlink{classNetTrafficSimulator_1_1SimulationController_a3037a65e37c5c5e894bc584b8fe5c12d}{framework\-\_\-model}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1SimulationController_a9d07f9372ee5eeacefcb4d0448122f6d}{end\-Node\-Counter}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1SimulationController_a2b2363037a31bae97e4aede4af2512c4}{network\-Node\-Counter}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1SimulationController_a59a626f2fc2b81873ef548f2d7d04948}{server\-Node\-Counter}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1SimulationController_a79f2fd9be4b8d9070494975f9d470563}{address\-Counter}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1SimulationController_ada67d39ff4d7f0595b295b895216abf4}{node\-Counter}
+\item 
+\hyperlink{classNetTrafficSimulator_1_1Node}{Node}\mbox{[}$\,$\mbox{]} \hyperlink{classNetTrafficSimulator_1_1SimulationController_a63041df0cb83bab3ee4db1505656e806}{nodes}
+\item 
+Linked\-List$<$ \hyperlink{classNetTrafficSimulator_1_1Link}{Link} $>$ \hyperlink{classNetTrafficSimulator_1_1SimulationController_a5c83a56d28d5336e08efd3d893e47381}{links}
+\item 
+\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} \hyperlink{classNetTrafficSimulator_1_1SimulationController_a28227ccfab6fb0d8e41ae0975ee7a5af}{model}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Simulation controller takes data from \hyperlink{classNetTrafficSimulator_1_1NetworkModel}{Network\-Model} and \hyperlink{classNetTrafficSimulator_1_1SimulationModel}{Simulation\-Model} and sets up simulation framework 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a30890df3e3b1ce4cef47fe597afa58f2}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!Simulation\-Controller@{Simulation\-Controller}}
+\index{Simulation\-Controller@{Simulation\-Controller}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{Simulation\-Controller}]{\setlength{\rightskip}{0pt plus 5cm}Net\-Traffic\-Simulator.\-Simulation\-Controller.\-Simulation\-Controller (
+\begin{DoxyParamCaption}
+\item[{{\bf Network\-Model}}]{nm, }
+\item[{{\bf Simulation\-Model}}]{sm}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1SimulationController_a30890df3e3b1ce4cef47fe597afa58f2}
+Constructor stores Network and Simulation models for future reference 
+\begin{DoxyParams}{Parameters}
+{\em nm} & Network Model \\
+\hline
+{\em sm} & Simulation Model \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Argument\-Exception} & If any of models is null or the network model provided is not valid \\
+\hline
+\end{DoxyExceptions}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a65bdc4b66235a69672fda176b1937bc7}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!create\-Links@{create\-Links}}
+\index{create\-Links@{create\-Links}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{create\-Links}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-create\-Links (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a65bdc4b66235a69672fda176b1937bc7}
+For each pair of nodes where connection is marked, create a new \hyperlink{classNetTrafficSimulator_1_1Link}{Link} instance and register the link to each node. New links are stored in Linked\-List$<$\-Link$>$ links initialized here (as their count is unknown)
+
+As link capacities are not supported by \hyperlink{classNetTrafficSimulator_1_1NetworkModel}{Network\-Model} yet, all are set for 0 at this point.
+
+Test is necessary to verify links are created properly according to the model
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Invalid\-Operation\-Exception} & if any node is of unidentified type, the network model is null, the nodes array is null or length of the nodes array don't match node count in the network model \\
+\hline
+\end{DoxyExceptions}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_a65bdc4b66235a69672fda176b1937bc7_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_a65bdc4b66235a69672fda176b1937bc7_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_ad23685dbec3fce89fc4fa615edef1150}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!create\-Model@{create\-Model}}
+\index{create\-Model@{create\-Model}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{create\-Model}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-create\-Model (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_ad23685dbec3fce89fc4fa615edef1150}
+Unless simulation model is null initialize Model with appropriate Time To Run 
+\begin{DoxyExceptions}{Exceptions}
+{\em Invalid\-Operation\-Exception} & if \hyperlink{classNetTrafficSimulator_1_1SimulationModel}{Simulation\-Model} is null \\
+\hline
+\end{DoxyExceptions}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_ad23685dbec3fce89fc4fa615edef1150_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_aaa2dfff1b6c614ec8202cac5f0aea58c}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!create\-Nodes@{create\-Nodes}}
+\index{create\-Nodes@{create\-Nodes}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{create\-Nodes}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-create\-Nodes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_aaa2dfff1b6c614ec8202cac5f0aea58c}
+For each node in Network Model create an appropriate \hyperlink{classNetTrafficSimulator_1_1Node}{Node} instance and store it in nodes array. Nodes array and counters are initialized here. Address generated here for nodes requiring an address. 
+\begin{DoxyExceptions}{Exceptions}
+{\em Invalid\-Operation\-Exception} & if found unidentified node type \\
+\hline
+\end{DoxyExceptions}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_aaa2dfff1b6c614ec8202cac5f0aea58c_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_aaa2dfff1b6c614ec8202cac5f0aea58c_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_aee0204844a793fc1e26e1940f8c3f1e3}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!Initialize\-Framework@{Initialize\-Framework}}
+\index{Initialize\-Framework@{Initialize\-Framework}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{Initialize\-Framework}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-Initialize\-Framework (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_aee0204844a793fc1e26e1940f8c3f1e3}
+Initializes simulation framework\-: create Model, create necessary Nodes, set them up and place into Calendar 
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_aee0204844a793fc1e26e1940f8c3f1e3_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_aee0204844a793fc1e26e1940f8c3f1e3_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a893854760ab4e24a432ab72aa1f20d1a}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!initialize\-Processes@{initialize\-Processes}}
+\index{initialize\-Processes@{initialize\-Processes}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{initialize\-Processes}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-initialize\-Processes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a893854760ab4e24a432ab72aa1f20d1a}
+If Model is not null, invoke Run method on each \hyperlink{classNetTrafficSimulator_1_1Node}{Node} and \hyperlink{classNetTrafficSimulator_1_1Link}{Link} registered 
+\begin{DoxyExceptions}{Exceptions}
+{\em Invalid\-Operation\-Exception} & if model is null (not created yet) \\
+\hline
+\end{DoxyExceptions}
+
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_a893854760ab4e24a432ab72aa1f20d1a_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_ae40f65ccc6e418355c89294d3dddca5a}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!Populate\-Result\-Model@{Populate\-Result\-Model}}
+\index{Populate\-Result\-Model@{Populate\-Result\-Model}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{Populate\-Result\-Model}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-Populate\-Result\-Model (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_ae40f65ccc6e418355c89294d3dddca5a}
+Stores statistics into Result Model unless this is done by Run\-Simulation 
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_ae40f65ccc6e418355c89294d3dddca5a_icgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a22dedb5c0d0233bfa7acfc858af4a0cf}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!Run@{Run}}
+\index{Run@{Run}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{Run}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-Run (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1SimulationController_a22dedb5c0d0233bfa7acfc858af4a0cf}
+Initialize framework, run simulation, populate result model 
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_a22dedb5c0d0233bfa7acfc858af4a0cf_cgraph}
+\end{center}
+\end{figure}
+
+
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_ac72e9edb9b5ab11d579be22ee0029294}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!Run\-Simulation@{Run\-Simulation}}
+\index{Run\-Simulation@{Run\-Simulation}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{Run\-Simulation}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Simulation\-Controller.\-Run\-Simulation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_ac72e9edb9b5ab11d579be22ee0029294}
+Runs a simulation, stores statistics 
+
+Here is the caller graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1SimulationController_ac72e9edb9b5ab11d579be22ee0029294_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a79f2fd9be4b8d9070494975f9d470563}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!address\-Counter@{address\-Counter}}
+\index{address\-Counter@{address\-Counter}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{address\-Counter}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Simulation\-Controller.\-address\-Counter\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a79f2fd9be4b8d9070494975f9d470563}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a9d07f9372ee5eeacefcb4d0448122f6d}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!end\-Node\-Counter@{end\-Node\-Counter}}
+\index{end\-Node\-Counter@{end\-Node\-Counter}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{end\-Node\-Counter}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Simulation\-Controller.\-end\-Node\-Counter\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a9d07f9372ee5eeacefcb4d0448122f6d}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a3037a65e37c5c5e894bc584b8fe5c12d}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!framework\-\_\-model@{framework\-\_\-model}}
+\index{framework\-\_\-model@{framework\-\_\-model}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{framework\-\_\-model}]{\setlength{\rightskip}{0pt plus 5cm}{\bf M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} Net\-Traffic\-Simulator.\-Simulation\-Controller.\-framework\-\_\-model\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a3037a65e37c5c5e894bc584b8fe5c12d}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a5c83a56d28d5336e08efd3d893e47381}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!links@{links}}
+\index{links@{links}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{links}]{\setlength{\rightskip}{0pt plus 5cm}Linked\-List$<${\bf Link}$>$ Net\-Traffic\-Simulator.\-Simulation\-Controller.\-links\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a5c83a56d28d5336e08efd3d893e47381}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a28227ccfab6fb0d8e41ae0975ee7a5af}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!model@{model}}
+\index{model@{model}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{model}]{\setlength{\rightskip}{0pt plus 5cm}{\bf M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} Net\-Traffic\-Simulator.\-Simulation\-Controller.\-model\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a28227ccfab6fb0d8e41ae0975ee7a5af}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a80c4b1d3b982e591f530bf5877b259fa}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!network\-\_\-model@{network\-\_\-model}}
+\index{network\-\_\-model@{network\-\_\-model}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{network\-\_\-model}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Network\-Model} Net\-Traffic\-Simulator.\-Simulation\-Controller.\-network\-\_\-model\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a80c4b1d3b982e591f530bf5877b259fa}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a2b2363037a31bae97e4aede4af2512c4}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!network\-Node\-Counter@{network\-Node\-Counter}}
+\index{network\-Node\-Counter@{network\-Node\-Counter}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{network\-Node\-Counter}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Simulation\-Controller.\-network\-Node\-Counter\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a2b2363037a31bae97e4aede4af2512c4}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_ada67d39ff4d7f0595b295b895216abf4}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!node\-Counter@{node\-Counter}}
+\index{node\-Counter@{node\-Counter}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{node\-Counter}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Simulation\-Controller.\-node\-Counter\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_ada67d39ff4d7f0595b295b895216abf4}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a63041df0cb83bab3ee4db1505656e806}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!nodes@{nodes}}
+\index{nodes@{nodes}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{nodes}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Node} \mbox{[}$\,$\mbox{]} Net\-Traffic\-Simulator.\-Simulation\-Controller.\-nodes\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a63041df0cb83bab3ee4db1505656e806}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a59a626f2fc2b81873ef548f2d7d04948}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!server\-Node\-Counter@{server\-Node\-Counter}}
+\index{server\-Node\-Counter@{server\-Node\-Counter}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{server\-Node\-Counter}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Simulation\-Controller.\-server\-Node\-Counter\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a59a626f2fc2b81873ef548f2d7d04948}
+\hypertarget{classNetTrafficSimulator_1_1SimulationController_a26441a135203881caae479f93f17e288}{\index{Net\-Traffic\-Simulator\-::\-Simulation\-Controller@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}!simulation\-\_\-model@{simulation\-\_\-model}}
+\index{simulation\-\_\-model@{simulation\-\_\-model}!NetTrafficSimulator::SimulationController@{Net\-Traffic\-Simulator\-::\-Simulation\-Controller}}
+\subsubsection[{simulation\-\_\-model}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Simulation\-Model} Net\-Traffic\-Simulator.\-Simulation\-Controller.\-simulation\-\_\-model\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1SimulationController_a26441a135203881caae479f93f17e288}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+Net\-Traffic\-Simulator/\-Net\-Traffic\-Simulator/controller/\hyperlink{SimulationController_8cs}{Simulation\-Controller.\-cs}\end{DoxyCompactItemize}

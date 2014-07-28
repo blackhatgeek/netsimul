@@ -1,0 +1,4 @@
+<map id="NetTrafficSimulator.IAddressable" name="NetTrafficSimulator.IAddressable">
+<area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1EndNode.html" title="{NetTrafficSimulator.EndNode\n|+ Link\l+ Address\l&#45; address\l&#45; counter\l&#45; link\l&#45; r\l|+ EndNode()\l+ ProcessEvent()\l+ Run()\l&#45; send()\l&#45; wait_time()\l}" alt="" coords="5,131,197,341"/>
+<area shape="rect" id="node3" href="$classNetTrafficSimulator_1_1ServerNode.html" title="{NetTrafficSimulator.ServerNode\n|+ Link\l+ Address\l&#45; address\l&#45; link\l|+ ServerNode()\l+ ProcessEvent()\l+ Run()\l&#45; generateResponse()\l&#45; wait_time()\l&#45; sendResponse()\l}" alt="" coords="223,139,431,333"/>
+</map>

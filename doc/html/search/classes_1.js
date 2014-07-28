@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['networkmodel',['NetworkModel',['../classNetTrafficSimulator_1_1NetworkModel.html',1,'NetTrafficSimulator']]],
-  ['networkmodeltest',['NetworkModelTest',['../classNetTrafficSimulator_1_1NetworkModelTest.html',1,'NetTrafficSimulator']]]
+  ['dataenvelope',['DataEnvelope',['../classNetTrafficSimulator_1_1Link_1_1DataEnvelope.html',1,'NetTrafficSimulator::Link']]]
 ];

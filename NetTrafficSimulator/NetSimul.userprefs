@@ -1,0 +1,51 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="NetTrafficSimulator/framework/extension/routing/RIP.cs">
+    <Files>
+      <File FileName="NetTrafficSimulator/controller/SimulationController.cs" Line="1" Column="1" />
+      <File FileName="NetTrafficSimulator/framework/extension/EndNode.cs" Line="7" Column="19" />
+      <File FileName="NetTrafficSimulator/framework/extension/Link.cs" Line="52" Column="45" />
+      <File FileName="NetTrafficSimulator/framework/extension/Node.cs" Line="7" Column="23" />
+      <File FileName="NetTrafficSimulator/framework/extension/ServerNode.cs" Line="27" Column="4" />
+      <File FileName="NetTrafficSimulator/misc/IAddressable.cs" Line="7" Column="3" />
+      <File FileName="NetTrafficSimulator/framework/extension/NetworkNode.cs" Line="42" Column="4" />
+      <File FileName="NetTrafficSimulator/framework/extension/Packet.cs" Line="22" Column="29" />
+      <File FileName="NetTrafficSimulator/framework/extension/routing/RIP.cs" Line="50" Column="18" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="NetTrafficSimulator" expanded="True">
+            <Node name="controller" expanded="True" />
+            <Node name="framework" expanded="True">
+              <Node name="extension" expanded="True">
+                <Node name="routing" expanded="True">
+                  <Node name="RIP.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="misc" expanded="True" />
+            <Node name="model" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True">
+          <Node name="NetTrafficSimulator" expanded="True">
+            <Node name="NetTrafficSimulator" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

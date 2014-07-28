@@ -1,0 +1,117 @@
+\hypertarget{classMFF__NPRG031_1_1Calendar}{\section{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar Class Reference}
+\label{classMFF__NPRG031_1_1Calendar}\index{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar}}
+}
+
+
+Collaboration diagram for M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=275pt]{classMFF__NPRG031_1_1Calendar__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classMFF__NPRG031_1_1Calendar_a2279253074472fa30255b2637df30a46}{Calendar} ()
+\item 
+\hyperlink{classMFF__NPRG031_1_1Event}{Event} \hyperlink{classMFF__NPRG031_1_1Calendar_a623642e4db01cef075845ef5c7db5e0f}{First} ()
+\item 
+void \hyperlink{classMFF__NPRG031_1_1Calendar_a59c90e97093d8ed21f1c6d36f2a88918}{Schedule} (\hyperlink{classMFF__NPRG031_1_1Event}{Event} e)
+\item 
+void \hyperlink{classMFF__NPRG031_1_1Calendar_a02ce42eb2c88d16ac1b6296bd9ce7062}{Remove} (\hyperlink{classMFF__NPRG031_1_1Process}{Process} p)
+\item 
+List$<$ \hyperlink{classMFF__NPRG031_1_1Event}{Event} $>$ \hyperlink{classMFF__NPRG031_1_1Calendar_ab50fb8b653b95205910e61d079ae0676}{Get\-K} ()
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classMFF__NPRG031_1_1Calendar_ac2ebccd4a70e3183e1715ddbde173d06}{Empty}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ \hyperlink{classMFF__NPRG031_1_1Event}{Event} $>$ \hyperlink{classMFF__NPRG031_1_1Calendar_acaced39a1b5c163830a42abe1c3de960}{calendar} = new List$<$\hyperlink{classMFF__NPRG031_1_1Event}{Event}$>$()
+\item 
+const int \hyperlink{classMFF__NPRG031_1_1Calendar_a7a57e092fecfd38ee13faa7443704073}{M\-A\-X} = 0x7\-F\-F\-F\-F\-F\-F\-F
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classMFF__NPRG031_1_1Calendar_a2279253074472fa30255b2637df30a46}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!Calendar@{Calendar}}
+\index{Calendar@{Calendar}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{Calendar}]{\setlength{\rightskip}{0pt plus 5cm}M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-Calendar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMFF__NPRG031_1_1Calendar_a2279253074472fa30255b2637df30a46}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classMFF__NPRG031_1_1Calendar_a623642e4db01cef075845ef5c7db5e0f}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!First@{First}}
+\index{First@{First}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{First}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Event} M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-First (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMFF__NPRG031_1_1Calendar_a623642e4db01cef075845ef5c7db5e0f}
+Returns first event from calendar and removes it from calendar \begin{DoxyReturn}{Returns}
+first event from calendar 
+\end{DoxyReturn}
+\hypertarget{classMFF__NPRG031_1_1Calendar_ab50fb8b653b95205910e61d079ae0676}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!Get\-K@{Get\-K}}
+\index{Get\-K@{Get\-K}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{Get\-K}]{\setlength{\rightskip}{0pt plus 5cm}List$<${\bf Event}$>$ M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-Get\-K (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMFF__NPRG031_1_1Calendar_ab50fb8b653b95205910e61d079ae0676}
+Returns inner calendar for testing \begin{DoxyReturn}{Returns}
+list of events 
+\end{DoxyReturn}
+\hypertarget{classMFF__NPRG031_1_1Calendar_a02ce42eb2c88d16ac1b6296bd9ce7062}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!Remove@{Remove}}
+\index{Remove@{Remove}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{Remove}]{\setlength{\rightskip}{0pt plus 5cm}void M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-Remove (
+\begin{DoxyParamCaption}
+\item[{{\bf Process}}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMFF__NPRG031_1_1Calendar_a02ce42eb2c88d16ac1b6296bd9ce7062}
+Removes process from calendar 
+\begin{DoxyParams}{Parameters}
+{\em p} & process \\
+\hline
+\end{DoxyParams}
+\hypertarget{classMFF__NPRG031_1_1Calendar_a59c90e97093d8ed21f1c6d36f2a88918}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!Schedule@{Schedule}}
+\index{Schedule@{Schedule}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{Schedule}]{\setlength{\rightskip}{0pt plus 5cm}void M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-Schedule (
+\begin{DoxyParamCaption}
+\item[{{\bf Event}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classMFF__NPRG031_1_1Calendar_a59c90e97093d8ed21f1c6d36f2a88918}
+Schedules an event by adding it to calendar 
+\begin{DoxyParams}{Parameters}
+{\em e} & \hyperlink{classMFF__NPRG031_1_1Event}{Event} to schedule \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classMFF__NPRG031_1_1Calendar_acaced39a1b5c163830a42abe1c3de960}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!calendar@{calendar}}
+\index{calendar@{calendar}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{calendar}]{\setlength{\rightskip}{0pt plus 5cm}List$<${\bf Event}$>$ M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-calendar = new List$<${\bf Event}$>$()\hspace{0.3cm}{\ttfamily [private]}}}\label{classMFF__NPRG031_1_1Calendar_acaced39a1b5c163830a42abe1c3de960}
+\hypertarget{classMFF__NPRG031_1_1Calendar_a7a57e092fecfd38ee13faa7443704073}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!M\-A\-X@{M\-A\-X}}
+\index{M\-A\-X@{M\-A\-X}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{M\-A\-X}]{\setlength{\rightskip}{0pt plus 5cm}const int M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-M\-A\-X = 0x7\-F\-F\-F\-F\-F\-F\-F\hspace{0.3cm}{\ttfamily [private]}}}\label{classMFF__NPRG031_1_1Calendar_a7a57e092fecfd38ee13faa7443704073}
+
+
+\subsection{Property Documentation}
+\hypertarget{classMFF__NPRG031_1_1Calendar_ac2ebccd4a70e3183e1715ddbde173d06}{\index{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}!Empty@{Empty}}
+\index{Empty@{Empty}!MFF_NPRG031::Calendar@{M\-F\-F\-\_\-\-N\-P\-R\-G031\-::\-Calendar}}
+\subsubsection[{Empty}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Calendar.\-Empty\hspace{0.3cm}{\ttfamily [get]}}}\label{classMFF__NPRG031_1_1Calendar_ac2ebccd4a70e3183e1715ddbde173d06}
+\begin{DoxyReturn}{Returns}
+is calendar empty? 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+Net\-Traffic\-Simulator/\-Net\-Traffic\-Simulator/framework/\hyperlink{Calendar_8cs}{Calendar.\-cs}\end{DoxyCompactItemize}
