@@ -1,0 +1,8 @@
+<map id="NetTrafficSimulator.SimulationController.InitializeFramework" name="NetTrafficSimulator.SimulationController.InitializeFramework">
+<area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1SimulationController.html#aaa2dfff1b6c614ec8202cac5f0aea58c" title="NetTrafficSimulator.Simulation\lController.createNodes" alt="" coords="253,5,453,46"/>
+<area shape="rect" id="node4" href="$classNetTrafficSimulator_1_1SimulationController.html#a65bdc4b66235a69672fda176b1937bc7" title="NetTrafficSimulator.Simulation\lController.createLinks" alt="" coords="253,70,453,111"/>
+<area shape="rect" id="node6" href="$classNetTrafficSimulator_1_1SimulationController.html#ad23685dbec3fce89fc4fa615edef1150" title="NetTrafficSimulator.Simulation\lController.createModel" alt="" coords="253,135,453,177"/>
+<area shape="rect" id="node7" href="$classNetTrafficSimulator_1_1SimulationController.html#a893854760ab4e24a432ab72aa1f20d1a" title="NetTrafficSimulator.Simulation\lController.initializeProcesses" alt="" coords="253,201,453,242"/>
+<area shape="rect" id="node3" href="$classNetTrafficSimulator_1_1NetworkModel.html#a3d8f3112c2cc4b21fe8070a0896652fa" title="NetTrafficSimulator.Network\lModel.GetNodeType" alt="" coords="502,5,690,46"/>
+<area shape="rect" id="node5" href="$classNetTrafficSimulator_1_1NetworkModel.html#a5d2d13396e4df9e45146b8a7f02a9b67" title="NetTrafficSimulator.Network\lModel.AreConnected" alt="" coords="502,70,690,111"/>
+</map>

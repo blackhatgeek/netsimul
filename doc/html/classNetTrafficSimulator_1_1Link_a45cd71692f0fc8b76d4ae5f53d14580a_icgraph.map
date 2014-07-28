@@ -1,0 +1,4 @@
+<map id="NetTrafficSimulator.Link.GetPartner" name="NetTrafficSimulator.Link.GetPartner">
+<area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1EndNode.html#a021bef61770e7ec3561b24edca6526ba" title="NetTrafficSimulator.EndNode.send" alt="" coords="222,12,447,39"/>
+<area shape="rect" id="node3" href="$classNetTrafficSimulator_1_1EndNode.html#a54624ab4b68ccc8c938905ac3e906623" title="NetTrafficSimulator.EndNode.\lProcessEvent" alt="" coords="496,5,693,46"/>
+</map>

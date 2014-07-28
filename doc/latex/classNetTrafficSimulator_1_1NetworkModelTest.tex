@@ -1,0 +1,62 @@
+\hypertarget{classNetTrafficSimulator_1_1NetworkModelTest}{\section{Net\-Traffic\-Simulator.\-Network\-Model\-Test Class Reference}
+\label{classNetTrafficSimulator_1_1NetworkModelTest}\index{Net\-Traffic\-Simulator.\-Network\-Model\-Test@{Net\-Traffic\-Simulator.\-Network\-Model\-Test}}
+}
+
+
+Collaboration diagram for Net\-Traffic\-Simulator.\-Network\-Model\-Test\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classNetTrafficSimulator_1_1NetworkModelTest__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1NetworkModelTest_afbd7470eb35b97512aa94a2f53163430}{Constructor\-Invalid} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1NetworkModelTest_a3634f2a5d0e008e7cd8b274615b173ee}{Constructor\-Zero} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1NetworkModelTest_a6a13d32fefa5e53b7f18e89b2fb8b436}{Constructor\-One} ()
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1NetworkModelTest_a149aa9eab4b53fb17aa19be215e769b5}{Constructor\-Three} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Test of \hyperlink{classNetTrafficSimulator_1_1NetworkModel}{Network\-Model} class 
+
+\subsection{Member Function Documentation}
+\hypertarget{classNetTrafficSimulator_1_1NetworkModelTest_afbd7470eb35b97512aa94a2f53163430}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}!Constructor\-Invalid@{Constructor\-Invalid}}
+\index{Constructor\-Invalid@{Constructor\-Invalid}!NetTrafficSimulator::NetworkModelTest@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}}
+\subsubsection[{Constructor\-Invalid}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Network\-Model\-Test.\-Constructor\-Invalid (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModelTest_afbd7470eb35b97512aa94a2f53163430}
+Try to create model with -\/1 nodes \hypertarget{classNetTrafficSimulator_1_1NetworkModelTest_a6a13d32fefa5e53b7f18e89b2fb8b436}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}!Constructor\-One@{Constructor\-One}}
+\index{Constructor\-One@{Constructor\-One}!NetTrafficSimulator::NetworkModelTest@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}}
+\subsubsection[{Constructor\-One}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Network\-Model\-Test.\-Constructor\-One (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModelTest_a6a13d32fefa5e53b7f18e89b2fb8b436}
+Create model with one node. Assert node is initially unidentified and model invalid, assert node count and connection count. Set node to E\-N\-D\-\_\-\-N\-O\-D\-E type, verify Get\-Node\-Type and Type\mbox{[}0\mbox{]}. Assert model is valid. Print model onto Console. Assert link count. Assert no loop connection \mbox{[}0,0\mbox{]}. Create connection \mbox{[}0,0\mbox{]} and assert model is invalid. Print model onto Console. \hypertarget{classNetTrafficSimulator_1_1NetworkModelTest_a149aa9eab4b53fb17aa19be215e769b5}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}!Constructor\-Three@{Constructor\-Three}}
+\index{Constructor\-Three@{Constructor\-Three}!NetTrafficSimulator::NetworkModelTest@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}}
+\subsubsection[{Constructor\-Three}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Network\-Model\-Test.\-Constructor\-Three (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModelTest_a149aa9eab4b53fb17aa19be215e769b5}
+Create model with 3 elements. Assert all of them are unidentified and model is invalid. Assert node count and all connection counts. Set node types and assert validity. Create connections, print onto Console, assert validity, create invalid connection -\/ assert model not valid, fix and create different invalid connection, assert model not valid \hypertarget{classNetTrafficSimulator_1_1NetworkModelTest_a3634f2a5d0e008e7cd8b274615b173ee}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}!Constructor\-Zero@{Constructor\-Zero}}
+\index{Constructor\-Zero@{Constructor\-Zero}!NetTrafficSimulator::NetworkModelTest@{Net\-Traffic\-Simulator\-::\-Network\-Model\-Test}}
+\subsubsection[{Constructor\-Zero}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Network\-Model\-Test.\-Constructor\-Zero (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModelTest_a3634f2a5d0e008e7cd8b274615b173ee}
+Create constructor with 0 nodes. Assert node count and validity 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+Net\-Traffic\-Simulator/\-Net\-Traffic\-Simulator/model/\hyperlink{NetworkModelTest_8cs}{Network\-Model\-Test.\-cs}\end{DoxyCompactItemize}
