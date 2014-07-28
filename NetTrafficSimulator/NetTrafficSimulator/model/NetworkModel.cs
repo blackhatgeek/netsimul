@@ -37,6 +37,11 @@ namespace NetTrafficSimulator
 		 * Message string added to any illegal argument exception thrown
 		 */
 		private const string ILLEGAL_PARAMETER = "Neplatny parametr";
+		/**
+		 * Mark there is no link between two nodes
+		 * Link capacity zero serves well for this purpose as it makes sure without any additional verification one cannot send data through the link
+		 */
+		private const int NO_CONNECTION = 0;
 
 		/**
 		 * Amount of nodes in the model
@@ -45,7 +50,7 @@ namespace NetTrafficSimulator
 		/**
 		 * Adjacency matrix of the network: links[x,y] is true if there is a direct connection between nodes x and y
 		 */
-		private bool[,] links;
+		private int[,] links;
 		/**
 		 * link_count[x] is amount of links connected to a node x
 		 */
@@ -64,13 +69,13 @@ namespace NetTrafficSimulator
 		{
 			if (node_count >= 0) {
 				this.node_count = node_count;
-				this.links = new bool[node_count, node_count];
+				this.links = new int[node_count, node_count];
 				this.types = new int[node_count];
 				this.link_count=new int[node_count];
 
 				for (int i=0; i<node_count; i++) {
 					for (int j=0; j<node_count; j++) {
-						links [i, j] = false;
+						links [i, j] = NO_CONNECTION;
 					}
 				}
 
@@ -93,25 +98,40 @@ namespace NetTrafficSimulator
 		 */
 		public bool AreConnected(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
-				return links [x, y];
+				return links [x, y]!=NO_CONNECTION;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.AreConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
 		}
+
 		/**
-		 * <p>Marks a direct link between nodes x and y.</p>
+		 * Returns capacity of a link between two nodes
+		 * @param x node
+		 * @param y node
+		 * @return link capacity (positive integer) or zero if there's no link between particular nodes
+		 */
+		public int LinkCapacity(int x,int y){
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
+				return links[x,y];
+			else
+				throw new ArgumentOutOfRangeException ("[NetworkModel.AreConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
+		}
+
+		/**
+		 * <p>Marks a direct link between nodes x and y with given capacity.</p>
 		 * <p>If there wasn't link yet, increments appropriate link_count counters</p>
 		 * @param x node
 		 * @param y node
-		 * @throws ArgumentOutOfRangeException if x or y are incorrect
+		 * @param capacity positive integer for link capacity
+		 * @throws ArgumentOutOfRangeException if any of x or y or capacity are incorrect
 		 */
-		public void SetConnected(int x,int y){
-			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)) {
-				if (!links [x, y]) {
+		public void SetConnected(int x,int y,int capacity){
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&(capacity>0)) {
+				if (links [x, y]==NO_CONNECTION) {
 					link_count [x]++;
 					link_count [y]++;
 				}
-				links [x, y] = true;
-				links [y, x] = true;
+				links [x, y] = capacity;
+				links [y, x] = capacity;
 			}
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
@@ -125,12 +145,12 @@ namespace NetTrafficSimulator
 		 */
 		public void SetDisconnected(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)) {
-				if (links [x, y]) {
+				if (links [x, y]!=NO_CONNECTION) {
 					link_count [x]--;
 					link_count [y]--;
 				}
-				links [x, y] = false;
-				links [y, x] = false;
+				links [x, y] = NO_CONNECTION;
+				links [y, x] = NO_CONNECTION;
 			} else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetDisconnected(" + x + "," + y + ")] "+ILLEGAL_PARAMETER);
 		}
@@ -185,7 +205,7 @@ namespace NetTrafficSimulator
 		/**
 		 * Adjacency matrix for the network
 		 */
-		public bool[,] Link{
+		public int[,] Link{
 			get{
 				return links;
 			}
@@ -240,11 +260,11 @@ namespace NetTrafficSimulator
 				}
 				Console.Write ((i+1) + "\t\t" + ntype + "\t");
 				for (int j=0; j<node_count-1; j++) {
-					if (links [i, j])
+					if (links [i, j]!=NO_CONNECTION)
 						Console.Write ("+");
 					Console.Write ("\t");
 				}
-				if (links [i, node_count-1])
+				if (links [i, node_count-1]!=NO_CONNECTION)
 					Console.Write ("+");
 				Console.WriteLine ("");
 			}
@@ -259,6 +279,7 @@ namespace NetTrafficSimulator
 		 * - only if node is NETWORK_NODE, it's link count is greater than 1
 		 * - no node in model is UNIDENTIFIED_NODE
 		 * - adjacency matrix is symmetric
+		 * - each link capacity is non-negative
 		 * @return if model is valid or not
 		 */
 		public bool Valid{
@@ -268,7 +289,7 @@ namespace NetTrafficSimulator
 				while((i<node_count)&&valid){
 					if((link_count[i]<0)||(link_count[i]>=node_count))//pokud link_count[i]==node_count pak je node spojen se sebou
 					   valid=false;
-					if (links [i, i])
+					if (links [i, i]!=NO_CONNECTION)
 						valid = false;
 					if ((types [i] != NETWORK_NODE) && (link_count [i] > 1))
 						valid = false;
@@ -281,6 +302,8 @@ namespace NetTrafficSimulator
 						int j = i;
 						while (j<node_count) {
 							if (links [i, j] != links [j, i])
+								valid = false;
+							if (links [i, j] < 0)
 								valid = false;
 							j++;
 						}

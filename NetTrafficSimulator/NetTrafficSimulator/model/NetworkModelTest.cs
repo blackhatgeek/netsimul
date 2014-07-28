@@ -47,7 +47,7 @@ namespace NetTrafficSimulator
 			nm.Print ();
 			Assert.AreEqual (nm.LinkCount[0], 0);
 			Assert.False (nm.AreConnected (0, 0));
-			nm.SetConnected (0, 0);
+			nm.SetConnected (0, 0,1);
 			Assert.False (nm.Valid);
 			nm.Print ();
 		}
@@ -71,14 +71,14 @@ namespace NetTrafficSimulator
 			nm.SetNodeType (1, NetworkModel.NETWORK_NODE);
 			nm.SetNodeType (2, NetworkModel.SERVER_NODE);
 			Assert.True (nm.Valid);
-			nm.SetConnected (0, 1);
-			nm.SetConnected (1, 2);
+			nm.SetConnected (0, 1,1);
+			nm.SetConnected (1, 2,1);
 			nm.Print ();
 			Assert.True (nm.Valid);
-			nm.SetConnected (0, 2);
+			nm.SetConnected (0, 2,1);
 			Assert.False (nm.Valid);
 			nm.SetDisconnected (0, 2);
-			nm.SetConnected (2, 2);
+			nm.SetConnected (2, 2,1);
 			Assert.False (nm.Valid);
 		}
 	}

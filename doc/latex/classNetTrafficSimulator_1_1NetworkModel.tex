@@ -7,7 +7,7 @@ Collaboration diagram for Net\-Traffic\-Simulator.\-Network\-Model\-:\nopagebrea
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classNetTrafficSimulator_1_1NetworkModel__coll__graph}
+\includegraphics[width=327pt]{classNetTrafficSimulator_1_1NetworkModel__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -17,7 +17,9 @@ Collaboration diagram for Net\-Traffic\-Simulator.\-Network\-Model\-:\nopagebrea
 \item 
 bool \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a5d2d13396e4df9e45146b8a7f02a9b67}{Are\-Connected} (int x, int y)
 \item 
-void \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a9b2e702172bb308e9882de6e1f22e9f1}{Set\-Connected} (int x, int y)
+int \hyperlink{classNetTrafficSimulator_1_1NetworkModel_aeb2db05cbda72d2e220fe53550e4d598}{Link\-Capacity} (int x, int y)
+\item 
+void \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a32b086f665dbacb1ce48c244b28d6d3a}{Set\-Connected} (int x, int y, int capacity)
 \item 
 void \hyperlink{classNetTrafficSimulator_1_1NetworkModel_acf61bc6091630b26455868a2575d34c7}{Set\-Disconnected} (int x, int y)
 \item 
@@ -45,7 +47,7 @@ const int \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a6736303b5919398ae
 \item 
 int \hyperlink{classNetTrafficSimulator_1_1NetworkModel_ae999583acaea839a7611f610bed2fed6}{Node\-Count}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \item 
-bool\mbox{[},\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkModel_aa1466fa74cbddeefb31b5d7369db983e}{Link}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+int\mbox{[},\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a80ab4cd62faf7b08759fc997f342c207}{Link}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \item 
 int\mbox{[}$\,$\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a92df1a7e9c05637930eae22d788f7c18}{Type}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \item 
@@ -58,9 +60,11 @@ bool \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a58af85d9a9121926149ef5
 \item 
 const string \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a9ff3800009133089edb0744d2771b0b9}{I\-L\-L\-E\-G\-A\-L\-\_\-\-P\-A\-R\-A\-M\-E\-T\-E\-R} = \char`\"{}Neplatny parametr\char`\"{}
 \item 
+const int \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a9e0ef364abc36d5bd8ebda5d703dc76b}{N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N} = 0
+\item 
 int \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a85f9941bb3af088bd078b273f0cb4e52}{node\-\_\-count}
 \item 
-bool\mbox{[},\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a01410c5733a30fb4e37208c8b94fdf8d}{links}
+int\mbox{[},\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a3b9f06cc5ec93f59a6bf7e4042b70e48}{links}
 \item 
 int\mbox{[}$\,$\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkModel_a1437bfc2aad1a396054b03452e60c0dd}{link\-\_\-count}
 \item 
@@ -181,6 +185,17 @@ Here is the caller graph for this function\-:\nopagebreak
 \end{figure}
 
 
+\hypertarget{classNetTrafficSimulator_1_1NetworkModel_aeb2db05cbda72d2e220fe53550e4d598}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Link\-Capacity@{Link\-Capacity}}
+\index{Link\-Capacity@{Link\-Capacity}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
+\subsubsection[{Link\-Capacity}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Network\-Model.\-Link\-Capacity (
+\begin{DoxyParamCaption}
+\item[{int}]{x, }
+\item[{int}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModel_aeb2db05cbda72d2e220fe53550e4d598}
+Returns capacity of a link between two nodes \begin{DoxyReturn}{Returns}
+link capacity (positive integer) or zero if there's no link between particular nodes 
+\end{DoxyReturn}
 \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a724d036cf0dbadefaba005aa853630be}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Print@{Print}}
 \index{Print@{Print}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{Print}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Network\-Model.\-Print (
@@ -196,15 +211,16 @@ S\-E\-R\-V\-E\-R\-\_\-\-N\-O\-D\-E is marked as S\-N
 
 N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E is marked as N\-N
 
-otherwise type is marked as N/\-A\hypertarget{classNetTrafficSimulator_1_1NetworkModel_a9b2e702172bb308e9882de6e1f22e9f1}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Set\-Connected@{Set\-Connected}}
+otherwise type is marked as N/\-A\hypertarget{classNetTrafficSimulator_1_1NetworkModel_a32b086f665dbacb1ce48c244b28d6d3a}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Set\-Connected@{Set\-Connected}}
 \index{Set\-Connected@{Set\-Connected}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{Set\-Connected}]{\setlength{\rightskip}{0pt plus 5cm}void Net\-Traffic\-Simulator.\-Network\-Model.\-Set\-Connected (
 \begin{DoxyParamCaption}
 \item[{int}]{x, }
-\item[{int}]{y}
+\item[{int}]{y, }
+\item[{int}]{capacity}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a9b2e702172bb308e9882de6e1f22e9f1}
-Marks a direct link between nodes x and y.
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a32b086f665dbacb1ce48c244b28d6d3a}
+Marks a direct link between nodes x and y with given capacity.
 
 If there wasn't link yet, increments appropriate link\-\_\-count counters
 
@@ -214,10 +230,12 @@ If there wasn't link yet, increments appropriate link\-\_\-count counters
 \hline
 {\em y} & node \\
 \hline
+{\em capacity} & positive integer for link capacity \\
+\hline
 \end{DoxyParams}
 
 \begin{DoxyExceptions}{Exceptions}
-{\em Argument\-Out\-Of\-Range\-Exception} & if x or y are incorrect \\
+{\em Argument\-Out\-Of\-Range\-Exception} & if any of x or y or capacity are incorrect \\
 \hline
 \end{DoxyExceptions}
 \hypertarget{classNetTrafficSimulator_1_1NetworkModel_acf61bc6091630b26455868a2575d34c7}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Set\-Disconnected@{Set\-Disconnected}}
@@ -276,13 +294,16 @@ E\-N\-D\-\_\-\-N\-O\-D\-E is a end-\/user node, which initiates connection to se
 Message string added to any illegal argument exception thrown \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a1437bfc2aad1a396054b03452e60c0dd}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!link\-\_\-count@{link\-\_\-count}}
 \index{link\-\_\-count@{link\-\_\-count}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{link\-\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}int \mbox{[}$\,$\mbox{]} Net\-Traffic\-Simulator.\-Network\-Model.\-link\-\_\-count\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a1437bfc2aad1a396054b03452e60c0dd}
-link\-\_\-count\mbox{[}x\mbox{]} is amount of links connected to a node x \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a01410c5733a30fb4e37208c8b94fdf8d}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!links@{links}}
+link\-\_\-count\mbox{[}x\mbox{]} is amount of links connected to a node x \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a3b9f06cc5ec93f59a6bf7e4042b70e48}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!links@{links}}
 \index{links@{links}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
-\subsubsection[{links}]{\setlength{\rightskip}{0pt plus 5cm}bool \mbox{[},\mbox{]} Net\-Traffic\-Simulator.\-Network\-Model.\-links\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a01410c5733a30fb4e37208c8b94fdf8d}
+\subsubsection[{links}]{\setlength{\rightskip}{0pt plus 5cm}int \mbox{[},\mbox{]} Net\-Traffic\-Simulator.\-Network\-Model.\-links\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a3b9f06cc5ec93f59a6bf7e4042b70e48}
 Adjacency matrix of the network\-: links\mbox{[}x,y\mbox{]} is true if there is a direct connection between nodes x and y \hypertarget{classNetTrafficSimulator_1_1NetworkModel_ab2882fa4fe981780f78f822b12677f88}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E@{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E}}
 \index{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E@{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}const int Net\-Traffic\-Simulator.\-Network\-Model.\-N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E = 2}}\label{classNetTrafficSimulator_1_1NetworkModel_ab2882fa4fe981780f78f822b12677f88}
-N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E is router / switch on the network \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a85f9941bb3af088bd078b273f0cb4e52}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!node\-\_\-count@{node\-\_\-count}}
+N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E is router / switch on the network \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a9e0ef364abc36d5bd8ebda5d703dc76b}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N@{N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N}}
+\index{N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N@{N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
+\subsubsection[{N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}const int Net\-Traffic\-Simulator.\-Network\-Model.\-N\-O\-\_\-\-C\-O\-N\-N\-E\-C\-T\-I\-O\-N = 0\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a9e0ef364abc36d5bd8ebda5d703dc76b}
+Mark there is no link between two nodes \hyperlink{classNetTrafficSimulator_1_1Link}{Link} capacity zero serves well for this purpose as it makes sure without any additional verification one cannot send data through the link \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a85f9941bb3af088bd078b273f0cb4e52}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!node\-\_\-count@{node\-\_\-count}}
 \index{node\-\_\-count@{node\-\_\-count}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{node\-\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Network\-Model.\-node\-\_\-count\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a85f9941bb3af088bd078b273f0cb4e52}
 Amount of nodes in the model \hypertarget{classNetTrafficSimulator_1_1NetworkModel_a9f536ecef65ce9ef55b52afa90ae8438}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!S\-E\-R\-V\-E\-R\-\_\-\-N\-O\-D\-E@{S\-E\-R\-V\-E\-R\-\_\-\-N\-O\-D\-E}}
@@ -297,9 +318,9 @@ types\mbox{[}x\mbox{]} is type of a node x \hypertarget{classNetTrafficSimulator
 U\-N\-I\-D\-E\-N\-T\-I\-F\-I\-E\-D\-\_\-\-N\-O\-D\-E indicates an error in model 
 
 \subsection{Property Documentation}
-\hypertarget{classNetTrafficSimulator_1_1NetworkModel_aa1466fa74cbddeefb31b5d7369db983e}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Link@{Link}}
+\hypertarget{classNetTrafficSimulator_1_1NetworkModel_a80ab4cd62faf7b08759fc997f342c207}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Link@{Link}}
 \index{Link@{Link}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
-\subsubsection[{Link}]{\setlength{\rightskip}{0pt plus 5cm}bool \mbox{[},\mbox{]} Net\-Traffic\-Simulator.\-Network\-Model.\-Link\hspace{0.3cm}{\ttfamily [get]}}}\label{classNetTrafficSimulator_1_1NetworkModel_aa1466fa74cbddeefb31b5d7369db983e}
+\subsubsection[{Link}]{\setlength{\rightskip}{0pt plus 5cm}int \mbox{[},\mbox{]} Net\-Traffic\-Simulator.\-Network\-Model.\-Link\hspace{0.3cm}{\ttfamily [get]}}}\label{classNetTrafficSimulator_1_1NetworkModel_a80ab4cd62faf7b08759fc997f342c207}
 Adjacency matrix for the network \hypertarget{classNetTrafficSimulator_1_1NetworkModel_ad5eb61d192908f46907fd7f91f796691}{\index{Net\-Traffic\-Simulator\-::\-Network\-Model@{Net\-Traffic\-Simulator\-::\-Network\-Model}!Link\-Count@{Link\-Count}}
 \index{Link\-Count@{Link\-Count}!NetTrafficSimulator::NetworkModel@{Net\-Traffic\-Simulator\-::\-Network\-Model}}
 \subsubsection[{Link\-Count}]{\setlength{\rightskip}{0pt plus 5cm}int \mbox{[}$\,$\mbox{]} Net\-Traffic\-Simulator.\-Network\-Model.\-Link\-Count\hspace{0.3cm}{\ttfamily [get]}}}\label{classNetTrafficSimulator_1_1NetworkModel_ad5eb61d192908f46907fd7f91f796691}
@@ -319,7 +340,8 @@ Validates the model Model is valid if all following constraints are met\-:
 \item no node is connected to itself
 \item only if node is N\-E\-T\-W\-O\-R\-K\-\_\-\-N\-O\-D\-E, it's link count is greater than 1
 \item no node in model is U\-N\-I\-D\-E\-N\-T\-I\-F\-I\-E\-D\-\_\-\-N\-O\-D\-E
-\item adjacency matrix is symmetric \begin{DoxyReturn}{Returns}
+\item adjacency matrix is symmetric
+\item each link capacity is non-\/negative \begin{DoxyReturn}{Returns}
 if model is valid or not 
 \end{DoxyReturn}
 
