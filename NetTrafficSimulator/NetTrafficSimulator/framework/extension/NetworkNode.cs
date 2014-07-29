@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class NetworkNode:Node
+	public class NetworkNode:Node,IResultProvider
 	{
 		Link[] interfaces;
-		int interfaces_count,interfaces_used;
+		int[] interface_use_count;
+		int interfaces_count,interfaces_used,processed,time_wait,last_process;
 		int delay;
 
 		/**
@@ -17,9 +19,13 @@ namespace NetTrafficSimulator
 		public NetworkNode (String name,int interfaces_count):base(name)
 		{
 			this.interfaces = new Link[interfaces_count];
+			this.interface_use_count=new int[interfaces_count];
 			this.interfaces_count = interfaces_count;
 			this.interfaces_used = 0;
 			this.delay = 1;
+			this.processed = 0;
+			this.time_wait = 0;
+			this.last_process = 0;
 		}
 
 		/**
@@ -37,8 +43,11 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
+			this.time_wait += model.Time - last_process;
+			this.last_process = model.Time;
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.RECEIVE:
+				processed++;
 				scheduleForward (state.Data, selectDestination (state.Data), model);
 				break;
 			default:
@@ -65,6 +74,17 @@ namespace NetTrafficSimulator
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
 			l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);
+		}
+
+		public Dictionary<string,object> GetResults(MFF_NPRG031.Model model){
+			Dictionary<string,object> result = new Dictionary<string, object> ();
+			//vybrat nekolik nejcasteji vybranych interfacu
+			//delay je konstantni - bude-li random, tak prumerny
+			result.Add ("Packets processed", processed);
+			result.Add ("Time waited", time_wait);
+			result.Add("Time idle",time_wait/model.Time);
+			result.Add ("Average wait time", time_wait / processed);
+			return result;
 		}
 	}
 }

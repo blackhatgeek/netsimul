@@ -3,16 +3,18 @@
 }
 
 
-Inheritance diagram for Net\-Traffic\-Simulator.\-Link\-:\nopagebreak
+Inheritance diagram for Net\-Traffic\-Simulator.\-Link\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=285pt]{classNetTrafficSimulator_1_1Link__inherit__graph}
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1Link__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Net\-Traffic\-Simulator.\-Link\-:\nopagebreak
+Collaboration diagram for Net\-Traffic\-Simulator.\-Link\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -36,6 +38,8 @@ override void \hyperlink{classNetTrafficSimulator_1_1Link_a953900c6d1064af45c99b
 override void \hyperlink{classNetTrafficSimulator_1_1Link_a654d0221ce7490d08ad40a70887b80c8}{Run} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} m)
 \item 
 \hyperlink{classNetTrafficSimulator_1_1Node}{Node} \hyperlink{classNetTrafficSimulator_1_1Link_a45cd71692f0fc8b76d4ae5f53d14580a}{Get\-Partner} (\hyperlink{classNetTrafficSimulator_1_1Node}{Node} x)
+\item 
+Dictionary$<$ string, object $>$ \hyperlink{classNetTrafficSimulator_1_1Link_aa0d6e4b0e7f61acda461b4d1eab0f1fd}{Get\-Results} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} model)
 \end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
@@ -53,6 +57,16 @@ void \hyperlink{classNetTrafficSimulator_1_1Link_a4ca4f2df795e1a3e814af806a17678
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1Link_a0374f1c17ad827ae00d53d41b1893a9e}{dropped}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1Link_a9c09033d252b42f62a3857397c06e320}{active\-\_\-time}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1Link_a2359ef316a04da7a0170827792a8b703}{inactive\-\_\-time}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1Link_ada7cc15d14a2c0d9111e91a96656e973}{carried}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1Link_a1b4280184e08f88565060c4786d5033b}{last\-\_\-process}
 \item 
 int \hyperlink{classNetTrafficSimulator_1_1Link_a24a004105c985c4e5ee64e4c839b1915}{capacity}
 \item 
@@ -146,6 +160,20 @@ Here is the caller graph for this function\-:\nopagebreak
 \end{center}
 \end{figure}
 
+
+\hypertarget{classNetTrafficSimulator_1_1Link_aa0d6e4b0e7f61acda461b4d1eab0f1fd}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!Get\-Results@{Get\-Results}}
+\index{Get\-Results@{Get\-Results}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
+\subsubsection[{Get\-Results}]{\setlength{\rightskip}{0pt plus 5cm}Dictionary$<$string,object$>$ Net\-Traffic\-Simulator.\-Link.\-Get\-Results (
+\begin{DoxyParamCaption}
+\item[{{\bf M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model}}]{model}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1Link_aa0d6e4b0e7f61acda461b4d1eab0f1fd}
+Provide results measured during simulation for populating a result model \begin{DoxyReturn}{Returns}
+Dictionary, where string is a key representing a human-\/readable description of measured data and object is value measured 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceNetTrafficSimulator_1_1IResultProvider_ac7053c11f509ba1c2f653cd952b05323}{Net\-Traffic\-Simulator.\-I\-Result\-Provider}.
 
 \hypertarget{classNetTrafficSimulator_1_1Link_a953900c6d1064af45c99b9533eadeafe}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!Process\-Event@{Process\-Event}}
 \index{Process\-Event@{Process\-Event}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
@@ -243,12 +271,27 @@ Here is the caller graph for this function\-:\nopagebreak
 \hypertarget{classNetTrafficSimulator_1_1Link_a1026cabe177ffe17054699706dea1452}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!active@{active}}
 \index{active@{active}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
 \subsubsection[{active}]{\setlength{\rightskip}{0pt plus 5cm}bool Net\-Traffic\-Simulator.\-Link.\-active\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_a1026cabe177ffe17054699706dea1452}
+\hypertarget{classNetTrafficSimulator_1_1Link_a9c09033d252b42f62a3857397c06e320}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!active\-\_\-time@{active\-\_\-time}}
+\index{active\-\_\-time@{active\-\_\-time}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
+\subsubsection[{active\-\_\-time}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Link.\-active\-\_\-time\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_a9c09033d252b42f62a3857397c06e320}
 \hypertarget{classNetTrafficSimulator_1_1Link_af85461b8b8d35adb1d8fc80849c0717d}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!b@{b}}
 \index{b@{b}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
 \subsubsection[{b}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Node} Net\-Traffic\-Simulator.\-Link.\-b\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_af85461b8b8d35adb1d8fc80849c0717d}
 \hypertarget{classNetTrafficSimulator_1_1Link_a24a004105c985c4e5ee64e4c839b1915}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!capacity@{capacity}}
 \index{capacity@{capacity}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
 \subsubsection[{capacity}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Link.\-capacity\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_a24a004105c985c4e5ee64e4c839b1915}
+\hypertarget{classNetTrafficSimulator_1_1Link_ada7cc15d14a2c0d9111e91a96656e973}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!carried@{carried}}
+\index{carried@{carried}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
+\subsubsection[{carried}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Link.\-carried\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_ada7cc15d14a2c0d9111e91a96656e973}
+\hypertarget{classNetTrafficSimulator_1_1Link_a0374f1c17ad827ae00d53d41b1893a9e}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!dropped@{dropped}}
+\index{dropped@{dropped}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
+\subsubsection[{dropped}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Link.\-dropped\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_a0374f1c17ad827ae00d53d41b1893a9e}
+\hypertarget{classNetTrafficSimulator_1_1Link_a2359ef316a04da7a0170827792a8b703}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!inactive\-\_\-time@{inactive\-\_\-time}}
+\index{inactive\-\_\-time@{inactive\-\_\-time}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
+\subsubsection[{inactive\-\_\-time}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Link.\-inactive\-\_\-time\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_a2359ef316a04da7a0170827792a8b703}
+\hypertarget{classNetTrafficSimulator_1_1Link_a1b4280184e08f88565060c4786d5033b}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!last\-\_\-process@{last\-\_\-process}}
+\index{last\-\_\-process@{last\-\_\-process}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
+\subsubsection[{last\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Link.\-last\-\_\-process\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_a1b4280184e08f88565060c4786d5033b}
 \hypertarget{classNetTrafficSimulator_1_1Link_af5a2835b585c255fbc6584f2f5388be8}{\index{Net\-Traffic\-Simulator\-::\-Link@{Net\-Traffic\-Simulator\-::\-Link}!name@{name}}
 \index{name@{name}!NetTrafficSimulator::Link@{Net\-Traffic\-Simulator\-::\-Link}}
 \subsubsection[{name}]{\setlength{\rightskip}{0pt plus 5cm}string Net\-Traffic\-Simulator.\-Link.\-name\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1Link_af5a2835b585c255fbc6584f2f5388be8}

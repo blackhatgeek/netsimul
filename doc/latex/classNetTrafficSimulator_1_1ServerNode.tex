@@ -3,16 +3,18 @@
 }
 
 
-Inheritance diagram for Net\-Traffic\-Simulator.\-Server\-Node\-:\nopagebreak
+Inheritance diagram for Net\-Traffic\-Simulator.\-Server\-Node\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=326pt]{classNetTrafficSimulator_1_1ServerNode__inherit__graph}
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1ServerNode__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Net\-Traffic\-Simulator.\-Server\-Node\-:\nopagebreak
+Collaboration diagram for Net\-Traffic\-Simulator.\-Server\-Node\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -27,6 +29,8 @@ Collaboration diagram for Net\-Traffic\-Simulator.\-Server\-Node\-:\nopagebreak
 override void \hyperlink{classNetTrafficSimulator_1_1ServerNode_ab309ebda509474d7a7f14b60955e5f98}{Process\-Event} (\hyperlink{classMFF__NPRG031_1_1State}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-State} state, \hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} model)
 \item 
 override void \hyperlink{classNetTrafficSimulator_1_1ServerNode_aec78a48eea4006df1b4bce59ef17fbf7}{Run} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} m)
+\item 
+Dictionary$<$ string, object $>$ \hyperlink{classNetTrafficSimulator_1_1ServerNode_ab361087ec7201d5b8bdef1154d1315ef}{Get\-Results} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} model)
 \end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
@@ -48,6 +52,10 @@ void \hyperlink{classNetTrafficSimulator_1_1ServerNode_ae90b2eb0a3abc8449a790a38
 \begin{DoxyCompactItemize}
 \item 
 readonly int \hyperlink{classNetTrafficSimulator_1_1ServerNode_a8be317d1e315710190755e4560fea3ef}{address}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1ServerNode_a3f25232ed46f3f83be0974fe060e390a}{time\-\_\-waited}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1ServerNode_a53521427dc9fa8eb16a461c4040d1b41}{process}
 \item 
 \hyperlink{classNetTrafficSimulator_1_1Link}{Link} \hyperlink{classNetTrafficSimulator_1_1ServerNode_a3968056516ee0dcb5ae111d09464efe6}{link}
 \end{DoxyCompactItemize}
@@ -83,6 +91,20 @@ Here is the caller graph for this function\-:\nopagebreak
 \end{figure}
 
 
+\hypertarget{classNetTrafficSimulator_1_1ServerNode_ab361087ec7201d5b8bdef1154d1315ef}{\index{Net\-Traffic\-Simulator\-::\-Server\-Node@{Net\-Traffic\-Simulator\-::\-Server\-Node}!Get\-Results@{Get\-Results}}
+\index{Get\-Results@{Get\-Results}!NetTrafficSimulator::ServerNode@{Net\-Traffic\-Simulator\-::\-Server\-Node}}
+\subsubsection[{Get\-Results}]{\setlength{\rightskip}{0pt plus 5cm}Dictionary$<$string,object$>$ Net\-Traffic\-Simulator.\-Server\-Node.\-Get\-Results (
+\begin{DoxyParamCaption}
+\item[{{\bf M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model}}]{model}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1ServerNode_ab361087ec7201d5b8bdef1154d1315ef}
+Provide results measured during simulation for populating a result model \begin{DoxyReturn}{Returns}
+Dictionary, where string is a key representing a human-\/readable description of measured data and object is value measured 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceNetTrafficSimulator_1_1IResultProvider_ac7053c11f509ba1c2f653cd952b05323}{Net\-Traffic\-Simulator.\-I\-Result\-Provider}.
+
 \hypertarget{classNetTrafficSimulator_1_1ServerNode_ab309ebda509474d7a7f14b60955e5f98}{\index{Net\-Traffic\-Simulator\-::\-Server\-Node@{Net\-Traffic\-Simulator\-::\-Server\-Node}!Process\-Event@{Process\-Event}}
 \index{Process\-Event@{Process\-Event}!NetTrafficSimulator::ServerNode@{Net\-Traffic\-Simulator\-::\-Server\-Node}}
 \subsubsection[{Process\-Event}]{\setlength{\rightskip}{0pt plus 5cm}override void Net\-Traffic\-Simulator.\-Server\-Node.\-Process\-Event (
@@ -104,7 +126,8 @@ Implements \hyperlink{classMFF__NPRG031_1_1Process_acb58d206e76c177264614d88f181
 
 
 
-Here is the call graph for this function\-:\nopagebreak
+Here is the call graph for this function\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -175,6 +198,12 @@ Here is the caller graph for this function\-:\nopagebreak
 \hypertarget{classNetTrafficSimulator_1_1ServerNode_a3968056516ee0dcb5ae111d09464efe6}{\index{Net\-Traffic\-Simulator\-::\-Server\-Node@{Net\-Traffic\-Simulator\-::\-Server\-Node}!link@{link}}
 \index{link@{link}!NetTrafficSimulator::ServerNode@{Net\-Traffic\-Simulator\-::\-Server\-Node}}
 \subsubsection[{link}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Link} Net\-Traffic\-Simulator.\-Server\-Node.\-link\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1ServerNode_a3968056516ee0dcb5ae111d09464efe6}
+\hypertarget{classNetTrafficSimulator_1_1ServerNode_a53521427dc9fa8eb16a461c4040d1b41}{\index{Net\-Traffic\-Simulator\-::\-Server\-Node@{Net\-Traffic\-Simulator\-::\-Server\-Node}!process@{process}}
+\index{process@{process}!NetTrafficSimulator::ServerNode@{Net\-Traffic\-Simulator\-::\-Server\-Node}}
+\subsubsection[{process}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Server\-Node.\-process\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1ServerNode_a53521427dc9fa8eb16a461c4040d1b41}
+\hypertarget{classNetTrafficSimulator_1_1ServerNode_a3f25232ed46f3f83be0974fe060e390a}{\index{Net\-Traffic\-Simulator\-::\-Server\-Node@{Net\-Traffic\-Simulator\-::\-Server\-Node}!time\-\_\-waited@{time\-\_\-waited}}
+\index{time\-\_\-waited@{time\-\_\-waited}!NetTrafficSimulator::ServerNode@{Net\-Traffic\-Simulator\-::\-Server\-Node}}
+\subsubsection[{time\-\_\-waited}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Server\-Node.\-time\-\_\-waited\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1ServerNode_a3f25232ed46f3f83be0974fe060e390a}
 
 
 \subsection{Property Documentation}

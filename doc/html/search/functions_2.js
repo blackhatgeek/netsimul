@@ -11,7 +11,15 @@ var searchData=
   ['constructorone',['ConstructorOne',['../classNetTrafficSimulator_1_1NetworkModelTest.html#a6a13d32fefa5e53b7f18e89b2fb8b436',1,'NetTrafficSimulator::NetworkModelTest']]],
   ['constructorthree',['ConstructorThree',['../classNetTrafficSimulator_1_1NetworkModelTest.html#a149aa9eab4b53fb17aa19be215e769b5',1,'NetTrafficSimulator::NetworkModelTest']]],
   ['constructorzero',['ConstructorZero',['../classNetTrafficSimulator_1_1NetworkModelTest.html#a3634f2a5d0e008e7cd8b274615b173ee',1,'NetTrafficSimulator::NetworkModelTest']]],
+  ['createendnode',['CreateEndNode',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#a2813d40f709bc9378df7d81f03959469',1,'NetTrafficSimulator::SimulationControllerTest']]],
+  ['createframeworkmodel',['CreateFrameworkModel',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#a7479d8869004e75f1bd222f583153ad9',1,'NetTrafficSimulator::SimulationControllerTest']]],
+  ['createlink',['CreateLink',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#a24442ce1820259c99dc2a92aa4d31756',1,'NetTrafficSimulator::SimulationControllerTest']]],
   ['createlinks',['createLinks',['../classNetTrafficSimulator_1_1SimulationController.html#a65bdc4b66235a69672fda176b1937bc7',1,'NetTrafficSimulator::SimulationController']]],
+  ['createlinksfromnetworkmodel',['CreateLinksFromNetworkModel',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#aee7f96b76663716d6497341addee26af',1,'NetTrafficSimulator::SimulationControllerTest']]],
   ['createmodel',['createModel',['../classNetTrafficSimulator_1_1SimulationController.html#ad23685dbec3fce89fc4fa615edef1150',1,'NetTrafficSimulator::SimulationController']]],
-  ['createnodes',['createNodes',['../classNetTrafficSimulator_1_1SimulationController.html#aaa2dfff1b6c614ec8202cac5f0aea58c',1,'NetTrafficSimulator::SimulationController']]]
+  ['createnetworknode',['CreateNetworkNode',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#a60f6c7ae0fa98102a8489175b5960dda',1,'NetTrafficSimulator::SimulationControllerTest']]],
+  ['createnodes',['createNodes',['../classNetTrafficSimulator_1_1SimulationController.html#aaa2dfff1b6c614ec8202cac5f0aea58c',1,'NetTrafficSimulator::SimulationController']]],
+  ['createnodesfromnetworkmodel',['CreateNodesFromNetworkModel',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#a9e369eaeaa2e00fa31397fc8deef9546',1,'NetTrafficSimulator::SimulationControllerTest']]],
+  ['createnodesfromnetworkmodel_5finvalidmodel',['CreateNodesFromNetworkModel_InvalidModel',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#a2f63b4bad7b887be6d12469de963ce4c',1,'NetTrafficSimulator::SimulationControllerTest']]],
+  ['createservernode',['CreateServerNode',['../classNetTrafficSimulator_1_1SimulationControllerTest.html#aab0055f8c4f17343d5b2099d33ff737c',1,'NetTrafficSimulator::SimulationControllerTest']]]
 ];

@@ -10,8 +10,10 @@ var namespaceNetTrafficSimulator =
     [ "ServerNode", "classNetTrafficSimulator_1_1ServerNode.html", "classNetTrafficSimulator_1_1ServerNode" ],
     [ "IAddressable", "interfaceNetTrafficSimulator_1_1IAddressable.html", "interfaceNetTrafficSimulator_1_1IAddressable" ],
     [ "INamable", "interfaceNetTrafficSimulator_1_1INamable.html", "interfaceNetTrafficSimulator_1_1INamable" ],
+    [ "IResultProvider", "interfaceNetTrafficSimulator_1_1IResultProvider.html", "interfaceNetTrafficSimulator_1_1IResultProvider" ],
     [ "NetworkModel", "classNetTrafficSimulator_1_1NetworkModel.html", "classNetTrafficSimulator_1_1NetworkModel" ],
     [ "NetworkModelTest", "classNetTrafficSimulator_1_1NetworkModelTest.html", "classNetTrafficSimulator_1_1NetworkModelTest" ],
+    [ "ResultModel", "classNetTrafficSimulator_1_1ResultModel.html", "classNetTrafficSimulator_1_1ResultModel" ],
     [ "SimulationModel", "classNetTrafficSimulator_1_1SimulationModel.html", "classNetTrafficSimulator_1_1SimulationModel" ],
     [ "SimulationModelTest", "classNetTrafficSimulator_1_1SimulationModelTest.html", "classNetTrafficSimulator_1_1SimulationModelTest" ],
     [ "MainClass", "classNetTrafficSimulator_1_1MainClass.html", "classNetTrafficSimulator_1_1MainClass" ]

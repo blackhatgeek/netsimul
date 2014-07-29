@@ -3,16 +3,18 @@
 }
 
 
-Inheritance diagram for Net\-Traffic\-Simulator.\-Network\-Node\-:\nopagebreak
+Inheritance diagram for Net\-Traffic\-Simulator.\-Network\-Node\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=285pt]{classNetTrafficSimulator_1_1NetworkNode__inherit__graph}
+\includegraphics[width=336pt]{classNetTrafficSimulator_1_1NetworkNode__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Net\-Traffic\-Simulator.\-Network\-Node\-:\nopagebreak
+Collaboration diagram for Net\-Traffic\-Simulator.\-Network\-Node\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -29,6 +31,8 @@ void \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a03e1d48e53fa9405411664e
 override void \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a4a629c1d159d4addef85742089506d20}{Process\-Event} (\hyperlink{classMFF__NPRG031_1_1State}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-State} state, \hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} model)
 \item 
 override void \hyperlink{classNetTrafficSimulator_1_1NetworkNode_ac4210159f0193e7872d356f40f0b99fe}{Run} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} m)
+\item 
+Dictionary$<$ string, object $>$ \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a7af0bcddea5c043f7e6ff2ac692e09f7}{Get\-Results} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} model)
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -42,9 +46,17 @@ void \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a87e1e7c4b163bc96de4ccad
 \item 
 \hyperlink{classNetTrafficSimulator_1_1Link}{Link}\mbox{[}$\,$\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a88683a8c65aadc6222a5898dcb1735d6}{interfaces}
 \item 
+int\mbox{[}$\,$\mbox{]} \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a9746a8e4a6c1fc45c1404c9b3d2f8288}{interface\-\_\-use\-\_\-count}
+\item 
 int \hyperlink{classNetTrafficSimulator_1_1NetworkNode_af9b9d881f9c1b02749716bb12efb5f66}{interfaces\-\_\-count}
 \item 
 int \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a2a2522005483827b9b7d3b51e7ffc47b}{interfaces\-\_\-used}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1NetworkNode_a4d81325b3290fd6521c682c8709b7e65}{processed}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1NetworkNode_ad05b46a64426469cee1bc3a0f494e4cb}{time\-\_\-wait}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1NetworkNode_afa8095929de9c6ccc20c2d47f8bdee9c}{last\-\_\-process}
 \item 
 int \hyperlink{classNetTrafficSimulator_1_1NetworkNode_aa31e2256ee97c759bd5f32652a5c00fc}{delay}
 \end{DoxyCompactItemize}
@@ -87,6 +99,20 @@ If possible, note a new link in use on first interface available
 {\em Argument\-Exception} & if no port is available \\
 \hline
 \end{DoxyExceptions}
+\hypertarget{classNetTrafficSimulator_1_1NetworkNode_a7af0bcddea5c043f7e6ff2ac692e09f7}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!Get\-Results@{Get\-Results}}
+\index{Get\-Results@{Get\-Results}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
+\subsubsection[{Get\-Results}]{\setlength{\rightskip}{0pt plus 5cm}Dictionary$<$string,object$>$ Net\-Traffic\-Simulator.\-Network\-Node.\-Get\-Results (
+\begin{DoxyParamCaption}
+\item[{{\bf M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model}}]{model}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1NetworkNode_a7af0bcddea5c043f7e6ff2ac692e09f7}
+Provide results measured during simulation for populating a result model \begin{DoxyReturn}{Returns}
+Dictionary, where string is a key representing a human-\/readable description of measured data and object is value measured 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceNetTrafficSimulator_1_1IResultProvider_ac7053c11f509ba1c2f653cd952b05323}{Net\-Traffic\-Simulator.\-I\-Result\-Provider}.
+
 \hypertarget{classNetTrafficSimulator_1_1NetworkNode_a4a629c1d159d4addef85742089506d20}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!Process\-Event@{Process\-Event}}
 \index{Process\-Event@{Process\-Event}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
 \subsubsection[{Process\-Event}]{\setlength{\rightskip}{0pt plus 5cm}override void Net\-Traffic\-Simulator.\-Network\-Node.\-Process\-Event (
@@ -181,6 +207,9 @@ Here is the caller graph for this function\-:\nopagebreak
 \hypertarget{classNetTrafficSimulator_1_1NetworkNode_aa31e2256ee97c759bd5f32652a5c00fc}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!delay@{delay}}
 \index{delay@{delay}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
 \subsubsection[{delay}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Network\-Node.\-delay\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkNode_aa31e2256ee97c759bd5f32652a5c00fc}
+\hypertarget{classNetTrafficSimulator_1_1NetworkNode_a9746a8e4a6c1fc45c1404c9b3d2f8288}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!interface\-\_\-use\-\_\-count@{interface\-\_\-use\-\_\-count}}
+\index{interface\-\_\-use\-\_\-count@{interface\-\_\-use\-\_\-count}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
+\subsubsection[{interface\-\_\-use\-\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}int \mbox{[}$\,$\mbox{]} Net\-Traffic\-Simulator.\-Network\-Node.\-interface\-\_\-use\-\_\-count\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkNode_a9746a8e4a6c1fc45c1404c9b3d2f8288}
 \hypertarget{classNetTrafficSimulator_1_1NetworkNode_a88683a8c65aadc6222a5898dcb1735d6}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!interfaces@{interfaces}}
 \index{interfaces@{interfaces}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
 \subsubsection[{interfaces}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Link} \mbox{[}$\,$\mbox{]} Net\-Traffic\-Simulator.\-Network\-Node.\-interfaces\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkNode_a88683a8c65aadc6222a5898dcb1735d6}
@@ -190,6 +219,15 @@ Here is the caller graph for this function\-:\nopagebreak
 \hypertarget{classNetTrafficSimulator_1_1NetworkNode_a2a2522005483827b9b7d3b51e7ffc47b}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!interfaces\-\_\-used@{interfaces\-\_\-used}}
 \index{interfaces\-\_\-used@{interfaces\-\_\-used}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
 \subsubsection[{interfaces\-\_\-used}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Network\-Node.\-interfaces\-\_\-used\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkNode_a2a2522005483827b9b7d3b51e7ffc47b}
+\hypertarget{classNetTrafficSimulator_1_1NetworkNode_afa8095929de9c6ccc20c2d47f8bdee9c}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!last\-\_\-process@{last\-\_\-process}}
+\index{last\-\_\-process@{last\-\_\-process}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
+\subsubsection[{last\-\_\-process}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Network\-Node.\-last\-\_\-process\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkNode_afa8095929de9c6ccc20c2d47f8bdee9c}
+\hypertarget{classNetTrafficSimulator_1_1NetworkNode_a4d81325b3290fd6521c682c8709b7e65}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!processed@{processed}}
+\index{processed@{processed}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
+\subsubsection[{processed}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Network\-Node.\-processed\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkNode_a4d81325b3290fd6521c682c8709b7e65}
+\hypertarget{classNetTrafficSimulator_1_1NetworkNode_ad05b46a64426469cee1bc3a0f494e4cb}{\index{Net\-Traffic\-Simulator\-::\-Network\-Node@{Net\-Traffic\-Simulator\-::\-Network\-Node}!time\-\_\-wait@{time\-\_\-wait}}
+\index{time\-\_\-wait@{time\-\_\-wait}!NetTrafficSimulator::NetworkNode@{Net\-Traffic\-Simulator\-::\-Network\-Node}}
+\subsubsection[{time\-\_\-wait}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-Network\-Node.\-time\-\_\-wait\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1NetworkNode_ad05b46a64426469cee1bc3a0f494e4cb}
 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}

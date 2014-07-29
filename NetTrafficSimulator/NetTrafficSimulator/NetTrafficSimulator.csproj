@@ -90,6 +90,8 @@
     <Compile Include="framework\extension\Node.cs" />
     <Compile Include="misc\INamable.cs" />
     <Compile Include="misc\IAddressable.cs" />
+    <Compile Include="model\ResultModel.cs" />
+    <Compile Include="misc\IResultProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

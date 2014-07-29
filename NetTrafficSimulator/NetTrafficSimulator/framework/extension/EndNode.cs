@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class EndNode:Node,IAddressable
+	public class EndNode:Node,IAddressable,IResultProvider
 	{
 		private readonly int address;
-		private int counter;
+		private int sent, received,time_wait;
 		private Link link;
 		private Random r;
 
@@ -13,9 +14,11 @@ namespace NetTrafficSimulator
 		 * Creates an EndNode with given name and address
 		 */
 		public EndNode(String n,int address):base(n){
-			this.counter = 0;
+			this.sent = 0;
+			this.received = 0;
 			this.address = address;
 			this.r = new Random ();
+			this.time_wait = 0;
 		}
 		
 		/**
@@ -43,13 +46,15 @@ namespace NetTrafficSimulator
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.SEND:
 				send ();
-				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time());
+				int t = wait_time ();
+				time_wait += t;
+				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
 				break;
 			/*case MFF_NPRG031.State.state.WAIT:
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time ());
 				break;*/
 			case MFF_NPRG031.State.state.RECEIVE:
-				counter--;
+				received++;
 				break;
 			default:
 				throw new ArgumentException ("[EndNode "+Name+"] Neplatny stav: "+state);
@@ -68,7 +73,7 @@ namespace NetTrafficSimulator
 		private void send(){
 			if (link != null) {
 				this.link.Carry (new Packet (address,r.Next()), this, this.link.GetPartner (this));
-				counter++;
+				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
 		}
@@ -78,6 +83,16 @@ namespace NetTrafficSimulator
 		 */
 		private int wait_time(){
 			throw new NotImplementedException ();
+		}
+
+		public Dictionary<string,object> GetResults(MFF_NPRG031.Model model){
+			Dictionary<string,object> results = new Dictionary<string, object> ();
+			results.Add ("Packets sent", sent);
+			results.Add ("Packets received", received);
+			results.Add ("Time waited", time_wait);
+			results.Add ("Time idle (%)", time_wait / model.Time * 100);
+			results.Add ("Average wait time", time_wait / sent);
+			return results;
 		}
 	}
 }

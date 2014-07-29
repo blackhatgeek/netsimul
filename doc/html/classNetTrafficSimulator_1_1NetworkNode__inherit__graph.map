@@ -2,4 +2,5 @@
 <area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1Node.html" title="{Node\n|+ Name\l&#45; name\l|+ Node()\l+ ToString()\l}" alt="" coords="120,176,211,283"/>
 <area shape="rect" id="node3" href="$classMFF__NPRG031_1_1Process.html" title="{MFF_NPRG031::Process\n||+ Schedule()\l+ ZrusPlan()\l+ ProcessEvent()\l+ Run()\l}" alt="" coords="5,6,176,127"/>
 <area shape="rect" id="node4" href="$interfaceNetTrafficSimulator_1_1INamable.html" title="{INamable\n|+ Name\l|}" alt="" coords="201,28,279,105"/>
+<area shape="rect" id="node5" href="$interfaceNetTrafficSimulator_1_1IResultProvider.html" title="{IResultProvider\n||+ GetResults()\l}" alt="" coords="235,191,345,268"/>
 </map>

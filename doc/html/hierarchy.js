@@ -15,6 +15,12 @@ var hierarchy =
         [ "NetTrafficSimulator.ServerNode", "classNetTrafficSimulator_1_1ServerNode.html", null ]
       ] ]
     ] ],
+    [ "NetTrafficSimulator.IResultProvider", "interfaceNetTrafficSimulator_1_1IResultProvider.html", [
+      [ "NetTrafficSimulator.EndNode", "classNetTrafficSimulator_1_1EndNode.html", null ],
+      [ "NetTrafficSimulator.Link", "classNetTrafficSimulator_1_1Link.html", null ],
+      [ "NetTrafficSimulator.NetworkNode", "classNetTrafficSimulator_1_1NetworkNode.html", null ],
+      [ "NetTrafficSimulator.ServerNode", "classNetTrafficSimulator_1_1ServerNode.html", null ]
+    ] ],
     [ "NetTrafficSimulator.MainClass", "classNetTrafficSimulator_1_1MainClass.html", null ],
     [ "MFF_NPRG031.Model", "classMFF__NPRG031_1_1Model.html", null ],
     [ "NetTrafficSimulator.NetworkModel", "classNetTrafficSimulator_1_1NetworkModel.html", null ],
@@ -24,6 +30,7 @@ var hierarchy =
       [ "NetTrafficSimulator.Link", "classNetTrafficSimulator_1_1Link.html", null ],
       [ "NetTrafficSimulator.Node", "classNetTrafficSimulator_1_1Node.html", null ]
     ] ],
+    [ "NetTrafficSimulator.ResultModel", "classNetTrafficSimulator_1_1ResultModel.html", null ],
     [ "NetTrafficSimulator.SimulationController", "classNetTrafficSimulator_1_1SimulationController.html", null ],
     [ "NetTrafficSimulator.SimulationControllerTest", "classNetTrafficSimulator_1_1SimulationControllerTest.html", null ],
     [ "NetTrafficSimulator.SimulationModel", "classNetTrafficSimulator_1_1SimulationModel.html", null ],

@@ -14,7 +14,6 @@ namespace NetTrafficSimulator
 		private int endNodeCounter,networkNodeCounter,serverNodeCounter,addressCounter,nodeCounter;//,linkCounter;
 		private Node[] nodes;
 		private LinkedList<Link> links;
-		private MFF_NPRG031.Model model;
 
 		/**
 		 * Constructor stores Network and Simulation models for future reference
@@ -138,7 +137,7 @@ namespace NetTrafficSimulator
 		 */
 		private void createModel(){
 		if (simulation_model != null) {
-			model = new MFF_NPRG031.Model (simulation_model.Time);
+			framework_model = new MFF_NPRG031.Model (simulation_model.Time);
 		} else
 			throw new InvalidOperationException ("[SimulationController.createModel] SimulationModel null");
 		}
@@ -148,20 +147,20 @@ namespace NetTrafficSimulator
 		 * @throws InvalidOperationException if model is null (not created yet)
 		 */
 		private void initializeProcesses(){
-			if (model != null) {
+			if (framework_model != null) {
 				foreach (Node n in nodes)
-					n.Run (model);
+					n.Run (framework_model);
 				foreach (Link l in links)
-					l.Run(model);
+					l.Run(framework_model);
 			} else
-				throw new InvalidOperationException ("[SimulationController.initializeProcesses] Model not created");
+				throw new InvalidOperationException ("[SimulationController.initializeProcesses] Framework model not created");
 		}
 
 		/**
 		 * Runs a simulation, stores statistics
 		 */
 		private void RunSimulation(){
-			model.Simulate ();
+			framework_model.Simulate ();
 		}
 
 		/**
@@ -181,4 +180,3 @@ namespace NetTrafficSimulator
 		}
 	}
 }
-

@@ -13,7 +13,6 @@ var classNetTrafficSimulator_1_1SimulationController =
     [ "endNodeCounter", "classNetTrafficSimulator_1_1SimulationController.html#a9d07f9372ee5eeacefcb4d0448122f6d", null ],
     [ "framework_model", "classNetTrafficSimulator_1_1SimulationController.html#a3037a65e37c5c5e894bc584b8fe5c12d", null ],
     [ "links", "classNetTrafficSimulator_1_1SimulationController.html#a5c83a56d28d5336e08efd3d893e47381", null ],
-    [ "model", "classNetTrafficSimulator_1_1SimulationController.html#a28227ccfab6fb0d8e41ae0975ee7a5af", null ],
     [ "network_model", "classNetTrafficSimulator_1_1SimulationController.html#a80c4b1d3b982e591f530bf5877b259fa", null ],
     [ "networkNodeCounter", "classNetTrafficSimulator_1_1SimulationController.html#a2b2363037a31bae97e4aede4af2512c4", null ],
     [ "nodeCounter", "classNetTrafficSimulator_1_1SimulationController.html#ada67d39ff4d7f0595b295b895216abf4", null ],

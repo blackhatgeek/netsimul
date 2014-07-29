@@ -6,6 +6,9 @@ var dir_2309cdda01c53f821d8d30358f2443ae =
     [ "NetworkModelTest.cs", "NetworkModelTest_8cs.html", [
       [ "NetworkModelTest", "classNetTrafficSimulator_1_1NetworkModelTest.html", "classNetTrafficSimulator_1_1NetworkModelTest" ]
     ] ],
+    [ "ResultModel.cs", "ResultModel_8cs.html", [
+      [ "ResultModel", "classNetTrafficSimulator_1_1ResultModel.html", "classNetTrafficSimulator_1_1ResultModel" ]
+    ] ],
     [ "SimulationModel.cs", "SimulationModel_8cs.html", [
       [ "SimulationModel", "classNetTrafficSimulator_1_1SimulationModel.html", "classNetTrafficSimulator_1_1SimulationModel" ]
     ] ],

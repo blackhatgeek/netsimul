@@ -3,16 +3,18 @@
 }
 
 
-Inheritance diagram for Net\-Traffic\-Simulator.\-End\-Node\-:\nopagebreak
+Inheritance diagram for Net\-Traffic\-Simulator.\-End\-Node\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=326pt]{classNetTrafficSimulator_1_1EndNode__inherit__graph}
+\includegraphics[width=350pt]{classNetTrafficSimulator_1_1EndNode__inherit__graph}
 \end{center}
 \end{figure}
 
 
-Collaboration diagram for Net\-Traffic\-Simulator.\-End\-Node\-:\nopagebreak
+Collaboration diagram for Net\-Traffic\-Simulator.\-End\-Node\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -27,6 +29,8 @@ Collaboration diagram for Net\-Traffic\-Simulator.\-End\-Node\-:\nopagebreak
 override void \hyperlink{classNetTrafficSimulator_1_1EndNode_a54624ab4b68ccc8c938905ac3e906623}{Process\-Event} (\hyperlink{classMFF__NPRG031_1_1State}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-State} state, \hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} model)
 \item 
 override void \hyperlink{classNetTrafficSimulator_1_1EndNode_ad672744610489948d0a8126a84a1aab6}{Run} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} m)
+\item 
+Dictionary$<$ string, object $>$ \hyperlink{classNetTrafficSimulator_1_1EndNode_aade90e936fa0903c728fc484be8a57d2}{Get\-Results} (\hyperlink{classMFF__NPRG031_1_1Model}{M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model} model)
 \end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
@@ -47,7 +51,11 @@ int \hyperlink{classNetTrafficSimulator_1_1EndNode_a9287a628dea98e2611bde679eb3c
 \item 
 readonly int \hyperlink{classNetTrafficSimulator_1_1EndNode_a84d0df6c9c755c895dffff6a531823d2}{address}
 \item 
-int \hyperlink{classNetTrafficSimulator_1_1EndNode_a9b636da52746d85bf43875f0ea596dd5}{counter}
+int \hyperlink{classNetTrafficSimulator_1_1EndNode_a45bd4418f00eb56fde0618470a05688e}{sent}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1EndNode_aec9de5a4499a35773abb2e5ebc6b153e}{received}
+\item 
+int \hyperlink{classNetTrafficSimulator_1_1EndNode_a92b73535be26c46a619a2c307ecd3ad4}{time\-\_\-wait}
 \item 
 \hyperlink{classNetTrafficSimulator_1_1Link}{Link} \hyperlink{classNetTrafficSimulator_1_1EndNode_a3fde207ff4a49bafd01df2e89fff7d11}{link}
 \item 
@@ -67,6 +75,20 @@ Random \hyperlink{classNetTrafficSimulator_1_1EndNode_ab68702887e7cdb3933a3a006e
 Creates an \hyperlink{classNetTrafficSimulator_1_1EndNode}{End\-Node} with given name and address 
 
 \subsection{Member Function Documentation}
+\hypertarget{classNetTrafficSimulator_1_1EndNode_aade90e936fa0903c728fc484be8a57d2}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!Get\-Results@{Get\-Results}}
+\index{Get\-Results@{Get\-Results}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
+\subsubsection[{Get\-Results}]{\setlength{\rightskip}{0pt plus 5cm}Dictionary$<$string,object$>$ Net\-Traffic\-Simulator.\-End\-Node.\-Get\-Results (
+\begin{DoxyParamCaption}
+\item[{{\bf M\-F\-F\-\_\-\-N\-P\-R\-G031.\-Model}}]{model}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classNetTrafficSimulator_1_1EndNode_aade90e936fa0903c728fc484be8a57d2}
+Provide results measured during simulation for populating a result model \begin{DoxyReturn}{Returns}
+Dictionary, where string is a key representing a human-\/readable description of measured data and object is value measured 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceNetTrafficSimulator_1_1IResultProvider_ac7053c11f509ba1c2f653cd952b05323}{Net\-Traffic\-Simulator.\-I\-Result\-Provider}.
+
 \hypertarget{classNetTrafficSimulator_1_1EndNode_a54624ab4b68ccc8c938905ac3e906623}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!Process\-Event@{Process\-Event}}
 \index{Process\-Event@{Process\-Event}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
 \subsubsection[{Process\-Event}]{\setlength{\rightskip}{0pt plus 5cm}override void Net\-Traffic\-Simulator.\-End\-Node.\-Process\-Event (
@@ -171,15 +193,21 @@ Here is the caller graph for this function\-:\nopagebreak
 \hypertarget{classNetTrafficSimulator_1_1EndNode_a84d0df6c9c755c895dffff6a531823d2}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!address@{address}}
 \index{address@{address}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
 \subsubsection[{address}]{\setlength{\rightskip}{0pt plus 5cm}readonly int Net\-Traffic\-Simulator.\-End\-Node.\-address\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1EndNode_a84d0df6c9c755c895dffff6a531823d2}
-\hypertarget{classNetTrafficSimulator_1_1EndNode_a9b636da52746d85bf43875f0ea596dd5}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!counter@{counter}}
-\index{counter@{counter}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
-\subsubsection[{counter}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-End\-Node.\-counter\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1EndNode_a9b636da52746d85bf43875f0ea596dd5}
 \hypertarget{classNetTrafficSimulator_1_1EndNode_a3fde207ff4a49bafd01df2e89fff7d11}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!link@{link}}
 \index{link@{link}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
 \subsubsection[{link}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Link} Net\-Traffic\-Simulator.\-End\-Node.\-link\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1EndNode_a3fde207ff4a49bafd01df2e89fff7d11}
 \hypertarget{classNetTrafficSimulator_1_1EndNode_ab68702887e7cdb3933a3a006ea508a76}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!r@{r}}
 \index{r@{r}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
 \subsubsection[{r}]{\setlength{\rightskip}{0pt plus 5cm}Random Net\-Traffic\-Simulator.\-End\-Node.\-r\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1EndNode_ab68702887e7cdb3933a3a006ea508a76}
+\hypertarget{classNetTrafficSimulator_1_1EndNode_aec9de5a4499a35773abb2e5ebc6b153e}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!received@{received}}
+\index{received@{received}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
+\subsubsection[{received}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-End\-Node.\-received\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1EndNode_aec9de5a4499a35773abb2e5ebc6b153e}
+\hypertarget{classNetTrafficSimulator_1_1EndNode_a45bd4418f00eb56fde0618470a05688e}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!sent@{sent}}
+\index{sent@{sent}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
+\subsubsection[{sent}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-End\-Node.\-sent\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1EndNode_a45bd4418f00eb56fde0618470a05688e}
+\hypertarget{classNetTrafficSimulator_1_1EndNode_a92b73535be26c46a619a2c307ecd3ad4}{\index{Net\-Traffic\-Simulator\-::\-End\-Node@{Net\-Traffic\-Simulator\-::\-End\-Node}!time\-\_\-wait@{time\-\_\-wait}}
+\index{time\-\_\-wait@{time\-\_\-wait}!NetTrafficSimulator::EndNode@{Net\-Traffic\-Simulator\-::\-End\-Node}}
+\subsubsection[{time\-\_\-wait}]{\setlength{\rightskip}{0pt plus 5cm}int Net\-Traffic\-Simulator.\-End\-Node.\-time\-\_\-wait\hspace{0.3cm}{\ttfamily [private]}}}\label{classNetTrafficSimulator_1_1EndNode_a92b73535be26c46a619a2c307ecd3ad4}
 
 
 \subsection{Property Documentation}

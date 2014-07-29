@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class Link:MFF_NPRG031.Process,INamable
+	public class Link:MFF_NPRG031.Process,INamable,IResultProvider
 	{
+		int dropped,active_time,inactive_time,carried;
+		int last_process;
 		private class DataEnvelope{
 			private Packet p;
 			private Node source,destination;
@@ -66,6 +69,11 @@ namespace NetTrafficSimulator
 			this.a = a;
 			this.b = b;
 			this.active = (a != null) && (b != null);
+			this.last_process = 0;
+			this.active_time = 0;
+			this.inactive_time = 0;
+			this.dropped = 0;
+			this.carried = 0;
 		}
 
 		/**
@@ -100,18 +108,25 @@ namespace NetTrafficSimulator
 		 */
 		public void Carry(Packet p,Node origin,Node destination){
 			if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
+				carried++;
 				if (next_queue_pos < capacity) {
 					DataEnvelope de = new DataEnvelope (p, origin, destination);
 					queue [next_queue_pos] = de;
 					next_queue_pos++;
 				} else
-					Console.WriteLine ("Oops, data lost. Nevermind...");
+					dropped++;
 			} else
 				throw new ArgumentException ("This link is capable of delivering data between nodes " + a + " and  " + b + ", though requested to deliver from " + origin + " to " + destination);
 		}
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
+			if (active)
+				active_time += model.Time - last_process;//kolik casu uplynulo od posledniho process - celou dobu byl link active
+			else
+				inactive_time += model.Time - last_process;//totez, ale celou dobu byl inactive
+			last_process = model.Time;
+
 			if (state.Actual.Equals (MFF_NPRG031.State.state.SEND)) {//vse v queue dorucit do cile a naplanovat se do send
 				if (active) 
 					send_queue (model);
@@ -157,6 +172,17 @@ namespace NetTrafficSimulator
 				return a;
 			else
 				throw new ArgumentException ("[Link " + name + "] Can't tell a partner of the node not belonging to the link (" + x + ")");
+		}
+
+		public Dictionary<string,object> GetResults(MFF_NPRG031.Model model){
+			Dictionary<string,object> results = new Dictionary<string, object> ();
+			results.Add ("Packets carried", carried);
+			results.Add ("Packets dropped", dropped);
+			results.Add ("Drop %", dropped / carried * 100);
+			results.Add ("Active time", active_time);
+			results.Add ("Passive time", inactive_time);
+			results.Add ("Time idle (%)", inactive_time / (active_time + inactive_time)*100);
+			return results;
 		}
 	}
 }
