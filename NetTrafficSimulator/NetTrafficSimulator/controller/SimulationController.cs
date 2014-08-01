@@ -167,7 +167,6 @@ namespace NetTrafficSimulator
 		 * Stores statistics into Result Model unless this is done by RunSimulation
 		 */
 		private void PopulateResultModel(){
-			throw new NotImplementedException ();
 		}
 
 		/**

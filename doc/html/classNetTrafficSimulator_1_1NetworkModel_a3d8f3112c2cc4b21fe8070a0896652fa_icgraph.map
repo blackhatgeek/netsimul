@@ -1,6 +1,0 @@
-<map id="NetTrafficSimulator.NetworkModel.GetNodeType" name="NetTrafficSimulator.NetworkModel.GetNodeType">
-<area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1SimulationController.html#aaa2dfff1b6c614ec8202cac5f0aea58c" title="NetTrafficSimulator.Simulation\lController.createNodes" alt="" coords="292,5,492,46"/>
-<area shape="rect" id="node5" href="$classNetTrafficSimulator_1_1SimulationControllerTest.html#a9e369eaeaa2e00fa31397fc8deef9546" title="NetTrafficSimulator.Simulation\lControllerTest.CreateNodesFromNetworkModel" alt="" coords="243,70,541,111"/>
-<area shape="rect" id="node3" href="$classNetTrafficSimulator_1_1SimulationController.html#aee0204844a793fc1e26e1940f8c3f1e3" title="NetTrafficSimulator.Simulation\lController.InitializeFramework" alt="" coords="589,5,789,46"/>
-<area shape="rect" id="node4" href="$classNetTrafficSimulator_1_1SimulationController.html#a22dedb5c0d0233bfa7acfc858af4a0cf" title="NetTrafficSimulator.Simulation\lController.Run" alt="" coords="837,5,1037,46"/>
-</map>

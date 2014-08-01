@@ -7,6 +7,8 @@ namespace NetTrafficSimulator
 		public ResultModel ()
 		{
 		}
+
+
 	}
 }
 

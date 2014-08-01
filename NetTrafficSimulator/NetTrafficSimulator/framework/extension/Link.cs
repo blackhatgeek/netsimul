@@ -59,9 +59,15 @@ namespace NetTrafficSimulator
 		 * @param capacity	how many data a link can deliver per time unit
 		 * @param a			node at one end
 		 * @param b			node at other end
+		 * @throws	ArgumentOutOfRangeException Negative link capacity
+		 * @throws	ArgumentNullException any node null
 		 */
 		public Link (String name,int capacity, Node a,Node b)
 		{
+			if (capacity <0) throw new ArgumentOutOfRangeException ("Link capacity cannot be negative");
+			if (a == null || b == null)
+				throw new ArgumentNullException ("Node cannot be null");
+
 			this.name = name;
 			this.capacity = capacity;
 			this.next_queue_pos = 0;

@@ -1,4 +1,0 @@
-<map id="MFF_NPRG031.Event" name="MFF_NPRG031.Event">
-<area shape="rect" id="node3" href="$classMFF__NPRG031_1_1Process.html" title="{MFF_NPRG031.Process\n||+ Schedule()\l+ ZrusPlan()\l+ ProcessEvent()\l+ Run()\l}" alt="" coords="68,147,236,269"/>
-<area shape="rect" id="node4" href="$classMFF__NPRG031_1_1State.html" title="{MFF_NPRG031.State\n|+ Actual\l+ Data\l|+ State()\l+ State()\l}" alt="" coords="261,155,411,261"/>
-</map>

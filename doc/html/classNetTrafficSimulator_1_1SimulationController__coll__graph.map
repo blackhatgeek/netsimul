@@ -1,7 +1,0 @@
-<map id="NetTrafficSimulator.SimulationController" name="NetTrafficSimulator.SimulationController">
-<area shape="rect" id="node5" href="$classNetTrafficSimulator_1_1SimulationModel.html" title="{NetTrafficSimulator.Simulation\lModel\n|+ Time\l|+ SimulationModel()\l}" alt="" coords="601,411,800,503"/>
-<area shape="rect" id="node10" href="$classNetTrafficSimulator_1_1NetworkModel.html" title="{NetTrafficSimulator.Network\lModel\n|+ NodeCount\l+ Link\l+ Type\l+ LinkCount\l+ Valid\l|+ NetworkModel()\l+ AreConnected()\l+ LinkCapacity()\l+ SetConnected()\l+ SetDisconnected()\l+ GetConnectionCount()\l+ GetNodeType()\l+ SetNodeType()\l+ Print()\l}" alt="" coords="826,323,1013,591"/>
-<area shape="rect" id="node6" href="$classNetTrafficSimulator_1_1Node.html" title="{NetTrafficSimulator.Node\n|+ Name\l|+ Node()\l+ ToString()\l}" alt="" coords="1059,411,1229,503"/>
-<area shape="rect" id="node7" href="$classMFF__NPRG031_1_1Process.html" title="{MFF_NPRG031::Process\n||+ Schedule()\l+ ZrusPlan()\l+ ProcessEvent()\l+ Run()\l}" alt="" coords="1079,6,1251,127"/>
-<area shape="rect" id="node8" href="$interfaceNetTrafficSimulator_1_1INamable.html" title="{INamable\n|+ Name\l|}" alt="" coords="1275,28,1353,105"/>
-</map>

@@ -15,28 +15,42 @@ namespace NetTrafficSimulator
 		 * The delay is set fixed as 1
 		 * @param name Human readable node name
 		 * @param interfaces_count How many ports does the network node have
+		 * @throws ArgumentException on negative interfaces_count
 		 */
 		public NetworkNode (String name,int interfaces_count):base(name)
 		{
-			this.interfaces = new Link[interfaces_count];
-			this.interface_use_count=new int[interfaces_count];
-			this.interfaces_count = interfaces_count;
-			this.interfaces_used = 0;
-			this.delay = 1;
-			this.processed = 0;
-			this.time_wait = 0;
-			this.last_process = 0;
+			if (interfaces_count >= 0) {
+				this.interfaces = new Link[interfaces_count];
+				this.interface_use_count = new int[interfaces_count];
+				this.interfaces_count = interfaces_count;
+				this.interfaces_used = 0;
+				this.delay = 1;
+				this.processed = 0;
+				this.time_wait = 0;
+				this.last_process = 0;
+			} else
+				throw new ArgumentException ("[NetworkNode] Negative interface count");
+		}
+
+		public int Interfaces{
+			get{
+				return interfaces.Length;
+			}
 		}
 
 		/**
 		 * If possible, note a new link in use on first interface available
 		 * @param l Link to connect
 		 * @throws ArgumentException if no port is available
+		 * @throws ArgumentNullException on l null
 		 */
 		public void ConnectLink(Link l){
 			if (interfaces_used < interfaces_count) {
-				interfaces [interfaces_used] = l;
-				interfaces_used++;
+				if (l != null) {
+					interfaces [interfaces_used] = l;
+					interfaces_used++;
+				} else
+					throw new ArgumentNullException ("Link null");
 			} else
 				throw new ArgumentException ("No port available");
 		}
