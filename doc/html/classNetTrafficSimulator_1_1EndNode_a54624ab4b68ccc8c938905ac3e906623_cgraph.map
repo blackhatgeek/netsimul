@@ -1,5 +1,0 @@
-<map id="NetTrafficSimulator.EndNode.ProcessEvent" name="NetTrafficSimulator.EndNode.ProcessEvent">
-<area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1EndNode.html#a021bef61770e7ec3561b24edca6526ba" title="NetTrafficSimulator.EndNode.send" alt="" coords="265,12,490,39"/>
-<area shape="rect" id="node4" href="$classNetTrafficSimulator_1_1EndNode.html#a9287a628dea98e2611bde679eb3c63da" title="NetTrafficSimulator.EndNode.wait_time" alt="" coords="251,63,504,89"/>
-<area shape="rect" id="node3" href="$classNetTrafficSimulator_1_1Link.html#a45cd71692f0fc8b76d4ae5f53d14580a" title="NetTrafficSimulator.Link.\lGetPartner" alt="" coords="553,5,719,46"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="NetTrafficSimulator.RIP" name="NetTrafficSimulator.RIP">
-<area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1Link.html" title="{NetTrafficSimulator.Link\n|+ Name\l+ Active\l|+ Link()\l+ Carry()\l+ ProcessEvent()\l+ Run()\l+ GetPartner()\l&#45; toggle()\l&#45; send_queue()\l}" alt="" coords="418,563,581,743"/>
-<area shape="rect" id="node3" href="$classMFF__NPRG031_1_1Process.html" title="{MFF_NPRG031::Process\n||+ Schedule()\l+ ZrusPlan()\l+ ProcessEvent()\l+ Run()\l}" alt="" coords="192,6,363,127"/>
-<area shape="rect" id="node8" href="$classNetTrafficSimulator_1_1Node.html" title="{NetTrafficSimulator.Node\n|+ Name\l|+ Node()\l+ ToString()\l}" alt="" coords="345,206,515,298"/>
-<area shape="rect" id="node4" href="$interfaceNetTrafficSimulator_1_1INamable.html" title="{INamable\n|+ Name\l|}" alt="" coords="436,28,514,105"/>
-<area shape="rect" id="node5" href="$classNetTrafficSimulator_1_1Link_1_1DataEnvelope.html" title="{NetTrafficSimulator.Link.\lDataEnvelope\n|+ Data\l+ Source\l+ Destination\l|+ DataEnvelope()\l}" alt="" coords="284,377,450,498"/>
-<area shape="rect" id="node6" href="$classNetTrafficSimulator_1_1Packet.html" title="{NetTrafficSimulator.Packet\n|+ Source\l+ Destination\l|+ Packet()\l}" alt="" coords="28,206,207,298"/>
-</map>

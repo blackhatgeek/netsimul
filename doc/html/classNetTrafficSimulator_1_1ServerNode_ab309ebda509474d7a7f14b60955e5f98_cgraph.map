@@ -1,5 +1,0 @@
-<map id="NetTrafficSimulator.ServerNode.ProcessEvent" name="NetTrafficSimulator.ServerNode.ProcessEvent">
-<area shape="rect" id="node2" href="$classNetTrafficSimulator_1_1ServerNode.html#ae90b2eb0a3abc8449a790a388dc1bcbb" title="NetTrafficSimulator.Server\lNode.sendResponse" alt="" coords="233,5,410,46"/>
-<area shape="rect" id="node3" href="$classNetTrafficSimulator_1_1ServerNode.html#a96f3601328b5a86e3d69dcf93abafb34" title="NetTrafficSimulator.Server\lNode.generateResponse" alt="" coords="233,70,410,111"/>
-<area shape="rect" id="node4" href="$classNetTrafficSimulator_1_1ServerNode.html#a95a09cca40cf33abb200fa8c704f00a3" title="NetTrafficSimulator.Server\lNode.wait_time" alt="" coords="233,135,410,177"/>
-</map>

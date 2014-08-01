@@ -14,7 +14,6 @@ namespace NetTrafficSimulator
 		private int endNodeCounter,networkNodeCounter,serverNodeCounter,addressCounter,nodeCounter;//,linkCounter;
 		private Node[] nodes;
 		private LinkedList<Link> links;
-		private MFF_NPRG031.Model model;
 
 		/**
 		 * Constructor stores Network and Simulation models for future reference
@@ -91,7 +90,6 @@ namespace NetTrafficSimulator
 		/**
 		 * <p>For each pair of nodes where connection is marked, create a new Link instance and register the link to each node. New links are stored in LinkedList<Link> links 
 		 * initialized here (as their count is unknown)</p>
-		 * <p>As link capacities are not supported by NetworkModel yet, all are set for 0 at this point.</p>
 		 * <p>Test is necessary to verify links are created properly according to the model</p>
 		 * @throws InvalidOperationException if any node is of unidentified type, the network model is null, the nodes array is null or length of the nodes array don't match node 
 		 * count in the network model
@@ -105,9 +103,8 @@ namespace NetTrafficSimulator
 					while (j<network_model.NodeCount) {
 						Node y = nodes [j];
 						if (network_model.AreConnected (i, j)){
-							//TODO Link capacities!!
 							//TESTME links parsed correctly??
-							Link l = new Link (x + " - " + y + " link", 0, x, y);
+							Link l = new Link (x + " - " + y + " link", network_model.LinkCapacity(i,j), x, y);
 							if (x is EndNode)
 								(x as EndNode).Link = l;
 							else if (x is NetworkNode)
@@ -140,7 +137,7 @@ namespace NetTrafficSimulator
 		 */
 		private void createModel(){
 		if (simulation_model != null) {
-			model = new MFF_NPRG031.Model (simulation_model.Time);
+			framework_model = new MFF_NPRG031.Model (simulation_model.Time);
 		} else
 			throw new InvalidOperationException ("[SimulationController.createModel] SimulationModel null");
 		}
@@ -150,27 +147,26 @@ namespace NetTrafficSimulator
 		 * @throws InvalidOperationException if model is null (not created yet)
 		 */
 		private void initializeProcesses(){
-			if (model != null) {
+			if (framework_model != null) {
 				foreach (Node n in nodes)
-					n.Run (model);
+					n.Run (framework_model);
 				foreach (Link l in links)
-					l.Run(model);
+					l.Run(framework_model);
 			} else
-				throw new InvalidOperationException ("[SimulationController.initializeProcesses] Model not created");
+				throw new InvalidOperationException ("[SimulationController.initializeProcesses] Framework model not created");
 		}
 
 		/**
 		 * Runs a simulation, stores statistics
 		 */
 		private void RunSimulation(){
-			model.Simulate ();
+			framework_model.Simulate ();
 		}
 
 		/**
 		 * Stores statistics into Result Model unless this is done by RunSimulation
 		 */
 		private void PopulateResultModel(){
-			throw new NotImplementedException ();
 		}
 
 		/**
@@ -183,4 +179,3 @@ namespace NetTrafficSimulator
 		}
 	}
 }
-
