@@ -3,11 +3,14 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class ServerNode:Node,IAddressable,IResultProvider
+	public class ServerNode:Node,IAddressable
 	{
 		private readonly int address;
 		private int time_waited,process;
 		private Link link;
+		/**
+		 * Creates a ServerNode with given name and address
+		 */
 		public ServerNode (String name,int address):base(name)
 		{
 			this.link=null;
@@ -42,32 +45,82 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("[ServerNode "+Name+"] Neplatny stav: "+state);
 		}
 
+		/**
+		 * Creates a new Packet for sender of the request
+		 * @return Packet from this node to source
+		 */
 		private Packet generateResponse(Packet p){
-			throw new NotImplementedException ();
+			return new Packet (this, p.Source);
 		}
 
+		/**
+		 * Generates a wait time between receiving a packet and sending a response
+		 * @return 1
+		 */
 		private int wait_time(){
-			throw new NotImplementedException ();
+			return 1;
 		}
 
+		/**
+		 * Send generated response at given time
+		 * @param p Generated new packet
+		 * @param time When to send
+		 * @throws ArgumentException Provided packet's source is not this node
+		 * @throws InvalidOperationException link not connected
+		 */
 		private void sendResponse(Packet p,int time){
-			if (link != null)
-				this.link.Carry (p, this, this.link.GetPartner (this));
+			if (link != null) {
+				if (p.Source == this)
+					this.link.Carry (p, this, this.link.GetPartner (this));
+				else
+					throw new ArgumentException ("[Node " + Name + "] Odchozi packet nepochazi z tohoto node");
+			}
 			else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
 		}
 
+		/**
+		 * Empty
+		 */
 		public override void Run (MFF_NPRG031.Model m)
 		{
 		}
 
-		public Dictionary<string,object> GetResults(MFF_NPRG031.Model model){
-			Dictionary<string,object> results = new Dictionary<string, object> ();
-			results.Add ("Time waited", time_waited);
-			results.Add ("Time idle (%)", time_waited / model.Time*100);
-			results.Add ("Average wait time", time_waited / process);
-			results.Add ("Packets processed", process);
-			return results;
+		//results
+		/**
+		 * Amount of time spent waiting
+		 * Sum of wait_time() provided values counted in ProcessEvent
+		 */
+		public int TimeWaited{
+			get{
+				return time_waited;
+			}
+		}
+		/*
+		 * Time spend waiting relative to time to run the simulation
+		 * @param model Framework model
+		 * @return TimeWait to current time provided by model ratio in percents
+		 */
+		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
+			return time_waited / model.Time * 100;
+		}
+
+		/**
+		 * TimeWaited divided by PacketsProcessed gives us average time ServerNode spent waiting before a response packet was sent
+		 */
+		public decimal AverageWaitTime{
+			get{
+				return time_waited / process;
+			}
+		}
+
+		/**
+		 * Amount of packets processed
+		 */
+		public int PacketsProcessed{
+			get{
+				return process;
+			}
 		}
 	}
 }

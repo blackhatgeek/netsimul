@@ -11,9 +11,16 @@ namespace NetTrafficSimulator
 		private NetworkModel network_model;
 		private SimulationModel simulation_model;
 		private MFF_NPRG031.Model framework_model;
-		private int endNodeCounter,networkNodeCounter,serverNodeCounter,addressCounter,nodeCounter;//,linkCounter;
+		private ResultModel result_model;
+		private int endNodeCounter,networkNodeCounter,serverNodeCounter,addressCounter,nodeCounter;
 		private Node[] nodes;
 		private LinkedList<Link> links;
+
+		public ResultModel Results{
+			get{
+				return result_model;
+			}
+		}
 
 		/**
 		 * Constructor stores Network and Simulation models for future reference
@@ -157,16 +164,25 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Runs a simulation, stores statistics
-		 */
-		private void RunSimulation(){
-			framework_model.Simulate ();
-		}
-
-		/**
-		 * Stores statistics into Result Model unless this is done by RunSimulation
+		 * Stores statistics into Result Model
 		 */
 		private void PopulateResultModel(){
+			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, links.Count);
+			foreach (Node n in nodes) {
+				if (n is EndNode) {
+					EndNode en = n as EndNode;
+					result_model.SetNewEndNodeResult (en.Name, en.Address, en.PacketsSent, en.PacketsReceived, en.TimeWaited, en.GetPercentageTimeIdle (framework_model), en.AverageWaitTime);
+				} else if (n is ServerNode) {
+					ServerNode sn = n as ServerNode;
+					result_model.SetNewServerNodeResult (sn.Name, sn.Address, sn.PacketsProcessed, sn.TimeWaited, sn.GetPercentageTimeIdle (framework_model), sn.AverageWaitTime);
+				} else if (n is NetworkNode) {
+					NetworkNode nn = n as NetworkNode;
+					result_model.SetNewNetworkNodeResult (nn.Name,nn.PacketsProcessed,nn.TimeWaited,nn.GetPercentageTimeIdle(framework_model),nn.AverageWaitTime);
+				}
+			}
+			foreach (Link l in links) {
+				result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.PacketsDropped, l.DropPercentage, l.ActiveTime, l.PassiveTime, l.PercentageTimeIdle);
+			}
 		}
 
 		/**
@@ -174,7 +190,7 @@ namespace NetTrafficSimulator
 		 */
 		public void Run(){
 			InitializeFramework ();
-			RunSimulation ();
+			framework_model.Simulate ();
 			PopulateResultModel ();
 		}
 	}

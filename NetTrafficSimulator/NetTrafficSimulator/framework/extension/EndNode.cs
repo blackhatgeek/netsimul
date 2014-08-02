@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class EndNode:Node,IAddressable,IResultProvider
+	public class EndNode:Node,IAddressable
 	{
 		private readonly int address;
 		private int sent, received,time_wait;
@@ -80,19 +80,57 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Generates a wait time after sending
+		 * @return 1
 		 */
 		private int wait_time(){
-			throw new NotImplementedException ();
+			return 1;
 		}
 
-		public Dictionary<string,object> GetResults(MFF_NPRG031.Model model){
-			Dictionary<string,object> results = new Dictionary<string, object> ();
-			results.Add ("Packets sent", sent);
-			results.Add ("Packets received", received);
-			results.Add ("Time waited", time_wait);
-			results.Add ("Time idle (%)", time_wait / model.Time * 100);
-			results.Add ("Average wait time", time_wait / sent);
-			return results;
+		//results
+		/**
+		 * Amount of packets sent
+		 */
+		public int PacketsSent{
+			get{
+				return sent;
+			}
+		}
+
+		/**
+		 * Amount of packets received
+		 */
+		public int PacketsReceived{
+			get{
+				return received;
+			}
+		}
+
+		/**
+		 * Amount of time spend waiting
+		 * sum of wait_time() provided values counted in ProcessEvent
+		 */
+		public int TimeWait{
+			get{
+				return time_wait;
+			}
+		}
+	
+		/**
+		 * Time spend waiting relative to time to run the simulation
+		 * @param model Framework model
+		 * @return TimeWait to current time provided by model ratio in percents
+		 */
+		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
+			return time_wait / model.Time * 100;
+		}
+
+		/**
+		 * TimeWait divided by PacketsSent gives us average time EndNode spent waiting after a packet was sent
+		 */
+		public decimal AverageWaitTime{
+			get{
+				return time_wait / sent;
+			}
 		}
 	}
 }
