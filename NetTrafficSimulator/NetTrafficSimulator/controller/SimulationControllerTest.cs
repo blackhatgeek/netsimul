@@ -159,10 +159,28 @@ namespace NetTrafficSimulator
 		public void CreateLink4(){
 			new Link ("L", 0, new EndNode ("EN1", 0),new EndNode("EN2",1));
 		}
-		public void NetworkNodeConnectLink(){
+
+		[Test()]
+		public void NetworkNodeConnectLink0(){
+			EndNode en=new EndNode("EN0",0);
+			NetworkNode nn = new NetworkNode ("NN0", 1);
+			Link l = new Link ("L0", 1, en, nn);
+			nn.ConnectLink (l);
 		}
 
+		[Test()]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NetworkNodeConnectLink1(){
+			EndNode en0 = new EndNode ("EN0", 0);
+			EndNode en1 = new EndNode ("EN!", 1);
+			Link l = new Link ("L0", 1, en0, en1);
+			new NetworkNode ("NN0", 1).ConnectLink (l);
+		}
+
+		[Test()]
+		[ExpectedException(typeof(ArgumentException))]
 		public void NetworkNodeConnectLink_unavailable(){
+			new NetworkNode ("NN0", 0).ConnectLink (new Link ("L0", 0, new EndNode ("EN0", 0), new EndNode ("EN1", 1)));
 		}
 
 		public void LinkCarry(){

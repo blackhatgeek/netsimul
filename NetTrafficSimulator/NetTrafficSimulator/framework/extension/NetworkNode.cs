@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class NetworkNode:Node,IResultProvider
+	public class NetworkNode:Node
 	{
 		Link[] interfaces;
 		int[] interface_use_count;
@@ -32,6 +32,9 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
 		}
 
+		/**
+		 * Amount of ports of the NetworkNode
+		 */
 		public int Interfaces{
 			get{
 				return interfaces.Length;
@@ -47,8 +50,14 @@ namespace NetTrafficSimulator
 		public void ConnectLink(Link l){
 			if (interfaces_used < interfaces_count) {
 				if (l != null) {
-					interfaces [interfaces_used] = l;
-					interfaces_used++;
+					try{
+						l.GetPartner(this);
+						interfaces [interfaces_used] = l;
+						interfaces_used++;
+					}catch(ArgumentException){
+						throw new ArgumentException ("Link not connected to this NetworkNode");
+					}
+
 				} else
 					throw new ArgumentNullException ("Link null");
 			} else
@@ -57,10 +66,10 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
-			this.time_wait += model.Time - last_process;
-			this.last_process = model.Time;
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.RECEIVE:
+				this.time_wait += model.Time - last_process;
+				this.last_process = model.Time;
 				processed++;
 				scheduleForward (state.Data, selectDestination (state.Data), model);
 				break;
@@ -76,8 +85,18 @@ namespace NetTrafficSimulator
 		{
 		}
 
+		/**
+		 * If there's a link connected, always use the first interface
+		 * @param p Packet to route
+		 * @return which way to go
+		 */
 		private Link selectDestination(Packet p){
-			throw new NotImplementedException ();
+			if (interfaces_used > 0) {
+				interface_use_count [0]++;
+				return interfaces [0];
+			}
+			else
+				throw new InvalidOperationException ("No link connected");
 		}
 
 		/**
@@ -90,15 +109,38 @@ namespace NetTrafficSimulator
 			l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);
 		}
 
-		public Dictionary<string,object> GetResults(MFF_NPRG031.Model model){
-			Dictionary<string,object> result = new Dictionary<string, object> ();
-			//vybrat nekolik nejcasteji vybranych interfacu
-			//delay je konstantni - bude-li random, tak prumerny
-			result.Add ("Packets processed", processed);
-			result.Add ("Time waited", time_wait);
-			result.Add("Time idle",time_wait/model.Time);
-			result.Add ("Average wait time", time_wait / processed);
-			return result;
+		//results
+		//TODO: vybrat nekolik nejcasteji vybranych interfacu
+		//TODO: delay je konstantni - bude-li random, tak prumerny
+		/**
+		 * Amount of packets processed
+		 */
+		public int PacketsProcessed{
+			get{
+				return processed;
+			}
+		}
+		/**
+		 * Amount of time passed between two ProcessEvent calls - summed
+		 */
+		public int TimeWaited{
+			get{
+				return time_wait;
+			}
+		}
+		/**
+		 * How much time was the network node idle
+		 */
+		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
+			return time_wait/model.Time;
+		}
+		/**
+		 * Average wait time
+		 */
+		public decimal AverageWaitTime {
+			get {
+				return time_wait / processed;
+			}
 		}
 	}
 }

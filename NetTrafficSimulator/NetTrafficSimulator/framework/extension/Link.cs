@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class Link:MFF_NPRG031.Process,INamable,IResultProvider
+	public class Link:MFF_NPRG031.Process,INamable
 	{
 		int dropped,active_time,inactive_time,carried;
 		int last_process;
@@ -114,13 +114,15 @@ namespace NetTrafficSimulator
 		 */
 		public void Carry(Packet p,Node origin,Node destination){
 			if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
-				carried++;
-				if (next_queue_pos < capacity) {
-					DataEnvelope de = new DataEnvelope (p, origin, destination);
-					queue [next_queue_pos] = de;
-					next_queue_pos++;
-				} else
-					dropped++;
+				if (active) {
+					carried++;
+					if (next_queue_pos < capacity) {
+						DataEnvelope de = new DataEnvelope (p, origin, destination);
+						queue [next_queue_pos] = de;
+						next_queue_pos++;
+					} else
+						dropped++;
+				}
 			} else
 				throw new ArgumentException ("This link is capable of delivering data between nodes " + a + " and  " + b + ", though requested to deliver from " + origin + " to " + destination);
 		}
@@ -150,8 +152,12 @@ namespace NetTrafficSimulator
 		}
 
 		//rozhodne o moznem vypadku linky
+		/**
+		 * Decide if toggle link status
+		 * @return false
+		 */
 		private bool toggle(){
-			throw new NotImplementedException ();
+			return false;
 		}
 
 		/**
@@ -180,15 +186,55 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("[Link " + name + "] Can't tell a partner of the node not belonging to the link (" + x + ")");
 		}
 
-		public Dictionary<string,object> GetResults(MFF_NPRG031.Model model){
-			Dictionary<string,object> results = new Dictionary<string, object> ();
-			results.Add ("Packets carried", carried);
-			results.Add ("Packets dropped", dropped);
-			results.Add ("Drop %", dropped / carried * 100);
-			results.Add ("Active time", active_time);
-			results.Add ("Passive time", inactive_time);
-			results.Add ("Time idle (%)", inactive_time / (active_time + inactive_time)*100);
-			return results;
+		//results
+		/**
+		 * Amount of packets carried by link (how many times carry() was called)
+		 */
+		public int PacketsCarried{
+			get{
+				return carried;
+			}
+		}
+		/**
+		 * How many times was a packet dropped as result of full link
+		 */
+		public int PacketsDropped {
+			get {
+				return dropped;
+			}
+		}
+		/**
+		 * Dropped to Carried ratio
+		 */
+		public decimal DropPercentage{
+			get{
+				return dropped / carried * 100;
+			}
+		}
+		/**
+		 * How much time was the link active
+		 */
+		public int ActiveTime{
+			get{
+				return active_time;
+			}
+		}
+		/**
+		 * How much time was the link passive
+		 */
+		public int PassiveTime{
+			get{
+				return inactive_time;
+			}
+		}
+
+		/**
+		 * How much time was the link passive compared to time simulating
+		 */
+		public decimal PercentageTimeIdle {
+			get {
+				return inactive_time / (active_time + inactive_time) * 100;
+			}
 		}
 	}
 }
