@@ -183,30 +183,168 @@ namespace NetTrafficSimulator
 			new NetworkNode ("NN0", 0).ConnectLink (new Link ("L0", 0, new EndNode ("EN0", 0), new EndNode ("EN1", 1)));
 		}
 
-		public void LinkCarry(){
+		//packet null
+		//a i b jsou z linku, plna fronta
+		//a i b jsou z linku, misto ve fronte
+		[Test()]
+		[ExpectedException(typeof(ArgumentException))]
+		public void LinkCarry0(){
+			Link l = new Link ("L0", 0, new EndNode ("EN0", 0),new EndNode("EN1",1));
+			l.Carry(null,new ServerNode("SN0",2),new ServerNode("SN1",3));
+		}
+		[Test()]
+		[ExpectedException(typeof(ArgumentException))]
+		public void LinkCarry1(){
+			ServerNode sn=new ServerNode ("SN0", 0);
+			Link l = new Link ("L0", 0, sn, new EndNode ("EN0", 1));
+			l.Carry (null, new NetworkNode ("NN0", 0), sn);
+		}
+		[Test()]
+		[ExpectedException(typeof(ArgumentException))]
+		public void LinkCarry2(){
+			EndNode en = new EndNode ("EN0", int.MaxValue);
+			Link l = new Link ("L0", 0, en, new NetworkNode ("NN0", 0));
+			l.Carry (null, en, new NetworkNode ("NN1", 0));
 		}
 
-		public void LinkCarryInvalid(){
+		[Test()]
+		public void LinkCarry3(){
+			EndNode en = new EndNode ("EN0", int.MinValue);
+			NetworkNode nn = new NetworkNode ("NN0", 0);
+			Link l = new Link ("L0", 0, nn, en);
+			l.Active = false;
+			Assert.AreEqual (0, l.PacketsCarried);
+			Assert.AreEqual (0, l.PacketsDropped);
+			l.Carry (null, nn, en);
+			Assert.AreEqual (0, l.PacketsCarried);
+			Assert.AreEqual (0, l.PacketsDropped);
 		}
 
-		public void EndNodeSend(){
+		[Test()]
+		public void LinkCarry4(){
+			EndNode en = new EndNode ("EN0", 0);
+			NetworkNode nn = new NetworkNode ("NN", 0);
+			Link l = new Link ("L0", 0, en, nn);
+			Assert.AreEqual (0, l.PacketsCarried);
+			Assert.AreEqual (0, l.PacketsDropped);
+			l.Carry (null, en, nn);
+			Assert.AreEqual (1, l.PacketsCarried);
+			Assert.AreEqual (1, l.PacketsDropped);
 		}
 
+		[Test()]
+		public void LinkCarry5(){
+			NetworkNode nn = new NetworkNode ("NN0", 1);
+			ServerNode sn = new ServerNode ("SN0", 0);
+			Link l = new Link ("L0", 1, nn, sn);
+			Assert.AreEqual (0, l.PacketsCarried);
+			Assert.AreEqual (0, l.PacketsDropped);
+			l.Carry (null, nn, sn);
+			Assert.AreEqual (1, l.PacketsCarried);
+			Assert.AreEqual (0, l.PacketsDropped);
+		}
+
+		[Test()]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void EndNodeSend0(){
+			new EndNode ("EN", 0).ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1));
+		}
+
+		[Test()]
+		public void EndNodeSend1(){
+			EndNode en0 = new EndNode ("EN0", 0);
+			EndNode en1 = new EndNode ("EN1", 1);
+			Link l = new Link ("L0", 1, en0, en1);
+			en0.Link = l;
+			en1.Link = l;
+			en0.ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1));
+			Assert.AreEqual (1, l.PacketsCarried);
+			Assert.AreEqual (0, l.PacketsDropped);
+			Assert.AreEqual (1, en0.PacketsSent);
+		}
+
+		[Test()]
 		public void LinkProcessEvent(){
+			EndNode en1 = new EndNode ("EN0", 0);
+			EndNode en2 = new EndNode ("EN1", 1);
+			Link l = new Link ("L0", 1, en1, en2);
+			l.Carry (new Packet (0, 1), en1, en2);
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			l.Schedule (m.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND), 0);
+			MFF_NPRG031.Event e = m.K.First ();
+			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
+			Assert.AreEqual (0, e.when);
+			Assert.AreEqual (l, e.who);
+			m.Time = 0;
+			l.ProcessEvent (e.what, m);
+			e = m.K.First ();
+			Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
+			Assert.AreEqual (1, e.when);
+			Assert.AreEqual (en2, e.who);
 		}
 
+		[Test()]
 		public void NetworkNodeProcessEvent(){
+			NetworkNode nn = new NetworkNode ("NN0", 1);
+			EndNode en = new EndNode ("EN0", 0);
+			Link l = new Link ("L0", 1, nn, en);
+			nn.ConnectLink (l);
+			en.Link = l;
+			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE,new Packet (0, 1));
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			nn.ProcessEvent (s, m);
+			Assert.AreEqual (1, l.PacketsCarried);
+			Assert.AreEqual (0, l.PacketsDropped);
+			m.Time++;
+			l.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND), m);
+			MFF_NPRG031.Event e = m.K.First ();
+			Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
+			Assert.AreEqual (2, e.when);
+			Assert.AreEqual (en, e.who);
 		}
-
+		[Test()]
 		public void ServerNodeProcessEvent(){
+			ServerNode sn = new ServerNode ("SN1", 1);
+			EndNode en = new EndNode ("EN1", 0);
+			Link l = new Link ("L1", 1, sn, en);
+			sn.Link = l;
+			en.Link = l;
+			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, new Packet (0, 1));
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			sn.ProcessEvent (s, m);
+			Assert.AreEqual (1, l.PacketsCarried);
+			Assert.AreEqual(0,l.PacketsDropped);
+			m.Time++;
+			l.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND), m);
+			MFF_NPRG031.Event e = m.K.First ();
+			Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
+			Assert.AreEqual (2, e.when);
+			Assert.AreEqual (en, e.who);
 		}
 
+		[Test()]
 		public void CreateLinksFromNetworkModel(){
+			NetworkModel nm = new NetworkModel (4);
+			nm.SetNodeType (0,NetworkModel.END_NODE);
+			nm.SetNodeType (1,NetworkModel.NETWORK_NODE);
+			nm.SetNodeType (2,NetworkModel.SERVER_NODE);
+			nm.SetNodeType (3,NetworkModel.END_NODE);
+			nm.SetConnected (0, 1, 3);
+			nm.SetConnected (2, 1, 8);
+			nm.SetConnected (3, 1, 1);
+			Node[] nodes = createNodes (nm);
+			LinkedList<Link> links = createLinks (nm,nodes);
+			Assert.AreEqual (nodes [1], links.First.Value.GetPartner (nodes [0]));
+			Assert.AreEqual (3, links.First.Value.Capacity);
+			Assert.AreEqual (nodes [1], links.First.Next.Value.GetPartner (nodes [2]));
+			Assert.AreEqual (8, links.First.Next.Value.Capacity);
+			Assert.AreEqual (nodes [1], links.Last.Value.GetPartner (nodes [3]));
+			Assert.AreEqual (1, links.Last.Value.Capacity);
 		}
 
-		private void createLinks(NetworkModel network_model){
+		private LinkedList<Link> createLinks(NetworkModel network_model,Node[] nodes){
 			LinkedList<Link> links = new LinkedList<Link> ();
-			Node[] nodes=new Node[network_model.NodeCount];
+			//Node[] nodes=new Node[network_model.NodeCount];
 			if ((network_model != null) && (nodes != null) && (nodes.Length == network_model.NodeCount)) {
 				for (int i = 0; i < network_model.NodeCount; i++) {
 					Node x = nodes [i];
@@ -237,6 +375,7 @@ namespace NetTrafficSimulator
 						j++;
 					}
 				}
+				return links;
 			} else
 				throw new InvalidOperationException ("[SimulationController.createLinks] Network model null or nodes array null or length of nodes array don't match " +
 				                                     "node count in network model");

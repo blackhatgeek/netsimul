@@ -291,7 +291,11 @@ namespace NetTrafficSimulator
 		 * Records results of a server node, if possible
 		 * @param name node name
 		 * @param address node network address
-		 * @param packetsProcessed 
+		 * @param packetsProcessed amount of packets processed
+		 * @param timeWaited amount of time waited
+		 * @param timeIdle percentage of time spent waiting
+		 * @param avgWaitTime average wait time
+		 * @throws ArgumentException Server node counter exceeded amount of server nodes set in constructor
 		 */
 		public void SetNewServerNodeResult(string name,int address,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime){
 			if (serverNodeCount < serverNodeLimit) {
@@ -301,6 +305,15 @@ namespace NetTrafficSimulator
 			} else
 				throw new ArgumentException ("Server node counter exceeded");
 		}
+		/**
+		 * Records results of a network node, if possible
+		 * @param name node name
+		 * @param packetsProcessed amount of packets processed
+		 * @param timeWaited amount of time spend waiting for incomming packet
+		 * @param timeIdle percentage of time spent waiting
+		 * @param avgWaitTime average wait time
+		 * @throws ArgumentException Network node counter exceeded amount of network nodes set in constructor
+		 */
 		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime){
 			if (networkNodeCount < networkNodeLimit) {
 				networkNodes [networkNodeCount] = name;
@@ -309,6 +322,17 @@ namespace NetTrafficSimulator
 			} else
 				throw new ArgumentException ("Network node counter exceeded");
 		}
+		/**
+		 * Records results of a link, if possible
+		 * @param name
+		 * @param packetsCarried
+		 * @param packetsDropped
+		 * @param dropPerct
+		 * @param activeTime
+		 * @param passiveTime
+		 * @param idleTime
+		 * @throws ArgumentException
+		 */
 		public void SetNewLinkResult(string name,int packetsCarried, int packetsDropped, decimal dropPerct, int activeTime, int passiveTime, decimal idleTime){
 			if (linkCount < linkLimit) {
 				links [linkCount] = name;

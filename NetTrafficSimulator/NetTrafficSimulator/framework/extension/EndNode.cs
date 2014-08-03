@@ -109,7 +109,7 @@ namespace NetTrafficSimulator
 		 * Amount of time spend waiting
 		 * sum of wait_time() provided values counted in ProcessEvent
 		 */
-		public int TimeWait{
+		public int TimeWaited{
 			get{
 				return time_wait;
 			}

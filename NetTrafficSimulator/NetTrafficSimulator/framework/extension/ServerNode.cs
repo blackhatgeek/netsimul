@@ -19,6 +19,9 @@ namespace NetTrafficSimulator
 			this.process = 0;
 		}
 
+		/*
+		 * Link connecting the ServerNode to the rest of the network
+		 */
 		public Link Link{
 			get{
 				return this.link;
@@ -27,6 +30,9 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/*
+		 * Address of the ServerNode
+		 */
 		public int Address{
 			get{
 				return this.address;
@@ -50,7 +56,7 @@ namespace NetTrafficSimulator
 		 * @return Packet from this node to source
 		 */
 		private Packet generateResponse(Packet p){
-			return new Packet (this, p.Source);
+			return new Packet (this.Address, p.Source);
 		}
 
 		/**
@@ -70,7 +76,7 @@ namespace NetTrafficSimulator
 		 */
 		private void sendResponse(Packet p,int time){
 			if (link != null) {
-				if (p.Source == this)
+				if (p.Source == this.Address)
 					this.link.Carry (p, this, this.link.GetPartner (this));
 				else
 					throw new ArgumentException ("[Node " + Name + "] Odchozi packet nepochazi z tohoto node");

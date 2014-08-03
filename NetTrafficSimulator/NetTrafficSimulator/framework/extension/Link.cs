@@ -54,6 +54,12 @@ namespace NetTrafficSimulator
 		private bool active;
 		private string name;
 
+		public int Capacity{
+			get{
+				return this.capacity;
+			}
+		}
+
 		/**
 		 * Creates a new link between two nodes with given capacity which specifies how many data the link will be able to deliver per time unit
 		 * @param capacity	how many data a link can deliver per time unit
@@ -74,7 +80,7 @@ namespace NetTrafficSimulator
 			this.queue = new DataEnvelope[capacity];
 			this.a = a;
 			this.b = b;
-			this.active = (a != null) && (b != null);
+			this.active = true;
 			this.last_process = 0;
 			this.active_time = 0;
 			this.inactive_time = 0;
@@ -97,6 +103,9 @@ namespace NetTrafficSimulator
 		public bool Active{
 			get{
 				return this.active;
+			}
+			set{
+				this.active = value;
 			}
 		}
 

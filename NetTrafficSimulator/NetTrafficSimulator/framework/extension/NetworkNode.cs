@@ -106,7 +106,8 @@ namespace NetTrafficSimulator
 		 * @param model the Model
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
-			l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);
+			l.Carry (p, this, l.GetPartner (this));
+			//l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);
 		}
 
 		//results
