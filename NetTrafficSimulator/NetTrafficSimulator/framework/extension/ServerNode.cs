@@ -39,13 +39,28 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * On RECEIVE schedule sending of generated response after waiting for generated delay time
+		 * On SEND passes generated packet to link, if possible
+		 * @throws ArgumentException Provided packet's source is not this node on SEND or state is invalid
+		 * @throws InvalidOperationException link not connected on SEND
+		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			if (state.Actual == MFF_NPRG031.State.state.RECEIVE) {
 				int t = wait_time ();
 				this.time_waited += t;
 				this.process++;
-				sendResponse (generateResponse (state.Data), model.Time+t);
+				sendResponse (generateResponse (state.Data), model.Time + t,model);
+			} else if (state.Actual == MFF_NPRG031.State.state.SEND) {
+				if (link != null) {
+					if (state.Data.Source == this.Address)
+						this.link.Carry (state.Data, this, this.link.GetPartner (this));
+					else
+						throw new ArgumentException ("[Node " + Name + "] Odchozi packet nepochazi z tohoto node");
+				}
+				else
+					throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
 			}
 			else
 				throw new ArgumentException ("[ServerNode "+Name+"] Neplatny stav: "+state);
@@ -71,18 +86,9 @@ namespace NetTrafficSimulator
 		 * Send generated response at given time
 		 * @param p Generated new packet
 		 * @param time When to send
-		 * @throws ArgumentException Provided packet's source is not this node
-		 * @throws InvalidOperationException link not connected
 		 */
-		private void sendResponse(Packet p,int time){
-			if (link != null) {
-				if (p.Source == this.Address)
-					this.link.Carry (p, this, this.link.GetPartner (this));
-				else
-					throw new ArgumentException ("[Node " + Name + "] Odchozi packet nepochazi z tohoto node");
-			}
-			else
-				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
+		private void sendResponse(Packet p,int time,MFF_NPRG031.Model m){
+			this.Schedule (m.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), time);
 		}
 
 		/**

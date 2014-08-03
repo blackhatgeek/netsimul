@@ -91,6 +91,9 @@
     <Compile Include="misc\INamable.cs" />
     <Compile Include="misc\IAddressable.cs" />
     <Compile Include="model\ResultModel.cs" />
+    <Compile Include="model\ResultModelTest.cs" />
+    <Compile Include="controller\XMLIO\Storer.cs" />
+    <Compile Include="controller\XMLIO\Loader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -6,6 +6,7 @@ namespace NetTrafficSimulator
 	public class NetworkNode:Node
 	{
 		Link[] interfaces;
+		Dictionary<Packet,Link> schedule;
 		int[] interface_use_count;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process;
 		int delay;
@@ -27,6 +28,7 @@ namespace NetTrafficSimulator
 				this.delay = 1;
 				this.processed = 0;
 				this.time_wait = 0;
+				this.schedule = new Dictionary<Packet, Link> ();
 				this.last_process = 0;
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
@@ -73,6 +75,14 @@ namespace NetTrafficSimulator
 				processed++;
 				scheduleForward (state.Data, selectDestination (state.Data), model);
 				break;
+			case MFF_NPRG031.State.state.SEND:
+				Packet p = state.Data;
+				Link l;
+				if (schedule.TryGetValue (p, out l))
+					l.Carry (p, this, l.GetPartner (this));
+				else
+					throw new ArgumentException ("Packet was not scheduled for sending - missing record for link to use");
+				break;
 			default:
 				throw new ArgumentException ("[NetworkNode "+Name+"] Neplatny stav: "+state);
 			}
@@ -106,7 +116,8 @@ namespace NetTrafficSimulator
 		 * @param model the Model
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
-			l.Carry (p, this, l.GetPartner (this));
+			this.schedule.Add (p, l);
+			this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), model.Time + delay);
 			//l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);
 		}
 
