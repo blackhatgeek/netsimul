@@ -7,6 +7,7 @@ namespace NetTrafficSimulator
 	{
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
+		Dictionary<int,int> route;
 		int[] interface_use_count;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process;
 		int delay;
@@ -29,6 +30,7 @@ namespace NetTrafficSimulator
 				this.processed = 0;
 				this.time_wait = 0;
 				this.schedule = new Dictionary<Packet, Link> ();
+				this.route=new Dictionary<int,int>();
 				this.last_process = 0;
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
@@ -53,9 +55,13 @@ namespace NetTrafficSimulator
 			if (interfaces_used < interfaces_count) {
 				if (l != null) {
 					try{
-						l.GetPartner(this);
+						Node n=l.GetPartner(this);
 						interfaces [interfaces_used] = l;
 						interfaces_used++;
+						if(n is EndpointNode){
+							Console.WriteLine(n.Name+" is EndpointNode, adding routing to "+(n as EndpointNode).Address+" via "+interfaces_used);
+							route.Add((n as EndpointNode).Address,interfaces_used);
+						}
 					}catch(ArgumentException){
 						throw new ArgumentException ("Link not connected to this NetworkNode");
 					}
@@ -68,19 +74,23 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
+			Console.WriteLine ("{NN] process event @ time " + model.Time);
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.RECEIVE:
 				this.time_wait += model.Time - last_process;
 				this.last_process = model.Time;
 				processed++;
+				if (state.Data == null)
+					throw new ArgumentNullException ("Packet null");
 				scheduleForward (state.Data, selectDestination (state.Data), model);
 				break;
 			case MFF_NPRG031.State.state.SEND:
 				Packet p = state.Data;
 				Link l;
-				if (schedule.TryGetValue (p, out l))
+				if (schedule.TryGetValue (p, out l)) {
+					Console.WriteLine ("Selected link: " + l.Name);
 					l.Carry (p, this, l.GetPartner (this));
-				else
+				}else
 					throw new ArgumentException ("Packet was not scheduled for sending - missing record for link to use");
 				break;
 			default:
@@ -96,14 +106,26 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * If there's a link connected, always use the first interface
+		 * If there's a link connected, forward a packet:
+		 * If destination is an EndpointNode directly connected to the NetworkNode, use that connection
+		 * Otherwise use the first interface as default route
 		 * @param p Packet to route
 		 * @return which way to go
+		 * @throws InvalidOperationException No link connected
 		 */
 		private Link selectDestination(Packet p){
+			Console.WriteLine ("Selecting destination");
 			if (interfaces_used > 0) {
-				interface_use_count [0]++;
-				return interfaces [0];
+				int l;
+				//if we are delivering to endpoint node, deliver directly
+				//otherwise use "default route"
+				if (route.TryGetValue (p.Destination, out l)) {
+					interface_use_count [l-1]++;
+					return interfaces [l-1];
+				} else {
+					interface_use_count [0]++;
+					return interfaces [0];
+				}
 			}
 			else
 				throw new InvalidOperationException ("No link connected");

@@ -399,6 +399,49 @@ namespace NetTrafficSimulator
 				                                     "node count in network model");
 		}
 
+		[Test()]
+		public void NetworkNodeEndpointDelivery(){
+			EndNode en1 = new EndNode ("EN1", 1);
+			EndNode en2 = new EndNode ("EN2", 2);
+			ServerNode sn1 = new ServerNode ("SN1", 3);
+			ServerNode sn2 = new ServerNode ("SN2", 4);
+			NetworkNode nn = new NetworkNode ("NN0", 4);
+			Link l1 = new Link ("L1", 1, en1, nn);
+			Link l2 = new Link ("L2", 1, en2, nn);
+			Link l3 = new Link ("L3", 1, sn1, nn);
+			Link l4 = new Link ("L4", 1, sn2, nn);
+			en1.Link = l1;
+			en2.Link = l2;
+			sn1.Link = l3;
+			sn2.Link = l4;
+			nn.ConnectLink (l1);
+			nn.ConnectLink (l2);
+			nn.ConnectLink (l3);
+			nn.ConnectLink (l4);
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (4);
+			//EN1 -> NN
+			en1.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, new Packet (1, 3,1)), m);
+			Assert.AreEqual (1, l1.PacketsCarried);
+			Assert.AreEqual (0, l1.PacketsDropped);
+			l1.ProcessEvent(new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND),m);
+			MFF_NPRG031.Event e = m.K.First ();
+			Assert.AreEqual(nn,e.who);
+			m.Time = e.when;
+			//dorazilo na NN
+			nn.ProcessEvent (e.what, m);
+			Assert.AreEqual (1, nn.PacketsProcessed);
+			e = m.K.First ();
+			Assert.AreEqual (l1, e.who);
+			e = m.K.First ();
+			Assert.AreEqual (nn, e.who);
+			m.Time = e.when;
+			Console.WriteLine ("Time: " + m.Time);
+			//forward
+			nn.ProcessEvent (e.what, m);
+			Assert.AreEqual (1, l3.PacketsCarried);
+			Assert.AreEqual (0, l3.PacketsDropped);
+		}
+
 		public void InitializeProcesses(){
 		}
 

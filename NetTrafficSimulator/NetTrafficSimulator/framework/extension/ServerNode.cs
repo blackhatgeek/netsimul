@@ -3,18 +3,16 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class ServerNode:Node,IAddressable
+	public class ServerNode:EndpointNode
 	{
-		private readonly int address;
 		private int time_waited,process;
 		private Link link;
 		/**
 		 * Creates a ServerNode with given name and address
 		 */
-		public ServerNode (String name,int address):base(name)
+		public ServerNode (String name,int address):base(name,address)
 		{
 			this.link=null;
-			this.address = address;
 			this.time_waited = 0;
 			this.process = 0;
 		}
@@ -27,15 +25,6 @@ namespace NetTrafficSimulator
 				return this.link;
 			}set{
 				this.link = value;
-			}
-		}
-
-		/*
-		 * Address of the ServerNode
-		 */
-		public int Address{
-			get{
-				return this.address;
 			}
 		}
 

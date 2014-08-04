@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
-	public class EndNode:Node,IAddressable
+	public class EndNode:EndpointNode
 	{
-		private readonly int address;
 		private int sent, received,time_wait;
 		private Link link;
 		private Random r;
@@ -13,10 +12,9 @@ namespace NetTrafficSimulator
 		/**
 		 * Creates an EndNode with given name and address
 		 */
-		public EndNode(String n,int address):base(n){
+		public EndNode(String n,int address):base(n,address){
 			this.sent = 0;
 			this.received = 0;
-			this.address = address;
 			this.r = new Random ();
 			this.time_wait = 0;
 		}
@@ -32,20 +30,14 @@ namespace NetTrafficSimulator
 			}
 		}
 
-		/**
-		 * Network address of the node
-		 */
-		public int Address{
-			get{
-				return this.address;
-			}
-		}
-
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.SEND:
-				send ();
+				if (state.Data != null)
+					send (state.Data.Destination);
+				else
+					send (r.Next ());
 				int t = wait_time ();
 				time_wait += t;
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
@@ -70,9 +62,10 @@ namespace NetTrafficSimulator
 		 * Attept to post a new packet to the link, if such exist
 		 * @throws InvalidOperationException if link is not connected
 		 */
-		private void send(){
+		private void send(int destination){
+			//must send to existing node!!
 			if (link != null) {
-				this.link.Carry (new Packet (address,r.Next(),0), this, this.link.GetPartner (this));
+				this.link.Carry (new Packet (Address,destination,0), this, this.link.GetPartner (this));
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
@@ -80,10 +73,10 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Generates a wait time after sending
-		 * @return 1
+		 * @return 5
 		 */
 		private int wait_time(){
-			return 1;
+			return 5;
 		}
 
 		//results

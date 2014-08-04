@@ -138,6 +138,8 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
+			if (state.Data != null)
+				throw new ArgumentException ("Link state should not bear data");
 			if (active)
 				active_time += model.Time - last_process;//kolik casu uplynulo od posledniho process - celou dobu byl link active
 			else
@@ -174,9 +176,10 @@ namespace NetTrafficSimulator
 		 * @param model the Model
 		 */
 		private void send_queue(MFF_NPRG031.Model model){
-			foreach (DataEnvelope de in queue)
+			foreach (DataEnvelope de in queue) {
 				//de.Destination.Receive (de.Data);
-				de.Destination.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE,de.Data), model.Time + 1);
+				de.Destination.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, de.Data), model.Time + 1);
+			}
 			this.next_queue_pos = 0;
 		}
 
