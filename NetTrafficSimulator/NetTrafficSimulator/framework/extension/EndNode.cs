@@ -72,7 +72,7 @@ namespace NetTrafficSimulator
 		 */
 		private void send(){
 			if (link != null) {
-				this.link.Carry (new Packet (address,r.Next()), this, this.link.GetPartner (this));
+				this.link.Carry (new Packet (address,r.Next(),0), this, this.link.GetPartner (this));
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");

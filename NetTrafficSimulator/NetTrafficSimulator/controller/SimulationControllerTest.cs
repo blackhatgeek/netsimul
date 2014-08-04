@@ -268,7 +268,7 @@ namespace NetTrafficSimulator
 			EndNode en1 = new EndNode ("EN0", 0);
 			EndNode en2 = new EndNode ("EN1", 1);
 			Link l = new Link ("L0", 1, en1, en2);
-			l.Carry (new Packet (0, 1), en1, en2);
+			l.Carry (new Packet (0, 1,0), en1, en2);
 			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
 			l.Schedule (m.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND), 0);
 			MFF_NPRG031.Event e = m.K.First ();
@@ -290,7 +290,7 @@ namespace NetTrafficSimulator
 			Link l = new Link ("L0", 1, nn, en);
 			nn.ConnectLink (l);
 			en.Link = l;
-			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE,new Packet (0, 1));
+			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE,new Packet (0, 1,0));
 			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
 			nn.ProcessEvent (s, m);
 			MFF_NPRG031.Event e = m.K.First ();
@@ -317,7 +317,7 @@ namespace NetTrafficSimulator
 			Link l = new Link ("L1", 1, sn, en);
 			sn.Link = l;
 			en.Link = l;
-			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, new Packet (0, 1));
+			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, new Packet (0, 1,0));
 			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
 			sn.ProcessEvent (s, m);
 
@@ -399,10 +399,10 @@ namespace NetTrafficSimulator
 				                                     "node count in network model");
 		}
 
-		public void CreateFrameworkModel(){
+		public void InitializeProcesses(){
 		}
 
-		public void InitializeProcesses(){
+		public void PopulateResultModel(){
 		}
 	}
 }

@@ -71,7 +71,7 @@ namespace NetTrafficSimulator
 		 * @return Packet from this node to source
 		 */
 		private Packet generateResponse(Packet p){
-			return new Packet (this.Address, p.Source);
+			return new Packet (this.Address, p.Source,0);
 		}
 
 		/**
