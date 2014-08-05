@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Server node is receiver of data sent by EndNode
+	 * When data arrives it sends back a response packet of same size
+	 */
 	public class ServerNode:EndpointNode
 	{
 		private int time_waited,process,malreceived;
@@ -64,7 +68,7 @@ namespace NetTrafficSimulator
 		 * @return Packet from this node to source
 		 */
 		private Packet generateResponse(Packet p){
-			return new Packet (this.Address, p.Source,0);
+			return new Packet (this.Address, p.Source,p.Size);
 		}
 
 		/**

@@ -2,6 +2,9 @@ using System;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Abstract node
+	 */
 	public abstract class Node:MFF_NPRG031.Process,INamable
 	{
 		private string name;

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace MFF_NPRG031
 {
+	/**
+	 * Calendar holds information about Events
+	 */
 	public class Calendar
 	{
 		List<Event> calendar = new List<Event>();

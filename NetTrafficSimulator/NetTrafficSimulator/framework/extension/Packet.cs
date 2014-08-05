@@ -2,6 +2,9 @@ using System;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Information about data on the network
+	 */
 	public class Packet
 	{
 		private readonly int source, destination;

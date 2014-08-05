@@ -2,6 +2,9 @@ using System;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Abstract EndpointNode. EndpointNode is node where packets are generated or where packets are to flow
+	 */
 	public abstract class EndpointNode:Node,IAddressable
 	{
 		private readonly int address;

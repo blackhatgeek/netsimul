@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * NetworkNode is routing packets through the network
+	 */
 	public class NetworkNode:Node
 	{
 		Link[] interfaces;

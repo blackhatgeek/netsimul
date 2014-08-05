@@ -2,6 +2,9 @@ using System;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Addressable objects have Address property
+	 */
 	public interface IAddressable
 	{
 		/**

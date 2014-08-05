@@ -2,6 +2,10 @@ using System;
 
 namespace MFF_NPRG031
 {
+	/**
+	 * Framework model holds Calendar and Time
+	 * The simulation is started using it's Simulate() method
+	 */
 	public class Model
 	{
 		private NetTrafficSimulator.ServerNode[] servers;

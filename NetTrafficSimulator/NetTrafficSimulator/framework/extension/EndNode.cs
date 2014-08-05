@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * EndNode generates requests to ServerNodes
+	 */
 	public class EndNode:EndpointNode
 	{
 		private int sent, received,malreceived,time_wait,server_node_count;

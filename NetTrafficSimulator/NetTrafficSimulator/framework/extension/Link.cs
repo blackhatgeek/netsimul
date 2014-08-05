@@ -3,10 +3,16 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Connector between Nodes
+	 */
 	public class Link:MFF_NPRG031.Process,INamable
 	{
 		int dropped,active_time,inactive_time,carried;
 		int last_process;
+		/**
+		 * Information container about data, especially direction of flow as source and target nodes are distinguished
+		 */
 		private class DataEnvelope{
 			private Packet p;
 			private Node source,destination;

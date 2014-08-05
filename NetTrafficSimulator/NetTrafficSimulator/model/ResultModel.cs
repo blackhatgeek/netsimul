@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Result model holds results of simulation
+	 */
 	public class ResultModel
 	{
 		private class EndNodeResult
