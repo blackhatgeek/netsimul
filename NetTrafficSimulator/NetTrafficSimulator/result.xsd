@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.0"
+targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0">
+	<xs:element name="simulation">
+		<xs:complexType>
+			<xs:choice maxOccurs="1" minOccurs="1">
+				<xs:element name="result">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="endNodes" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:choice minOccurs="1" maxOccurs="unbounded">
+										<xs:element name="endNode" type="ns:tEndNode" />
+									</xs:choice>
+								<xs:complexType>
+							</xs:element>
+							<xs:element name="serverNodes" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:choice minOccurs="1" maxOccurs="unbounded">
+										<xs:element name="serverNode" type="ns:tServerNode" />
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="networkNodes" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:choice minOccurs="1" maxOccurs="unbounded">
+										<xs:element name="networkNode" type="ns:tNetworkNode" />
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="links" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:choice minOccurs="1" maxOccurs="unbounded">
+										<xs:element name="link" type="ns:tLink" />
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="version" use="required" fixed="0.00"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="tEndNode">
+		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="packetsSent" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="packetsReceived" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="packetsMalreceived" type="xs:timeWaited" use="required" />
+		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
+		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />
+		<xs:attribute name="averagePacketSize" type="xs:decimal" use="required" />
+	</xs:complexType>
+	<xs:complexType name="tServerNode">
+		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="packetsProcessed" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="packetsMalreceived" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="timeWaited" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="percentageTimeIdle" type="xs:decimal" use="required" />
+		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />
+	</xs:complexType>
+	<xs:complexType name="tNetworkNode">
+		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="packetsProcessed" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="timeWaited" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
+		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />
+	</xs:complexType>
+	<xs:complexType name="tLink">
+		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="packetsCarried" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="packetsDropped" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="dropPercentage" type="xs:decimal" use="required" />
+		<xs:attribute name="activeTime" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="passiveTime" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
+	</xs:complexType>
+</xs:schema>
+

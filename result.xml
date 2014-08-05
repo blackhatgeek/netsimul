@@ -1,0 +1,16 @@
+<simulation version="0.00" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0">
+	<result>
+		<endNodes>
+			<endNode name="" address="" packetsSent="" packetsReceived="" packetsMalreceived="" timeWaitted="" percentTimeIdle="" averageWaitTime="" averagePacketSize=""/>
+		</endNodes>
+		<serverNodes>
+			<serverNode name="" address="" packetsProcessed="" packetsMalreceived="" timeWaited="" percentTimeIdle="" averageWaitTime="" />
+		</serverNodes>
+		<networkNodes>
+			<networkNode name="" packetsProcessed="" timeWaited="" percentTimeIdle="" averageWaitTime="" />
+		</networkNodes>
+		<links>
+			<link name="" packetsCarried="" packetsDropped="" dropPercentage="" activeTime="" passiveTime="" percentTimeIdle="" />
+		</links>
+	</result>
+</simulation>
