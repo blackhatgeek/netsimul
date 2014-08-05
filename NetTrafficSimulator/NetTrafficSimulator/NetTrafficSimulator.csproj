@@ -59,6 +59,7 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="nunit.framework" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -95,6 +96,7 @@
     <Compile Include="controller\XMLIO\Storer.cs" />
     <Compile Include="controller\XMLIO\Loader.cs" />
     <Compile Include="framework\extension\EndpointNode.cs" />
+    <Compile Include="controller\XMLIO\XMLIO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

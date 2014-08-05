@@ -3,7 +3,7 @@
 		<nodes>
 			<server name="s1" address="1"/>
 			<end name="e1" address="2"/>
-			<network name="n1" ports="2"/>
+			<network name="n1"/>
 		</nodes>
 		<links>
 			<link name="l1" node1="s1" node2="n1" capacity="5" />

@@ -70,7 +70,7 @@ namespace NetTrafficSimulator
 			for (int i=0; i<network_model.NodeCount; i++) {
 				switch (network_model.GetNodeType (i)) {
 				case NetworkModel.END_NODE:
-					EndNode en = new EndNode ("End node " + endNodeCounter, addressCounter);
+					EndNode en = new EndNode (network_model.GetNodeName(i), network_model.GetNodeAddr(i));
 					nodes [nodeCounter] = en;
 					endNodeCounter++;
 					addressCounter++;
@@ -78,13 +78,13 @@ namespace NetTrafficSimulator
 					break;
 				case NetworkModel.NETWORK_NODE:
 					int interfaces = network_model.GetConnectionCount (i);
-					NetworkNode nn = new NetworkNode ("Network node " + networkNodeCounter, interfaces);
+					NetworkNode nn = new NetworkNode (network_model.GetNodeName(i), interfaces);
 					nodes [nodeCounter] = nn;
 					networkNodeCounter++;
 					nodeCounter++;
 					break;
 				case NetworkModel.SERVER_NODE:
-					ServerNode sn = new ServerNode ("Server node " + serverNodeCounter, addressCounter);
+					ServerNode sn = new ServerNode (network_model.GetNodeName(i), network_model.GetNodeAddr(i));
 					nodes [nodeCounter] = sn;
 					serverNodeCounter++;
 					servers [serverNodeCounter] = sn;

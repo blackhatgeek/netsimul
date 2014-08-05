@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
@@ -61,6 +62,18 @@ namespace NetTrafficSimulator
 		 */
 		private int[] types;
 		/**
+		 * addr[x] is address of node x
+		 */
+		private int[] addr;
+		/**
+		 * n_name[x] is name of node x
+		 */
+		private Dictionary<string,int> n_name;
+		/**
+		 * l_name[x] is name of link x
+		 */
+		private string[] l_name;
+		/**
 		 * Server node count
 		 */
 		private int SNCount;
@@ -77,6 +90,7 @@ namespace NetTrafficSimulator
 				this.links = new int[node_count, node_count];
 				this.types = new int[node_count];
 				this.link_count=new int[node_count];
+				this.addr=new int[node_count];
 
 				for (int i=0; i<node_count; i++) {
 					for (int j=0; j<node_count; j++) {
@@ -326,6 +340,45 @@ namespace NetTrafficSimulator
 					}
 				return valid;
 			}
+		}
+
+		public void SetNodeName(int node,string name){
+			if ((node >= 0) && (node < node_count))
+				this.n_name.Add (name, node);
+			else
+				throw new ArgumentOutOfRangeException ("[NetworkModel.SetNodeName(" + node + "," + name + ")] " + ILLEGAL_PARAMETER);
+		}
+
+		public string GetNodeName(int node){
+			foreach (string key in n_name.Keys) {
+				int num=-255;
+				n_name.TryGetValue (key, out num);
+				if (num == node)
+					return key;
+			}
+			throw new ArgumentException ("Not found");
+		}
+
+		public int GetNodeNum(string node){
+			int num;
+			if (!n_name.TryGetValue (node, out num))
+				throw new ArgumentException ("Node not found");
+			else
+				return num;
+		}
+
+		public void SetNodeAddr(int node,int addr){
+			if ((node >= 0) && (node < node_count)&&(addr>=0)&&((types[node]==END_NODE)||(types[node]==SERVER_NODE)))
+				this.addr[node]=addr;
+			else
+				throw new ArgumentOutOfRangeException ("[NetworkModel.SetNodeAddr(" + node + "," + addr + ")] " + ILLEGAL_PARAMETER);
+		}
+
+		public int GetNodeAddr(int node){
+			if ((node >= 0) && (node < node_count)&&((types[node]==END_NODE)||(types[node]==SERVER_NODE)))
+				return this.addr [node];
+			else
+				throw new ArgumentOutOfRangeException ("[NetworkModel.GetNodeAddr(" + node+")] " + ILLEGAL_PARAMETER);
 		}
 	}
 }

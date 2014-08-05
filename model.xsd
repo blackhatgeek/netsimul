@@ -30,7 +30,6 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 	</xs:complexType>
 	<xs:complexType name="tNetwork">
 		<xs:attribute name="name" type="xs:ID"/>
-		<xs:attribute name="ports" type="xs:nonNegativeInteger"/>
 	</xs:complexType>
 	<xs:complexType name="tLink">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
