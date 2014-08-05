@@ -147,7 +147,10 @@ namespace NetTrafficSimulator
 		 */
 		private void createModel(){
 		if (simulation_model != null) {
-			framework_model = new MFF_NPRG031.Model (simulation_model.Time,servers);
+				if (servers != null) {
+					framework_model = new MFF_NPRG031.Model (simulation_model.Time, servers);
+				}else
+					throw new InvalidOperationException ("Servers array empty");
 		} else
 			throw new InvalidOperationException ("[SimulationController.createModel] SimulationModel null");
 		}
@@ -174,10 +177,10 @@ namespace NetTrafficSimulator
 			foreach (Node n in nodes) {
 				if (n is EndNode) {
 					EndNode en = n as EndNode;
-					result_model.SetNewEndNodeResult (en.Name, en.Address, en.PacketsSent, en.PacketsReceived, en.TimeWaited, en.GetPercentageTimeIdle (framework_model), en.AverageWaitTime);
+					result_model.SetNewEndNodeResult (en.Name, en.Address, en.PacketsSent, en.PacketsReceived, en.PacketsMalreceived, en.TimeWaited, en.GetPercentageTimeIdle (framework_model), en.AverageWaitTime);
 				} else if (n is ServerNode) {
 					ServerNode sn = n as ServerNode;
-					result_model.SetNewServerNodeResult (sn.Name, sn.Address, sn.PacketsProcessed, sn.TimeWaited, sn.GetPercentageTimeIdle (framework_model), sn.AverageWaitTime);
+					result_model.SetNewServerNodeResult (sn.Name, sn.Address, sn.PacketsProcessed,sn.PacketsMalreceived, sn.TimeWaited, sn.GetPercentageTimeIdle (framework_model), sn.AverageWaitTime);
 				} else if (n is NetworkNode) {
 					NetworkNode nn = n as NetworkNode;
 					result_model.SetNewNetworkNodeResult (nn.Name,nn.PacketsProcessed,nn.TimeWaited,nn.GetPercentageTimeIdle(framework_model),nn.AverageWaitTime);

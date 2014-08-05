@@ -12,7 +12,7 @@ namespace NetTrafficSimulator
 		 * @param source address of the source node
 		 * @param destination address of the destination node
 		 */
-		public Packet (int source,int destination,int size)
+		public Packet (int source,int destination,decimal size)
 		{
 			this.source = source;
 			this.destination = destination;

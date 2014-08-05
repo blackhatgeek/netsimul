@@ -5,19 +5,19 @@ namespace NetTrafficSimulator
 {
 	public class EndNode:EndpointNode
 	{
-		private int sent, received,time_wait,server_node_count;
+		private int sent, received,malreceived,time_wait,server_node_count;
 		private Link link;
 		private Random r;
 
 		/**
 		 * Creates an EndNode with given name and address
 		 */
-		public EndNode(String n,int address,int SNC):base(n,address){
+		public EndNode(String n,int address):base(n,address){
 			this.sent = 0;
 			this.received = 0;
+			this.malreceived = 0;
 			this.r = new Random ();
 			this.time_wait = 0;
-			this.server_node_count = -1;
 		}
 		
 		/**
@@ -33,15 +33,16 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
+			server_node_count = model.Servers.GetLength (0);
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.SEND:
 				if (state.Data != null)
-					send (state.Data.Destination);
+					send (state.Data.Destination,state.Data.Size);
 				else if (server_node_count > 0)
-					send (selectDestination (model, server_node_count));
+					send (selectDestination (model, server_node_count),selectDataSize());
 				//else nejsou k dispozici servery
 				else
-					send (r.Next ());
+					send (r.Next (),selectDataSize());
 				int t = wait_time ();
 				time_wait += t;
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
@@ -50,7 +51,10 @@ namespace NetTrafficSimulator
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time ());
 				break;*/
 			case MFF_NPRG031.State.state.RECEIVE:
-				received++;
+				if (state.Data.Destination == this.Address)
+					received++;
+				else
+					malreceived++;
 				break;
 			default:
 				throw new ArgumentException ("[EndNode "+Name+"] Neplatny stav: "+state);
@@ -64,12 +68,14 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Attept to post a new packet to the link, if such exist
+		 * @param destination where to send packet
+		 * @param size what size of data to send
 		 * @throws InvalidOperationException if link is not connected
 		 */
-		private void send(int destination,MFF_NPRG031.Model m){
+		private void send(int destination,decimal size){
 			//must send to existing node!!
 			if (link != null) {
-				this.link.Carry (new Packet (Address,destination,0), this, this.link.GetPartner (this));
+				this.link.Carry (new Packet (Address,destination,size), this, this.link.GetPartner (this));
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
@@ -83,6 +89,14 @@ namespace NetTrafficSimulator
 		 */ 
 		private int selectDestination(MFF_NPRG031.Model m,int SNC){
 			return m.Servers[r.Next (SNC-1)].Address;
+		}
+
+		/**
+		 * Randomly chooses size for new packet
+		 * @return packet size
+		 */
+		private decimal selectDataSize(){
+			return (decimal)(r.Next(20)*r.NextDouble ());
 		}
 
 		/**
@@ -109,6 +123,15 @@ namespace NetTrafficSimulator
 		public int PacketsReceived{
 			get{
 				return received;
+			}
+		}
+
+		/**
+		 * Amount of packets received, where destination was other than EndNode's address
+		 */
+		public int PacketsMalreceived{
+			get{
+				return malreceived;
 			}
 		}
 

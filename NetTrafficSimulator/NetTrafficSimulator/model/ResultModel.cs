@@ -8,14 +8,15 @@ namespace NetTrafficSimulator
 		private class EndNodeResult
 		{
 			string name;
-			int address, packetsSent, packetsReceived, timeWaited;
+			int address, packetsSent, packetsReceived,packetsMalreceived,timeWaited;
 			decimal timeIdle, avgWaitTime;
 
-			public EndNodeResult(string name, int address,int packetsSent, int packetsReceived, int timeWaited, decimal timeIdle, decimal avgWaitTime){
+			public EndNodeResult(string name, int address,int packetsSent, int packetsReceived, int packetsMalreceived,int timeWaited, decimal timeIdle, decimal avgWaitTime){
 				this.name=name;
 				this.address=address;
 				this.packetsSent=packetsSent;
 				this.packetsReceived=packetsReceived;
+				this.packetsMalreceived=packetsMalreceived;
 				this.timeWaited=timeWaited;
 				this.timeIdle=timeIdle;
 				this.avgWaitTime=avgWaitTime;
@@ -45,6 +46,12 @@ namespace NetTrafficSimulator
 				}
 			}
 
+			public int PacketsMalreceived{
+				get{
+					return packetsMalreceived;
+				}
+			}
+
 			public int TimeWaited{
 				get{
 					return timeWaited;
@@ -67,12 +74,13 @@ namespace NetTrafficSimulator
 		private class ServerNodeResult
 		{
 			string name;
-			int address,packetsProcessed,timeWaited;
+			int address,packetsProcessed,packetsMalreceived,timeWaited;
 			decimal timeIdle,avgWaitTime;
-			public ServerNodeResult(string name,int address,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime){
+			public ServerNodeResult(string name,int address,int packetsProcessed,int packetsMalreceived,int timeWaited,decimal timeIdle,decimal avgWaitTime){
 				this.name=name;
 				this.address=address;
 				this.packetsProcessed=packetsProcessed;
+				this.packetsMalreceived=packetsMalreceived;
 				this.timeWaited=timeWaited;
 				this.timeIdle=timeIdle;
 				this.avgWaitTime=avgWaitTime;
@@ -93,6 +101,12 @@ namespace NetTrafficSimulator
 			public int PacketsProcessed {
 				get {
 					return packetsProcessed;
+				}
+			}
+
+			public int PacketsMalreceived{
+				get{
+					return packetsMalreceived;
 				}
 			}
 
@@ -279,10 +293,10 @@ namespace NetTrafficSimulator
 		 * @param avgWaitTime average wait time
 		 * @throws ArgumentException End node counter exceeded amouunt of end nodes set in constructor
 		 */
-		public void SetNewEndNodeResult(string name,int address,int packetsSent,int packetsReceived,int timeWaited, decimal timeIdle, decimal avgWaitTime){
+		public void SetNewEndNodeResult(string name,int address,int packetsSent,int packetsReceived,int packetsMalreceived,int timeWaited, decimal timeIdle, decimal avgWaitTime){
 			if (endNodeCount < endNodeLimit) {
 				endNodes [endNodeCount] = name;
-				endNodeNames.Add (name, new EndNodeResult (name, address, packetsSent, packetsReceived, timeWaited, timeIdle, avgWaitTime));
+				endNodeNames.Add (name, new EndNodeResult (name, address, packetsSent, packetsReceived, packetsMalreceived, timeWaited, timeIdle, avgWaitTime));
 				endNodeCount++;
 			} else
 				throw new ArgumentException ("End node counter exceeded");
@@ -297,10 +311,10 @@ namespace NetTrafficSimulator
 		 * @param avgWaitTime average wait time
 		 * @throws ArgumentException Server node counter exceeded amount of server nodes set in constructor
 		 */
-		public void SetNewServerNodeResult(string name,int address,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime){
+		public void SetNewServerNodeResult(string name,int address,int packetsProcessed, int packetsMalreceived, int timeWaited,decimal timeIdle,decimal avgWaitTime){
 			if (serverNodeCount < serverNodeLimit) {
 				serverNodes [serverNodeCount] = name;
-				serverNodeNames.Add (name, new ServerNodeResult (name, address, packetsProcessed, timeWaited, timeIdle, avgWaitTime));
+				serverNodeNames.Add (name, new ServerNodeResult (name, address, packetsProcessed, packetsMalreceived, timeWaited, timeIdle, avgWaitTime));
 				serverNodeCount++;
 			} else
 				throw new ArgumentException ("Server node counter exceeded");
@@ -413,7 +427,20 @@ namespace NetTrafficSimulator
 				return enr.PacketsReceived;
 			else
 				throw new ArgumentException ("End node not found");
+		}
 
+		/**
+		 * If there exists an EndNode with the name provided return amount of packets received by the EndNode, where destination address was not the EndNode's address
+		 * @param name EndNode name
+		 * @return amount of packets incorrectly received by the node
+		 * @throws ArgumentException Node not found
+		 */
+		public int GetEndNodePacketsMalreceived(string name){
+			EndNodeResult enr;
+			if (endNodeNames.TryGetValue (name, out enr))
+				return enr.PacketsMalreceived;
+			else
+				throw new ArgumentException ("Node not found");
 		}
 		/** 
 		 * If there exists an EndNode with the name provided return amount of time the node spent waiting
@@ -478,6 +505,20 @@ namespace NetTrafficSimulator
 			ServerNodeResult snr;
 			if (serverNodeNames.TryGetValue (name, out snr))
 				return snr.PacketsProcessed;
+			else
+				throw new ArgumentException ("Server node not found");
+		}
+
+		/**
+		 * If there exists a ServerNode with the name provided return amount of packets received by the ServerNode where destination address was different than ServerNode's address
+		 * @param name ServerNode name
+		 * @return amount of packets incorrectly received by the ServerNode
+		 * @throws ArgumentException Server node not found
+		 */
+		public int GetServerNodePacketsMalreceived(string name){
+			ServerNodeResult snr;
+			if (serverNodeNames.TryGetValue (name, out snr))
+				return snr.PacketsMalreceived;
 			else
 				throw new ArgumentException ("Server node not found");
 		}

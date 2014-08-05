@@ -5,7 +5,7 @@ namespace NetTrafficSimulator
 {
 	public class ServerNode:EndpointNode
 	{
-		private int time_waited,process;
+		private int time_waited,process,malreceived;
 		private Link link;
 		/**
 		 * Creates a ServerNode with given name and address
@@ -37,10 +37,14 @@ namespace NetTrafficSimulator
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			if (state.Actual == MFF_NPRG031.State.state.RECEIVE) {
-				int t = wait_time ();
-				this.time_waited += t;
-				this.process++;
-				sendResponse (generateResponse (state.Data), model.Time + t,model);
+				if (state.Data.Destination == this.Address) {
+					int t = wait_time ();
+					this.time_waited += t;
+					this.process++;
+					sendResponse (generateResponse (state.Data), model.Time + t, model);
+				} else {
+					malreceived++;
+				}
 			} else if (state.Actual == MFF_NPRG031.State.state.SEND) {
 				if (link != null) {
 					if (state.Data.Source == this.Address)
@@ -121,6 +125,15 @@ namespace NetTrafficSimulator
 		public int PacketsProcessed{
 			get{
 				return process;
+			}
+		}
+
+		/**
+		 * Amount of packets received where destination address was not the ServerNode's destination address
+		 */
+		public int PacketsMalreceived{
+			get{
+				return malreceived;
 			}
 		}
 	}

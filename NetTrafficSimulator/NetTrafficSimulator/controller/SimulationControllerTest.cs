@@ -247,7 +247,8 @@ namespace NetTrafficSimulator
 		[Test()]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void EndNodeSend0(){
-			new EndNode ("EN", 0).ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1,null));
+			new EndNode ("EN", 0).ProcessEvent (
+				new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1,new ServerNode[]{new ServerNode("SN",1)}));
 		}
 
 		[Test()]
@@ -257,7 +258,7 @@ namespace NetTrafficSimulator
 			Link l = new Link ("L0", 1, en0, en1);
 			en0.Link = l;
 			en1.Link = l;
-			en0.ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1,null));
+			en0.ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1,new ServerNode[]{new ServerNode("SN",1)}));
 			Assert.AreEqual (1, l.PacketsCarried);
 			Assert.AreEqual (0, l.PacketsDropped);
 			Assert.AreEqual (1, en0.PacketsSent);
