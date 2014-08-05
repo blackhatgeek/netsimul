@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using System.Xml.Schema;
 using System.IO;
 
 namespace NetTrafficSimulator
@@ -9,15 +10,22 @@ namespace NetTrafficSimulator
 	 */
 	public class Loader
 	{
-		//private FileStream fs;
 		private XmlDocument xd;
+
 		public Loader(string fname){
+			//Set-up validator
+			XmlReaderSettings settings = new XmlReaderSettings ();
+			settings.Schemas.Add ("http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0", "model.xsd");
+			settings.ValidationType = ValidationType.Schema;
+			settings.ValidationEventHandler += new ValidationEventHandler (modelSchemaValidationEventHandler);
+
+			//Load model
 			if(!File.Exists(fname))
 			   throw new IOException("File doesn't exist");
 			FileStream fs = new FileStream (fname, FileMode.Open,FileAccess.Read);
+			XmlReader model = XmlReader.Create (fs, settings);
 			XmlDocument xd = new XmlDocument ();
-			xd.Load (fs);
-			//TODO validate
+			xd.Load (model);
 		}
 
 		public NetworkModel LoadNM(){
@@ -52,12 +60,15 @@ namespace NetTrafficSimulator
 				XmlElement link = nl.Item (i) as XmlElement;
 				if (!link.Name.Equals ("link"))
 					break;
-				//Link name
+				//TODO Link name
 				string n1 = link.Attributes.GetNamedItem ("node1").Value;
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity"));
-				//verifikace hodnot .... validace
-				nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa);
+				//verifikace
+				if (nm.HaveNode (n1) && nm.HaveNode (n2))
+					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa);
+				else 
+					break;
 			}
 			return nm;
 		}
@@ -68,6 +79,19 @@ namespace NetTrafficSimulator
 			sm.Time=Convert.ToInt32(ttr.GetAttribute ("time_run"));
 			return sm;
 		}
+
+		private void modelSchemaValidationEventHandler(object sender, ValidationEventArgs e)
+		{
+			if (e.Severity == XmlSeverityType.Warning)
+			{
+				Console.Write("WARNING: ");
+				Console.WriteLine(e.Message);
+			}
+			else if (e.Severity == XmlSeverityType.Error)
+			{
+				Console.Write("ERROR: ");
+				Console.WriteLine(e.Message);
+			}
+		}
 	}
 }
-

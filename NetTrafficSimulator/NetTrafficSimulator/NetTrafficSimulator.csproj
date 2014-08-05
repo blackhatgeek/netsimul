@@ -106,4 +106,7 @@
     <Folder Include="misc\" />
     <Folder Include="framework\extension\routing\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="model.xsd" />
+  </ItemGroup>
 </Project>

@@ -380,6 +380,10 @@ namespace NetTrafficSimulator
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetNodeAddr(" + node+")] " + ILLEGAL_PARAMETER);
 		}
+
+		public bool HaveNode(string name){
+			return this.n_name.ContainsKey (name);
+		}
 	}
 }
 
