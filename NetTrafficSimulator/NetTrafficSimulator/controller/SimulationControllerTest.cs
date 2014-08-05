@@ -10,7 +10,7 @@ namespace NetTrafficSimulator
 		[Test()]
 		public void CreateEndNode ()
 		{
-			EndNode en = new EndNode ("End node " + 0, 0);
+			EndNode en = new EndNode ("End node " + 0, 0,10);
 			Assert.AreEqual (0, en.Address);
 			Assert.AreEqual ("End node 0", en.Name);
 			Assert.Null (en.Link);
@@ -63,7 +63,7 @@ namespace NetTrafficSimulator
 				for (int i=0; i<network_model.NodeCount; i++) {
 					switch (network_model.GetNodeType (i)) {
 						case NetworkModel.END_NODE:
-						EndNode en = new EndNode ("End node " + endNodeCounter, addressCounter);
+						EndNode en = new EndNode ("End node " + endNodeCounter, addressCounter,10);
 						nodes [nodeCounter] = en;
 						endNodeCounter++;
 						addressCounter++;
@@ -140,13 +140,13 @@ namespace NetTrafficSimulator
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void CreateLink1(){
-			new Link (null, 1, null, new EndNode ("EN", 1));
+			new Link (null, 1, null, new EndNode ("EN", 1,10));
 		}
 
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void CreateLink2(){
-			new Link (null, 1, new EndNode ("EN", 1),null);
+			new Link (null, 1, new EndNode ("EN", 1,10),null);
 		}
 
 		[Test()]
@@ -157,12 +157,12 @@ namespace NetTrafficSimulator
 
 		[Test()]
 		public void CreateLink4(){
-			new Link ("L", 0, new EndNode ("EN1", 0),new EndNode("EN2",1));
+			new Link ("L", 0, new EndNode ("EN1", 0,10),new EndNode("EN2",1,10));
 		}
 
 		[Test()]
 		public void NetworkNodeConnectLink0(){
-			EndNode en=new EndNode("EN0",0);
+			EndNode en=new EndNode("EN0",0,10);
 			NetworkNode nn = new NetworkNode ("NN0", 1);
 			Link l = new Link ("L0", 1, en, nn);
 			nn.ConnectLink (l);
@@ -171,8 +171,8 @@ namespace NetTrafficSimulator
 		[Test()]
 		[ExpectedException(typeof(ArgumentException))]
 		public void NetworkNodeConnectLink1(){
-			EndNode en0 = new EndNode ("EN0", 0);
-			EndNode en1 = new EndNode ("EN!", 1);
+			EndNode en0 = new EndNode ("EN0", 0,10);
+			EndNode en1 = new EndNode ("EN!", 1,10);
 			Link l = new Link ("L0", 1, en0, en1);
 			new NetworkNode ("NN0", 1).ConnectLink (l);
 		}
@@ -180,7 +180,7 @@ namespace NetTrafficSimulator
 		[Test()]
 		[ExpectedException(typeof(ArgumentException))]
 		public void NetworkNodeConnectLink_unavailable(){
-			new NetworkNode ("NN0", 0).ConnectLink (new Link ("L0", 0, new EndNode ("EN0", 0), new EndNode ("EN1", 1)));
+			new NetworkNode ("NN0", 0).ConnectLink (new Link ("L0", 0, new EndNode ("EN0", 0,10), new EndNode ("EN1", 1,10)));
 		}
 
 		//packet null
@@ -189,27 +189,27 @@ namespace NetTrafficSimulator
 		[Test()]
 		[ExpectedException(typeof(ArgumentException))]
 		public void LinkCarry0(){
-			Link l = new Link ("L0", 0, new EndNode ("EN0", 0),new EndNode("EN1",1));
+			Link l = new Link ("L0", 0, new EndNode ("EN0", 0,10),new EndNode("EN1",1,10));
 			l.Carry(null,new ServerNode("SN0",2),new ServerNode("SN1",3));
 		}
 		[Test()]
 		[ExpectedException(typeof(ArgumentException))]
 		public void LinkCarry1(){
 			ServerNode sn=new ServerNode ("SN0", 0);
-			Link l = new Link ("L0", 0, sn, new EndNode ("EN0", 1));
+			Link l = new Link ("L0", 0, sn, new EndNode ("EN0", 1,10));
 			l.Carry (null, new NetworkNode ("NN0", 0), sn);
 		}
 		[Test()]
 		[ExpectedException(typeof(ArgumentException))]
 		public void LinkCarry2(){
-			EndNode en = new EndNode ("EN0", int.MaxValue);
+			EndNode en = new EndNode ("EN0", int.MaxValue,10);
 			Link l = new Link ("L0", 0, en, new NetworkNode ("NN0", 0));
 			l.Carry (null, en, new NetworkNode ("NN1", 0));
 		}
 
 		[Test()]
 		public void LinkCarry3(){
-			EndNode en = new EndNode ("EN0", int.MinValue);
+			EndNode en = new EndNode ("EN0", int.MinValue,10);
 			NetworkNode nn = new NetworkNode ("NN0", 0);
 			Link l = new Link ("L0", 0, nn, en);
 			l.Active = false;
@@ -222,7 +222,7 @@ namespace NetTrafficSimulator
 
 		[Test()]
 		public void LinkCarry4(){
-			EndNode en = new EndNode ("EN0", 0);
+			EndNode en = new EndNode ("EN0", 0,10);
 			NetworkNode nn = new NetworkNode ("NN", 0);
 			Link l = new Link ("L0", 0, en, nn);
 			Assert.AreEqual (0, l.PacketsCarried);
@@ -247,14 +247,14 @@ namespace NetTrafficSimulator
 		[Test()]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void EndNodeSend0(){
-			new EndNode ("EN", 0).ProcessEvent (
+			new EndNode ("EN", 0,10).ProcessEvent (
 				new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1,new ServerNode[]{new ServerNode("SN",1)}));
 		}
 
 		[Test()]
 		public void EndNodeSend1(){
-			EndNode en0 = new EndNode ("EN0", 0);
-			EndNode en1 = new EndNode ("EN1", 1);
+			EndNode en0 = new EndNode ("EN0", 0,10);
+			EndNode en1 = new EndNode ("EN1", 1,10);
 			Link l = new Link ("L0", 1, en0, en1);
 			en0.Link = l;
 			en1.Link = l;
@@ -266,8 +266,8 @@ namespace NetTrafficSimulator
 
 		[Test()]
 		public void LinkProcessEvent(){
-			EndNode en1 = new EndNode ("EN0", 0);
-			EndNode en2 = new EndNode ("EN1", 1);
+			EndNode en1 = new EndNode ("EN0", 0,10);
+			EndNode en2 = new EndNode ("EN1", 1,10);
 			Link l = new Link ("L0", 1, en1, en2);
 			l.Carry (new Packet (0, 1,0), en1, en2);
 			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2,null);
@@ -287,7 +287,7 @@ namespace NetTrafficSimulator
 		[Test()]
 		public void NetworkNodeProcessEvent(){
 			NetworkNode nn = new NetworkNode ("NN0", 1);
-			EndNode en = new EndNode ("EN0", 0);
+			EndNode en = new EndNode ("EN0", 0,10);
 			Link l = new Link ("L0", 1, nn, en);
 			nn.ConnectLink (l);
 			en.Link = l;
@@ -314,7 +314,7 @@ namespace NetTrafficSimulator
 		[Test()]
 		public void ServerNodeProcessEvent(){
 			ServerNode sn = new ServerNode ("SN1", 1);
-			EndNode en = new EndNode ("EN1", 0);
+			EndNode en = new EndNode ("EN1", 0,10);
 			Link l = new Link ("L1", 1, sn, en);
 			sn.Link = l;
 			en.Link = l;
@@ -402,8 +402,8 @@ namespace NetTrafficSimulator
 
 		[Test()]
 		public void NetworkNodeEndpointDelivery(){
-			EndNode en1 = new EndNode ("EN1", 1);
-			EndNode en2 = new EndNode ("EN2", 2);
+			EndNode en1 = new EndNode ("EN1", 1,10);
+			EndNode en2 = new EndNode ("EN2", 2,10);
 			ServerNode sn1 = new ServerNode ("SN1", 3);
 			ServerNode sn2 = new ServerNode ("SN2", 4);
 			NetworkNode nn = new NetworkNode ("NN0", 4);

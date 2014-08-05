@@ -111,7 +111,10 @@ namespace NetTrafficSimulator
 		 * @return TimeWait to current time provided by model ratio in percents
 		 */
 		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
-			return time_waited / model.Time * 100;
+			if (model.Time != 0)
+				return time_waited / model.Time * 100;
+			else
+				return 100;
 		}
 
 		/**
@@ -119,7 +122,10 @@ namespace NetTrafficSimulator
 		 */
 		public decimal AverageWaitTime{
 			get{
-				return time_waited / process;
+				if (process != 0)
+					return time_waited / process;
+				else
+					return 0;
 			}
 		}
 

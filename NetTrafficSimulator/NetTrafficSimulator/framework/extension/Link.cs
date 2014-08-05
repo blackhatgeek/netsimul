@@ -226,7 +226,10 @@ namespace NetTrafficSimulator
 		 */
 		public decimal DropPercentage{
 			get{
-				return dropped / carried * 100;
+				if (carried != 0)
+					return dropped / carried * 100;
+				else
+					return 0;
 			}
 		}
 		/**
@@ -251,7 +254,10 @@ namespace NetTrafficSimulator
 		 */
 		public decimal PercentageTimeIdle {
 			get {
-				return inactive_time / (active_time + inactive_time) * 100;
+				if ((active_time + inactive_time) != 0)
+					return inactive_time / (active_time + inactive_time) * 100;
+				else
+					return 100;
 			}
 		}
 	}

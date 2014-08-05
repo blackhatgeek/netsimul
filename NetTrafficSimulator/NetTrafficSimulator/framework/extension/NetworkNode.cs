@@ -164,14 +164,21 @@ namespace NetTrafficSimulator
 		 * How much time was the network node idle
 		 */
 		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
-			return time_wait/model.Time;
+			if (model.Time != 0)
+				return time_wait / model.Time;
+			else
+				return 100;
 		}
 		/**
 		 * Average wait time
 		 */
 		public decimal AverageWaitTime {
 			get {
-				return time_wait / processed;
+				if (processed != 0)
+					return time_wait / processed;
+				else
+					return 0;
+
 			}
 		}
 	}

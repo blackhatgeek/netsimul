@@ -70,7 +70,7 @@ namespace NetTrafficSimulator
 			for (int i=0; i<network_model.NodeCount; i++) {
 				switch (network_model.GetNodeType (i)) {
 				case NetworkModel.END_NODE:
-					EndNode en = new EndNode (network_model.GetNodeName(i), network_model.GetNodeAddr(i));
+					EndNode en = new EndNode (network_model.GetNodeName(i), network_model.GetNodeAddr(i),10);
 					nodes [nodeCounter] = en;
 					endNodeCounter++;
 					addressCounter++;
@@ -177,7 +177,9 @@ namespace NetTrafficSimulator
 			foreach (Node n in nodes) {
 				if (n is EndNode) {
 					EndNode en = n as EndNode;
-					result_model.SetNewEndNodeResult (en.Name, en.Address, en.PacketsSent, en.PacketsReceived, en.PacketsMalreceived, en.TimeWaited, en.GetPercentageTimeIdle (framework_model), en.AverageWaitTime);
+					result_model.SetNewEndNodeResult (
+						en.Name, en.Address, en.PacketsSent, en.PacketsReceived, en.PacketsMalreceived, en.TimeWaited, en.GetPercentageTimeIdle (framework_model), en.AverageWaitTime,
+						en.AveragePacketSize);
 				} else if (n is ServerNode) {
 					ServerNode sn = n as ServerNode;
 					result_model.SetNewServerNodeResult (sn.Name, sn.Address, sn.PacketsProcessed,sn.PacketsMalreceived, sn.TimeWaited, sn.GetPercentageTimeIdle (framework_model), sn.AverageWaitTime);

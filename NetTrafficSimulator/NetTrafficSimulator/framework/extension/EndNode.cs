@@ -8,19 +8,22 @@ namespace NetTrafficSimulator
 	 */
 	public class EndNode:EndpointNode
 	{
-		private int sent, received,malreceived,time_wait,server_node_count;
+		private int sent, received,malreceived,time_wait,server_node_count, max_packet_size;
+		private decimal psizesum;
 		private Link link;
 		private Random r;
 
 		/**
 		 * Creates an EndNode with given name and address
 		 */
-		public EndNode(String n,int address):base(n,address){
+		public EndNode(String n,int address,int max_packet_size):base(n,address){
 			this.sent = 0;
 			this.received = 0;
 			this.malreceived = 0;
 			this.r = new Random ();
 			this.time_wait = 0;
+			this.max_packet_size = max_packet_size;
+			this.psizesum = 0.0m;
 		}
 		
 		/**
@@ -78,6 +81,7 @@ namespace NetTrafficSimulator
 		private void send(int destination,decimal size){
 			//must send to existing node!!
 			if (link != null) {
+				psizesum += size;
 				this.link.Carry (new Packet (Address,destination,size), this, this.link.GetPartner (this));
 				sent++;
 			} else
@@ -95,11 +99,11 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Randomly chooses size for new packet
+		 * Randomly chooses size for new packet based on max_packet_size parameter
 		 * @return packet size
 		 */
 		private decimal selectDataSize(){
-			return (decimal)(r.Next(20)*r.NextDouble ());
+			return (decimal)(r.Next(max_packet_size)+r.NextDouble ());
 		}
 
 		/**
@@ -154,7 +158,10 @@ namespace NetTrafficSimulator
 		 * @return TimeWait to current time provided by model ratio in percents
 		 */
 		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
-			return time_wait / model.Time * 100;
+			if (model.Time != 0)
+				return time_wait / model.Time * 100;
+			else
+				return 100;
 		}
 
 		/**
@@ -162,7 +169,18 @@ namespace NetTrafficSimulator
 		 */
 		public decimal AverageWaitTime{
 			get{
-				return time_wait / sent;
+				if (sent != 0)
+					return time_wait / sent;
+				else
+					return 0;
+			}
+		}
+
+		public decimal AveragePacketSize{
+			get{
+				if (sent!=0)
+					return psizesum / sent;
+				return 0;
 			}
 		}
 	}
