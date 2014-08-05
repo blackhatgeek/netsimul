@@ -114,7 +114,7 @@ namespace NetTrafficSimulator
 						Node y = nodes [j];
 						if (network_model.AreConnected (i, j)){
 							//TESTME links parsed correctly??
-							Link l = new Link (x + " - " + y + " link", network_model.LinkCapacity(i,j), x, y);
+							Link l = new Link (network_model.GetLinkName(i,j), network_model.LinkCapacity(i,j), x, y);
 							if (x is EndNode)
 								(x as EndNode).Link = l;
 							else if (x is NetworkNode)

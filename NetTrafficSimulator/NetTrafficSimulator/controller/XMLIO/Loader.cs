@@ -60,14 +60,15 @@ namespace NetTrafficSimulator
 				XmlElement link = nl.Item (i) as XmlElement;
 				if (!link.Name.Equals ("link"))
 					break;
-				//TODO Link name
+				string name = link.Attributes.GetNamedItem ("name").Value;
 				string n1 = link.Attributes.GetNamedItem ("node1").Value;
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity"));
 				//verifikace
-				if (nm.HaveNode (n1) && nm.HaveNode (n2))
+				if (nm.HaveNode (n1) && nm.HaveNode (n2)) {
 					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa);
-				else 
+					nm.SetLinkName (nm.GetNodeNum (n1), nm.GetNodeNum (n2), name);
+				}else 
 					break;
 			}
 			return nm;

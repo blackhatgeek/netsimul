@@ -17,6 +17,11 @@ namespace NetTrafficSimulator
 		//network node - mnoho spojeni
 		//server node - spojen nejvyse s jednim
 
+		public struct link_rec{
+			public int capacity;
+			public string name;
+		}
+
 		//linky - node x spojen s node y
 		/**
 		 * END_NODE is a end-user node, which initiates connection to server-node
@@ -52,7 +57,7 @@ namespace NetTrafficSimulator
 		 * Adjacency matrix of the network: links[x,y] is positive if there is a direct connection between nodes x and y
 		 * and the number represents the link capacity
 		 */
-		private int[,] links;
+		private link_rec[,] links;
 		/**
 		 * link_count[x] is amount of links connected to a node x
 		 */
@@ -87,14 +92,14 @@ namespace NetTrafficSimulator
 		{
 			if (node_count >= 0) {
 				this.node_count = node_count;
-				this.links = new int[node_count, node_count];
+				this.links = new link_rec[node_count, node_count];
 				this.types = new int[node_count];
 				this.link_count=new int[node_count];
 				this.addr=new int[node_count];
 
 				for (int i=0; i<node_count; i++) {
 					for (int j=0; j<node_count; j++) {
-						links [i, j] = NO_CONNECTION;
+						links [i, j].capacity = NO_CONNECTION;
 					}
 				}
 
@@ -118,7 +123,7 @@ namespace NetTrafficSimulator
 		 */
 		public bool AreConnected(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
-				return links [x, y]!=NO_CONNECTION;
+				return links [x, y].capacity!=NO_CONNECTION;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.AreConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
 		}
@@ -131,7 +136,7 @@ namespace NetTrafficSimulator
 		 */
 		public int LinkCapacity(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
-				return links[x,y];
+				return links[x,y].capacity;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.AreConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
 		}
@@ -146,12 +151,12 @@ namespace NetTrafficSimulator
 		 */
 		public void SetConnected(int x,int y,int capacity){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&(capacity>0)) {
-				if (links [x, y]==NO_CONNECTION) {
+				if (links [x, y].capacity==NO_CONNECTION) {
 					link_count [x]++;
 					link_count [y]++;
 				}
-				links [x, y] = capacity;
-				links [y, x] = capacity;
+				links [x, y].capacity = capacity;
+				links [y, x].capacity = capacity;
 			}
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
@@ -165,12 +170,12 @@ namespace NetTrafficSimulator
 		 */
 		public void SetDisconnected(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)) {
-				if (links [x, y]!=NO_CONNECTION) {
+				if (links [x, y].capacity!=NO_CONNECTION) {
 					link_count [x]--;
 					link_count [y]--;
 				}
-				links [x, y] = NO_CONNECTION;
-				links [y, x] = NO_CONNECTION;
+				links [x, y].capacity = NO_CONNECTION;
+				links [y, x].capacity = NO_CONNECTION;
 			} else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetDisconnected(" + x + "," + y + ")] "+ILLEGAL_PARAMETER);
 		}
@@ -235,7 +240,7 @@ namespace NetTrafficSimulator
 		/**
 		 * Adjacency matrix for the network
 		 */
-		public int[,] Link{
+		public link_rec[,] Link{
 			get{
 				return links;
 			}
@@ -290,11 +295,11 @@ namespace NetTrafficSimulator
 				}
 				Console.Write ((i+1) + "\t\t" + ntype + "\t");
 				for (int j=0; j<node_count-1; j++) {
-					if (links [i, j]!=NO_CONNECTION)
+					if (links [i, j].capacity!=NO_CONNECTION)
 						Console.Write ("+");
 					Console.Write ("\t");
 				}
-				if (links [i, node_count-1]!=NO_CONNECTION)
+				if (links [i, node_count-1].capacity!=NO_CONNECTION)
 					Console.Write ("+");
 				Console.WriteLine ("");
 			}
@@ -319,7 +324,7 @@ namespace NetTrafficSimulator
 				while((i<node_count)&&valid){
 					if((link_count[i]<0)||(link_count[i]>=node_count))//pokud link_count[i]==node_count pak je node spojen se sebou
 					   valid=false;
-					if (links [i, i]!=NO_CONNECTION)
+					if (links [i, i].capacity!=NO_CONNECTION)
 						valid = false;
 					if ((types [i] != NETWORK_NODE) && (link_count [i] > 1))
 						valid = false;
@@ -331,9 +336,9 @@ namespace NetTrafficSimulator
 				for(i=0;i<node_count-1;i++){
 						int j = i;
 						while (j<node_count) {
-							if (links [i, j] != links [j, i])
+							if (links [i, j].capacity != links [j, i].capacity)
 								valid = false;
-							if (links [i, j] < 0)
+							if (links [i, j].capacity < 0)
 								valid = false;
 							j++;
 						}
@@ -383,6 +388,20 @@ namespace NetTrafficSimulator
 
 		public bool HaveNode(string name){
 			return this.n_name.ContainsKey (name);
+		}
+
+		public void SetLinkName(int x,int y,string name){
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&links[x,y].capacity!=NO_CONNECTION) 
+				links [x, y].name = name;
+			else
+				throw new ArgumentException ("[NetworkModel.SetLinkName(" + x + "," + y + "," + name + ")] " + ILLEGAL_PARAMETER);
+		}
+
+		public string GetLinkName(int x,int y){
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
+				return links [x, y].name;
+			else 
+				throw new ArgumentException ("[NetworkModel.GetLinkName(" + x + "," + y + ")] " + ILLEGAL_PARAMETER);
 		}
 	}
 }
