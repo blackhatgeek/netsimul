@@ -1,0 +1,13 @@
+<simulation time_run="5" version="0.00" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0">
+	<network>
+		<nodes>
+			<server name="s1" address="1"/>
+			<end name="e1" address="2"/>
+			<network name="n1" ports="2"/>
+		</nodes>
+		<links>
+			<link name="l1" node1="s1" node2="n1" capacity="5" />
+			<link name="l2" node1="e1" node2="n1" capacity="10" />
+		</links>
+	</network>
+</simulation>
