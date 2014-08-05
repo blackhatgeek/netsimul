@@ -247,7 +247,7 @@ namespace NetTrafficSimulator
 		[Test()]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void EndNodeSend0(){
-			new EndNode ("EN", 0).ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1));
+			new EndNode ("EN", 0).ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1,null));
 		}
 
 		[Test()]
@@ -257,7 +257,7 @@ namespace NetTrafficSimulator
 			Link l = new Link ("L0", 1, en0, en1);
 			en0.Link = l;
 			en1.Link = l;
-			en0.ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1));
+			en0.ProcessEvent (new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), new MFF_NPRG031.Model (1,null));
 			Assert.AreEqual (1, l.PacketsCarried);
 			Assert.AreEqual (0, l.PacketsDropped);
 			Assert.AreEqual (1, en0.PacketsSent);
@@ -269,7 +269,7 @@ namespace NetTrafficSimulator
 			EndNode en2 = new EndNode ("EN1", 1);
 			Link l = new Link ("L0", 1, en1, en2);
 			l.Carry (new Packet (0, 1,0), en1, en2);
-			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2,null);
 			l.Schedule (m.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND), 0);
 			MFF_NPRG031.Event e = m.K.First ();
 			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
@@ -291,7 +291,7 @@ namespace NetTrafficSimulator
 			nn.ConnectLink (l);
 			en.Link = l;
 			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE,new Packet (0, 1,0));
-			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2,null);
 			nn.ProcessEvent (s, m);
 			MFF_NPRG031.Event e = m.K.First ();
 			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
@@ -318,7 +318,7 @@ namespace NetTrafficSimulator
 			sn.Link = l;
 			en.Link = l;
 			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, new Packet (0, 1,0));
-			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2,new ServerNode[]{sn});
 			sn.ProcessEvent (s, m);
 
 			MFF_NPRG031.Event e = m.K.First ();
@@ -418,7 +418,7 @@ namespace NetTrafficSimulator
 			nn.ConnectLink (l2);
 			nn.ConnectLink (l3);
 			nn.ConnectLink (l4);
-			MFF_NPRG031.Model m = new MFF_NPRG031.Model (4);
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (4,new ServerNode[]{sn1,sn2});
 			//EN1 -> NN
 			en1.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, new Packet (1, 3,1)), m);
 			Assert.AreEqual (1, l1.PacketsCarried);
@@ -435,7 +435,6 @@ namespace NetTrafficSimulator
 			e = m.K.First ();
 			Assert.AreEqual (nn, e.who);
 			m.Time = e.when;
-			Console.WriteLine ("Time: " + m.Time);
 			//forward
 			nn.ProcessEvent (e.what, m);
 			Assert.AreEqual (1, l3.PacketsCarried);

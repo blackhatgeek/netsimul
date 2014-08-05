@@ -4,6 +4,13 @@ namespace MFF_NPRG031
 {
 	public class Model
 	{
+		private NetTrafficSimulator.ServerNode[] servers;
+		public NetTrafficSimulator.ServerNode[] Servers{
+			get{
+				return servers;
+			}
+		}
+
 		/**
 		 * Simulation calendar
 		 */
@@ -25,11 +32,12 @@ namespace MFF_NPRG031
 		 * Creates a model
 		 * @param time_to_run how long to run simulation
 		 */
-		public Model(int time_to_run)
+		public Model(int time_to_run,NetTrafficSimulator.ServerNode[] servers)
 		{
 			K = new Calendar ();
 			Finish = false;
 			this.time_to_run = time_to_run;
+			this.servers = servers;
 		}
 
 		/**

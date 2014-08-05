@@ -58,10 +58,8 @@ namespace NetTrafficSimulator
 						Node n=l.GetPartner(this);
 						interfaces [interfaces_used] = l;
 						interfaces_used++;
-						if(n is EndpointNode){
-							Console.WriteLine(n.Name+" is EndpointNode, adding routing to "+(n as EndpointNode).Address+" via "+interfaces_used);
+						if(n is EndpointNode)
 							route.Add((n as EndpointNode).Address,interfaces_used);
-						}
 					}catch(ArgumentException){
 						throw new ArgumentException ("Link not connected to this NetworkNode");
 					}
@@ -74,7 +72,6 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
-			Console.WriteLine ("{NN] process event @ time " + model.Time);
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.RECEIVE:
 				this.time_wait += model.Time - last_process;
@@ -87,10 +84,9 @@ namespace NetTrafficSimulator
 			case MFF_NPRG031.State.state.SEND:
 				Packet p = state.Data;
 				Link l;
-				if (schedule.TryGetValue (p, out l)) {
-					Console.WriteLine ("Selected link: " + l.Name);
+				if (schedule.TryGetValue (p, out l))
 					l.Carry (p, this, l.GetPartner (this));
-				}else
+				else
 					throw new ArgumentException ("Packet was not scheduled for sending - missing record for link to use");
 				break;
 			default:
@@ -114,7 +110,6 @@ namespace NetTrafficSimulator
 		 * @throws InvalidOperationException No link connected
 		 */
 		private Link selectDestination(Packet p){
-			Console.WriteLine ("Selecting destination");
 			if (interfaces_used > 0) {
 				int l;
 				//if we are delivering to endpoint node, deliver directly

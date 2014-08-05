@@ -60,6 +60,10 @@ namespace NetTrafficSimulator
 		 * types[x] is type of a node x
 		 */
 		private int[] types;
+		/**
+		 * Server node count
+		 */
+		private int SNCount;
 
 		/**
 		 * Creates a NetworkModel with given amount of nodes
@@ -84,6 +88,7 @@ namespace NetTrafficSimulator
 					types [i] = UNIDENTIFIED_NODE;
 					link_count [i] = 0;
 				}
+				this.SNCount = 0;
 			} else
 				throw new ArgumentOutOfRangeException ("[new NetworkModel("+node_count+"] " + ILLEGAL_PARAMETER);
 		}
@@ -168,6 +173,12 @@ namespace NetTrafficSimulator
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetConnectionCount(" + node + ")] "+ILLEGAL_PARAMETER);
 		}
 
+		public int ServerNodeCount{
+			get{
+				return SNCount;
+			}
+		}
+
 		//types
 		/**
 		 * For given node returns a type of node
@@ -188,8 +199,12 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentOutOfRangeException if given node is incorrect or type is UNIDENTIFIED_NODE or is not any of declared constants
 		 */
 		public void SetNodeType(int node,int type){
-			if ((node >= 0) && (node < node_count) && ((type == END_NODE) || (type == SERVER_NODE) || (type == NETWORK_NODE)))
+			if ((node >= 0) && (node < node_count) && ((type == END_NODE) || (type == NETWORK_NODE)))
 				types [node] = type;
+			else if (type == SERVER_NODE) {
+				SNCount++;
+				types [node] = type;
+			}
 			else
 				throw new ArgumentOutOfRangeException("[NetworkModel.SetNodeType("+node+","+type+")] "+ILLEGAL_PARAMETER);
 		}

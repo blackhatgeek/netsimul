@@ -14,6 +14,7 @@ namespace NetTrafficSimulator
 		private ResultModel result_model;
 		private int endNodeCounter,networkNodeCounter,serverNodeCounter,addressCounter,nodeCounter;
 		private Node[] nodes;
+		private ServerNode[] servers;
 		private LinkedList<Link> links;
 
 		public ResultModel Results{
@@ -65,6 +66,7 @@ namespace NetTrafficSimulator
 			addressCounter = 0;
 			nodeCounter = 0;
 			nodes = new Node[network_model.NodeCount];
+			this.servers = new ServerNode[network_model.ServerNodeCount];
 			for (int i=0; i<network_model.NodeCount; i++) {
 				switch (network_model.GetNodeType (i)) {
 				case NetworkModel.END_NODE:
@@ -85,6 +87,7 @@ namespace NetTrafficSimulator
 					ServerNode sn = new ServerNode ("Server node " + serverNodeCounter, addressCounter);
 					nodes [nodeCounter] = sn;
 					serverNodeCounter++;
+					servers [serverNodeCounter] = sn;
 					nodeCounter++;
 					addressCounter++;
 					break;
@@ -144,7 +147,7 @@ namespace NetTrafficSimulator
 		 */
 		private void createModel(){
 		if (simulation_model != null) {
-			framework_model = new MFF_NPRG031.Model (simulation_model.Time);
+			framework_model = new MFF_NPRG031.Model (simulation_model.Time,servers);
 		} else
 			throw new InvalidOperationException ("[SimulationController.createModel] SimulationModel null");
 		}

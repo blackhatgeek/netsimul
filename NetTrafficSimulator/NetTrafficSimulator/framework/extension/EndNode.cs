@@ -5,18 +5,19 @@ namespace NetTrafficSimulator
 {
 	public class EndNode:EndpointNode
 	{
-		private int sent, received,time_wait;
+		private int sent, received,time_wait,server_node_count;
 		private Link link;
 		private Random r;
 
 		/**
 		 * Creates an EndNode with given name and address
 		 */
-		public EndNode(String n,int address):base(n,address){
+		public EndNode(String n,int address,int SNC):base(n,address){
 			this.sent = 0;
 			this.received = 0;
 			this.r = new Random ();
 			this.time_wait = 0;
+			this.server_node_count = -1;
 		}
 		
 		/**
@@ -36,6 +37,9 @@ namespace NetTrafficSimulator
 			case MFF_NPRG031.State.state.SEND:
 				if (state.Data != null)
 					send (state.Data.Destination);
+				else if (server_node_count > 0)
+					send (selectDestination (model, server_node_count));
+				//else nejsou k dispozici servery
 				else
 					send (r.Next ());
 				int t = wait_time ();
@@ -62,13 +66,23 @@ namespace NetTrafficSimulator
 		 * Attept to post a new packet to the link, if such exist
 		 * @throws InvalidOperationException if link is not connected
 		 */
-		private void send(int destination){
+		private void send(int destination,MFF_NPRG031.Model m){
 			//must send to existing node!!
 			if (link != null) {
 				this.link.Carry (new Packet (Address,destination,0), this, this.link.GetPartner (this));
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
+		}
+
+		/**
+		 * Randomly chooses destination for new packet
+		 * @param m framework_model
+		 * @param SNC server node counter
+		 * @return server's address
+		 */ 
+		private int selectDestination(MFF_NPRG031.Model m,int SNC){
+			return m.Servers[r.Next (SNC-1)].Address;
 		}
 
 		/**
