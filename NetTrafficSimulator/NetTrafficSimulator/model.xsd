@@ -14,13 +14,21 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 				</xs:element>
 			</xs:choice>
 			<xs:attribute name="time_run" use="required" type="xs:nonNegativeInteger"/>
-			<xs:attribute name="version" use="required" fixed="0.00"/>
+			<xs:attribute name="version" use="required" fixed="0.01"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tNode">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="server" type="ns:tEndpoint" />
-			<xs:element name="end" type="ns:tEndpoint" />
+			<xs:element name="end">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ns:tEndpoint">
+							<xs:attribute name="mps" type="xs:nonNegativeInteger" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="network" type="ns:tNetwork" />
 		</xs:choice>
 	</xs:complexType>

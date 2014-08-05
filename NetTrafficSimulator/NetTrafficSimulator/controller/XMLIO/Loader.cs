@@ -42,8 +42,11 @@ namespace NetTrafficSimulator
 					break;
 				case "end":
 					nm.SetNodeType (i, NetworkModel.END_NODE);
-					nm.SetNodeName (i, node.Attributes.GetNamedItem ("name").Value);
-					nm.SetNodeAddr (i, Convert.ToInt32(node.Attributes.GetNamedItem ("address").Value));
+					string name = node.Attributes.GetNamedItem ("name").Value;
+					nm.SetNodeName (i, name);
+					nm.SetNodeAddr (i, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
+					if(node.HasAttribute("mps"))
+						nm.SetEndNodeMaxPacketSize(name,Convert.ToInt32(node.Attributes.GetNamedItem("mps").Value));
 					break;
 				case "network":
 					nm.SetNodeType (i, NetworkModel.NETWORK_NODE);

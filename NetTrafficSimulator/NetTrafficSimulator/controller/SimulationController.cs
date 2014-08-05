@@ -70,7 +70,8 @@ namespace NetTrafficSimulator
 			for (int i=0; i<network_model.NodeCount; i++) {
 				switch (network_model.GetNodeType (i)) {
 				case NetworkModel.END_NODE:
-					EndNode en = new EndNode (network_model.GetNodeName(i), network_model.GetNodeAddr(i),10);
+					string name = network_model.GetNodeName (i);
+					EndNode en = new EndNode (name, network_model.GetNodeAddr(i),network_model.GetEndNodeMaxPacketSize(name));
 					nodes [nodeCounter] = en;
 					endNodeCounter++;
 					addressCounter++;

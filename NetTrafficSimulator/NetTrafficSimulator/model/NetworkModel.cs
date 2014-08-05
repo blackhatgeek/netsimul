@@ -17,8 +17,28 @@ namespace NetTrafficSimulator
 		//network node - mnoho spojeni
 		//server node - spojen nejvyse s jednim
 
+		/**
+		 * Information about link
+		 */
 		public struct link_rec{
-			public int capacity;
+			private int cap;
+			/**
+			 * Link capacity
+			 */
+			public int capacity{
+				get{
+					return this.cap;
+				}
+				set{
+					if (value >= 0)
+						this.cap = value;
+					else
+						throw new ArgumentException ("Negative link capacity "+value+" ("+name+")");
+				}
+			}
+			/**
+			 * Link name
+			 */
 			public string name;
 		}
 
@@ -49,6 +69,8 @@ namespace NetTrafficSimulator
 		 */
 		private const int NO_CONNECTION = 0;
 
+		private const int DEFAULT_END_NODE_MPS = 10;
+
 		/**
 		 * Amount of nodes in the model
 		 */
@@ -66,18 +88,9 @@ namespace NetTrafficSimulator
 		 * types[x] is type of a node x
 		 */
 		private int[] types;
-		/**
-		 * addr[x] is address of node x
-		 */
-		private int[] addr;
-		/**
-		 * n_name[x] is name of node x
-		 */
-		private Dictionary<string,int> n_name;
-		/**
-		 * l_name[x] is name of link x
-		 */
-		private string[] l_name;
+		private int[] addr;//addr[x] is address of node x
+		private Dictionary<string,int> n_name;//node name
+		private Dictionary<string,int> en_mps;//end node max packet size
 		/**
 		 * Server node count
 		 */
@@ -402,6 +415,45 @@ namespace NetTrafficSimulator
 				return links [x, y].name;
 			else 
 				throw new ArgumentException ("[NetworkModel.GetLinkName(" + x + "," + y + ")] " + ILLEGAL_PARAMETER);
+		}
+
+		/**
+		 * Sets max packet size for EndNode
+		 */
+		public void SetEndNodeMaxPacketSize(string n,int mps){
+			int node;
+			if (mps >= 0)
+				if (n_name.TryGetValue (n, out node))//existuje takovy node
+					if (types [node] == END_NODE){//je spravneho typu
+						if (this.en_mps.ContainsKey (n))
+							this.en_mps.Remove (n);
+						this.en_mps.Add (n, mps);
+					}
+					else
+						throw new ArgumentException ("[NetworkModel.SetEndNodeMaxPacketSize(" + n + "," + mps + ")] " + ILLEGAL_PARAMETER);
+				else
+					throw new ArgumentException ("[NetworkModel.SetEndNodeMaxPacketSize(" + n + "," + mps + ")] " + ILLEGAL_PARAMETER);
+			else
+				throw new ArgumentException ("[NetworkModel.SetEndNodeMaxPacketSize(" + n + "," + mps + ")] " + ILLEGAL_PARAMETER);
+		}
+
+		public int GetEndNodeMaxPacketSize(string n){
+			if (this.en_mps.ContainsKey (n)) {
+				int mps;
+				this.en_mps.TryGetValue (n, out mps);
+				return mps;
+			} else {
+				if (n_name.ContainsKey (n)) {
+					int node;
+					this.n_name.TryGetValue (n, out node);
+					if (types [node] == END_NODE) {
+						this.en_mps.Add (n, DEFAULT_END_NODE_MPS);
+						return DEFAULT_END_NODE_MPS;
+					} else//neni to END_NODE
+						throw new ArgumentException ("[NetworkModel.GetEndNodeMaxPacketSize(" + n + ")] " + ILLEGAL_PARAMETER);
+				} else //neni to NODE
+					throw new ArgumentException ("[NetworkModel.GetEndNodeMaxPacketSize(" + n + ")] " + ILLEGAL_PARAMETER);
+			}
 		}
 	}
 }

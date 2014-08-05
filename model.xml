@@ -1,8 +1,8 @@
-<simulation time_run="5" version="0.00" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0">
+<simulation time_run="5" version="0.01" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0">
 	<network>
 		<nodes>
 			<server name="s1" address="1"/>
-			<end name="e1" address="2"/>
+			<end name="e1" address="2" mps="5" />
 			<network name="n1"/>
 		</nodes>
 		<links>
