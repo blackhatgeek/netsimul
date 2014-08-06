@@ -15,18 +15,22 @@ namespace NetTrafficSimulator
 			//pokud je konzolovy parametr XMLIO, nacist data z XML
 			//jinak pustit GUI
 			log.Info ("Entering application");
-			if (args.Length == 3) {
-				if (args [0].Equals ("xmlio")) {
-					XMLIO.Simulate (args [1], args [2]);
+			try{
+				if (args.Length == 3) {
+					if (args [0].Equals ("xmlio")) {
+						XMLIO.Simulate (args [1], args [2]);
+					} else
+						Console.WriteLine (USAGE);
+				} else if (args.Length == 0) {
+					Application.Init ();
+					MainWindow win = new MainWindow ();
+					win.Show ();
+					Application.Run ();
 				} else
 					Console.WriteLine (USAGE);
-			} else if (args.Length == 0) {
-				Application.Init ();
-				MainWindow win = new MainWindow ();
-				win.Show ();
-				Application.Run ();
-			} else
-				Console.WriteLine (USAGE);
+			}catch(Exception e){
+				log.Error("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
+			}
 			log.Info ("Leaving application");
 		}
 	}

@@ -77,6 +77,7 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Creates a new link between two nodes with given capacity which specifies how many data the link will be able to deliver per time unit
+		 * @param name		link name
 		 * @param capacity	how many data a link can deliver per time unit
 		 * @param a			node at one end
 		 * @param b			node at other end

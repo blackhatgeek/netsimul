@@ -37,6 +37,7 @@ namespace MFF_NPRG031
 		/**
 		 * Creates a model
 		 * @param time_to_run how long to run simulation
+		 * @param servers servers available for random choice
 		 */
 		public Model(int time_to_run,NetTrafficSimulator.ServerNode[] servers)
 		{

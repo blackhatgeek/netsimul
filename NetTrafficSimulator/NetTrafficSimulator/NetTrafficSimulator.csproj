@@ -107,7 +107,6 @@
     <Folder Include="controller\" />
     <Folder Include="framework\extension\" />
     <Folder Include="misc\" />
-    <Folder Include="framework\extension\routing\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="model.xsd" />

@@ -298,9 +298,11 @@ namespace NetTrafficSimulator
 		 * @param address node network address
 		 * @param packetsSent amount of packets sent
 		 * @param packetsReceived amount of packets received
+		 * @param packetsMalreceived amount of packets received with destination address different fron eno node's address
 		 * @param timeWaited amount of time spent waiting
 		 * @param timeIdle percentage of time spent waiting
 		 * @param avgWaitTime average wait time
+		 * @param avgPSize average packet size
 		 * @throws ArgumentException End node counter exceeded amouunt of end nodes set in constructor
 		 */
 		public void SetNewEndNodeResult(string name,int address,int packetsSent,int packetsReceived,int packetsMalreceived,int timeWaited, decimal timeIdle, decimal avgWaitTime,decimal avgPSize){
@@ -318,6 +320,7 @@ namespace NetTrafficSimulator
 		 * @param name node name
 		 * @param address node network address
 		 * @param packetsProcessed amount of packets processed
+		 * @param packetsMalreceived amount of packets received with destination address different fron eno node's address
 		 * @param timeWaited amount of time waited
 		 * @param timeIdle percentage of time spent waiting
 		 * @param avgWaitTime average wait time

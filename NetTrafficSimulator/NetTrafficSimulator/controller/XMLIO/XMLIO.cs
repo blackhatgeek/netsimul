@@ -23,8 +23,10 @@ namespace NetTrafficSimulator
 				s.StoreResultModel (rm);
 				log.Info("Leaving simulate");
 			}catch(IOException e ){
+				log.Error("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
 				Console.WriteLine ("ERROR: "+e.Message);
 			}catch(XmlSchemaException e){
+				log.Error("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
 				Console.WriteLine ("ERROR: input file not valid");
 				Console.WriteLine (e.Message); 
 			}
