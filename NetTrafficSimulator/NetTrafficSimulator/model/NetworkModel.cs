@@ -363,8 +363,11 @@ namespace NetTrafficSimulator
 		}
 
 		public void SetNodeName(int node,string name){
-			if ((node >= 0) && (node < node_count))
+			if ((node >= 0) && (node < node_count)) {
+				if (n_name.ContainsKey (name))
+					n_name.Remove (name);
 				this.n_name.Add (name, node);
+			}
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetNodeName(" + node + "," + name + ")] " + ILLEGAL_PARAMETER);
 		}

@@ -63,8 +63,11 @@ namespace NetTrafficSimulator
 						Node n=l.GetPartner(this);
 						interfaces [interfaces_used] = l;
 						interfaces_used++;
-						if(n is EndpointNode)
+						if(n is EndpointNode){
+							//if(route.ContainsKey((n as EndpointNode).Address)
+							//TODO: rozhodnout o lepsi trase ale druha route musi byt v zaloze!!!
 							route.Add((n as EndpointNode).Address,interfaces_used);
+						}
 					}catch(ArgumentException){
 						throw new ArgumentException ("Link not connected to this NetworkNode");
 					}
@@ -123,6 +126,7 @@ namespace NetTrafficSimulator
 				//if we are delivering to endpoint node, deliver directly
 				//otherwise use "default route"
 				if (route.TryGetValue (p.Destination, out l)) {
+					//TODO: pokud ale link neni active, ale jsou k dispozici dalsi cesty ...
 					interface_use_count [l-1]++;
 					return interfaces [l-1];
 				} else {
@@ -142,6 +146,8 @@ namespace NetTrafficSimulator
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
 			log.Debug ("("+Name+") Routing via link " + l + " at " + (model.Time + delay));
+			if (schedule.ContainsKey (p))
+				throw new InvalidOperationException ("Same packet to schedule twice");
 			this.schedule.Add (p, l);
 			this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), model.Time + delay);
 			//l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);

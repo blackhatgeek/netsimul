@@ -306,6 +306,8 @@ namespace NetTrafficSimulator
 		public void SetNewEndNodeResult(string name,int address,int packetsSent,int packetsReceived,int packetsMalreceived,int timeWaited, decimal timeIdle, decimal avgWaitTime,decimal avgPSize){
 			if (endNodeCount < endNodeLimit) {
 				endNodes [endNodeCount] = name;
+				if(endNodeNames.ContainsKey(name))
+					endNodeNames.Remove(name);
 				endNodeNames.Add (name, new EndNodeResult (name, address, packetsSent, packetsReceived, packetsMalreceived, timeWaited, timeIdle, avgWaitTime,avgPSize));
 				endNodeCount++;
 			} else
@@ -324,6 +326,8 @@ namespace NetTrafficSimulator
 		public void SetNewServerNodeResult(string name,int address,int packetsProcessed, int packetsMalreceived, int timeWaited,decimal timeIdle,decimal avgWaitTime){
 			if (serverNodeCount < serverNodeLimit) {
 				serverNodes [serverNodeCount] = name;
+				if (serverNodeNames.ContainsKey (name))
+					serverNodeNames.Remove (name);
 				serverNodeNames.Add (name, new ServerNodeResult (name, address, packetsProcessed, packetsMalreceived, timeWaited, timeIdle, avgWaitTime));
 				serverNodeCount++;
 			} else
@@ -341,6 +345,8 @@ namespace NetTrafficSimulator
 		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime){
 			if (networkNodeCount < networkNodeLimit) {
 				networkNodes [networkNodeCount] = name;
+				if (networkNodeNames.ContainsKey (name))
+					networkNodeNames.Remove (name);
 				networkNodeNames.Add (name, new NetworkNodeResult (name, packetsProcessed, timeWaited, timeIdle, avgWaitTime));
 				networkNodeCount++;
 			} else
