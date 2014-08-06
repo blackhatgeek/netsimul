@@ -146,7 +146,6 @@ namespace NetTrafficSimulator
 					result.AppendChild (networkNodes);
 
 					XmlElement links = xs.CreateElement ("links");
-					Console.WriteLine ("Links: " + rm.LinkNames.GetLength (0));
 					foreach (string linkName in rm.LinkNames) {
 						//Console.WriteLine (linkName);
 						XmlElement link = xs.CreateElement ("link");

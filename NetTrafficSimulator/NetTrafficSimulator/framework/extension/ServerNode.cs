@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -9,6 +10,7 @@ namespace NetTrafficSimulator
 	 */
 	public class ServerNode:EndpointNode
 	{
+		private static readonly ILog log=LogManager.GetLogger(typeof(ServerNode));
 		private int time_waited,process,malreceived;
 		private Link link;
 		/**
@@ -45,6 +47,7 @@ namespace NetTrafficSimulator
 					int t = wait_time ();
 					this.time_waited += t;
 					this.process++;
+					log.Debug("("+Name+") Received at time "+model.Time+" waiting for "+t+", total waited "+time_waited+" total processed "+process+" sending at "+(model.Time+t));
 					sendResponse (generateResponse (state.Data), model.Time + t, model);
 				} else {
 					malreceived++;

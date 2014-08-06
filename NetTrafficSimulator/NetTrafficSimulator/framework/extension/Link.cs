@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -8,6 +9,7 @@ namespace NetTrafficSimulator
 	 */
 	public class Link:MFF_NPRG031.Process,INamable
 	{
+		static readonly ILog log=LogManager.GetLogger(typeof(Link));
 		int dropped,active_time,inactive_time,carried;
 		int last_process;
 		/**
@@ -94,7 +96,7 @@ namespace NetTrafficSimulator
 			this.a = a;
 			this.b = b;
 			this.active = true;
-			this.last_process = 0;
+			this.last_process = -1;
 			this.active_time = 0;
 			this.inactive_time = 0;
 			this.dropped = 0;
@@ -135,23 +137,19 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException if origin and destination are not nodes specified in the consructor regardless of order
 		 */
 		public void Carry(Packet p,Node origin,Node destination){
-			Console.WriteLine ("Carry: origin "+origin+" destination: "+destination);
 			if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
-				Console.WriteLine ("Passed verification");
 				if (active) {
-					Console.WriteLine ("Active");
 					carried++;
+					log.Debug ("("+name+") Link active, carried");
 					if (next_queue_pos < capacity) {
-						Console.WriteLine ("Enqueue");
 						DataEnvelope de = new DataEnvelope (p, origin, destination);
-						if (de == null)
-							throw new NullReferenceException ("New DE null");
 						queue [next_queue_pos] = de;
-						if (queue [next_queue_pos] == null)
-							throw new NullReferenceException ("queue[" + next_queue_pos + "] nul"); 
 						next_queue_pos++;
-					} else
+						log.Debug ("("+name+") Enqueued");
+					} else {
 						dropped++;
+						log.Debug ("("+name+") Dropped");
+					}
 				}
 			} else
 				throw new ArgumentException ("This link is capable of delivering data between nodes " + a + " and  " + b + ", though requested to deliver from " + origin + " to " + destination);
@@ -159,20 +157,22 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
-			if (state.Data != null)
-				throw new ArgumentException ("Link state should not bear data");
+			if (state.Data != null) throw new ArgumentException ("Link state should not bear data");
 			if (active)
 				active_time += model.Time - last_process;//kolik casu uplynulo od posledniho process - celou dobu byl link active
 			else
 				inactive_time += model.Time - last_process;//totez, ale celou dobu byl inactive
+			log.Debug ("("+name+") <TIME> actual:" + model.Time + " active:" + active_time + " inactive:" + inactive_time + " last_process:" + last_process);
 			last_process = model.Time;
 
 			if (state.Actual.Equals (MFF_NPRG031.State.state.SEND)) {//vse v queue dorucit do cile a naplanovat se do send
 				if (active) 
 					send_queue (model);
 				//vypadek linky?
-				if (toggle ())
+				if (toggle ()) {
+					log.Debug ("("+name+") Switching link state");
 					active = !active;
+				}
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,state.Data), model.Time+1);
 			} else
 				throw new ArgumentException ("[Link " + name + "] Invalid state: " + state);
@@ -197,7 +197,6 @@ namespace NetTrafficSimulator
 		 * @param model the Model
 		 */
 		private void send_queue(MFF_NPRG031.Model model){
-			Console.WriteLine ("Send queue");
 			if (model == null)
 				throw new ArgumentNullException ("[Link.send_queue] Model null");
 			//foreach (DataEnvelope de in queue) {
@@ -205,8 +204,8 @@ namespace NetTrafficSimulator
 				DataEnvelope de = queue [i];
 				if (de == null)
 					throw new ArgumentNullException ("[Link.send_queue] DataEnvelope null");
-				Console.WriteLine ("DE: "+de.Source+"\t"+de.Destination);
 				//de.Destination.Receive (de.Data);
+				log.Debug ("(" + Name + ") Delivery to " + de.Destination + " at " + (model.Time + 1));
 				de.Destination.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, de.Data), model.Time + 1);
 			}
 			this.next_queue_pos = 0;
@@ -282,6 +281,11 @@ namespace NetTrafficSimulator
 				else
 					return 100;
 			}
+		}
+
+		public override string ToString ()
+		{
+			return name;
 		}
 	}
 }

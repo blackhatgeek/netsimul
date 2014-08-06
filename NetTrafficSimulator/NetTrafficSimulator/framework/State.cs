@@ -49,6 +49,11 @@ namespace MFF_NPRG031
 				return additionalData;
 			}
 		}
+
+		public override string ToString ()
+		{
+			return actual_state.ToString();
+		}
 	}
 }
 

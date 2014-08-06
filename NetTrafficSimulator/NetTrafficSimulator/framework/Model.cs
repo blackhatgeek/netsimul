@@ -1,4 +1,5 @@
 using System;
+using log4net;
 
 namespace MFF_NPRG031
 {
@@ -8,6 +9,7 @@ namespace MFF_NPRG031
 	 */
 	public class Model
 	{
+		private static readonly ILog log=LogManager.GetLogger(typeof(Model));
 		private NetTrafficSimulator.ServerNode[] servers;
 		public NetTrafficSimulator.ServerNode[] Servers{
 			get{
@@ -49,16 +51,23 @@ namespace MFF_NPRG031
 		 */
 		public int Simulate()
 		{
+			log.Info ("Simulation started");
 			while (!Finish) {
 				Event e = K.First ();
+				log.Debug ("<Event> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
 				if (e != null) {
 					Time = e.when;
-					if (Time >= time_to_run)
-							Finish = true;
+					if (Time >= time_to_run) {
+						Finish = true;
+						log.Debug ("<Skipped event> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
+					}
 					e.who.ProcessEvent (e.what, this);
 				} else
 					Finish = true;
 			}
+			foreach (Event e in K.GetK())
+				log.Debug ("<Remainder> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
+			log.Info ("Simulation finished at time " + Time);
 			return Time;
 		}
 	}

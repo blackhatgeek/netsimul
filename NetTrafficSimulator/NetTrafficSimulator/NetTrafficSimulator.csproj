@@ -60,6 +60,9 @@
     <Reference Include="Mono.Posix" />
     <Reference Include="nunit.framework" />
     <Reference Include="System.Xml" />
+    <Reference Include="log4net">
+      <HintPath>..\..\log4net-1.2.13\bin\mono\2.0\release\log4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -8,6 +9,7 @@ namespace NetTrafficSimulator
 	 */
 	public class NetworkNode:Node
 	{
+		static readonly ILog log = LogManager.GetLogger (typeof(NetworkNode));
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
 		Dictionary<int,int> route;
@@ -78,19 +80,22 @@ namespace NetTrafficSimulator
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.RECEIVE:
 				this.time_wait += model.Time - last_process;
-				this.last_process = model.Time;
 				processed++;
+				log.Debug ("("+Name+") Receiving. Time: "+model.Time+" Last process:"+last_process+" Waited:"+time_wait+" Processed:"+processed);
+				this.last_process = model.Time;
+				
 				if (state.Data == null)
 					throw new ArgumentNullException ("Packet null");
 				scheduleForward (state.Data, selectDestination (state.Data), model);
 				break;
 			case MFF_NPRG031.State.state.SEND:
+				log.Debug ("("+Name+") Sending.");
 				Packet p = state.Data;
 				Link l;
 				if (schedule.TryGetValue (p, out l))
 					l.Carry (p, this, l.GetPartner (this));
 				else
-					throw new ArgumentException ("Packet was not scheduled for sending - missing record for link to use");
+					throw new ArgumentException ("("+Name+") Packet was not scheduled for sending - missing record for link to use");
 				break;
 			default:
 				throw new ArgumentException ("[NetworkNode "+Name+"] Neplatny stav: "+state);
@@ -136,6 +141,7 @@ namespace NetTrafficSimulator
 		 * @param model the Model
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
+			log.Debug ("("+Name+") Routing via link " + l + " at " + (model.Time + delay));
 			this.schedule.Add (p, l);
 			this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), model.Time + delay);
 			//l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);

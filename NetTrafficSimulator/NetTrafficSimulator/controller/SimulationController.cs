@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -8,6 +9,7 @@ namespace NetTrafficSimulator
 	 */
 	public class SimulationController
 	{
+		private static readonly ILog log=LogManager.GetLogger(typeof(SimulationController));
 		private NetworkModel network_model;
 		private SimulationModel simulation_model;
 		private MFF_NPRG031.Model framework_model;
@@ -174,7 +176,6 @@ namespace NetTrafficSimulator
 		 * Stores statistics into Result Model
 		 */
 		private void PopulateResultModel(){
-			Console.WriteLine ("Link count: " + links.Count);
 			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, links.Count);
 			foreach (Node n in nodes) {
 				if (n is EndNode) {
@@ -199,8 +200,11 @@ namespace NetTrafficSimulator
 		 * Initialize framework, run simulation, populate result model
 		 */
 		public void Run(){
+			log.Info ("Initializing framework");
 			InitializeFramework ();
+			log.Info ("Running simulation");
 			framework_model.Simulate ();
+			log.Info ("Populating result model");
 			PopulateResultModel ();
 		}
 	}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -8,10 +9,11 @@ namespace NetTrafficSimulator
 	 */
 	public class EndNode:EndpointNode
 	{
-		private int sent, received,malreceived,time_wait,server_node_count, max_packet_size;
+		private int sent, received,malreceived,time_wait,server_node_count, max_packet_size,last_send;
 		private decimal psizesum;
 		private Link link;
 		private Random r;
+		private static readonly ILog log=LogManager.GetLogger(typeof(EndNode));
 
 		/**
 		 * Creates an EndNode with given name and address
@@ -22,6 +24,7 @@ namespace NetTrafficSimulator
 			this.malreceived = 0;
 			this.r = new Random ();
 			this.time_wait = 0;
+			this.last_send = 0;
 			this.max_packet_size = max_packet_size;
 			this.psizesum = 0.0m;
 		}
@@ -42,25 +45,35 @@ namespace NetTrafficSimulator
 			server_node_count = model.Servers.GetLength (0);
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.SEND:
+				time_wait += (model.Time - last_send);
+				last_send = model.Time;
+				log.Debug ("("+Name+") Sending at " + model.Time+" link "+this.link);
 				if (state.Data != null)
-					send (state.Data.Destination,state.Data.Size);
+					send (state.Data.Destination, state.Data.Size);
 				else if (server_node_count > 0)
-					send (selectDestination (model, server_node_count),selectDataSize());
+					send (selectDestination (model, server_node_count), selectDataSize ());
 				//else nejsou k dispozici servery
 				else
-					send (r.Next (),selectDataSize());
+					send (r.Next (), selectDataSize ());
+				//time_wait--;
 				int t = wait_time ();
-				time_wait += t;
+				//time_wait += t;
+
+				log.Debug ("("+Name+") Wait for " + t + " Total wait: " + time_wait);
+				log.Debug ("("+Name+") Schedule next send at " + (model.Time + t));
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
 				break;
 			/*case MFF_NPRG031.State.state.WAIT:
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time ());
 				break;*/
 			case MFF_NPRG031.State.state.RECEIVE:
-				if (state.Data.Destination == this.Address)
+				if (state.Data.Destination == this.Address) {
 					received++;
-				else
+					log.Debug ("("+Name+") Received at " + model.Time);
+				} else {
 					malreceived++;
+					log.Debug ("("+Name+") Received incorrectly at " + model.Time + ": From " + state.Data.Source + " To:" + state.Data.Destination + " Size:" + state.Data.Size);
+				}
 				break;
 			default:
 				throw new ArgumentException ("[EndNode "+Name+"] Neplatny stav: "+state);
@@ -159,7 +172,7 @@ namespace NetTrafficSimulator
 		 */
 		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
 			if (model.Time != 0)
-				return time_wait / model.Time * 100;
+				return (decimal)time_wait / model.Time * 100;
 			else
 				return 100;
 		}
@@ -170,7 +183,7 @@ namespace NetTrafficSimulator
 		public decimal AverageWaitTime{
 			get{
 				if (sent != 0)
-					return time_wait / sent;
+					return (decimal)time_wait / sent;
 				else
 					return 0;
 			}
