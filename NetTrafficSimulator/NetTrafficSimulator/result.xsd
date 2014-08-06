@@ -12,7 +12,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 									<xs:choice minOccurs="1" maxOccurs="unbounded">
 										<xs:element name="endNode" type="ns:tEndNode" />
 									</xs:choice>
-								<xs:complexType>
+								</xs:complexType>
 							</xs:element>
 							<xs:element name="serverNodes" minOccurs="0" maxOccurs="1">
 								<xs:complexType>

@@ -71,7 +71,7 @@ namespace NetTrafficSimulator
 				switch (network_model.GetNodeType (i)) {
 				case NetworkModel.END_NODE:
 					string name = network_model.GetNodeName (i);
-					EndNode en = new EndNode (name, network_model.GetNodeAddr(i),network_model.GetEndNodeMaxPacketSize(name));
+					EndNode en = new EndNode (name, network_model.GetNodeAddr (i), network_model.GetEndNodeMaxPacketSize (name));
 					nodes [nodeCounter] = en;
 					endNodeCounter++;
 					addressCounter++;
@@ -87,8 +87,8 @@ namespace NetTrafficSimulator
 				case NetworkModel.SERVER_NODE:
 					ServerNode sn = new ServerNode (network_model.GetNodeName(i), network_model.GetNodeAddr(i));
 					nodes [nodeCounter] = sn;
-					serverNodeCounter++;
 					servers [serverNodeCounter] = sn;
+					serverNodeCounter++;
 					nodeCounter++;
 					addressCounter++;
 					break;
@@ -174,6 +174,7 @@ namespace NetTrafficSimulator
 		 * Stores statistics into Result Model
 		 */
 		private void PopulateResultModel(){
+			Console.WriteLine ("Link count: " + links.Count);
 			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, links.Count);
 			foreach (Node n in nodes) {
 				if (n is EndNode) {

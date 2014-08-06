@@ -14,7 +14,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 				</xs:element>
 			</xs:choice>
 			<xs:attribute name="time_run" use="required" type="xs:nonNegativeInteger"/>
-			<xs:attribute name="version" use="required" fixed="0.01"/>
+			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.01"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tNode">
@@ -22,11 +22,11 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 			<xs:element name="server" type="ns:tEndpoint" />
 			<xs:element name="end">
 				<xs:complexType>
-					<xs:simpleContent>
+					<xs:complexContent>
 						<xs:extension base="ns:tEndpoint">
 							<xs:attribute name="mps" type="xs:nonNegativeInteger" use="optional" />
 						</xs:extension>
-					</xs:simpleContent>
+					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="network" type="ns:tNetwork" />
@@ -52,3 +52,4 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 		</xs:choice>
 	</xs:complexType>
 </xs:schema>
+

@@ -109,6 +109,8 @@ namespace NetTrafficSimulator
 				this.types = new int[node_count];
 				this.link_count=new int[node_count];
 				this.addr=new int[node_count];
+				this.n_name = new Dictionary<string, int> ();
+				this.en_mps = new Dictionary<string, int> ();
 
 				for (int i=0; i<node_count; i++) {
 					for (int j=0; j<node_count; j++) {

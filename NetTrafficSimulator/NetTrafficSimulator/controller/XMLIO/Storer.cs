@@ -11,17 +11,21 @@ namespace NetTrafficSimulator
 	public class Storer
 	{
 		XmlDocument xs;
-		XmlWriter xw;
+		XmlTextWriter xw;
 		public Storer(string fname){
 			XmlWriterSettings xws = new XmlWriterSettings ();
-			xws.WriteEndDocumentOnClose = true;
+			//xws.WriteEndDocumentOnClose = true;
 			xws.CheckCharacters = true;
 			xws.CloseOutput = true;
 
 			if(File.Exists(fname))
 			   throw new IOException("File already exists");
 			FileStream fs = new FileStream (fname,FileMode.CreateNew,FileAccess.Write);
-			xw = XmlWriter.Create (fs,xws);
+			StreamWriter sw = new StreamWriter (fs);
+			//xw = XmlWriter.Create (fs,xws);
+			xw = new XmlTextWriter (sw);
+			xw.Formatting = Formatting.Indented;
+			xw.WriteStartDocument ();
 			xs = new XmlDocument ();
 			xs.Schemas.Add ("http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0", "result.xsd");
 		}
@@ -29,6 +33,7 @@ namespace NetTrafficSimulator
 		public void StoreResultModel(ResultModel rm){
 			if (rm != null) {
 				XmlElement simulation = xs.CreateElement ("simulation");
+				xs.AppendChild (simulation);
 
 				XmlNode result = xs.CreateElement ("result");
 
@@ -141,7 +146,9 @@ namespace NetTrafficSimulator
 					result.AppendChild (networkNodes);
 
 					XmlElement links = xs.CreateElement ("links");
+					Console.WriteLine ("Links: " + rm.LinkNames.GetLength (0));
 					foreach (string linkName in rm.LinkNames) {
+						//Console.WriteLine (linkName);
 						XmlElement link = xs.CreateElement ("link");
 
 						XmlAttribute name = xs.CreateAttribute("name");
@@ -171,13 +178,16 @@ namespace NetTrafficSimulator
 						XmlAttribute timeIdle = xs.CreateAttribute ("percentTimeIdle");
 						timeIdle.Value = rm.GetLinkIdleTimePercentage (linkName)+"";
 						link.Attributes.Append (timeIdle);
+
+						links.AppendChild (link);
 					}
 					result.AppendChild (links);
 				}
 
 				simulation.AppendChild (result);
-
-				xs.Save (xw);
+				xs.WriteContentTo (xw);
+				xw.Flush ();
+				xw.Close();
 			}
 		}
 	}

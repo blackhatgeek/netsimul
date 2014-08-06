@@ -21,10 +21,10 @@ namespace NetTrafficSimulator
 
 			//Load model
 			if(!File.Exists(fname))
-			   throw new IOException("File doesn't exist");
+			   throw new IOException("File doesn't exist ("+fname+")");
 			FileStream fs = new FileStream (fname, FileMode.Open,FileAccess.Read);
 			XmlReader model = XmlReader.Create (fs, settings);
-			XmlDocument xd = new XmlDocument ();
+			xd = new XmlDocument ();
 			xd.Load (model);
 		}
 
@@ -51,7 +51,7 @@ namespace NetTrafficSimulator
 				case "network":
 					nm.SetNodeType (i, NetworkModel.NETWORK_NODE);
 					nm.SetNodeName (i, node.Attributes.GetNamedItem ("name").Value);
-					nm.SetNodeAddr (i, Convert.ToInt32(node.Attributes.GetNamedItem ("address").Value));
+					//nm.SetNodeAddr (i, Convert.ToInt32(node.Attributes.GetNamedItem ("address").Value));
 					break;
 				default:
 					break;
@@ -66,7 +66,7 @@ namespace NetTrafficSimulator
 				string name = link.Attributes.GetNamedItem ("name").Value;
 				string n1 = link.Attributes.GetNamedItem ("node1").Value;
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
-				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity"));
+				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
 				//verifikace
 				if (nm.HaveNode (n1) && nm.HaveNode (n2)) {
 					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa);

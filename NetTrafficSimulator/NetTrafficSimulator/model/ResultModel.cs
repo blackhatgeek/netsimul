@@ -287,8 +287,8 @@ namespace NetTrafficSimulator
 			this.networkNodeCount = 0;
 			this.networkNodeNames = new Dictionary<string, NetworkNodeResult> ();
 
-			this.links = new string[linkCount];
-			this.linkLimit = linkCount;
+			this.links = new string[linkNodes];
+			this.linkLimit = linkNodes;
 			this.linkCount = 0;
 			this.linkNames = new Dictionary<string, LinkResult> ();
 		}
@@ -363,7 +363,7 @@ namespace NetTrafficSimulator
 				linkNames.Add (name, new LinkResult (name, packetsCarried, packetsDropped, dropPerct, activeTime, passiveTime, idleTime));
 				linkCount++;
 			} else
-				throw new ArgumentException ("Link counter exceeded");
+				throw new ArgumentException ("Link counter exceeded: "+linkCount);
 		}
 
 		/**

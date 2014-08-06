@@ -24,6 +24,8 @@ namespace NetTrafficSimulator
 			 * @param target Packet receiver
 			 */
 			public DataEnvelope(Packet p,Node source,Node target){
+				if((source==null)||(target==null))
+					throw new ArgumentNullException("[new DataEnvelope] Argument null");
 				this.p=p;
 				this.source=source;
 				this.destination=target;
@@ -51,6 +53,11 @@ namespace NetTrafficSimulator
 				get{
 					return destination;
 				}
+			}
+
+			public override string ToString ()
+			{
+				return string.Format ("[DataEnvelope: Data={0}, Source={1}, Destination={2}]", Data, Source, Destination);
 			}
 		}
 
@@ -128,12 +135,20 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException if origin and destination are not nodes specified in the consructor regardless of order
 		 */
 		public void Carry(Packet p,Node origin,Node destination){
+			Console.WriteLine ("Carry: origin "+origin+" destination: "+destination);
 			if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
+				Console.WriteLine ("Passed verification");
 				if (active) {
+					Console.WriteLine ("Active");
 					carried++;
 					if (next_queue_pos < capacity) {
+						Console.WriteLine ("Enqueue");
 						DataEnvelope de = new DataEnvelope (p, origin, destination);
+						if (de == null)
+							throw new NullReferenceException ("New DE null");
 						queue [next_queue_pos] = de;
+						if (queue [next_queue_pos] == null)
+							throw new NullReferenceException ("queue[" + next_queue_pos + "] nul"); 
 						next_queue_pos++;
 					} else
 						dropped++;
@@ -182,7 +197,15 @@ namespace NetTrafficSimulator
 		 * @param model the Model
 		 */
 		private void send_queue(MFF_NPRG031.Model model){
-			foreach (DataEnvelope de in queue) {
+			Console.WriteLine ("Send queue");
+			if (model == null)
+				throw new ArgumentNullException ("[Link.send_queue] Model null");
+			//foreach (DataEnvelope de in queue) {
+			for(int i=0;i<next_queue_pos;i++){
+				DataEnvelope de = queue [i];
+				if (de == null)
+					throw new ArgumentNullException ("[Link.send_queue] DataEnvelope null");
+				Console.WriteLine ("DE: "+de.Source+"\t"+de.Destination);
 				//de.Destination.Receive (de.Data);
 				de.Destination.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, de.Data), model.Time + 1);
 			}
