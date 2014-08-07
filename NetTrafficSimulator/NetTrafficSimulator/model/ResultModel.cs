@@ -148,11 +148,13 @@ namespace NetTrafficSimulator
 			int packetsProcessed;
 			int timeWaited;
 			int dropped;
+			int route_sent,route_received;
 			decimal timeIdle;
 			decimal avgWaitTime;
 			decimal percPacketsDropped;
+			decimal percRoute;
 
-			public NetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal precPDropped){
+			public NetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal precPDropped,int rsent,int rrec,decimal prm){
 				this.name=name;
 				this.packetsProcessed=packetsProcessed;
 				this.timeWaited=timeWaited;
@@ -160,6 +162,9 @@ namespace NetTrafficSimulator
 				this.avgWaitTime=avgWaitTime;
 				this.dropped=dropped;
 				this.percPacketsDropped=precPDropped;
+				this.route_sent=rsent;
+				this.route_received=rrec;
+				this.percRoute=prm;
 			}
 
 			public string Name{
@@ -201,6 +206,24 @@ namespace NetTrafficSimulator
 			public decimal PercPacketsDropped{
 				get{
 					return percPacketsDropped;
+				}
+			}
+
+			public int RouteSent{
+				get{
+					return route_sent;
+				}
+			}
+
+			public int RouteReceived{
+				get{
+					return route_received;
+				}
+			}
+
+			public decimal PercentageRoutePackets{
+				get{
+					return percRoute;
 				}
 			}
 		}
@@ -267,6 +290,13 @@ namespace NetTrafficSimulator
 				}
 			}
 		}
+
+		private const String NN = "Network node";
+		private const String SN = "Server node";
+		private const String EN = "End node";
+		private const String LN = "Link";
+		private const string NF = " not found";
+
 
 		//jmena
 		private string[] endNodes;
@@ -364,14 +394,17 @@ namespace NetTrafficSimulator
 		 * @param avgWaitTime average wait time
 		 * @param dropped packets dropped due to hop count
 		 * @param percPacketsDropped packets dropped relative to packets processed
+		 * @param rsent routing packets sent
+		 * @param rreceived routing packets received
+		 * @param rpack percentage of routing packets in packetsProcessed
 		 * @throws ArgumentException Network node counter exceeded amount of network nodes set in constructor
 		 */
-		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal percPacketsDropped){
+		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal percPacketsDropped,int rsent,int rreceived,decimal rpack){
 			if (networkNodeCount < networkNodeLimit) {
 				networkNodes [networkNodeCount] = name;
 				if (networkNodeNames.ContainsKey (name))
 					networkNodeNames.Remove (name);
-				networkNodeNames.Add (name, new NetworkNodeResult (name, packetsProcessed, timeWaited, timeIdle, avgWaitTime, dropped, percPacketsDropped));
+				networkNodeNames.Add (name, new NetworkNodeResult (name, packetsProcessed, timeWaited, timeIdle, avgWaitTime, dropped, percPacketsDropped,rsent,rreceived,rpack));
 				networkNodeCount++;
 			} else
 				throw new ArgumentException ("Network node counter exceeded");
@@ -429,6 +462,13 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		private EndNodeResult getENR(string name){
+			EndNodeResult enr;
+			if (endNodeNames.TryGetValue (name, out enr))
+				return enr;
+			else
+				throw new ArgumentException (EN+NF);
+		}
 		/**
 		 * If there exists an EndNode with the name provided, return it's network address
 		 * @param name EndNode name
@@ -436,11 +476,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Node not found
 		 */
 		public int GetEndNodeAddress(string name){
-			EndNodeResult enr;
-			if (endNodeNames.TryGetValue (name, out enr))
-				return enr.Address;
-			else
-				throw new ArgumentException ("Node not found");
+				return getENR(name).Address;
 		}
 		/**
 		 * If there exists an EndNode with the name provided return amount of packets sent by the node
@@ -449,11 +485,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException node not found
 		 */
 		public int GetEndNodePacketsSent(string name){
-			EndNodeResult enr;
-			if (endNodeNames.TryGetValue (name, out enr))
-				return enr.PacketsSent;
-			else
-				throw new ArgumentException ("End node not found");
+			return getENR(name).PacketsSent;
 		}
 		/**
 		 * If there exists an EndNode with the name provided return amount of packets received by the node.
@@ -462,13 +494,8 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Node not found
 		 */
 		public int GetEndNodePacketsReceived(string name){
-			EndNodeResult enr;
-			if (endNodeNames.TryGetValue (name, out enr))
-				return enr.PacketsReceived;
-			else
-				throw new ArgumentException ("End node not found");
+			return getENR(name).PacketsReceived;
 		}
-
 		/**
 		 * If there exists an EndNode with the name provided return amount of packets received by the EndNode, where destination address was not the EndNode's address
 		 * @param name EndNode name
@@ -476,11 +503,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Node not found
 		 */
 		public int GetEndNodePacketsMalreceived(string name){
-			EndNodeResult enr;
-			if (endNodeNames.TryGetValue (name, out enr))
-				return enr.PacketsMalreceived;
-			else
-				throw new ArgumentException ("Node not found");
+			return getENR(name).PacketsMalreceived;
 		}
 		/** 
 		 * If there exists an EndNode with the name provided return amount of time the node spent waiting
@@ -489,11 +512,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Node not found
 		 */
 		public int GetEndNodeTimeWaited(string name){
-			EndNodeResult enr;
-			if (endNodeNames.TryGetValue (name, out enr))
-				return enr.TimeWaited;
-			else
-				throw new ArgumentException ("Node not found");
+			return getENR(name).TimeWaited;
 		}
 		/**
 		 * If there exists an EndNode with the name provided return percentage of time the node spent waiting
@@ -502,11 +521,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException node not found
 		 */
 		public decimal GetEndNodePercentTimeIdle(string name){
-			EndNodeResult enr;
-			if (endNodeNames.TryGetValue (name, out enr))
-				return enr.TimeIdle;
-			else
-				throw new ArgumentException ("End node not found");
+			return getENR(name).TimeIdle;
 		}
 		/**
 		 * If there exists an EndNode with the name provided return the average time the node spent waiting
@@ -515,13 +530,8 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException EndNode not found
 		 */
 		public decimal GetEndNodeAverageWaitTime(string name){
-			EndNodeResult enr;
-			if (endNodeNames.TryGetValue (name, out enr))
-				return enr.AvgWaitTime;
-			else
-				throw new ArgumentException ("End node not found");
+			return getENR(name).AvgWaitTime;
 		}
-
 		/**
 		 * If there exists an EndNode with the name provided return average size of packet the node generated
 		 * @param name EndNode name
@@ -529,13 +539,16 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException node not found
 		 */
 		public decimal GetEndNodeAveragePacketSize(string name){
-			EndNodeResult enr;
-			if(endNodeNames.TryGetValue(name,out enr))
-			   return enr.AvgPSize;
-			else
-			   throw new ArgumentException("End node not found");
+			return getENR(name).AvgPSize;
 		}
 
+		private ServerNodeResult getSNR(string name){
+			ServerNodeResult snr;
+			if (serverNodeNames.TryGetValue (name, out snr))
+				return snr;
+			else
+				throw new ArgumentException (SN+NF);
+		}
 		/**
 		 * If there exists a ServerNode with the name provided, return it's network address
 		 * @param name ServerNode name
@@ -543,11 +556,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException node not found
 		 */
 		public int GetServerNodeAddress(string name){
-			ServerNodeResult snr;
-			if (serverNodeNames.TryGetValue (name, out snr))
-				return snr.Address;
-			else
-				throw new ArgumentException ("Server node not found");
+			return getSNR (name).Address;
 		}
 		/**
 		 * If there exists a ServerNode with the name provided return the amount of packets processed by the node
@@ -556,13 +565,8 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException ServerNode not found
 		 */
 		public int GetServerNodePacketsProcessed(string name){
-			ServerNodeResult snr;
-			if (serverNodeNames.TryGetValue (name, out snr))
-				return snr.PacketsProcessed;
-			else
-				throw new ArgumentException ("Server node not found");
+			return getSNR(name).PacketsProcessed;
 		}
-
 		/**
 		 * If there exists a ServerNode with the name provided return amount of packets received by the ServerNode where destination address was different than ServerNode's address
 		 * @param name ServerNode name
@@ -570,11 +574,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Server node not found
 		 */
 		public int GetServerNodePacketsMalreceived(string name){
-			ServerNodeResult snr;
-			if (serverNodeNames.TryGetValue (name, out snr))
-				return snr.PacketsMalreceived;
-			else
-				throw new ArgumentException ("Server node not found");
+			return getSNR(name).PacketsMalreceived;
 		}
 		/**
 		 * If there exists a ServerNode with the name provided return amount of time the node spent waiting
@@ -583,11 +583,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Node not found
 		 */
 		public int GetServerNodeTimeWaited(string name){
-			ServerNodeResult snr;
-			if (serverNodeNames.TryGetValue (name, out snr))
-				return snr.TimeWaited;
-			else
-				throw new ArgumentException ("Server node not found");
+			return getSNR(name).TimeWaited;
 		}
 		/**
 		 * If there exists a ServerNode with the name provided return percentage of time the node spent waiting
@@ -596,11 +592,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException node not found
 		 */
 		public decimal GetServerNodePercentTimeIdle(string name){
-			ServerNodeResult snr;
-			if (serverNodeNames.TryGetValue (name, out snr))
-				return snr.TimeIdle;
-			else
-				throw new ArgumentException ("Server node not found");
+			return getSNR(name).TimeIdle;
 		}
 		/**
 		 * If there exists a ServerNode with the name provided return average time the node spent waiting
@@ -609,13 +601,16 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException ServerNode not found
 		 */
 		public decimal GetServerNodeAverageWaitTime(string name){
-			ServerNodeResult snr;
-			if (serverNodeNames.TryGetValue (name, out snr))
-				return snr.AvgWaitTime;
-			else
-				throw new ArgumentException ("Server node not found");
+			return getSNR(name).AvgWaitTime;
 		}
 
+		private NetworkNodeResult getNNR(string name){
+			NetworkNodeResult nnr;
+			if (networkNodeNames.TryGetValue (name, out nnr))
+				return nnr;
+			else
+				throw new ArgumentException (NN+NF);
+		}
 		/**
 		 * If there exists a NetworkNode with the name provided return the amount of packets processed by the node
 		 * @param name NetworkNode name
@@ -623,11 +618,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException NetworkNode not found
 		 */
 		public int GetNetworkNodePacketsProcessed(string name){
-			NetworkNodeResult nnr;
-			if (networkNodeNames.TryGetValue (name, out nnr))
-				return nnr.PacketsProcessed;
-			else
-				throw new ArgumentException ("Network node not found");
+			return getNNR (name).PacketsProcessed;
 		}
 		/**
 		 * If there exists a NetworkNode with the name provided return amount of time the node spent waiting
@@ -636,11 +627,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Node not found
 		 */
 		public int GetNetworkNodeTimeWaited(string name){
-			NetworkNodeResult nnr;
-			if (networkNodeNames.TryGetValue (name, out nnr))
-				return nnr.TimeWaited;
-			else
-				throw new ArgumentException ("Network node not found");
+			return getNNR(name).TimeWaited;
 		}
 		/**
 		 * If there exists a NetworkNode with the name provided return percentage of time the node spent waiting
@@ -649,11 +636,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException node not found
 		 */
 		public decimal GetNetworkNodePercentTimeIdle(string name){
-			NetworkNodeResult nnr;
-			if (networkNodeNames.TryGetValue (name, out nnr))
-				return nnr.TimeIdle;
-			else
-				throw new ArgumentException ("Network node not found");
+			return getNNR(name).TimeIdle;
 		}
 		/**
 		 * If there exists a NetworkNode with the name provided return the average time the node spent waiting
@@ -662,13 +645,8 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException NetworkNode not found
 		 */
 		public decimal GetNetworkNodeAverageWaitTime(string name){
-			NetworkNodeResult nnr;
-			if (networkNodeNames.TryGetValue (name, out nnr))
-				return nnr.AvgWaitTime;
-			else
-				throw new ArgumentException ("Network node not found");
+			return getNNR (name).AvgWaitTime;
 		}
-
 		/**
 		 * If there exists a NetworkNode with the name provided return the amount of packets dropped due to hop count
 		 * @param name NetwokNode name
@@ -676,13 +654,8 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Network node not found
 		 */
 		public int GetNetworkNodePacketsDropped(string name){
-			NetworkNodeResult nnr;
-			if (networkNodeNames.TryGetValue (name, out nnr))
-				return nnr.PacketsDropped;
-			else
-				throw new ArgumentException ("Network node not found");
+			return getNNR (name).PacketsDropped;
 		}
-
 		/**
 		 * If there exists a NetworkNode with the name provided return the percentage of packets dropped due to hop count relative to amount of packets processed
 		 * @param name NetwokNode name
@@ -694,9 +667,25 @@ namespace NetTrafficSimulator
 			if (networkNodeNames.TryGetValue (name, out nnr))
 				return nnr.PercPacketsDropped;
 			else
-				throw new ArgumentException ("Network node not found");
+				throw new ArgumentException (NN+NF);
+		}
+		public int GetNetworkNodeRoutingPacketsSent(string name){
+			return getNNR(name).RouteSent;
+		}
+		public int GetNetworkNodeRoutingPacketsReceived(string name){
+			return getNNR (name).RouteReceived;
+		}
+		public decimal GetNetworkNodePercentageRoutingPackets(string name){
+			return getNNR (name).PercentageRoutePackets;
 		}
 
+		private LinkResult getLR(string name){
+			LinkResult lr;
+			if (linkNames.TryGetValue (name, out lr))
+				return lr;
+			else
+				throw new ArgumentException (LN);
+		}
 		/**
 		 * If there exists a link with the name provided return amount of packets carried by the link
 		 * @param name Link name
@@ -704,11 +693,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException link not found
 		 */
 		public int GetLinkPacketsCarried(string name){
-			LinkResult lr;
-			if (linkNames.TryGetValue (name, out lr))
-				return lr.PacketsCarried;
-			else
-				throw new ArgumentException ("Link not found");
+			return getLR (name).PacketsCarried;
 		}
 		/**
 		 * If there exists a link with the name provided return amount of packets dropped by the link
@@ -717,11 +702,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException link not found
 		 */ 
 		public int GetLinkPacketsDropped(string name){
-			LinkResult lr;
-			if (linkNames.TryGetValue (name, out lr))
-				return lr.PacketsDropped;
-			else
-				throw new ArgumentException ("Link not found");
+			return getLR(name).PacketsDropped;
 		}
 		/**
 		 * If there exists a link with the name provided return how many percents of packets were dropped by the link
@@ -730,11 +711,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Link not found
 		 */ 
 		public decimal GetLinkDropPercentage(string name){
-			LinkResult lr;
-			if (linkNames.TryGetValue (name, out lr))
-				return lr.DropPercentage;
-			else
-				throw new ArgumentException ("Link not found");
+			return getLR(name).DropPercentage;
 		}
 		/**
 		 * If there exists a link with the name provided return how much time the link was active
@@ -743,11 +720,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Link not found
 		 */
 		public int GetLinkActiveTime(string name){
-			LinkResult lr;
-			if (linkNames.TryGetValue (name, out lr))
-				return lr.ActiveTime;
-			else
-				throw new ArgumentException ("Link not found");
+			return getLR(name).ActiveTime;
 		}
 		/**
 		 * If there exists a link with the name provided return how much time the link was not active
@@ -756,11 +729,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Link not found
 		 */
 		public int GetLinkPassiveTime(string name){
-			LinkResult lr;
-			if (linkNames.TryGetValue (name, out lr))
-				return lr.PassiveTime;
-			else
-				throw new ArgumentException ("Link not found");
+			return getLR(name).PassiveTime;
 		}
 		/**
 		 * If there exists a link with the name provided return the percentage how much time the link was not active
@@ -769,11 +738,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Link not found
 		 */
 		public decimal GetLinkIdleTimePercentage(string name){
-			LinkResult lr;
-			if (linkNames.TryGetValue (name, out lr))
-				return lr.IdleTime;
-			else
-				throw new ArgumentException ("Link not found");
+			return getLR(name).IdleTime;
 		}
 	}
 }

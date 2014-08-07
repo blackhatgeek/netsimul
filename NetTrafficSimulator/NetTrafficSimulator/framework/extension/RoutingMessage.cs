@@ -3,15 +3,8 @@ using System;
 namespace NetTrafficSimulator
 {
 	public abstract class RoutingMessage:Packet{
-		public RoutingMessage(int size):base(int.MinValue,int.MinValue,(decimal)size){
-		}
-	}
-
-	public class Request:RoutingMessage
-	{
 		private Link link;
-		public Request (Link l):base(1)
-		{
+		public RoutingMessage(Link l,int size):base(int.MinValue,int.MinValue,(decimal)size){
 			this.link = l;
 		}
 		public Link Link{
@@ -21,10 +14,17 @@ namespace NetTrafficSimulator
 		}
 	}
 
+	public class Request:RoutingMessage
+	{
+		public Request (Link l):base(l,1)
+		{
+		}
+	}
+
 	public class Response:RoutingMessage
 	{
 		RoutingTable route;
-		public Response(RoutingTable rt):base(rt.RecordsCount){
+		public Response(Link l,RoutingTable rt):base(l,rt.RecordsCount){
 			this.route = rt;
 		}
 		public RoutingTable Table{
@@ -32,7 +32,6 @@ namespace NetTrafficSimulator
 				return route;
 			}
 		}
-		//zaznamy
 	}
 }
 

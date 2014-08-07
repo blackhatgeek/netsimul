@@ -23,7 +23,7 @@ namespace NetTrafficSimulator
 
 		[Test()]
 		public void TwoRoutes(){
-			RoutingTable rt = new RoutingTable (0);
+			//RoutingTable rt = new RoutingTable (0);
 			//Link l1=new Link(
 		}
 	}

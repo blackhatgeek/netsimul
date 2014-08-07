@@ -124,8 +124,10 @@ namespace NetTrafficSimulator
 		 * @param addr destination address
 		 * @param l route
 		 * @param metric metric
+		 * @return if record was set
 		 */ 
-		public void SetRecord(int addr,Link l,int metric){
+		public bool SetRecord(int addr,Link l,int metric){
+			bool recSet=false;
 			log.Debug ("New record: " + addr + " via " + l.Name + " (" + metric+")");
 			Record newRec, addrRec;
 			newRec = new Record (l, (metric<max)?metric:max,addr);
@@ -135,12 +137,13 @@ namespace NetTrafficSimulator
 					if (addrRec.Metric >= metric) {
 						if ((addrRec.Metric == metric) && (addrRec.Link == l)) {
 							log.Warn("Omitting duplicate record: "+addr+" via "+l.Name+" ("+metric+")");
-							return;// throw new ArgumentException("Duplicate record");
+							return recSet;// throw new ArgumentException("Duplicate record");
 						}
 						//moje metrika je nejmensi
 						newRec.AddrDown = addrRec;
 						addrRec.AddrUp = newRec;
 						addrList.Add (addr, newRec);
+						recSet = true;
 						log.Debug ("Best route, following " + addrRec.Link.Name);
 					} else {
 						//najit misto
@@ -160,7 +163,7 @@ namespace NetTrafficSimulator
 						} else {
 							if ((addrRec.Metric == metric) && (addrRec.Link == l)) {
 								log.Warn("Omitting duplicate record: "+addr+" via "+l.Name+" ("+metric+")");
-								return;//throw new ArgumentException("Duplicate record");
+								return recSet;//throw new ArgumentException("Duplicate record");
 							}
 							newRec.AddrUp = addrRec.AddrUp;
 							newRec.AddrUp.AddrDown = newRec;
@@ -169,15 +172,18 @@ namespace NetTrafficSimulator
 							log.Debug ("Between " + newRec.AddrUp.Link.Name + " and " + newRec.AddrDown.Link.Name);
 						}
 						addrList.Add (addr, head);
+						recSet = true;
 					}
 				} else {//nova adresa
 					addrList.Add (addr, newRec);
 					log.Debug ("First route");
+					recSet = true;
 				}
 			} else {//nova adresa
 				log.Debug ("Add to addrlist " + addr + " " + newRec.Link.Name + " " + newRec.Metric);
 				addrList.Add (addr, newRec);
 				log.Debug ("New destination "+addr);
+				recSet = true;
 			}
 			//links
 			Record linkR;
@@ -192,6 +198,7 @@ namespace NetTrafficSimulator
 				linkList.Add (l, newRec);
 			records++;
 			log.Debug ("Addr list count: " + addrList.Count + "\t Link list count: " + linkList.Count+"\t Records: "+records);
+			return recSet;
 		}
 
 		/**

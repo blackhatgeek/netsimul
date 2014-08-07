@@ -38,7 +38,7 @@ namespace NetTrafficSimulator
 				XmlNode result = xs.CreateElement ("result");
 
 				XmlAttribute version = xs.CreateAttribute ("version");
-				version.Value = "0.01";
+				version.Value = "0.02";
 				result.Attributes.Append (version);
 
 				if (rm.EndNodeNames.Length != 0) {
@@ -148,6 +148,18 @@ namespace NetTrafficSimulator
 						XmlAttribute percentPacketsDropped = xs.CreateAttribute ("percentPacketsDropped");
 						percentPacketsDropped.Value = rm.GetNetworkNodePercentagePacketsDropped (networkNodeName) + "";
 						networkNode.Attributes.Append (percentPacketsDropped);
+
+						XmlAttribute routingPacketsSent = xs.CreateAttribute ("routingPacketsSent");
+						routingPacketsSent.Value = rm.GetNetworkNodeRoutingPacketsSent (networkNodeName) + "";
+						networkNode.Attributes.Append (routingPacketsSent);
+
+						XmlAttribute routingPacketsReceived = xs.CreateAttribute ("routingPacketsReceived");
+						routingPacketsReceived.Value = rm.GetNetworkNodeRoutingPacketsReceived (networkNodeName) + "";
+						networkNode.Attributes.Append(routingPacketsReceived);
+
+						XmlAttribute percentageProcessedRoutingPackets = xs.CreateAttribute ("percentageProcessedRoutingPackets");
+						percentageProcessedRoutingPackets.Value = rm.GetNetworkNodePercentageRoutingPackets (networkNodeName) + "";
+						networkNode.Attributes.Append (percentageProcessedRoutingPackets);
 
 						networkNodes.AppendChild (networkNode);
 					}

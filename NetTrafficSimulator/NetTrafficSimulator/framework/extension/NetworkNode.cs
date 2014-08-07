@@ -16,7 +16,7 @@ namespace NetTrafficSimulator
 		//Dictionary<int,int> route;
 		RoutingTable rt;
 		int[] interface_use_count;
-		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped;
+		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped,rm_received,rm_sent;
 		int delay;
 
 		/**
@@ -97,14 +97,19 @@ namespace NetTrafficSimulator
 				log.Debug ("(" + Name + ") Data hop counter: " + state.Data.Hop + " max:" + max);
 				if (state.Data.Hop <= max) {
 					if (state.Data is Request) {
+						rm_received++;
 						Request r = state.Data as Request;
 						log.Debug ("(" + Name + ") Received routing message - request");
-						if (!verifyRequest (r))
+						if (!verifyRM (r))
 							throw new Exception ("Invalid request - link not present in interfaces: " + r.Link.Name);
 						sendResponse (r.Link, model);
 					} else if (state.Data is Response) {
+						rm_received++;
 						log.Debug ("(" + Name + ") Received routing message - response");
-						updateRT ((state.Data as Response).Table);
+						Response r = state.Data as Response;
+						if (!verifyRM (r))
+							throw new Exception ("Invalid response - link not present in interfaces: " + r.Link.Name);
+						updateRT (r.Link,model,r.Table);
 					}
 					scheduleForward (state.Data, selectDestination (state.Data), model);
 				} else {
@@ -113,12 +118,16 @@ namespace NetTrafficSimulator
 				}
 				break;
 			case MFF_NPRG031.State.state.SEND:
-				log.Debug ("("+Name+") Sending.");
+				log.Debug ("(" + Name + ") Sending.");
 				Packet p = state.Data;
 				Link l;
-				if (schedule.TryGetValue (p, out l))
+				if (schedule.TryGetValue (p, out l)) {
+					if (p is RoutingMessage) {
+						processed++;
+						rm_sent++;
+					}
 					l.Carry (p, this, l.GetPartner (this));
-				else
+				}else
 					throw new ArgumentException ("("+Name+") Packet was not scheduled for sending - missing record for link to use");
 				break;
 			default:
@@ -208,6 +217,24 @@ namespace NetTrafficSimulator
 
 			}
 		}
+		public int RoutingMessagesReceived{
+			get{
+				return rm_received;
+			}
+		}
+		public int RoutingMessagesSent{
+			get{
+				return rm_sent;
+			}
+		}
+		public decimal RoutingMessagesPercentageProcessed{
+			get{
+				if (processed != 0)
+					return (rm_sent + rm_received) / processed*100.0m;
+				else
+					return 0;
+			}
+		}
 
 		/**
 		 * How many packets were dropped due to hop count
@@ -223,8 +250,9 @@ namespace NetTrafficSimulator
 		 */
 		public decimal PercentagePacketsDropped{
 			get{
-				if (processed != 0)
-					return (decimal)dropped / processed;
+				int i = processed - rm_sent;
+				if (i != 0)
+					return (decimal)dropped / i*100.0m;
 				else
 					return 0;
 			}
@@ -263,7 +291,7 @@ namespace NetTrafficSimulator
 			foreach (Link l in interfaces) {
 				if (!l.Equals (link)) {
 					log.Debug ("(" + Name + ") Sending response to " + l.GetPartner (this).Name + " via " + l.Name);
-					scheduleForward (new Response (rt), l, model);
+					scheduleForward (new Response (l,rt), l, model);
 				}
 			}
 		}
@@ -271,7 +299,7 @@ namespace NetTrafficSimulator
 		/**
 		 * Check request's link is from our set
 		 */
-		private bool verifyRequest(Request r){
+		private bool verifyRM(RoutingMessage r){
 			bool ok = false;
 			foreach(Link l in interfaces){
 				if (l.Equals (r.Link)) {
@@ -285,11 +313,13 @@ namespace NetTrafficSimulator
 		/**
 		 * Merge received routing table into our
 		 */
-		private void updateRT(RoutingTable received){
-			//TODO: doslo ke zmene? - sendResponse
+		private void updateRT(Link l,MFF_NPRG031.Model m,RoutingTable received){
+			bool change=false;
 			foreach(RoutingTable.Record r in received.GenerateRecordTable()){
-				rt.SetRecord (r.Addr, r.Link, r.Metric);
+				change=change | rt.SetRecord (r.Addr, r.Link, r.Metric+1);
 			}
+			if (change)
+				sendResponse (l, m);
 		}
 	}
 }

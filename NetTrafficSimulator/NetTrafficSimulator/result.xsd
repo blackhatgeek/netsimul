@@ -39,7 +39,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
-			<xs:attribute name="version" use="required" fixed="0.01"/>
+			<xs:attribute name="version" use="required" fixed="0.02"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tEndNode">
@@ -69,6 +69,9 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />
 		<xs:attribute name="packetsDropped" type="xs:nonNegativeInteger" use="required"/>
 		<xs:attribute name="percentPacketsDropped" type="xs:decimal" use="required" />
+		<xs:attribute name="routingPacketsSent" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="routingPacketsReceived" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="percentageProcessedRoutingPackets" type="xs:nonNegativeInteger" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="tLink">
 		<xs:attribute name="name" type="xs:ID" use="required" />
