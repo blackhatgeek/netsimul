@@ -19,6 +19,9 @@ namespace NetTrafficSimulator
 		private ServerNode[] servers;
 		private LinkedList<Link> links;
 
+		/**
+		 * Populated result model to pick-up
+		 */ 
 		public ResultModel Results{
 			get{
 				return result_model;

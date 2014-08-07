@@ -9,8 +9,17 @@ namespace MFF_NPRG031
 	 */
 	public class Model
 	{
+		/**
+		 * Logger
+		 */
 		private static readonly ILog log=LogManager.GetLogger(typeof(Model));
+		/**
+		 * Servers available
+		 */
 		private NetTrafficSimulator.ServerNode[] servers;
+		/**
+		 * Servers available
+		 */
 		public NetTrafficSimulator.ServerNode[] Servers{
 			get{
 				return servers;

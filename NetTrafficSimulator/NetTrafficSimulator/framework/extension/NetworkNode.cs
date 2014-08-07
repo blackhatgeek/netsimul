@@ -24,6 +24,7 @@ namespace NetTrafficSimulator
 		 * The delay is set fixed as 1
 		 * @param name Human readable node name
 		 * @param interfaces_count How many ports does the network node have
+		 * @param max Max hop count for a packet
 		 * @throws ArgumentException on negative interfaces_count
 		 */
 		public NetworkNode (String name,int interfaces_count,int max):base(name)

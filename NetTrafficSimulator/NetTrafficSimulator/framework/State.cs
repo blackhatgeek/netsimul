@@ -11,7 +11,14 @@ namespace MFF_NPRG031
 		 * Actual state - enum. Available states are SEND or RECEIVE
 		 */
 		public enum state{
-			SEND,RECEIVE,
+			/**
+			 * Send packets
+			 */
+			SEND,
+			/**
+			 * Process received packets
+			 */
+			RECEIVE,
 		}
 
 		private state actual_state;
@@ -50,6 +57,9 @@ namespace MFF_NPRG031
 			}
 		}
 
+		/**
+		 * @return Actual state string representation
+		 */
 		public override string ToString ()
 		{
 			return actual_state.ToString();

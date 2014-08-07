@@ -203,7 +203,7 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Remove all destinations reachable through particular link
-		 * @param link Link no longer available
+		 * @param l Link no longer available
 		 */
 		public void RemoveLink(Link l){
 			log.Debug ("Removing link " + l.Name + " from routing table");

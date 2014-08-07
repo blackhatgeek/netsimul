@@ -10,6 +10,9 @@ namespace MFF_NPRG031
 	{
 		List<Event> calendar = new List<Event>();
 		const int MAX = 0x7FFFFFFF;
+		/**
+		 * Create new empty calendar
+		 */
 		public Calendar()
 		{
 			calendar.Clear();
