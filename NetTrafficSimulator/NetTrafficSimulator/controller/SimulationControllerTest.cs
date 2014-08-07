@@ -291,13 +291,13 @@ namespace NetTrafficSimulator
 			Link l = new Link ("L0", 1, nn, en);
 			nn.ConnectLink (l);
 			en.Link = l;
-			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE,new Packet (0, 1,0));
+			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE,new Packet (1, 0,0));
 			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2,null);
 			nn.ProcessEvent (s, m);
 			MFF_NPRG031.Event e = m.K.First ();
 			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
-			Assert.AreEqual (1, e.what.Data.Destination);
-			Assert.AreEqual (0, e.what.Data.Source);
+			Assert.AreEqual (0, e.what.Data.Destination);
+			Assert.AreEqual (1, e.what.Data.Source);
 			Assert.AreEqual (1, e.when);
 			Assert.AreEqual (nn, e.who);
 			m.Time = 1;

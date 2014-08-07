@@ -12,7 +12,8 @@ namespace NetTrafficSimulator
 		static readonly ILog log = LogManager.GetLogger (typeof(NetworkNode));
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
-		Dictionary<int,int> route;
+		//Dictionary<int,int> route;
+		RoutingTable rt;
 		int[] interface_use_count;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process;
 		int delay;
@@ -35,7 +36,8 @@ namespace NetTrafficSimulator
 				this.processed = 0;
 				this.time_wait = 0;
 				this.schedule = new Dictionary<Packet, Link> ();
-				this.route=new Dictionary<int,int>();
+				//this.route=new Dictionary<int,int>();
+				rt = new RoutingTable ();
 				this.last_process = 0;
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
@@ -66,7 +68,10 @@ namespace NetTrafficSimulator
 						if(n is EndpointNode){
 							//if(route.ContainsKey((n as EndpointNode).Address)
 							//TODO: rozhodnout o lepsi trase ale druha route musi byt v zaloze!!!
-							route.Add((n as EndpointNode).Address,interfaces_used);
+							//route.Add((n as EndpointNode).Address,interfaces_used);
+							log.Debug("Set record to routing table: "+(n as EndpointNode).Address+" via "+l.Name+" (1)");
+							rt.SetRecord((n as EndpointNode).Address,l,1);
+
 						}
 					}catch(ArgumentException){
 						throw new ArgumentException ("Link not connected to this NetworkNode");
@@ -121,21 +126,15 @@ namespace NetTrafficSimulator
 		 * @throws InvalidOperationException No link connected
 		 */
 		private Link selectDestination(Packet p){
-			if (interfaces_used > 0) {
-				int l;
-				//if we are delivering to endpoint node, deliver directly
-				//otherwise use "default route"
-				if (route.TryGetValue (p.Destination, out l)) {
-					//TODO: pokud ale link neni active, ale jsou k dispozici dalsi cesty ...
-					interface_use_count [l-1]++;
-					return interfaces [l-1];
-				} else {
-					interface_use_count [0]++;
-					return interfaces [0];
+			log.Debug ("Link for destination: " + p.Destination);
+			Link link=rt.GetLinkForAddress (p.Destination);
+			for (int i=0; i<interfaces_used; i++) {
+				if (link.Equals (interfaces [i])) {
+					interface_use_count [i]++;
+					return link;
 				}
 			}
-			else
-				throw new InvalidOperationException ("No link connected");
+			throw new InvalidOperationException ("Routing through invalid link");
 		}
 
 		/**

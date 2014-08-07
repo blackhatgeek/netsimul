@@ -91,9 +91,17 @@ namespace NetTrafficSimulator
 		public Link GetLinkForAddress(int addr){
 			Record addrRec;
 			if (addrList.TryGetValue (addr, out addrRec)) {
-				return addrRec.Link;
-			} else
-				throw new ArgumentException ("Address not found");
+				if (addrRec != null)
+					return addrRec.Link;
+				else {
+					log.Warn ("No link available for " + addr);
+					return null;
+				}
+			} else {
+				log.Debug (addrList.Count + "");
+				log.Debug (addrList.ContainsKey (addr));
+				throw new ArgumentException ("Address not found "+addr);
+			}
 		}
 
 		/**
@@ -144,8 +152,9 @@ namespace NetTrafficSimulator
 					log.Debug ("First route");
 				}
 			} else {//nova adresa
+				log.Debug ("Add to addrlist " + addr + " " + newRec.Link.Name + " " + newRec.Metric);
 				addrList.Add (addr, newRec);
-				log.Debug ("New destination");
+				log.Debug ("New destination "+addr);
 			}
 			//links
 			Record linkR;
@@ -155,8 +164,10 @@ namespace NetTrafficSimulator
 					newRec.LinkRight = linkR;
 					linkR.LinkLeft = newRec;
 				}
-				linkList.Add (l,newRec);
-			}
+				linkList.Add (l, newRec);
+			} else
+				linkList.Add (l, newRec);
+			log.Debug ("Addr list count: " + addrList.Count + "\t Link list count: " + linkList.Count);
 		}
 
 		/**
