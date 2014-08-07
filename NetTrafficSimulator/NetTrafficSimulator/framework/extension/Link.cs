@@ -63,8 +63,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
-		private int capacity,next_queue_pos,data_carry,queue_size;
-		private DataEnvelope[] queue;
+		private int capacity,data_carry;
+		private Queue<DataEnvelope> queue;
 		private Node a, b;
 		private bool active;
 		private string name;
@@ -104,10 +104,8 @@ namespace NetTrafficSimulator
 
 			this.name = name;
 			this.capacity = capacity;
-			this.queue_size = capacity;//TODO
-			this.next_queue_pos = 0;
+			this.queue = new Queue<DataEnvelope> ();
 			this.data_carry = 0;
-			this.queue = new DataEnvelope[capacity];
 			this.a = a;
 			this.b = b;
 			this.active = true;
@@ -155,21 +153,20 @@ namespace NetTrafficSimulator
 		public void Carry(Packet p,Node origin,Node destination){
 			if (p != null) {
 				if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
-					if (active && (next_queue_pos < queue_size)) {
+					if (active) {
 						carried++;
 						log.Debug ("(" + name + ") Link active, carried");
 						if ((data_carry + p.Size) <= capacity) {
 							DataEnvelope de = new DataEnvelope (p, origin, destination);
-							queue [next_queue_pos] = de;
-							next_queue_pos++;
+							queue.Enqueue (de);
 							data_carry += p.Size;
-							log.Debug ("(" + name + ") Enqueued, carry " + data_carry + " capacity " + capacity + " next_queue_pos " + next_queue_pos + " queue size " + queue_size);
+							log.Debug ("(" + name + ") Enqueued, carry " + data_carry + " capacity " + capacity + " enqueued "+queue.Count);
 						} else {
 							dropped++;
 							log.Debug ("(" + name + ") Dropped due to capacity");
 						}
 					} else {
-						log.Warn ("Not carried! Active:" + active + " next_queue_pos: " + next_queue_pos + " queue_size:" + queue_size);
+						log.Warn ("Not carried!");
 					}
 				} else
 					throw new ArgumentException ("This link is capable of delivering data between nodes " + a + " and  " + b + ", though requested to deliver from " + origin + " to " + destination);
@@ -237,8 +234,8 @@ namespace NetTrafficSimulator
 			if (model == null)
 				throw new ArgumentNullException ("[Link.send_queue] Model null");
 			//foreach (DataEnvelope de in queue) {
-			for(int i=0;i<next_queue_pos;i++){
-				DataEnvelope de = queue [i];
+			while(queue.Count>0){
+				DataEnvelope de = queue.Dequeue();
 				if (de == null)
 					throw new ArgumentNullException ("[Link.send_queue] DataEnvelope null");
 				//de.Destination.Receive (de.Data);
@@ -246,7 +243,6 @@ namespace NetTrafficSimulator
 				de.Destination.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, de.Data), model.Time + 1);
 			}
 			this.data_carry = 0;
-			this.next_queue_pos = 0;
 		}
 
 		/**
