@@ -17,7 +17,7 @@ namespace NetTrafficSimulator
 				SimulationController sc = new SimulationController (nm, sm);
 				log.Info("Loaded data, created models and controller, starting simulation");
 				sc.Run ();
-				log.Info("Simulation finished, storing results");
+				log.Info("Storing results");
 				ResultModel rm = sc.Results;
 				Storer s = new Storer (output);
 				s.StoreResultModel (rm);

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <simulation time_run="5" version="0.01" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0">
 	<network>
 		<nodes>

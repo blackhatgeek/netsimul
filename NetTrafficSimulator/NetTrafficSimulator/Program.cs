@@ -11,7 +11,8 @@ namespace NetTrafficSimulator
 		const string USAGE="Usage:\nXML IO:\tapp xmlio <input> <output>\nGUI:\tno parameters";
 		public static void Main (string[] args)
 		{
-			BasicConfigurator.Configure ();
+			//nacist konfiguraci loggeru z XML
+			XmlConfigurator.Configure (new System.IO.FileInfo("log4net.xml"));
 			//pokud je konzolovy parametr XMLIO, nacist data z XML
 			//jinak pustit GUI
 			log.Info ("Entering application");

@@ -10,7 +10,7 @@ namespace NetTrafficSimulator
 	public class EndNode:EndpointNode
 	{
 		private int sent, received,malreceived,time_wait,server_node_count, max_packet_size,last_send;
-		private int psizesum;
+		private decimal psizesum;
 		private Link link;
 		private Random r;
 		private static readonly ILog log=LogManager.GetLogger(typeof(EndNode));
@@ -95,7 +95,7 @@ namespace NetTrafficSimulator
 		 * @param size what size of data to send
 		 * @throws InvalidOperationException if link is not connected
 		 */
-		private void send(int destination,int size){
+		private void send(int destination,decimal size){
 			//must send to existing node!!
 			if (link != null) {
 				psizesum += size;
@@ -196,7 +196,7 @@ namespace NetTrafficSimulator
 		public decimal AveragePacketSize{
 			get{
 				if (sent!=0)
-					return (decimal)psizesum / sent;
+					return psizesum / sent;
 				return 0;
 			}
 		}

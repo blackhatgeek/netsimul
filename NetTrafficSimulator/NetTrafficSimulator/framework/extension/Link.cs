@@ -63,7 +63,7 @@ namespace NetTrafficSimulator
 			}
 		}
 
-		private int capacity,data_carry;
+		private decimal capacity,data_carry;
 		private Queue<DataEnvelope> queue;
 		private Node a, b;
 		private bool active;
@@ -71,7 +71,7 @@ namespace NetTrafficSimulator
 		private decimal toggle_probability;
 		private Random r;
 
-		public int Capacity{
+		public decimal Capacity{
 			get{
 				return this.capacity;
 			}
@@ -92,7 +92,7 @@ namespace NetTrafficSimulator
 		 * @throws	ArgumentOutOfRangeException Negative link capacity
 		 * @throws	ArgumentNullException any node null
 		 */
-		public Link (String name,int capacity, Node a,Node b,decimal toggle_probability)
+		public Link (String name,decimal capacity, Node a,Node b,decimal toggle_probability)
 		{
 			if (capacity <0) throw new ArgumentOutOfRangeException ("Link capacity cannot be negative");
 			if (a == null || b == null)
@@ -212,8 +212,8 @@ namespace NetTrafficSimulator
 
 		//rozhodne o moznem vypadku linky
 		/**
-		 * Decide if toggle link status
-		 * @return wheather to toggle link state
+		 * Decide about toggling link status
+		 * @return wheather to toggle link status
 		 */
 		private bool toggle(){
 			decimal x = (decimal)r.NextDouble();
