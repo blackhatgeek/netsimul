@@ -68,10 +68,18 @@ namespace NetTrafficSimulator
 		private Node a, b;
 		private bool active;
 		private string name;
+		private decimal toggle_probability;
+		private Random r;
 
 		public int Capacity{
 			get{
 				return this.capacity;
+			}
+		}
+
+		public decimal ToggleProbability{
+			get{
+				return this.toggle_probability;
 			}
 		}
 
@@ -84,11 +92,15 @@ namespace NetTrafficSimulator
 		 * @throws	ArgumentOutOfRangeException Negative link capacity
 		 * @throws	ArgumentNullException any node null
 		 */
-		public Link (String name,int capacity, Node a,Node b)
+		public Link (String name,int capacity, Node a,Node b,decimal toggle_probability)
 		{
 			if (capacity <0) throw new ArgumentOutOfRangeException ("Link capacity cannot be negative");
 			if (a == null || b == null)
 				throw new ArgumentNullException ("Node cannot be null");
+			if ((toggle_probability >= 0.0m) && (toggle_probability <= 1.0m))
+				this.toggle_probability = toggle_probability;
+			else
+				throw new ArgumentOutOfRangeException ("toggle_probability must be between 0.0 and 1.0");
 
 			this.name = name;
 			this.capacity = capacity;
@@ -102,6 +114,7 @@ namespace NetTrafficSimulator
 			this.inactive_time = 0;
 			this.dropped = 0;
 			this.carried = 0;
+			this.r = new Random ();
 		}
 
 		/**
@@ -195,10 +208,17 @@ namespace NetTrafficSimulator
 		//rozhodne o moznem vypadku linky
 		/**
 		 * Decide if toggle link status
-		 * @return false
+		 * @return wheather to toggle link state
 		 */
 		private bool toggle(){
-			return false;
+			decimal x = (decimal)r.NextDouble();
+			if (toggle_probability>x) {
+				log.Debug ("[Link  " + name + "] toggle(): random = " + x + ", toggle_probability=" + toggle_probability + ", toggle");
+				return true;
+			} else {
+				log.Debug("[Link  "+name+"] toggle(): random = "+x+", toggle_probability="+toggle_probability+", do not toggle");
+				return false;
+			}
 		}
 
 		/**

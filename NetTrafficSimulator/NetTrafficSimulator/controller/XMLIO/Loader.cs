@@ -67,12 +67,14 @@ namespace NetTrafficSimulator
 				string n1 = link.Attributes.GetNamedItem ("node1").Value;
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
+				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability"));
 				//verifikace
-				if (nm.HaveNode (n1) && nm.HaveNode (n2)) {
-					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa);
+				if (nm.HaveNode (n1) && nm.HaveNode (n2) && (toggle >= 0.0m) && (toggle <= 1.0m)) {
+					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa, toggle);
 					nm.SetLinkName (nm.GetNodeNum (n1), nm.GetNodeNum (n2), name);
-				}else 
-					break;
+				} else {
+					throw new ArgumentOutOfRangeException ("Wrong link " + n1 + " & " + n2 + " with toggle_probability " + toggle);
+				}
 			}
 			return nm;
 		}

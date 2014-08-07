@@ -47,7 +47,7 @@ namespace NetTrafficSimulator
 			nm.Print ();
 			Assert.AreEqual (nm.LinkCount[0], 0);
 			Assert.False (nm.AreConnected (0, 0));
-			nm.SetConnected (0, 0,1);
+			nm.SetConnected (0, 0,1,0.0m);
 			Assert.False (nm.Valid);
 			nm.Print ();
 		}
@@ -71,14 +71,14 @@ namespace NetTrafficSimulator
 			nm.SetNodeType (1, NetworkModel.NETWORK_NODE);
 			nm.SetNodeType (2, NetworkModel.SERVER_NODE);
 			Assert.True (nm.Valid);
-			nm.SetConnected (0, 1,1);
-			nm.SetConnected (1, 2,1);
+			nm.SetConnected (0, 1,1,0.0m);
+			nm.SetConnected (1, 2,1,0.0m);
 			nm.Print ();
 			Assert.True (nm.Valid);
-			nm.SetConnected (0, 2,1);
+			nm.SetConnected (0, 2,1,0.0m);
 			Assert.False (nm.Valid);
 			nm.SetDisconnected (0, 2);
-			nm.SetConnected (2, 2,1);
+			nm.SetConnected (2, 2,1,0.0m);
 			Assert.False (nm.Valid);
 		}
 
@@ -91,7 +91,7 @@ namespace NetTrafficSimulator
 			NetworkModel nm = new NetworkModel (2);
 			nm.SetNodeType (0, NetworkModel.END_NODE);
 			nm.SetNodeType (1, NetworkModel.END_NODE);
-			nm.SetConnected (0, 1, -1);
+			nm.SetConnected (0, 1, -1,0.0m);
 		}
 
 		[Test()]
@@ -103,7 +103,7 @@ namespace NetTrafficSimulator
 			nm.SetNodeType (0, NetworkModel.END_NODE);
 			nm.SetNodeType (1, NetworkModel.END_NODE);
 			Assert.AreEqual (0, nm.LinkCapacity (0, 1));
-			nm.SetConnected (0, 1, 1);
+			nm.SetConnected (0, 1, 1,0.0m);
 			Assert.AreEqual (1, nm.LinkCapacity (0, 1));
 			nm.SetDisconnected (0, 1);
 			Assert.AreEqual(0,nm.LinkCapacity(0,1));
@@ -118,7 +118,7 @@ namespace NetTrafficSimulator
 			NetworkModel nm = new NetworkModel (2);
 			nm.SetNodeType (0, NetworkModel.END_NODE);
 			nm.SetNodeType (1, NetworkModel.END_NODE);
-			nm.SetConnected (0, 1, 0);
+			nm.SetConnected (0, 1, 0,0.0m);
 		}
 
 		[Test()]
@@ -128,7 +128,7 @@ namespace NetTrafficSimulator
 		 */
 		public void ConnectNonExistent(){
 			NetworkModel nm = new NetworkModel (0);
-			nm.SetConnected (1, 2, 0);
+			nm.SetConnected (1, 2, 0,0.0m);
 		}
 
 		[Test()]

@@ -48,6 +48,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 					<xs:attribute name="node1" type="xs:IDREF"/>
 					<xs:attribute name="node2" type="xs:IDREF"/>
 					<xs:attribute name="capacity" type="xs:nonNegativeInteger"/>
+					<xs:attribute name="toggle_probability" type="xs:decimal" />
 				</xs:complexType>
 			</xs:element>
 		</xs:choice>

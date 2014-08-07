@@ -40,6 +40,22 @@ namespace NetTrafficSimulator
 			 * Link name
 			 */
 			public string name;
+
+			/**
+			 * Link drop probability
+			 */
+			private decimal toggle_probability;
+			public decimal ToggleProb{
+				get{
+					return this.toggle_probability;
+				}
+				set{
+					if ((value >= 0.0m) && (value <= 1.0m))
+						this.toggle_probability = value;
+					else
+						throw new ArgumentException ("Toggle probability must be between 0.0 and 1.0, was "+value);
+				}
+			}
 		}
 
 		//linky - node x spojen s node y
@@ -153,7 +169,7 @@ namespace NetTrafficSimulator
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
 				return links[x,y].capacity;
 			else
-				throw new ArgumentOutOfRangeException ("[NetworkModel.AreConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
+				throw new ArgumentOutOfRangeException ("[NetworkModel.LinkCapacity("+x+","+y+")] "+ILLEGAL_PARAMETER);
 		}
 
 		/**
@@ -162,19 +178,21 @@ namespace NetTrafficSimulator
 		 * @param x node
 		 * @param y node
 		 * @param capacity positive integer for link capacity
+		 * @param toggle_probability probability link toggles (switches from active to passive ... appears/disappears)
 		 * @throws ArgumentOutOfRangeException if any of x or y or capacity are incorrect
 		 */
-		public void SetConnected(int x,int y,int capacity){
-			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&(capacity>0)) {
-				if (links [x, y].capacity==NO_CONNECTION) {
+		public void SetConnected(int x,int y,int capacity,decimal toggle_probability){
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&(capacity>0)&&(toggle_probability>=0.0m)&&(toggle_probability<=1.0m)) {
+				if (links [x, y].capacity == NO_CONNECTION) {
 					link_count [x]++;
 					link_count [y]++;
 				}
 				links [x, y].capacity = capacity;
 				links [y, x].capacity = capacity;
+				links [x, y].ToggleProb = toggle_probability;
 			}
 			else
-				throw new ArgumentOutOfRangeException ("[NetworkModel.SetConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
+				throw new ArgumentOutOfRangeException ("[NetworkModel.SetConnected("+x+","+y+","+capacity+","+toggle_probability+")] "+ILLEGAL_PARAMETER);
 		}
 		/**
 		 * <p>Ensures there's no direct link between nodes x and y</p>
@@ -459,6 +477,13 @@ namespace NetTrafficSimulator
 				} else //neni to NODE
 					throw new ArgumentException ("[NetworkModel.GetEndNodeMaxPacketSize(" + n + ")] " + ILLEGAL_PARAMETER);
 			}
+		}
+
+		public decimal GetLinkToggleProbability(int x,int y){
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
+				return links[x,y].ToggleProb;
+			else
+				throw new ArgumentOutOfRangeException ("[NetworkModel.GetLinkToggleProbability("+x+","+y+")] "+ILLEGAL_PARAMETER);
 		}
 	}
 }
