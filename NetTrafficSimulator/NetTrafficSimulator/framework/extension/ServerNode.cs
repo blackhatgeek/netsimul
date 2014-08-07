@@ -43,14 +43,18 @@ namespace NetTrafficSimulator
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			if (state.Actual == MFF_NPRG031.State.state.RECEIVE) {
-				if (state.Data.Destination == this.Address) {
-					int t = wait_time ();
-					this.time_waited += t;
-					this.process++;
-					log.Debug("("+Name+") Received at time "+model.Time+" waiting for "+t+", total waited "+time_waited+" total processed "+process+" sending at "+(model.Time+t));
-					sendResponse (generateResponse (state.Data), model.Time + t, model);
-				} else {
-					malreceived++;
+				if (state.Data is RoutingMessage)
+					log.Debug ("(" + Name + ") Received routing message, never mind");
+				else {
+					if (state.Data.Destination == this.Address) {
+						int t = wait_time ();
+						this.time_waited += t;
+						this.process++;
+						log.Debug ("(" + Name + ") Received at time " + model.Time + " waiting for " + t + ", total waited " + time_waited + " total processed " + process + " sending at " + (model.Time + t));
+						sendResponse (generateResponse (state.Data), model.Time + t, model);
+					} else {
+						malreceived++;
+					}
 				}
 			} else if (state.Actual == MFF_NPRG031.State.state.SEND) {
 				if (link != null) {

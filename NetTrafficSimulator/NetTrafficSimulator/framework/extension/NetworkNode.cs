@@ -10,12 +10,13 @@ namespace NetTrafficSimulator
 	public class NetworkNode:Node
 	{
 		static readonly ILog log = LogManager.GetLogger (typeof(NetworkNode));
+		readonly int max;
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
 		//Dictionary<int,int> route;
 		RoutingTable rt;
 		int[] interface_use_count;
-		int interfaces_count,interfaces_used,processed,time_wait,last_process;
+		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped;
 		int delay;
 
 		/**
@@ -25,8 +26,9 @@ namespace NetTrafficSimulator
 		 * @param interfaces_count How many ports does the network node have
 		 * @throws ArgumentException on negative interfaces_count
 		 */
-		public NetworkNode (String name,int interfaces_count):base(name)
+		public NetworkNode (String name,int interfaces_count,int max):base(name)
 		{
+			this.max = max;
 			if (interfaces_count >= 0) {
 				this.interfaces = new Link[interfaces_count];
 				this.interface_use_count = new int[interfaces_count];
@@ -37,8 +39,9 @@ namespace NetTrafficSimulator
 				this.time_wait = 0;
 				this.schedule = new Dictionary<Packet, Link> ();
 				//this.route=new Dictionary<int,int>();
-				rt = new RoutingTable ();
+				rt = new RoutingTable (max);
 				this.last_process = 0;
+				this.dropped = 0;
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
 		}
@@ -66,12 +69,8 @@ namespace NetTrafficSimulator
 						interfaces [interfaces_used] = l;
 						interfaces_used++;
 						if(n is EndpointNode){
-							//if(route.ContainsKey((n as EndpointNode).Address)
-							//TODO: rozhodnout o lepsi trase ale druha route musi byt v zaloze!!!
-							//route.Add((n as EndpointNode).Address,interfaces_used);
 							log.Debug("Set record to routing table: "+(n as EndpointNode).Address+" via "+l.Name+" (1)");
 							rt.SetRecord((n as EndpointNode).Address,l,1);
-
 						}
 					}catch(ArgumentException){
 						throw new ArgumentException ("Link not connected to this NetworkNode");
@@ -89,12 +88,29 @@ namespace NetTrafficSimulator
 			case MFF_NPRG031.State.state.RECEIVE:
 				this.time_wait += model.Time - last_process;
 				processed++;
-				log.Debug ("("+Name+") Receiving. Time: "+model.Time+" Last process:"+last_process+" Waited:"+time_wait+" Processed:"+processed);
+				log.Debug ("(" + Name + ") Receiving. Time: " + model.Time + " Last process:" + last_process + " Waited:" + time_wait + " Processed:" + processed);
 				this.last_process = model.Time;
-				
+
 				if (state.Data == null)
 					throw new ArgumentNullException ("Packet null");
-				scheduleForward (state.Data, selectDestination (state.Data), model);
+				state.Data.HopInc ();
+				log.Debug ("(" + Name + ") Data hop counter: " + state.Data.Hop + " max:" + max);
+				if (state.Data.Hop <= max) {
+					if (state.Data is Request) {
+						Request r = state.Data as Request;
+						log.Debug ("(" + Name + ") Received routing message - request");
+						if (!verifyRequest (r))
+							throw new Exception ("Invalid request - link not present in interfaces: " + r.Link.Name);
+						sendResponse (r.Link, model);
+					} else if (state.Data is Response) {
+						log.Debug ("(" + Name + ") Received routing message - response");
+						updateRT ((state.Data as Response).Table);
+					}
+					scheduleForward (state.Data, selectDestination (state.Data), model);
+				} else {
+					dropped++;
+					log.Debug ("Hop counter over max .. packet dropped");
+				}
 				break;
 			case MFF_NPRG031.State.state.SEND:
 				log.Debug ("("+Name+") Sending.");
@@ -176,9 +192,9 @@ namespace NetTrafficSimulator
 		 */
 		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
 			if (model.Time != 0)
-				return time_wait / model.Time;
+				return time_wait / model.Time*100.0m;
 			else
-				return 100;
+				return 100.0m;
 		}
 		/**
 		 * Average wait time
@@ -186,10 +202,93 @@ namespace NetTrafficSimulator
 		public decimal AverageWaitTime {
 			get {
 				if (processed != 0)
-					return time_wait / processed;
+					return (decimal)time_wait / processed;
 				else
 					return 0;
 
+			}
+		}
+
+		/**
+		 * How many packets were dropped due to hop count
+		 */ 
+		public int PacketsDropped{
+			get{
+				return dropped;
+			}
+		}
+
+		/**
+		 * How many packets were dropped due to hop count relative to packets processed
+		 */
+		public decimal PercentagePacketsDropped{
+			get{
+				if (processed != 0)
+					return (decimal)dropped / processed;
+				else
+					return 0;
+			}
+		}
+
+		/**
+		 * When link switches state, it notifies connected NetworkNodes using this method
+		 * If link became active: send request for routing table to neighbour
+		 * If link became passive: remove related elements from routing table and send updated table to neighbours
+		 */ 
+		public void LinkSwitchTrigger(Link l,MFF_NPRG031.Model model){
+			if (l.Active) {
+				//send request
+				sendRequest (l,model);
+			} else {
+				//update table
+				rt.RemoveLink (l);
+				//send updated table
+				sendResponse (l, model);
+
+			}
+		}
+
+		/**
+		 * Send request for routing table
+		 */ 
+		private void sendRequest(Link l,MFF_NPRG031.Model model){
+			log.Debug ("(" + Name + ") Scheduling request to " + l.GetPartner (this).Name + " via " + l.Name+" at "+(model.Time+1));
+			scheduleForward (new Request (l), l, model);
+		}
+
+		/**
+		 * Send response - our routing table
+		 */ 
+		private void sendResponse(Link link,MFF_NPRG031.Model model){
+			foreach (Link l in interfaces) {
+				if (!l.Equals (link)) {
+					log.Debug ("(" + Name + ") Sending response to " + l.GetPartner (this).Name + " via " + l.Name);
+					scheduleForward (new Response (rt), l, model);
+				}
+			}
+		}
+
+		/**
+		 * Check request's link is from our set
+		 */
+		private bool verifyRequest(Request r){
+			bool ok = false;
+			foreach(Link l in interfaces){
+				if (l.Equals (r.Link)) {
+					ok = true;
+					break;
+				}
+			}
+			return ok;
+		}
+
+		/**
+		 * Merge received routing table into our
+		 */
+		private void updateRT(RoutingTable received){
+			//TODO: doslo ke zmene? - sendResponse
+			foreach(RoutingTable.Record r in received.GenerateRecordTable()){
+				rt.SetRecord (r.Addr, r.Link, r.Metric);
 			}
 		}
 	}

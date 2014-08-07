@@ -67,12 +67,16 @@ namespace NetTrafficSimulator
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time ());
 				break;*/
 			case MFF_NPRG031.State.state.RECEIVE:
-				if (state.Data.Destination == this.Address) {
-					received++;
-					log.Debug ("("+Name+") Received at " + model.Time);
-				} else {
-					malreceived++;
-					log.Debug ("("+Name+") Received incorrectly at " + model.Time + ": From " + state.Data.Source + " To:" + state.Data.Destination + " Size:" + state.Data.Size);
+				if (state.Data is RoutingMessage)
+					log.Debug ("(" + Name + ") Received routing message, never mind");
+				else {
+					if (state.Data.Destination == this.Address) {
+						received++;
+						log.Debug ("(" + Name + ") Received at " + model.Time);
+					} else {
+						malreceived++;
+						log.Debug ("(" + Name + ") Received incorrectly at " + model.Time + ": From " + state.Data.Source + " To:" + state.Data.Destination + " Size:" + state.Data.Size);
+					}
 				}
 				break;
 			default:

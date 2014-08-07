@@ -173,6 +173,14 @@ namespace NetTrafficSimulator
 				if (toggle ()) {
 					log.Debug ("("+name+") Switching link state");
 					active = !active;
+					if (a is NetworkNode) {
+						log.Debug ("(" + name + ") Triggering switch on " + a.Name);
+						(a as NetworkNode).LinkSwitchTrigger (this,model);
+					}
+					if (b is NetworkNode) {
+						log.Debug ("(" + Name + ") Triggering switch on " + b.Name);
+						(b as NetworkNode).LinkSwitchTrigger (this,model);
+					}
 				}
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,state.Data), model.Time+1);
 			} else

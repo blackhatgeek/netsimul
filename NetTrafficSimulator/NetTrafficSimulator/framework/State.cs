@@ -11,7 +11,7 @@ namespace MFF_NPRG031
 		 * Actual state - enum. Available states are SEND or RECEIVE
 		 */
 		public enum state{
-			SEND,RECEIVE
+			SEND,RECEIVE,
 		}
 
 		private state actual_state;

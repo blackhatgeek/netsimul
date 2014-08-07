@@ -38,7 +38,7 @@ namespace NetTrafficSimulator
 				XmlNode result = xs.CreateElement ("result");
 
 				XmlAttribute version = xs.CreateAttribute ("version");
-				version.Value = "0.00";
+				version.Value = "0.01";
 				result.Attributes.Append (version);
 
 				if (rm.EndNodeNames.Length != 0) {
@@ -140,6 +140,14 @@ namespace NetTrafficSimulator
 						XmlAttribute averageWaitTime = xs.CreateAttribute ("averageWaitTime");
 						averageWaitTime.Value = rm.GetNetworkNodeAverageWaitTime (networkNodeName) + "";
 						networkNode.Attributes.Append (averageWaitTime);
+
+						XmlAttribute packetsDropped = xs.CreateAttribute ("packetsDropped");
+						packetsDropped.Value = rm.GetNetworkNodePacketsDropped (networkNodeName) + "";
+						networkNode.Attributes.Append (packetsDropped);
+
+						XmlAttribute percentPacketsDropped = xs.CreateAttribute ("percentPacketsDropped");
+						percentPacketsDropped.Value = rm.GetNetworkNodePercentagePacketsDropped (networkNodeName) + "";
+						networkNode.Attributes.Append (percentPacketsDropped);
 
 						networkNodes.AppendChild (networkNode);
 					}

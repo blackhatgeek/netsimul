@@ -80,7 +80,8 @@ namespace NetTrafficSimulator
 		public SimulationModel LoadSM(){
 			SimulationModel sm = new SimulationModel ();
 			XmlElement ttr = xd.GetElementsByTagName ("simulation").Item(0) as XmlElement;
-			sm.Time=Convert.ToInt32(ttr.GetAttribute ("time_run"));
+			sm.Time = Convert.ToInt32 (ttr.GetAttribute ("time_run"));
+			sm.MaxHop = Convert.ToInt32 (ttr.GetAttribute ("max_hop"));
 			return sm;
 		}
 

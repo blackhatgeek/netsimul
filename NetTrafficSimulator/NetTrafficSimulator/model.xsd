@@ -14,7 +14,8 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 				</xs:element>
 			</xs:choice>
 			<xs:attribute name="time_run" use="required" type="xs:nonNegativeInteger"/>
-			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.01"/>
+			<xs:attribute name="max_hop" use="optional" default="30" type="xs:positiveInteger"/>
+			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.02"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tNode">

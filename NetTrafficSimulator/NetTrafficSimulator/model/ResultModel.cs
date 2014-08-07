@@ -94,6 +94,7 @@ namespace NetTrafficSimulator
 				this.timeWaited=timeWaited;
 				this.timeIdle=timeIdle;
 				this.avgWaitTime=avgWaitTime;
+
 			}
 
 			public string Name{
@@ -137,6 +138,8 @@ namespace NetTrafficSimulator
 					return avgWaitTime;
 				}
 			}
+
+
 		}
 
 		private class NetworkNodeResult
@@ -144,15 +147,19 @@ namespace NetTrafficSimulator
 			string name;
 			int packetsProcessed;
 			int timeWaited;
+			int dropped;
 			decimal timeIdle;
 			decimal avgWaitTime;
+			decimal percPacketsDropped;
 
-			public NetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime){
+			public NetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal precPDropped){
 				this.name=name;
 				this.packetsProcessed=packetsProcessed;
 				this.timeWaited=timeWaited;
 				this.timeIdle=timeIdle;
 				this.avgWaitTime=avgWaitTime;
+				this.dropped=dropped;
+				this.percPacketsDropped=precPDropped;
 			}
 
 			public string Name{
@@ -182,6 +189,18 @@ namespace NetTrafficSimulator
 			public decimal AvgWaitTime{
 				get{
 					return avgWaitTime;
+				}
+			}
+
+			public int PacketsDropped{
+				get{
+					return dropped;
+				}
+			}
+
+			public decimal PercPacketsDropped{
+				get{
+					return percPacketsDropped;
 				}
 			}
 		}
@@ -343,14 +362,16 @@ namespace NetTrafficSimulator
 		 * @param timeWaited amount of time spend waiting for incomming packet
 		 * @param timeIdle percentage of time spent waiting
 		 * @param avgWaitTime average wait time
+		 * @param dropped packets dropped due to hop count
+		 * @param percPacketsDropped packets dropped relative to packets processed
 		 * @throws ArgumentException Network node counter exceeded amount of network nodes set in constructor
 		 */
-		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime){
+		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal percPacketsDropped){
 			if (networkNodeCount < networkNodeLimit) {
 				networkNodes [networkNodeCount] = name;
 				if (networkNodeNames.ContainsKey (name))
 					networkNodeNames.Remove (name);
-				networkNodeNames.Add (name, new NetworkNodeResult (name, packetsProcessed, timeWaited, timeIdle, avgWaitTime));
+				networkNodeNames.Add (name, new NetworkNodeResult (name, packetsProcessed, timeWaited, timeIdle, avgWaitTime, dropped, percPacketsDropped));
 				networkNodeCount++;
 			} else
 				throw new ArgumentException ("Network node counter exceeded");
@@ -644,6 +665,34 @@ namespace NetTrafficSimulator
 			NetworkNodeResult nnr;
 			if (networkNodeNames.TryGetValue (name, out nnr))
 				return nnr.AvgWaitTime;
+			else
+				throw new ArgumentException ("Network node not found");
+		}
+
+		/**
+		 * If there exists a NetworkNode with the name provided return the amount of packets dropped due to hop count
+		 * @param name NetwokNode name
+		 * @return amount of packets dropped due to hop count
+		 * @throws ArgumentException Network node not found
+		 */
+		public int GetNetworkNodePacketsDropped(string name){
+			NetworkNodeResult nnr;
+			if (networkNodeNames.TryGetValue (name, out nnr))
+				return nnr.PacketsDropped;
+			else
+				throw new ArgumentException ("Network node not found");
+		}
+
+		/**
+		 * If there exists a NetworkNode with the name provided return the percentage of packets dropped due to hop count relative to amount of packets processed
+		 * @param name NetwokNode name
+		 * @return percentage of packets dropped due to hop count
+		 * @throws ArgumentException Network node not found
+		 */
+		public decimal GetNetworkNodePercentagePacketsDropped(string name){
+			NetworkNodeResult nnr;
+			if (networkNodeNames.TryGetValue (name, out nnr))
+				return nnr.PercPacketsDropped;
 			else
 				throw new ArgumentException ("Network node not found");
 		}

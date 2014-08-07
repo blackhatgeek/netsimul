@@ -81,7 +81,7 @@ namespace NetTrafficSimulator
 					break;
 				case NetworkModel.NETWORK_NODE:
 					int interfaces = network_model.GetConnectionCount (i);
-					NetworkNode nn = new NetworkNode (network_model.GetNodeName(i), interfaces);
+					NetworkNode nn = new NetworkNode (network_model.GetNodeName(i), interfaces,simulation_model.MaxHop);
 					nodes [nodeCounter] = nn;
 					networkNodeCounter++;
 					nodeCounter++;
@@ -188,7 +188,7 @@ namespace NetTrafficSimulator
 					result_model.SetNewServerNodeResult (sn.Name, sn.Address, sn.PacketsProcessed,sn.PacketsMalreceived, sn.TimeWaited, sn.GetPercentageTimeIdle (framework_model), sn.AverageWaitTime);
 				} else if (n is NetworkNode) {
 					NetworkNode nn = n as NetworkNode;
-					result_model.SetNewNetworkNodeResult (nn.Name,nn.PacketsProcessed,nn.TimeWaited,nn.GetPercentageTimeIdle(framework_model),nn.AverageWaitTime);
+					result_model.SetNewNetworkNodeResult (nn.Name,nn.PacketsProcessed,nn.TimeWaited,nn.GetPercentageTimeIdle(framework_model),nn.AverageWaitTime,nn.PacketsDropped,nn.PercentagePacketsDropped);
 				}
 			}
 			foreach (Link l in links) {

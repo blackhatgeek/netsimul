@@ -102,6 +102,7 @@
     <Compile Include="controller\XMLIO\XMLIO.cs" />
     <Compile Include="framework\extension\RoutingTable.cs" />
     <Compile Include="framework\extension\RoutingTableTest.cs" />
+    <Compile Include="framework\extension\RoutingMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

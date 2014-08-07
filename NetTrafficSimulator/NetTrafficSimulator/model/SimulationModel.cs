@@ -12,8 +12,12 @@ namespace NetTrafficSimulator
 		 */
 		private int time;
 
+		private const int DEFAULT_MAX_HOP = 30;
+		private int maxHop;
+
 		public SimulationModel ()
 		{
+			maxHop = DEFAULT_MAX_HOP;
 		}
 	
 		/**
@@ -32,7 +36,17 @@ namespace NetTrafficSimulator
 			}
 		}
 
-
+		public int MaxHop{
+			get{
+				return maxHop;
+			}
+			set{
+				if (value > 0)
+					this.maxHop = value;
+				else
+					throw new ArgumentException ("Max hop must be positive");
+			}
+		}
 	}
 }
 
