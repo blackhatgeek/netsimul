@@ -7,8 +7,7 @@ namespace NetTrafficSimulator
 	 */
 	public class Packet
 	{
-		private readonly int source, destination;
-		private readonly decimal size;
+		private readonly int source, destination,size;
 		private int hopcounter;
 
 		/**
@@ -17,7 +16,7 @@ namespace NetTrafficSimulator
 		 * @param destination address of the destination node
 		 * @param size data size
 		 */
-		public Packet (int source,int destination,decimal size)
+		public Packet (int source,int destination,int size)
 		{
 			this.source = source;
 			this.destination = destination;
@@ -46,7 +45,7 @@ namespace NetTrafficSimulator
 		/**
 		 * Packet data size
 		 */
-		public decimal Size {
+		public int Size {
 			get {
 				return this.size;
 			}

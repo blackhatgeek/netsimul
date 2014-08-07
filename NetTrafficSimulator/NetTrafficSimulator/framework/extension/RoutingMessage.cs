@@ -4,7 +4,7 @@ namespace NetTrafficSimulator
 {
 	public abstract class RoutingMessage:Packet{
 		private Link link;
-		public RoutingMessage(Link l,int size):base(int.MinValue,int.MinValue,(decimal)size){
+		public RoutingMessage(Link l,int size):base(int.MinValue,int.MinValue,size){
 			this.link = l;
 		}
 		public Link Link{

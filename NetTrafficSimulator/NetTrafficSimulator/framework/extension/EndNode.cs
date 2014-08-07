@@ -10,7 +10,7 @@ namespace NetTrafficSimulator
 	public class EndNode:EndpointNode
 	{
 		private int sent, received,malreceived,time_wait,server_node_count, max_packet_size,last_send;
-		private decimal psizesum;
+		private int psizesum;
 		private Link link;
 		private Random r;
 		private static readonly ILog log=LogManager.GetLogger(typeof(EndNode));
@@ -26,7 +26,7 @@ namespace NetTrafficSimulator
 			this.time_wait = 0;
 			this.last_send = 0;
 			this.max_packet_size = max_packet_size;
-			this.psizesum = 0.0m;
+			this.psizesum = 0;
 		}
 		
 		/**
@@ -95,11 +95,11 @@ namespace NetTrafficSimulator
 		 * @param size what size of data to send
 		 * @throws InvalidOperationException if link is not connected
 		 */
-		private void send(int destination,decimal size){
+		private void send(int destination,int size){
 			//must send to existing node!!
 			if (link != null) {
 				psizesum += size;
-				this.link.Carry (new Packet (Address,destination,size), this, this.link.GetPartner (this));
+				this.link.Carry (new Packet (Address, destination, size), this, this.link.GetPartner (this));
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
@@ -119,8 +119,8 @@ namespace NetTrafficSimulator
 		 * Randomly chooses size for new packet based on max_packet_size parameter
 		 * @return packet size
 		 */
-		private decimal selectDataSize(){
-			return (decimal)(r.Next(max_packet_size)+r.NextDouble ());
+		private int selectDataSize(){
+			return r.Next(max_packet_size);
 		}
 
 		/**
@@ -196,7 +196,7 @@ namespace NetTrafficSimulator
 		public decimal AveragePacketSize{
 			get{
 				if (sent!=0)
-					return psizesum / sent;
+					return (decimal)psizesum / sent;
 				return 0;
 			}
 		}

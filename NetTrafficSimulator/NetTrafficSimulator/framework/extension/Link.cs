@@ -63,7 +63,7 @@ namespace NetTrafficSimulator
 			}
 		}
 
-		private int capacity,next_queue_pos;
+		private int capacity,next_queue_pos,data_carry,queue_size;
 		private DataEnvelope[] queue;
 		private Node a, b;
 		private bool active;
@@ -104,7 +104,9 @@ namespace NetTrafficSimulator
 
 			this.name = name;
 			this.capacity = capacity;
+			this.queue_size = capacity;//TODO
 			this.next_queue_pos = 0;
+			this.data_carry = 0;
 			this.queue = new DataEnvelope[capacity];
 			this.a = a;
 			this.b = b;
@@ -151,22 +153,28 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException if origin and destination are not nodes specified in the consructor regardless of order
 		 */
 		public void Carry(Packet p,Node origin,Node destination){
-			if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
-				if (active) {
-					carried++;
-					log.Debug ("("+name+") Link active, carried");
-					if (next_queue_pos < capacity) {
-						DataEnvelope de = new DataEnvelope (p, origin, destination);
-						queue [next_queue_pos] = de;
-						next_queue_pos++;
-						log.Debug ("("+name+") Enqueued");
+			if (p != null) {
+				if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
+					if (active && (next_queue_pos < queue_size)) {
+						carried++;
+						log.Debug ("(" + name + ") Link active, carried");
+						if ((data_carry + p.Size) <= capacity) {
+							DataEnvelope de = new DataEnvelope (p, origin, destination);
+							queue [next_queue_pos] = de;
+							next_queue_pos++;
+							data_carry += p.Size;
+							log.Debug ("(" + name + ") Enqueued, carry " + data_carry + " capacity " + capacity + " next_queue_pos " + next_queue_pos + " queue size " + queue_size);
+						} else {
+							dropped++;
+							log.Debug ("(" + name + ") Dropped due to capacity");
+						}
 					} else {
-						dropped++;
-						log.Debug ("("+name+") Dropped");
+						log.Warn ("Not carried! Active:" + active + " next_queue_pos: " + next_queue_pos + " queue_size:" + queue_size);
 					}
-				}
+				} else
+					throw new ArgumentException ("This link is capable of delivering data between nodes " + a + " and  " + b + ", though requested to deliver from " + origin + " to " + destination);
 			} else
-				throw new ArgumentException ("This link is capable of delivering data between nodes " + a + " and  " + b + ", though requested to deliver from " + origin + " to " + destination);
+				throw new ArgumentException ("Packet null");
 		}
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
@@ -237,6 +245,7 @@ namespace NetTrafficSimulator
 				log.Debug ("(" + Name + ") Delivery to " + de.Destination + " at " + (model.Time + 1));
 				de.Destination.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, de.Data), model.Time + 1);
 			}
+			this.data_carry = 0;
 			this.next_queue_pos = 0;
 		}
 
