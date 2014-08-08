@@ -128,20 +128,16 @@ namespace NetTrafficSimulator
 						if (network_model.AreConnected (i, j)){
 							//TESTME links parsed correctly??
 							Link l = new Link (network_model.GetLinkName(i,j), network_model.LinkCapacity(i,j), x, y,network_model.GetLinkToggleProbability(i,j));
-							if (x is EndNode)
-								(x as EndNode).Link = l;
+							if (x is EndpointNode)
+								(x as EndpointNode).Link = l;
 							else if (x is NetworkNode)
 								(x as NetworkNode).ConnectLink (l);
-							else if (x is ServerNode)
-								(x as ServerNode).Link = l;
 							else
 								throw new InvalidOperationException ("Node " + x + "is not EndNode nor NetworkNode nor ServerNode");
-							if (y is EndNode)
-								(y as EndNode).Link = l;
+							if (y is EndpointNode)
+								(y as EndpointNode).Link = l;
 							else if (y is NetworkNode)
 								(y as NetworkNode).ConnectLink (l);
-							else if (y is ServerNode)
-								(y as ServerNode).Link = l;
 							else
 								throw new InvalidOperationException ("Node " + y + " is not EndNode nor NetworkNode nor ServerNode");
 							links.AddLast (l);
