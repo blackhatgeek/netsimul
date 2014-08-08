@@ -13,6 +13,7 @@ namespace NetTrafficSimulator
 		private decimal psizesum;
 		private Link link;
 		private Random r;
+		private bool randomTalker;
 		private static readonly ILog log=LogManager.GetLogger(typeof(EndNode));
 
 		/**
@@ -27,6 +28,10 @@ namespace NetTrafficSimulator
 			this.last_send = 0;
 			this.max_packet_size = max_packet_size;
 			this.psizesum = 0;
+			this.randomTalker = true;
+		}
+		public EndNode(string n,int address,int max_packet_size,bool randomTalker):this(n,address,max_packet_size){
+			this.randomTalker = randomTalker;
 		}
 		
 		/**
@@ -48,22 +53,21 @@ namespace NetTrafficSimulator
 				time_wait += (model.Time - last_send);
 				last_send = model.Time;
 				log.Debug ("(" + Name + ") Sending at " + model.Time + " link " + this.link);
-				if (state.Data != null)//preddefinovany event
-					send (state.Data);
-				else if (server_node_count > 0)//komunikuj nahodne
-					send (selectDestination (model, server_node_count), selectDataSize ());
-				//else nejsou k dispozici servery
-				else
-					send (r.Next (), selectDataSize ());
-				//time_wait--;
-				int t = wait_time ();
-				//time_wait += t;
-
-				if (state.Data == null) {
+				if (randomTalker) {//komunikuj nahodne
+					if (server_node_count > 0)
+						send (selectDestination (model, server_node_count), selectDataSize ());
+					else //nejsou k dispozici servery
+						send (r.Next (), selectDataSize ());
+					int t = wait_time ();
 					log.Debug ("(" + Name + ") Wait for " + t + " Total wait: " + time_wait);
 					log.Debug ("(" + Name + ") Schedule next send at " + (model.Time + t));
 					this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
-				}//jinak slo o preddefinovany event a tedy jsou naplanovany dalsi ... CHYBA potreba EndNode komunikuj nahodne hlidat!!
+				} else {
+					if (state.Data != null)//preddefinovany event
+						send (state.Data);
+					else
+						throw new ArgumentException ("End node " + Name + " is not random talker, though was scheduled with no data to send at "+model.Time);
+				}
 				break;
 			/*case MFF_NPRG031.State.state.WAIT:
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time ());

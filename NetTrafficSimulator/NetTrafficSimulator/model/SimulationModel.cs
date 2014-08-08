@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
@@ -16,6 +17,8 @@ namespace NetTrafficSimulator
 		private int maxHop,eventCount;
 
 		private readonly int events;
+
+		private HashSet<string> randomTalkers;
 
 		public struct Event{
 			public Event(string node1,string node2,int when,decimal size){
@@ -78,6 +81,14 @@ namespace NetTrafficSimulator
 
 		public Event[] GetEvents(){
 			return evs;
+		}
+
+		public void SetRandomTalker(string nodeName){
+			randomTalkers.Add (nodeName);
+		}
+
+		public bool IsRandomTalker(string node){
+			return randomTalkers.Contains (node);
 		}
 	}
 }

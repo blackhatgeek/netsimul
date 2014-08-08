@@ -14,7 +14,8 @@ namespace NetTrafficSimulator
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(Loader));
 		private XmlDocument xd;
-		private HashSet<string> en,sn;
+		private HashSet<string> sn;
+		private Dictionary<string,bool> en;
 
 		public Loader(string fname){
 			//Set-up validator
@@ -32,7 +33,7 @@ namespace NetTrafficSimulator
 			xd.Load (model);
 
 			//HashSet pro EN a SN
-			en = new HashSet<string> ();
+			en = new Dictionary<string, bool> ();
 			sn = new HashSet<string> ();
 		}
 
@@ -58,7 +59,10 @@ namespace NetTrafficSimulator
 					nm.SetNodeAddr (i, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
 					if (node.HasAttribute ("mps"))
 						nm.SetEndNodeMaxPacketSize (name, Convert.ToInt32 (node.Attributes.GetNamedItem ("mps").Value));
-					en.Add (name);
+					bool random = false;
+					if (node.HasAttribute ("randomTalk"))
+						random = node.Attributes.GetNamedItem ("randomTalk").Value.ToLower().Equals ("true");
+					en.Add (name,random);
 					break;
 				case "network":
 					nm.SetNodeType (i, NetworkModel.NETWORK_NODE);
@@ -93,13 +97,14 @@ namespace NetTrafficSimulator
 		}
 
 		public SimulationModel LoadSM(){
-			SimulationModel sm = new SimulationModel (-1);
 			XmlElement ttr = xd.GetElementsByTagName ("simulation").Item(0) as XmlElement;
+			XmlElement events = xd.GetElementsByTagName ("events").Item(0) as XmlElement;
+			XmlNodeList nl = events.ChildNodes;
+
+			SimulationModel sm = new SimulationModel (nl.Count);
 			sm.Time = Convert.ToInt32 (ttr.GetAttribute ("time_run"));
 			sm.MaxHop = Convert.ToInt32 (ttr.GetAttribute ("max_hop"));
 
-			XmlElement events = xd.GetElementsByTagName ("events").Item(0) as XmlElement;
-			XmlNodeList nl = events.ChildNodes;
 			for (int i=0; i<nl.Count; i++) {
 				XmlElement ev=nl.Item(i) as XmlElement;
 				if (!ev.Name.Equals ("event")) {
@@ -111,12 +116,16 @@ namespace NetTrafficSimulator
 				string loc = ev.Attributes.GetNamedItem ("where").Value;
 				decimal size = Convert.ToDecimal(ev.Attributes.GetNamedItem ("size").Value);
 				//verifikace: who je EN, loc je SN, velikost je nezap.
-				if (en.Contains(who)&&sn.Contains(loc)&&(size >= 0.0m))
+				if (en.ContainsKey (who) && sn.Contains (loc) && (size >= 0.0m))
 					sm.SetEvent (who, loc, when, size);
 				else
-					throw new ArgumentOutOfRangeException ("Wrong packet size ("+size+") - must not be negative");
+					throw new ArgumentOutOfRangeException ("Wrong packet size ("+size+") - must not be negative OR who ("+who+") not EndNode OR loc ("+loc+") not ServerNode");
 			}
 
+			foreach (KeyValuePair<string,bool> kvp in en) {
+				if (kvp.Value)
+					sm.SetRandomTalker (kvp.Key);
+			}
 			return sm;
 		}
 

@@ -407,10 +407,10 @@ namespace NetTrafficSimulator
 			ServerNode sn1 = new ServerNode ("SN1", 3);
 			ServerNode sn2 = new ServerNode ("SN2", 4);
 			NetworkNode nn = new NetworkNode ("NN0", 4,3);
-			Link l1 = new Link ("L1", 1, en1, nn,0.0m);
-			Link l2 = new Link ("L2", 1, en2, nn,0.0m);
-			Link l3 = new Link ("L3", 1, sn1, nn,0.0m);
-			Link l4 = new Link ("L4", 1, sn2, nn,0.0m);
+			Link l1 = new Link ("L1", 10, en1, nn,0.0m);
+			Link l2 = new Link ("L2", 10, en2, nn,0.0m);
+			Link l3 = new Link ("L3", 10, sn1, nn,0.0m);
+			Link l4 = new Link ("L4", 10, sn2, nn,0.0m);
 			en1.Link = l1;
 			en2.Link = l2;
 			sn1.Link = l3;

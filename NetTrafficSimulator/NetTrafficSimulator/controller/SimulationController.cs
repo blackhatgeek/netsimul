@@ -78,7 +78,7 @@ namespace NetTrafficSimulator
 				switch (network_model.GetNodeType (i)) {
 				case NetworkModel.END_NODE:
 					string name = network_model.GetNodeName (i);
-					EndNode en = new EndNode (name, network_model.GetNodeAddr (i), network_model.GetEndNodeMaxPacketSize (name));
+					EndNode en = new EndNode (name, network_model.GetNodeAddr (i), network_model.GetEndNodeMaxPacketSize (name),simulation_model.IsRandomTalker (name));
 					if (node_names.ContainsKey (name))
 						throw new ArgumentException ("Duplicate node name");
 					node_names.Add (name, en);
