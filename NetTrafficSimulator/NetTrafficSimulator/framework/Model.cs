@@ -64,8 +64,8 @@ namespace MFF_NPRG031
 			log.Info ("Simulation started");
 			while (!Finish) {
 				Event e = K.First ();
-				log.Debug ("<Event> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
 				if (e != null) {
+					log.Debug ("<Event> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
 					Time = e.when;
 					if (Time >= time_to_run) {
 						Finish = true;

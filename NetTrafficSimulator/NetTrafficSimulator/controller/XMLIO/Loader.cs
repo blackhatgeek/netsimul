@@ -97,31 +97,47 @@ namespace NetTrafficSimulator
 		}
 
 		public SimulationModel LoadSM(){
+			log.Debug ("Enter LoadSM");
 			XmlElement ttr = xd.GetElementsByTagName ("simulation").Item(0) as XmlElement;
+			int time = Convert.ToInt32 (ttr.GetAttribute ("time_run"));
+			int max_hop = Convert.ToInt32 (ttr.GetAttribute ("max_hop"));
 			XmlElement events = xd.GetElementsByTagName ("events").Item(0) as XmlElement;
-			XmlNodeList nl = events.ChildNodes;
 
-			SimulationModel sm = new SimulationModel (nl.Count);
-			sm.Time = Convert.ToInt32 (ttr.GetAttribute ("time_run"));
-			sm.MaxHop = Convert.ToInt32 (ttr.GetAttribute ("max_hop"));
+			SimulationModel sm;
 
-			for (int i=0; i<nl.Count; i++) {
-				XmlElement ev=nl.Item(i) as XmlElement;
-				if (!ev.Name.Equals ("event")) {
-					log.Error ("Parsing events: Element name not event (event "+i+") name:"+ev.Name);
-					break;
-				}
-				string who = ev.Attributes.GetNamedItem ("who").Value;
-				int when = Convert.ToInt32 (ev.Attributes.GetNamedItem ("when").Value);
-				string loc = ev.Attributes.GetNamedItem ("where").Value;
-				decimal size = Convert.ToDecimal(ev.Attributes.GetNamedItem ("size").Value);
-				//verifikace: who je EN, loc je SN, velikost je nezap.
-				if (en.ContainsKey (who) && sn.Contains (loc) && (size >= 0.0m))
-					sm.SetEvent (who, loc, when, size);
-				else
-					throw new ArgumentOutOfRangeException ("Wrong packet size ("+size+") - must not be negative OR who ("+who+") not EndNode OR loc ("+loc+") not ServerNode");
+			if (events != null) {
+				XmlNodeList nl = events.ChildNodes;
+
+				if ((nl != null) && (ttr != null)) {
+					log.Debug ("Passed if");
+					sm = new SimulationModel (nl.Count);
+
+					log.Debug ("Enter for");
+					for (int i=0; i<nl.Count; i++) {
+						XmlElement ev = nl.Item (i) as XmlElement;
+						if (!ev.Name.Equals ("event")) {
+							log.Error ("Parsing events: Element name not event (event " + i + ") name:" + ev.Name);
+							break;
+						}
+						string who = ev.Attributes.GetNamedItem ("who").Value;
+						int when = Convert.ToInt32 (ev.Attributes.GetNamedItem ("when").Value);
+						string loc = ev.Attributes.GetNamedItem ("where").Value;
+						decimal size = Convert.ToDecimal (ev.Attributes.GetNamedItem ("size").Value);
+						//verifikace: who je EN, loc je SN, velikost je nezap.
+						if (en.ContainsKey (who) && sn.Contains (loc) && (size >= 0.0m))
+							sm.SetEvent (who, loc, when, size);
+						else
+							throw new ArgumentOutOfRangeException ("Wrong packet size (" + size + ") - must not be negative OR who (" + who + ") not EndNode OR loc (" + loc + ") not ServerNode");
+					}
+				} else 
+					throw new Exception ("Model fucked up");
+			} else {
+				log.Debug ("No events in model");
+				sm = new SimulationModel (0);
 			}
-
+			sm.Time = time;
+			sm.MaxHop = max_hop;
+			log.Debug ("Enter foireach");
 			foreach (KeyValuePair<string,bool> kvp in en) {
 				if (kvp.Value)
 					sm.SetRandomTalker (kvp.Key);

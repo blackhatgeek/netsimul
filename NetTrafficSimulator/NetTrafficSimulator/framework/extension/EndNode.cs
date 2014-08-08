@@ -92,7 +92,9 @@ namespace NetTrafficSimulator
 
 		public override void Run (MFF_NPRG031.Model m)
 		{
-			this.Schedule (m.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), m.Time);
+			if(randomTalker)
+				this.Schedule (m.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), m.Time);
+			//otherwise already scheduled
 		}
 
 		/**

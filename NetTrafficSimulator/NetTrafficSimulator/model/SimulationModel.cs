@@ -36,6 +36,7 @@ namespace NetTrafficSimulator
 		public SimulationModel (int events)
 		{
 			maxHop = DEFAULT_MAX_HOP;
+			this.randomTalkers = new HashSet<string> ();
 			if (events >= 0) {
 				this.events = events;
 				this.evs = new Event[events];

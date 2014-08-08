@@ -59,6 +59,8 @@ namespace NetTrafficSimulator
 			createModel ();
 			//create events
 			createEvents ();
+			//initialize processes
+			initializeProcesses ();
 		}
 
 		/**
@@ -211,6 +213,21 @@ namespace NetTrafficSimulator
 			foreach (Link l in links) {
 				result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.PacketsDropped, l.DropPercentage, l.ActiveTime, l.PassiveTime, l.PercentageTimeIdle);
 			}
+		}
+
+		/**
+		 * If Model is not null, invoke Run method on each Node and Link registered
+		 * @throws InvalidOperationException if model is null (not created yet)
+		 * Create loaded events from SimulationModel
+		 */
+		private void initializeProcesses(){
+			if (framework_model != null) {
+				foreach (Node n in nodes)
+ 					n.Run (framework_model);
+ 				foreach (Link l in links)
+ 					l.Run(framework_model);
+ 			} else
+ 				throw new InvalidOperationException ("[SimulationController.initializeProcesses] Framework model not created");
 		}
 
 		/**
