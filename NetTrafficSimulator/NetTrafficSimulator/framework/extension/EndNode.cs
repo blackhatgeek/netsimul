@@ -9,9 +9,8 @@ namespace NetTrafficSimulator
 	 */
 	public class EndNode:EndpointNode
 	{
-		private int sent, received,malreceived,time_wait,server_node_count, max_packet_size,last_send;
+		private int sent, received,server_node_count, max_packet_size,last_send;
 		private decimal psizesum;
-		private Link link;
 		private Random r;
 		private bool randomTalker;
 		private static readonly ILog log=LogManager.GetLogger(typeof(EndNode));
@@ -33,17 +32,6 @@ namespace NetTrafficSimulator
 		public EndNode(string n,int address,int max_packet_size,bool randomTalker):this(n,address,max_packet_size){
 			this.randomTalker = randomTalker;
 		}
-		
-		/**
-		 * Link connecting the EndNode to the rest of the network
-		 */
-		public Link Link{
-			get{
-				return this.link;
-			}set{
-				this.link = value;
-			}
-		}
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
@@ -52,7 +40,7 @@ namespace NetTrafficSimulator
 			case MFF_NPRG031.State.state.SEND:
 				time_wait += (model.Time - last_send);
 				last_send = model.Time;
-				log.Debug ("(" + Name + ") Sending at " + model.Time + " link " + this.link);
+				log.Debug ("(" + Name + ") Sending at " + model.Time + " link " + this.Link);
 				if (randomTalker) {//komunikuj nahodne
 					if (server_node_count > 0)
 						send (selectDestination (model, server_node_count), selectDataSize ());
@@ -105,9 +93,9 @@ namespace NetTrafficSimulator
 		 */
 		private void send(Packet p){
 			//must send to existing node!!
-			if (link != null) {
+			if (Link != null) {
 				psizesum += p.Size;
-				this.link.Carry (p, this, this.link.GetPartner (this));
+				this.Link.Carry (p, this, this.Link.GetPartner (this));
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
@@ -135,14 +123,6 @@ namespace NetTrafficSimulator
 			return r.Next(max_packet_size);
 		}
 
-		/**
-		 * Generates a wait time after sending
-		 * @return 5
-		 */
-		private int wait_time(){
-			return 5;
-		}
-
 		//results
 		/**
 		 * Amount of packets sent
@@ -160,37 +140,6 @@ namespace NetTrafficSimulator
 			get{
 				return received;
 			}
-		}
-
-		/**
-		 * Amount of packets received, where destination was other than EndNode's address
-		 */
-		public int PacketsMalreceived{
-			get{
-				return malreceived;
-			}
-		}
-
-		/**
-		 * Amount of time spend waiting
-		 * sum of wait_time() provided values counted in ProcessEvent
-		 */
-		public int TimeWaited{
-			get{
-				return time_wait;
-			}
-		}
-	
-		/**
-		 * Time spend waiting relative to time to run the simulation
-		 * @param model Framework model
-		 * @return TimeWait to current time provided by model ratio in percents
-		 */
-		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
-			if (model.Time != 0)
-				return (decimal)time_wait / model.Time * 100;
-			else
-				return 100;
 		}
 
 		/**
@@ -214,4 +163,3 @@ namespace NetTrafficSimulator
 		}
 	}
 }
-

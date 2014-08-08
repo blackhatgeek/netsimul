@@ -8,8 +8,11 @@ namespace NetTrafficSimulator
 	public abstract class EndpointNode:Node,IAddressable
 	{
 		private readonly int address;
+		private Link link;
+		protected int malreceived,time_wait;
 		public EndpointNode(String name,int address):base(name){
 			this.address=address;
+			this.link = null;
 		}
 
 		/**
@@ -19,6 +22,63 @@ namespace NetTrafficSimulator
 			get{
 				return this.address;
 			}
+		}
+
+		/*
+		 * Link connecting the EndpointNode to the rest of the network
+		 */
+		public Link Link{
+			get{
+				return this.link;
+			}set{
+				this.link = value;
+			}
+		}
+
+		/**
+		 * Generates a wait time
+		 * @return 1
+		 */
+		protected int wait_time(){
+			return 1;
+		}
+
+		/**
+		 * Empty
+		 */
+		public override void Run (MFF_NPRG031.Model m)
+		{
+		}
+
+		/**
+		 * Amount of packets received, where destination was other than EndNode's address
+		 */
+		public int PacketsMalreceived{
+			get{
+				return malreceived;
+			}
+		}
+
+		/**
+		 * Amount of time spend waiting
+		 * sum of wait_time() provided values counted in ProcessEvent
+		 */
+		public int TimeWaited{
+			get{
+				return time_wait;
+			}
+		}
+
+		/**
+		 * Time spend waiting relative to time to run the simulation
+		 * @param model Framework model
+		 * @return TimeWait to current time provided by model ratio in percents
+		 */
+		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
+			if (model.Time != 0)
+				return (decimal)time_wait / model.Time * 100;
+			else
+				return 100;
 		}
 	}
 }

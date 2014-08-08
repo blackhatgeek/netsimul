@@ -11,27 +11,14 @@ namespace NetTrafficSimulator
 	public class ServerNode:EndpointNode
 	{
 		private static readonly ILog log=LogManager.GetLogger(typeof(ServerNode));
-		private int time_waited,process,malreceived;
-		private Link link;
+		private int time_waited,process;
 		/**
 		 * Creates a ServerNode with given name and address
 		 */
 		public ServerNode (String name,int address):base(name,address)
 		{
-			this.link=null;
 			this.time_waited = 0;
 			this.process = 0;
-		}
-
-		/*
-		 * Link connecting the ServerNode to the rest of the network
-		 */
-		public Link Link{
-			get{
-				return this.link;
-			}set{
-				this.link = value;
-			}
 		}
 
 		/**
@@ -57,9 +44,9 @@ namespace NetTrafficSimulator
 					}
 				}
 			} else if (state.Actual == MFF_NPRG031.State.state.SEND) {
-				if (link != null) {
+				if (Link != null) {
 					if (state.Data.Source == this.Address)
-						this.link.Carry (state.Data, this, this.link.GetPartner (this));
+						this.Link.Carry (state.Data, this, this.Link.GetPartner (this));
 					else
 						throw new ArgumentException ("[Node " + Name + "] Odchozi packet nepochazi z tohoto node");
 				}
@@ -79,14 +66,6 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Generates a wait time between receiving a packet and sending a response
-		 * @return 1
-		 */
-		private int wait_time(){
-			return 1;
-		}
-
-		/**
 		 * Send generated response at given time
 		 * @param p Generated new packet
 		 * @param time When to send
@@ -96,35 +75,7 @@ namespace NetTrafficSimulator
 			this.Schedule (m.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), time);
 		}
 
-		/**
-		 * Empty
-		 */
-		public override void Run (MFF_NPRG031.Model m)
-		{
-		}
-
 		//results
-		/**
-		 * Amount of time spent waiting
-		 * Sum of wait_time() provided values counted in ProcessEvent
-		 */
-		public int TimeWaited{
-			get{
-				return time_waited;
-			}
-		}
-		/*
-		 * Time spend waiting relative to time to run the simulation
-		 * @param model Framework model
-		 * @return TimeWait to current time provided by model ratio in percents
-		 */
-		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
-			if (model.Time != 0)
-				return time_waited / model.Time * 100;
-			else
-				return 100;
-		}
-
 		/**
 		 * TimeWaited divided by PacketsProcessed gives us average time ServerNode spent waiting before a response packet was sent
 		 */
@@ -146,14 +97,6 @@ namespace NetTrafficSimulator
 			}
 		}
 
-		/**
-		 * Amount of packets received where destination address was not the ServerNode's destination address
-		 */
-		public int PacketsMalreceived{
-			get{
-				return malreceived;
-			}
-		}
 	}
 }
 
