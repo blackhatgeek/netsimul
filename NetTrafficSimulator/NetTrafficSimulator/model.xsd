@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.0"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1"
 targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0">
 	<xs:element name="simulation">
 		<xs:complexType>
-			<xs:choice maxOccurs="1" minOccurs="1">
-				<xs:element name="network">
+			<xs:sequence>
+				<xs:element name="network" maxOccurs="1" minOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="nodes" type="ns:tNode" minOccurs="0" maxOccurs="1"/>
@@ -12,11 +12,42 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-			</xs:choice>
+				<xs:element name="events" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="event" type="ns:tEvent" minOccurs="1" maxOccurs="unbounded"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
 			<xs:attribute name="time_run" use="required" type="xs:nonNegativeInteger"/>
 			<xs:attribute name="max_hop" use="optional" default="30" type="xs:positiveInteger"/>
-			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.02"/>
+			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.03"/>
 		</xs:complexType>
+		<xs:unique name="NodeName">
+			<xs:selector xpath="child::network/nodes" />
+			<xs:field xpath="./@name" />
+		</xs:unique>
+		<xs:unique name="LinkName">
+			<xs:selector xpath="network/links/link" />
+			<xs:field xpath="./@name" />
+		</xs:unique>
+		<xs:keyref name="LinkNode1" refer="ns:NodeName">
+			<xs:selector xpath="network/links/link" />
+			<xs:field xpath="./@node1" />
+		</xs:keyref>
+		<xs:keyref name="LinkNode2" refer="ns:NodeName">
+			<xs:selector xpath="network/links/link" />
+			<xs:field xpath="./@node2" />
+		</xs:keyref>
+		<xs:keyref name="EventWho" refer="ns:NodeName">
+			<xs:selector xpath="events/event" />
+			<xs:field xpath="./@who" />
+		</xs:keyref>
+		<xs:keyref name="EventWhere" refer="ns:NodeName">
+			<xs:selector xpath="events/event" />
+			<xs:field xpath="./@where" />
+		</xs:keyref>
 	</xs:element>
 	<xs:complexType name="tNode">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -26,6 +57,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 					<xs:complexContent>
 						<xs:extension base="ns:tEndpoint">
 							<xs:attribute name="mps" type="xs:nonNegativeInteger" use="optional" />
+							<xs:attribute name="randomTalk" type="xs:boolean" use="optional" default="false" />
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>
@@ -34,24 +66,30 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="tEndpoint">
-		<xs:attribute name="name" type="xs:ID" />
-		<xs:attribute name="address" type="xs:nonNegativeInteger" />
+		<xs:attribute name="name" type="xs:token" use="required" />
+		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tNetwork">
-		<xs:attribute name="name" type="xs:ID"/>
+		<xs:attribute name="name" type="xs:token" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tLink">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="link">
 				<xs:complexType>
-					<xs:attribute name="name" type="xs:ID"/>
-					<xs:attribute name="node1" type="xs:IDREF"/>
-					<xs:attribute name="node2" type="xs:IDREF"/>
-					<xs:attribute name="capacity" type="xs:nonNegativeInteger"/>
-					<xs:attribute name="toggle_probability" type="xs:decimal" />
+					<xs:attribute name="name" type="xs:token" use="required" />
+					<xs:attribute name="node1" type="xs:token" use="required" />
+					<xs:attribute name="node2" type="xs:token" use="required" />
+					<xs:attribute name="capacity" type="xs:nonNegativeInteger" use="required" />
+					<xs:attribute name="toggle_probability" type="xs:decimal" use="required" />
 				</xs:complexType>
 			</xs:element>
 		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="tEvent">
+		<xs:attribute name="who" type="xs:token" use="required" />
+		<xs:attribute name="when" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="where" type="xs:token" use="required" />
+		<xs:attribute name="size" type="xs:decimal" use="optional" default="1" />
 	</xs:complexType>
 </xs:schema>
 

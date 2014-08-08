@@ -47,10 +47,10 @@ namespace NetTrafficSimulator
 			case MFF_NPRG031.State.state.SEND:
 				time_wait += (model.Time - last_send);
 				last_send = model.Time;
-				log.Debug ("("+Name+") Sending at " + model.Time+" link "+this.link);
-				if (state.Data != null)
-					send (state.Data.Destination, state.Data.Size);
-				else if (server_node_count > 0)
+				log.Debug ("(" + Name + ") Sending at " + model.Time + " link " + this.link);
+				if (state.Data != null)//preddefinovany event
+					send (state.Data);
+				else if (server_node_count > 0)//komunikuj nahodne
 					send (selectDestination (model, server_node_count), selectDataSize ());
 				//else nejsou k dispozici servery
 				else
@@ -59,9 +59,11 @@ namespace NetTrafficSimulator
 				int t = wait_time ();
 				//time_wait += t;
 
-				log.Debug ("("+Name+") Wait for " + t + " Total wait: " + time_wait);
-				log.Debug ("("+Name+") Schedule next send at " + (model.Time + t));
-				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
+				if (state.Data == null) {
+					log.Debug ("(" + Name + ") Wait for " + t + " Total wait: " + time_wait);
+					log.Debug ("(" + Name + ") Schedule next send at " + (model.Time + t));
+					this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
+				}//jinak slo o preddefinovany event a tedy jsou naplanovany dalsi ... CHYBA potreba EndNode komunikuj nahodne hlidat!!
 				break;
 			/*case MFF_NPRG031.State.state.WAIT:
 				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time ());
@@ -95,14 +97,18 @@ namespace NetTrafficSimulator
 		 * @param size what size of data to send
 		 * @throws InvalidOperationException if link is not connected
 		 */
-		private void send(int destination,decimal size){
+		private void send(Packet p){
 			//must send to existing node!!
 			if (link != null) {
-				psizesum += size;
-				this.link.Carry (new Packet (Address, destination, size), this, this.link.GetPartner (this));
+				psizesum += p.Size;
+				this.link.Carry (p, this, this.link.GetPartner (this));
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
+		}
+
+		private void send(int addr,decimal size){
+			send (new Packet (this.Address, addr, size));
 		}
 
 		/**

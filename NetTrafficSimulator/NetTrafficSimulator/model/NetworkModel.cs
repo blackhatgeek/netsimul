@@ -244,6 +244,7 @@ namespace NetTrafficSimulator
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetNodeType(" + node + ")] "+ILLEGAL_PARAMETER);
 		}
+
 		/**
 		 * For given node sets a type of node
 		 * @param node a node of interest

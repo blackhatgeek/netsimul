@@ -2,6 +2,8 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.IO;
+using System.Collections.Generic;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -10,7 +12,9 @@ namespace NetTrafficSimulator
 	 */
 	public class Loader
 	{
+		private static readonly ILog log = LogManager.GetLogger(typeof(Loader));
 		private XmlDocument xd;
+		private HashSet<string> en,sn;
 
 		public Loader(string fname){
 			//Set-up validator
@@ -26,6 +30,10 @@ namespace NetTrafficSimulator
 			XmlReader model = XmlReader.Create (fs, settings);
 			xd = new XmlDocument ();
 			xd.Load (model);
+
+			//HashSet pro EN a SN
+			en = new HashSet<string> ();
+			sn = new HashSet<string> ();
 		}
 
 		public NetworkModel LoadNM(){
@@ -34,24 +42,27 @@ namespace NetTrafficSimulator
 			XmlNodeList nl = nodes.ChildNodes;
 			for (int i=0; i<nl.Count; i++) {
 				XmlElement node = nl.Item (i) as XmlElement;
+				string name;
 				switch (node.Name) {
 				case "server":
+					name = node.Attributes.GetNamedItem ("name").Value;
 					nm.SetNodeType (i, NetworkModel.SERVER_NODE);
-					nm.SetNodeName (i, node.Attributes.GetNamedItem ("name").Value);
-					nm.SetNodeAddr (i, Convert.ToInt32(node.Attributes.GetNamedItem ("address").Value));
+					nm.SetNodeName (i, name);
+					nm.SetNodeAddr (i, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
+					sn.Add (name);
 					break;
 				case "end":
 					nm.SetNodeType (i, NetworkModel.END_NODE);
-					string name = node.Attributes.GetNamedItem ("name").Value;
+					name = node.Attributes.GetNamedItem ("name").Value;
 					nm.SetNodeName (i, name);
 					nm.SetNodeAddr (i, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
-					if(node.HasAttribute("mps"))
-						nm.SetEndNodeMaxPacketSize(name,Convert.ToInt32(node.Attributes.GetNamedItem("mps").Value));
+					if (node.HasAttribute ("mps"))
+						nm.SetEndNodeMaxPacketSize (name, Convert.ToInt32 (node.Attributes.GetNamedItem ("mps").Value));
+					en.Add (name);
 					break;
 				case "network":
 					nm.SetNodeType (i, NetworkModel.NETWORK_NODE);
 					nm.SetNodeName (i, node.Attributes.GetNamedItem ("name").Value);
-					//nm.SetNodeAddr (i, Convert.ToInt32(node.Attributes.GetNamedItem ("address").Value));
 					break;
 				default:
 					break;
@@ -61,29 +72,51 @@ namespace NetTrafficSimulator
 			nl = links.ChildNodes;
 			for (int i=0; i<nl.Count; i++) {
 				XmlElement link = nl.Item (i) as XmlElement;
-				if (!link.Name.Equals ("link"))
+				if (!link.Name.Equals ("link")) {
+					log.Error ("Parsing links: Element name not link (link "+i+") name:"+link.Name);
 					break;
+				}
 				string name = link.Attributes.GetNamedItem ("name").Value;
 				string n1 = link.Attributes.GetNamedItem ("node1").Value;
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
-				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability"));
+				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
 				//verifikace
-				if (nm.HaveNode (n1) && nm.HaveNode (n2) && (toggle >= 0.0m) && (toggle <= 1.0m)) {
+				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
 					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa, toggle);
 					nm.SetLinkName (nm.GetNodeNum (n1), nm.GetNodeNum (n2), name);
 				} else {
-					throw new ArgumentOutOfRangeException ("Wrong link " + n1 + " & " + n2 + " with toggle_probability " + toggle);
-				}
+					throw new ArgumentOutOfRangeException ("Wrong toggle_probability " + toggle+ " for link "+name);
+				} //dalsi verifikace soucast model.xsd 0.03
 			}
 			return nm;
 		}
 
 		public SimulationModel LoadSM(){
-			SimulationModel sm = new SimulationModel ();
+			SimulationModel sm = new SimulationModel (-1);
 			XmlElement ttr = xd.GetElementsByTagName ("simulation").Item(0) as XmlElement;
 			sm.Time = Convert.ToInt32 (ttr.GetAttribute ("time_run"));
 			sm.MaxHop = Convert.ToInt32 (ttr.GetAttribute ("max_hop"));
+
+			XmlElement events = xd.GetElementsByTagName ("events").Item(0) as XmlElement;
+			XmlNodeList nl = events.ChildNodes;
+			for (int i=0; i<nl.Count; i++) {
+				XmlElement ev=nl.Item(i) as XmlElement;
+				if (!ev.Name.Equals ("event")) {
+					log.Error ("Parsing events: Element name not event (event "+i+") name:"+ev.Name);
+					break;
+				}
+				string who = ev.Attributes.GetNamedItem ("who").Value;
+				int when = Convert.ToInt32 (ev.Attributes.GetNamedItem ("when").Value);
+				string loc = ev.Attributes.GetNamedItem ("where").Value;
+				decimal size = Convert.ToDecimal(ev.Attributes.GetNamedItem ("size").Value);
+				//verifikace: who je EN, loc je SN, velikost je nezap.
+				if (en.Contains(who)&&sn.Contains(loc)&&(size >= 0.0m))
+					sm.SetEvent (who, loc, when, size);
+				else
+					throw new ArgumentOutOfRangeException ("Wrong packet size ("+size+") - must not be negative");
+			}
+
 			return sm;
 		}
 
@@ -91,13 +124,12 @@ namespace NetTrafficSimulator
 		{
 			if (e.Severity == XmlSeverityType.Warning)
 			{
-				Console.Write("WARNING: ");
-				Console.WriteLine(e.Message);
+				log.Warn (e.Message);
 			}
 			else if (e.Severity == XmlSeverityType.Error)
 			{
-				Console.Write("ERROR: ");
-				Console.WriteLine(e.Message);
+				log.Error (e.Message);
+				throw new Exception ("Model validation failed");
 			}
 		}
 	}

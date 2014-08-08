@@ -18,6 +18,7 @@ namespace NetTrafficSimulator
 		private Node[] nodes;
 		private ServerNode[] servers;
 		private LinkedList<Link> links;
+		private Dictionary<string,Node> node_names;
 
 		/**
 		 * Populated result model to pick-up
@@ -43,6 +44,7 @@ namespace NetTrafficSimulator
 			else
 				throw new ArgumentException ("[SimulationController] Network model not valid");
 			this.simulation_model = sm;
+			this.node_names = new Dictionary<string, Node> ();
 		}
 
 		/**
@@ -55,8 +57,8 @@ namespace NetTrafficSimulator
 			createLinks ();
 			//create model
 			createModel ();
-			//initialize processes
-			initializeProcesses ();
+			//create events
+			createEvents ();
 		}
 
 		/**
@@ -77,6 +79,9 @@ namespace NetTrafficSimulator
 				case NetworkModel.END_NODE:
 					string name = network_model.GetNodeName (i);
 					EndNode en = new EndNode (name, network_model.GetNodeAddr (i), network_model.GetEndNodeMaxPacketSize (name));
+					if (node_names.ContainsKey (name))
+						throw new ArgumentException ("Duplicate node name");
+					node_names.Add (name, en);
 					nodes [nodeCounter] = en;
 					endNodeCounter++;
 					addressCounter++;
@@ -162,17 +167,26 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * If Model is not null, invoke Run method on each Node and Link registered
-		 * @throws InvalidOperationException if model is null (not created yet)
+		 * Create loaded events from SimulationModel
 		 */
-		private void initializeProcesses(){
-			if (framework_model != null) {
-				foreach (Node n in nodes)
-					n.Run (framework_model);
-				foreach (Link l in links)
-					l.Run(framework_model);
-			} else
-				throw new InvalidOperationException ("[SimulationController.initializeProcesses] Framework model not created");
+		private void createEvents(){
+			if ((framework_model != null)&&(network_model!=null)) {
+				foreach (SimulationModel.Event e in simulation_model.GetEvents()) {
+					Node from_node; 
+					int node2_num = network_model.GetNodeNum (e.node2);
+					int from_addr = network_model.GetNodeAddr (network_model.GetNodeNum (e.node1));
+					if (node_names.TryGetValue (e.node1, out from_node)) {
+						if (from_node is EndNode && network_model.GetNodeType (node2_num).Equals (NetworkModel.SERVER_NODE)) {
+							//schedule node e.node1 to state SEND (with packet from e.node1 to e.node2 of e.size as parameter) at time e.when
+							MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND,new Packet (from_addr, network_model.GetNodeAddr (node2_num), e.size));
+							MFF_NPRG031.Event ev = new MFF_NPRG031.Event (from_node, st, e.when);
+							framework_model.K.Schedule (ev);
+						} else
+							throw new ArgumentException ("Must send from END NODE to SERVER NODE");
+					} else
+						throw new ArgumentException ("Node not found: " + e.node1);
+				}
+			}else throw new InvalidOperationException ("[SimulationController.createEvents] FrameworkModel or NetworkModel null");
 		}
 
 		/**
