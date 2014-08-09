@@ -67,11 +67,12 @@ namespace MFF_NPRG031
 				if (e != null) {
 					log.Debug ("<Event> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
 					Time = e.when;
-					if (Time >= time_to_run) {
+					if (Time > time_to_run) {
 						Finish = true;
 						log.Debug ("<Skipped event> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
+					} else {
+						e.who.ProcessEvent (e.what, this);
 					}
-					e.who.ProcessEvent (e.what, this);
 				} else
 					Finish = true;
 			}

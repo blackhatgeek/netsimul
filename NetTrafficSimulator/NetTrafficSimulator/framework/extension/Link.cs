@@ -109,7 +109,7 @@ namespace NetTrafficSimulator
 			this.a = a;
 			this.b = b;
 			this.active = true;
-			this.last_process = -1;
+			this.last_process = 0;
 			this.active_time = 0;
 			this.inactive_time = 0;
 			this.dropped = 0;
