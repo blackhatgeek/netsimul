@@ -11,11 +11,11 @@ namespace NetTrafficSimulator
 	{
 		static readonly ILog log=LogManager.GetLogger(typeof(Link));
 		int dropped,active_time,inactive_time,carried;
-		int last_process;
+		//int last_process;
 		/**
 		 * Information container about data, especially direction of flow as source and target nodes are distinguished
 		 */
-		private class DataEnvelope{
+		private class DataEnvelope:Packet{
 			private Packet p;
 			private Node source,destination;
 			/**
@@ -25,7 +25,7 @@ namespace NetTrafficSimulator
 			 * @param source Packet sender
 			 * @param target Packet receiver
 			 */
-			public DataEnvelope(Packet p,Node source,Node target){
+			public DataEnvelope(Packet p,Node source,Node target):base(p.Source,p.Destination,p.Size){
 				if((source==null)||(target==null))
 					throw new ArgumentNullException("[new DataEnvelope] Argument null");
 				this.p=p;
@@ -43,7 +43,7 @@ namespace NetTrafficSimulator
 			/**
 			 * The sender
 			 */
-			public Node Source{
+			public new Node Source{
 				get{
 					return source;
 				}
@@ -51,7 +51,7 @@ namespace NetTrafficSimulator
 			/**
 			 * The receiver
 			 */
-			public Node Destination{
+			public new Node Destination{
 				get{
 					return destination;
 				}
@@ -69,7 +69,7 @@ namespace NetTrafficSimulator
 		private bool active;
 		private string name;
 		private decimal toggle_probability;
-		private Random r;
+		//private Random r;
 
 		public decimal Capacity{
 			get{
@@ -109,12 +109,12 @@ namespace NetTrafficSimulator
 			this.a = a;
 			this.b = b;
 			this.active = true;
-			this.last_process = 0;
+			//this.last_process = 0;
 			this.active_time = 0;
 			this.inactive_time = 0;
 			this.dropped = 0;
 			this.carried = 0;
-			this.r = new Random ();
+			//this.r = new Random ();
 		}
 
 		/**
@@ -156,15 +156,10 @@ namespace NetTrafficSimulator
 					if (active) {
 						carried++;
 						log.Debug ("(" + name + ") Link active, carried");
-						if ((data_carry + p.Size) <= capacity) {
-							DataEnvelope de = new DataEnvelope (p, origin, destination);
-							queue.Enqueue (de);
-							data_carry += p.Size;
-							log.Debug ("(" + name + ") Enqueued, carry " + data_carry + " capacity " + capacity + " enqueued "+queue.Count);
-						} else {
-							dropped++;
-							log.Debug ("(" + name + ") Dropped due to capacity");
-						}
+						DataEnvelope de = new DataEnvelope (p, origin, destination);
+						queue.Enqueue (de);
+						data_carry += p.Size;
+						log.Debug ("(" + name + ") Enqueued, carry " + data_carry + " capacity " + capacity + " enqueued "+queue.Count);
 					} else {
 						log.Warn ("Not carried!");
 					}
@@ -176,73 +171,62 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
-			if (state.Data != null) throw new ArgumentException ("Link state should not bear data");
-			if (active)
-				active_time += model.Time - last_process;//kolik casu uplynulo od posledniho process - celou dobu byl link active
-			else
-				inactive_time += model.Time - last_process;//totez, ale celou dobu byl inactive
-			log.Debug ("("+name+") <TIME> actual:" + model.Time + " active:" + active_time + " inactive:" + inactive_time + " last_process:" + last_process);
-			last_process = model.Time;
-
-			if (state.Actual.Equals (MFF_NPRG031.State.state.SEND)) {//vse v queue dorucit do cile a naplanovat se do send
-				if (active) 
-					send_queue (model);
-				//vypadek linky?
-				if (toggle ()) {
-					log.Debug ("("+name+") Switching link state");
+			log.Debug ("Link " + name + " process event");
+			if(model==null)
+				throw new ArgumentException("Model null");
+			if (state != null) {
+				log.Debug ("State " + state + ", time " + model.Time);
+				switch (state.Actual) {
+				case MFF_NPRG031.State.state.RECEIVE:
+					if (state.Data != null)
+						throw new ArgumentException ("Link state should not bear data for RECEIVE");
+					decimal chunk = 0;
+					while ((chunk<capacity)&&queue.Count>0) {
+						DataEnvelope de = queue.Dequeue ();
+						chunk += de.Data.Size;
+						int delay = int.MaxValue - model.Time - 1;//TODO
+						this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, de), model.Time + delay);
+					}
+					log.Debug ("Link " + name + " processed " + chunk + " of data from queue, " + queue.Count + " data envelopes remains in queue");
+					break;
+				case MFF_NPRG031.State.state.SEND:
+					if (active) {
+						if (state.Data == null)
+							throw new ArgumentException ("Link state should bear data for SEND");
+						if (!(state.Data is DataEnvelope))
+							throw new ArgumentException ("Link state data should be DataEnvelope for SEND");
+						DataEnvelope daen = state.Data as DataEnvelope;
+						daen.Destination.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE, daen.Data), model.Time);
+						log.Debug ("(" + Name + ") Delivery to " + daen.Destination + " at " + model.Time);
+					} else
+						log.Warn ("Link " + name + " not active, but planned SEND triggered, dropping packet");
+					break;
+				case MFF_NPRG031.State.state.TOGGLE:
+					log.Debug ("(" + name + ") Switching link state");
 					active = !active;
 					if (a is NetworkNode) {
 						log.Debug ("(" + name + ") Triggering switch on " + a.Name);
-						(a as NetworkNode).LinkSwitchTrigger (this,model);
+						(a as NetworkNode).LinkSwitchTrigger (this, model);
 					}
 					if (b is NetworkNode) {
 						log.Debug ("(" + Name + ") Triggering switch on " + b.Name);
-						(b as NetworkNode).LinkSwitchTrigger (this,model);
+						(b as NetworkNode).LinkSwitchTrigger (this, model);
 					}
+					if (!active) {
+						this.ZrusPlan (model.K);
+						log.Debug ("Link " + name + " removed from Calendar");
+					}
+					break;
+				default: 
+					throw new ArgumentException ("[Link " + name + "] Invalid state: " + state);
 				}
-				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,state.Data), model.Time+1);
 			} else
-				throw new ArgumentException ("[Link " + name + "] Invalid state: " + state);
+				throw new ArgumentException ("Link " + name + " state null");
 		}
 
 		public override void Run (MFF_NPRG031.Model m)
 		{
-			this.Schedule (m.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), m.Time);
-		}
-
-		//rozhodne o moznem vypadku linky
-		/**
-		 * Decide about toggling link status
-		 * @return wheather to toggle link status
-		 */
-		private bool toggle(){
-			decimal x = (decimal)r.NextDouble();
-			if (toggle_probability>x) {
-				log.Debug ("[Link  " + name + "] toggle(): random = " + x + ", toggle_probability=" + toggle_probability + ", toggle");
-				return true;
-			} else {
-				log.Debug("[Link  "+name+"] toggle(): random = "+x+", toggle_probability="+toggle_probability+", do not toggle");
-				return false;
-			}
-		}
-
-		/**
-		 * For each DataEnvelope enqueued will schedule destination to RECEIVE the data given at time T+1 and reset the queue for next step
-		 * @param model the Model
-		 */
-		private void send_queue(MFF_NPRG031.Model model){
-			if (model == null)
-				throw new ArgumentNullException ("[Link.send_queue] Model null");
-			//foreach (DataEnvelope de in queue) {
-			while(queue.Count>0){
-				DataEnvelope de = queue.Dequeue();
-				if (de == null)
-					throw new ArgumentNullException ("[Link.send_queue] DataEnvelope null");
-				//de.Destination.Receive (de.Data);
-				log.Debug ("(" + Name + ") Delivery to " + de.Destination + " at " + (model.Time + 1));
-				de.Destination.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE, de.Data), model.Time + 1);
-			}
-			this.data_carry = 0;
+			this.Schedule (m.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE), m.Time);
 		}
 
 		/**

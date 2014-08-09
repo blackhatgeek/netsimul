@@ -19,6 +19,10 @@ namespace MFF_NPRG031
 			 * Process received packets
 			 */
 			RECEIVE,
+			/**
+			 * Send link state from active to passive and vice versa
+			 */
+			TOGGLE
 		}
 
 		private state actual_state;
