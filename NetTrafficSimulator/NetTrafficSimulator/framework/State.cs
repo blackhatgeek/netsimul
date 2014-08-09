@@ -1,4 +1,5 @@
 using System;
+using log4net;
 
 namespace MFF_NPRG031
 {
@@ -7,6 +8,7 @@ namespace MFF_NPRG031
 	 */
 	public class State
 	{
+		static readonly ILog log=LogManager.GetLogger(typeof(State));
 		/**
 		 * Actual state - enum. Available states are SEND or RECEIVE
 		 */
@@ -40,6 +42,8 @@ namespace MFF_NPRG031
 		 * Create a new state holding additional data
 		 */
 		public State(state s,NetTrafficSimulator.Packet data):this(s){
+			if (data == null)
+				log.Warn ("Data null, state " + s);
 			this.additionalData = data;
 		}
 

@@ -43,7 +43,7 @@ namespace NetTrafficSimulator
 			/**
 			 * The sender
 			 */
-			public new Node Source{
+			public Node SourceNode{
 				get{
 					return source;
 				}
@@ -51,7 +51,7 @@ namespace NetTrafficSimulator
 			/**
 			 * The receiver
 			 */
-			public new Node Destination{
+			public Node DestinationNode{
 				get{
 					return destination;
 				}
@@ -183,9 +183,14 @@ namespace NetTrafficSimulator
 					decimal chunk = 0;
 					while ((chunk<capacity)&&queue.Count>0) {
 						DataEnvelope de = queue.Dequeue ();
+						if(de==null)
+							throw new ArgumentException("DE null");
 						chunk += de.Data.Size;
-						int delay = int.MaxValue - model.Time - 1;//TODO
-						this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, de), model.Time + delay);
+						int delay = 1;//TODO
+						MFF_NPRG031.State s=new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, de);
+						if (s.Data == null)
+							log.Error ("State data null");
+						this.Schedule (model.K, s, model.Time + delay);
 					}
 					log.Debug ("Link " + name + " processed " + chunk + " of data from queue, " + queue.Count + " data envelopes remains in queue");
 					break;
@@ -196,7 +201,7 @@ namespace NetTrafficSimulator
 						if (!(state.Data is DataEnvelope))
 							throw new ArgumentException ("Link state data should be DataEnvelope for SEND");
 						DataEnvelope daen = state.Data as DataEnvelope;
-						daen.Destination.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE, daen.Data), model.Time);
+						daen.DestinationNode.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE, daen.Data), model.Time);
 						log.Debug ("(" + Name + ") Delivery to " + daen.Destination + " at " + model.Time);
 					} else
 						log.Warn ("Link " + name + " not active, but planned SEND triggered, dropping packet");

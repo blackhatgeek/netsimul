@@ -334,10 +334,17 @@ namespace NetTrafficSimulator
 			Assert.AreEqual (1, l.PacketsCarried);
 			Assert.AreEqual(0,l.PacketsDropped);
 			m.Time++;
-			l.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND), m);
+			l.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE), m);
+			e = m.K.First ();
+			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
+			Assert.AreEqual (3, e.when);
+			Assert.AreEqual (l, e.who);
+			m.Time++;
+			l.ProcessEvent (e.what, m);
+
 			e = m.K.First ();
 			Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
-			Assert.AreEqual (3, e.when);
+			Assert.AreEqual(3,e.when);
 			Assert.AreEqual (en, e.who);
 		}
 
