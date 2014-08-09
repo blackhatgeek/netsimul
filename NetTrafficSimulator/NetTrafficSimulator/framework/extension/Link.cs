@@ -9,15 +9,17 @@ namespace NetTrafficSimulator
 	 */
 	public class Link:MFF_NPRG031.Process,INamable
 	{
-		static readonly ILog log=LogManager.GetLogger(typeof(Link));
-		int dropped,active_time,inactive_time,carried;
-		//int last_process;
+		//DATA ENVELOPE
 		/**
 		 * Information container about data, especially direction of flow as source and target nodes are distinguished
 		 */
 		private class DataEnvelope:Packet{
 			private Packet p;
+			private decimal size_remainder;
+			private int steps;
 			private Node source,destination;
+			private DataEnvelope next;
+
 			/**
 			 * Create a DataEnvelope given the packet, source and target
 			 * DataEnvelope specifies direction of data flow since link is full duplex
@@ -31,6 +33,9 @@ namespace NetTrafficSimulator
 				this.p=p;
 				this.source=source;
 				this.destination=target;
+				this.size_remainder=p.Size;
+				this.steps=0;
+				this.next=null;
 			}
 			/**
 			 * The packet
@@ -59,12 +64,44 @@ namespace NetTrafficSimulator
 
 			public override string ToString ()
 			{
-				return string.Format ("[DataEnvelope: Data={0}, Source={1}, Destination={2}]", Data, Source, Destination);
+				return string.Format ("[DataEnvelope: Data={0}, Source={1}, Destination={2}, Steps={3}]", Data, Source, Destination,Steps);
+			}
+
+			/**
+			 * Can we deliver the remainder of the packet during next tic
+			 */ 
+			public bool Multistage(decimal available){
+				size_remainder = (available > size_remainder) ? 0 : (size_remainder - available);
+				steps++;
+				return size_remainder > 0;
+			}
+
+			public int Steps{
+				get{
+					return steps;
+				}
+			}
+
+			public DataEnvelope Next{
+				set{
+					if(value!=this)
+						this.next = value;
+				}
+				get{
+					return this.next;
+				}
 			}
 		}
 
+		//QUEUE with possibility to "return" DataEnvelope back in front
+		private DataEnvelope queue_head, queue_tail;
+
+		//LINK
+		static readonly ILog log=LogManager.GetLogger(typeof(Link));
+		int active_time,inactive_time,carried,env_carry;
+		//int last_process;
+
 		private decimal capacity,data_carry;
-		private Queue<DataEnvelope> queue;
 		private Node a, b;
 		private bool active;
 		private string name;
@@ -104,7 +141,7 @@ namespace NetTrafficSimulator
 
 			this.name = name;
 			this.capacity = capacity;
-			this.queue = new Queue<DataEnvelope> ();
+			//this.queue = new Queue<DataEnvelope> ();
 			this.data_carry = 0;
 			this.a = a;
 			this.b = b;
@@ -112,8 +149,8 @@ namespace NetTrafficSimulator
 			//this.last_process = 0;
 			this.active_time = 0;
 			this.inactive_time = 0;
-			this.dropped = 0;
 			this.carried = 0;
+			this.env_carry = 0;
 			//this.r = new Random ();
 		}
 
@@ -157,9 +194,17 @@ namespace NetTrafficSimulator
 						carried++;
 						log.Debug ("(" + name + ") Link active, carried");
 						DataEnvelope de = new DataEnvelope (p, origin, destination);
-						queue.Enqueue (de);
+						//queue.Enqueue (de);
+						de.Next = null;
+						if(queue_tail!=null)
+							queue_tail.Next = de;
+						queue_tail = de;
+						if (queue_head == null)
+							queue_head = de;
+						log.Debug ("Packet size " + p.Size);
 						data_carry += p.Size;
-						log.Debug ("(" + name + ") Enqueued, carry " + data_carry + " capacity " + capacity + " enqueued "+queue.Count);
+						env_carry++;
+						log.Debug ("(" + name + ") Enqueued, carry "+env_carry+" envelopes containing " + data_carry + " of data; capacity " + capacity);
 					} else {
 						log.Warn ("Not carried!");
 					}
@@ -181,18 +226,39 @@ namespace NetTrafficSimulator
 					if (state.Data != null)
 						throw new ArgumentException ("Link state should not bear data for RECEIVE");
 					decimal chunk = 0;
-					while ((chunk<capacity)&&queue.Count>0) {
-						DataEnvelope de = queue.Dequeue ();
-						if(de==null)
-							throw new ArgumentException("DE null");
-						chunk += de.Data.Size;
-						int delay = 1;//TODO
-						MFF_NPRG031.State s=new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, de);
-						if (s.Data == null)
-							log.Error ("State data null");
-						this.Schedule (model.K, s, model.Time + delay);
+					log.Debug ("Capacity: " + capacity + " queue empty: " + (queue_head == null));
+					while ((chunk<capacity)&&queue_head!=null) {
+						log.Debug ("Processing envelope");
+						DataEnvelope de = queue_head;//dequeue
+						if (de == null)
+							throw new ArgumentException ("DE null");
+						else {
+							queue_head = de.Next;//dequeue
+							if (de.Multistage (capacity - chunk)) {
+								//vlozit zpet na zacatek queue
+								log.Debug ("Multistage delivery");
+								queue_head = de;
+								chunk = capacity;
+								log.Debug ("Scheduling next RECEIVE at " + (model.Time + 1));
+								this.Schedule (model.K, state, model.Time + 1);
+							} else {//dopravime cely packet (zbytek packetu) v tomto kroku
+								log.Debug ("Will deliver in one step");
+								if (de.Data.Size > 0)
+									chunk += de.Data.Size;
+								else if (de.Data.Size == 0)
+									chunk += 1;
+								else
+									throw new ArgumentOutOfRangeException ("Negative packet size");
+								MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, de);
+								if (s.Data == null)
+									log.Error ("State data null");
+								log.Debug ("Scheduling SEND at "+(model.Time + de.Steps));
+								this.Schedule (model.K, s, model.Time + de.Steps);
+							}
+						}
 					}
-					log.Debug ("Link " + name + " processed " + chunk + " of data from queue, " + queue.Count + " data envelopes remains in queue");
+					log.Debug ("Link " + name + " processed " + chunk + " of data from queue, scheduling RECEIVE at "+(model.Time+1));
+					this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE), model.Time + 1);;
 					break;
 				case MFF_NPRG031.State.state.SEND:
 					if (active) {
@@ -201,8 +267,10 @@ namespace NetTrafficSimulator
 						if (!(state.Data is DataEnvelope))
 							throw new ArgumentException ("Link state data should be DataEnvelope for SEND");
 						DataEnvelope daen = state.Data as DataEnvelope;
+						if (daen.Data == null)
+							throw new ArgumentNullException ("Packet null");
 						daen.DestinationNode.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE, daen.Data), model.Time);
-						log.Debug ("(" + Name + ") Delivery to " + daen.Destination + " at " + model.Time);
+						log.Debug ("(" + Name + ") Delivery to " + daen.DestinationNode.Name + " at " + model.Time);
 					} else
 						log.Warn ("Link " + name + " not active, but planned SEND triggered, dropping packet");
 					break;
@@ -255,28 +323,10 @@ namespace NetTrafficSimulator
 		 */
 		public int PacketsCarried{
 			get{
-				return carried;
+				return env_carry;
 			}
 		}
-		/**
-		 * How many times was a packet dropped as result of full link
-		 */
-		public int PacketsDropped {
-			get {
-				return dropped;
-			}
-		}
-		/**
-		 * Dropped to Carried ratio
-		 */
-		public decimal DropPercentage{
-			get{
-				if (carried != 0)
-					return dropped / carried * 100;
-				else
-					return 0;
-			}
-		}
+
 		/**
 		 * How much time was the link active
 		 */

@@ -1,4 +1,5 @@
 using System;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -7,6 +8,7 @@ namespace NetTrafficSimulator
 	 */
 	public class Packet
 	{
+		static readonly ILog log = LogManager.GetLogger (typeof(Packet));
 		private readonly int source, destination;
 		private readonly decimal size;
 		private int hopcounter;
@@ -23,6 +25,7 @@ namespace NetTrafficSimulator
 			this.destination = destination;
 			this.size = size;
 			this.hopcounter = 0;
+			log.Debug ("New packet from " + source + " to " + destination + " of size " + size);
 		}
 
 		/**

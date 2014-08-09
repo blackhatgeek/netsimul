@@ -207,7 +207,7 @@ namespace NetTrafficSimulator
 				}
 			}
 			foreach (Link l in links) {
-				result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.PacketsDropped, l.DropPercentage, l.ActiveTime, l.PassiveTime, l.PercentageTimeIdle);
+				//TODO result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.PacketsDropped, l.DropPercentage, l.ActiveTime, l.PassiveTime, l.PercentageTimeIdle);
 			}
 		}
 
