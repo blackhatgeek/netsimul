@@ -9,6 +9,7 @@ namespace NetTrafficSimulator
 	 */
 	public class Link:MFF_NPRG031.Process,INamable
 	{
+		private MFF_NPRG031.Model model;
 		//DATA ENVELOPE
 		/**
 		 * Information container about data, especially direction of flow as source and target nodes are distinguished
@@ -19,6 +20,7 @@ namespace NetTrafficSimulator
 			private int steps;
 			private Node source,destination;
 			private DataEnvelope next;
+			int timeAccepted;
 
 			/**
 			 * Create a DataEnvelope given the packet, source and target
@@ -27,15 +29,18 @@ namespace NetTrafficSimulator
 			 * @param source Packet sender
 			 * @param target Packet receiver
 			 */
-			public DataEnvelope(Packet p,Node source,Node target):base(p.Source,p.Destination,p.Size){
+			public DataEnvelope(Packet p,Node source,Node target,int time):base(p.Source,p.Destination,p.Size){
 				if((source==null)||(target==null))
 					throw new ArgumentNullException("[new DataEnvelope] Argument null");
+				if(timeAccepted<0)
+					throw new ArgumentOutOfRangeException("[new DataEnvelope] Negative time");
 				this.p=p;
 				this.source=source;
 				this.destination=target;
 				this.size_remainder=p.Size;
 				this.steps=0;
 				this.next=null;
+				this.timeAccepted=time;
 			}
 			/**
 			 * The packet
@@ -91,6 +96,12 @@ namespace NetTrafficSimulator
 					return this.next;
 				}
 			}
+
+			public int TimeAccepted{
+				get{
+					return timeAccepted;
+				}
+			}
 		}
 
 		//QUEUE with possibility to "return" DataEnvelope back in front
@@ -98,10 +109,10 @@ namespace NetTrafficSimulator
 
 		//LINK
 		static readonly ILog log=LogManager.GetLogger(typeof(Link));
-		int active_time,inactive_time,carried,env_carry;
-		//int last_process;
+		int active_time,inactive_time,env_carry;
+		int last_toggle,wait_time,env_sent;
 
-		private decimal capacity,data_carry;
+		private decimal capacity,data_carry,data_sent,lost_in_carry;
 		private Node a, b;
 		private bool active;
 		private string name;
@@ -129,7 +140,7 @@ namespace NetTrafficSimulator
 		 * @throws	ArgumentOutOfRangeException Negative link capacity
 		 * @throws	ArgumentNullException any node null
 		 */
-		public Link (String name,decimal capacity, Node a,Node b,decimal toggle_probability)
+		public Link (String name,decimal capacity, Node a,Node b,decimal toggle_probability,MFF_NPRG031.Model model)
 		{
 			if (capacity <0) throw new ArgumentOutOfRangeException ("Link capacity cannot be negative");
 			if (a == null || b == null)
@@ -142,15 +153,18 @@ namespace NetTrafficSimulator
 			this.name = name;
 			this.capacity = capacity;
 			//this.queue = new Queue<DataEnvelope> ();
-			this.data_carry = 0;
+			this.data_carry = 0.0m;
 			this.a = a;
 			this.b = b;
 			this.active = true;
-			//this.last_process = 0;
+			this.last_toggle = -1;
 			this.active_time = 0;
 			this.inactive_time = 0;
-			this.carried = 0;
+			this.wait_time = 0;
 			this.env_carry = 0;
+			this.env_sent = 0;
+			this.data_sent = 0.0m;
+			this.model = model;
 			//this.r = new Random ();
 		}
 
@@ -191,9 +205,9 @@ namespace NetTrafficSimulator
 			if (p != null) {
 				if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
 					if (active) {
-						carried++;
+						//carried++;
 						log.Debug ("(" + name + ") Link active, carried");
-						DataEnvelope de = new DataEnvelope (p, origin, destination);
+						DataEnvelope de = new DataEnvelope (p, origin, destination,model.Time);
 						//queue.Enqueue (de);
 						de.Next = null;
 						if(queue_tail!=null)
@@ -201,11 +215,13 @@ namespace NetTrafficSimulator
 						queue_tail = de;
 						if (queue_head == null)
 							queue_head = de;
-						log.Debug ("Packet size " + p.Size);
 						data_carry += p.Size;
 						env_carry++;
 						log.Debug ("(" + name + ") Enqueued, carry "+env_carry+" envelopes containing " + data_carry + " of data; capacity " + capacity);
 					} else {
+						lost_in_carry += p.Size;
+						data_carry += p.Size;
+						env_carry++;
 						log.Warn ("Not carried!");
 					}
 				} else
@@ -216,7 +232,6 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
-			log.Debug ("Link " + name + " process event");
 			if(model==null)
 				throw new ArgumentException("Model null");
 			if (state != null) {
@@ -226,9 +241,7 @@ namespace NetTrafficSimulator
 					if (state.Data != null)
 						throw new ArgumentException ("Link state should not bear data for RECEIVE");
 					decimal chunk = 0;
-					log.Debug ("Capacity: " + capacity + " queue empty: " + (queue_head == null));
 					while ((chunk<capacity)&&queue_head!=null) {
-						log.Debug ("Processing envelope");
 						DataEnvelope de = queue_head;//dequeue
 						if (de == null)
 							throw new ArgumentException ("DE null");
@@ -239,7 +252,6 @@ namespace NetTrafficSimulator
 								log.Debug ("Multistage delivery");
 								queue_head = de;
 								chunk = capacity;
-								log.Debug ("Scheduling next RECEIVE at " + (model.Time + 1));
 								this.Schedule (model.K, state, model.Time + 1);
 							} else {//dopravime cely packet (zbytek packetu) v tomto kroku
 								log.Debug ("Will deliver in one step");
@@ -252,7 +264,6 @@ namespace NetTrafficSimulator
 								MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, de);
 								if (s.Data == null)
 									log.Error ("State data null");
-								log.Debug ("Scheduling SEND at "+(model.Time + de.Steps));
 								this.Schedule (model.K, s, model.Time + de.Steps);
 							}
 						}
@@ -270,7 +281,9 @@ namespace NetTrafficSimulator
 						if (daen.Data == null)
 							throw new ArgumentNullException ("Packet null");
 						daen.DestinationNode.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE, daen.Data), model.Time);
-						log.Debug ("(" + Name + ") Delivery to " + daen.DestinationNode.Name + " at " + model.Time);
+						wait_time += model.Time - daen.TimeAccepted;
+						env_sent++;
+						data_sent += daen.Data.Size;
 					} else
 						log.Warn ("Link " + name + " not active, but planned SEND triggered, dropping packet");
 					break;
@@ -286,9 +299,15 @@ namespace NetTrafficSimulator
 						(b as NetworkNode).LinkSwitchTrigger (this, model);
 					}
 					if (!active) {
+						active_time += model.Time - last_toggle;
 						this.ZrusPlan (model.K);
-						log.Debug ("Link " + name + " removed from Calendar");
+						log.Debug ("Link " + name + " removed from Calendar, active time " + active_time);
+					} else {
+						inactive_time += model.Time - last_toggle;
+						this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE), model.Time + 1);
+						log.Debug ("Link " + name + " now active, passive time " + inactive_time);
 					}
+					last_toggle=model.Time;
 					break;
 				default: 
 					throw new ArgumentException ("[Link " + name + "] Invalid state: " + state);
@@ -330,29 +349,121 @@ namespace NetTrafficSimulator
 		/**
 		 * How much time was the link active
 		 */
-		public int ActiveTime{
-			get{
-				return active_time;
-			}
+		public int GetActiveTime(MFF_NPRG031.Model m){
+			return (last_toggle == -1) ? m.Time : active_time;
 		}
 		/**
 		 * How much time was the link passive
 		 */
 		public int PassiveTime{
 			get{
-				return inactive_time;
+				return (last_toggle == -1) ? 0 : inactive_time;
 			}
 		}
 
 		/**
 		 * How much time was the link passive compared to time simulating
 		 */
-		public decimal PercentageTimeIdle {
-			get {
-				if ((active_time + inactive_time) != 0)
-					return inactive_time / (active_time + inactive_time) * 100;
+		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model m) {
+			if (m.Time == 0) {
+				if (last_toggle == -1)
+					return 0.0m;
 				else
-					return 100;
+					return 100.0m;
+			} else {
+				return PassiveTime/ m.Time * 100.0m;
+			}
+		}
+
+		/**
+		 * How much actual data was carried
+		 */
+		public decimal DataCarried{
+			get{
+				return data_carry;
+			}
+		}
+
+		/**
+		 * How much actual data was sent
+		 */
+		public decimal DataSent{
+			get{
+				return data_sent;
+			}
+		}
+
+		/**
+		 * How much data was lost
+		 */
+		public decimal DataLost{
+			get{
+				return data_carry - data_sent;
+			}
+		}
+
+		/**
+		 * How much data was not accepted because link was not active when carry was invoked
+		 */
+		public decimal PercentageDataLostInCarry{
+			get{
+				if (data_carry > 0)
+					return lost_in_carry / data_carry * 100.0m;
+				else
+					return 0.0m;
+			}
+		}
+
+		/**
+		 * How much data was lost in percentage
+		 */
+		public decimal PercentageDataLost{
+			get{
+				return (data_carry > 0) ? (data_carry - data_sent) / data_carry *100.0m: 0.0m;
+			}
+		}
+
+		/**
+		 * How much data was delivered in percentage
+		 */
+		public decimal PercentageDataDelivered{
+			get{
+				return (data_carry > 0) ? data_sent / data_carry * 100.0m: 100.0m;
+			}
+		}
+
+		/**
+		 * Average amount of data carried per tic
+		 */
+		public decimal GetAvgDataCarriedPerTic(MFF_NPRG031.Model m){
+			if ((m.Time == 0) && (last_toggle == -1))
+				return data_carry + 0.0m;
+			else if (m.Time == 0)
+				return 0.0m;
+			else
+				return data_carry / GetActiveTime (m);
+		}
+
+		/**
+		 * Average percentage of data carried to link capacity
+		 */
+		public decimal GetAvgLinkUsage(MFF_NPRG031.Model m){
+			if (capacity == 0) {
+				return 100.0m;
+			} else {
+				return GetAvgDataCarriedPerTic (m) / capacity;
+			}
+		}
+
+		/**
+		 * Average time packet waited for delivery
+		 */
+		public decimal AvgWaitTime{
+			get{
+				if (env_carry != 0)
+					return wait_time / env_carry;
+				else
+					return 0;
 			}
 		}
 

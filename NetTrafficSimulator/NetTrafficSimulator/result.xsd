@@ -39,7 +39,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
-			<xs:attribute name="version" use="required" fixed="0.02"/>
+			<xs:attribute name="version" use="required" fixed="0.03"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tEndNode">
@@ -58,7 +58,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 		<xs:attribute name="packetsProcessed" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsMalreceived" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="timeWaited" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="percentageTimeIdle" type="xs:decimal" use="required" />
+		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
 		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tNetworkNode">
@@ -71,16 +71,22 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 		<xs:attribute name="percentPacketsDropped" type="xs:decimal" use="required" />
 		<xs:attribute name="routingPacketsSent" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="routingPacketsReceived" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="percentageProcessedRoutingPackets" type="xs:nonNegativeInteger" use="required"/>
+		<xs:attribute name="percentProcessedRoutingPackets" type="xs:nonNegativeInteger" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="tLink">
 		<xs:attribute name="name" type="xs:ID" use="required" />
 		<xs:attribute name="packetsCarried" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="packetsDropped" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="dropPercentage" type="xs:decimal" use="required" />
 		<xs:attribute name="activeTime" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="passiveTime" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
+		<xs:attribute name="dataCarried" type="xs:decimal" use="required" />
+		<xs:attribute name="dataPerTic" type="xs:decimal" use="required" />
+		<xs:attribute name="usage" type="xs:decimal" use="required" />
+		<xs:attribute name="dataSent" type="xs:decimal" use="required" />
+		<xs:attribute name="dataLost" type="xs:decimal" use="required" />
+		<xs:attribute name="percentDataLost" type="xs:decimal" use="required" />
+		<xs:attribute name="percentDataDelivered" type="xs:decimal" use="required" />
+		<xs:attribute name="percentLostInCarry" type="xs:decimal" use="required" />
 	</xs:complexType>
 </xs:schema>
 

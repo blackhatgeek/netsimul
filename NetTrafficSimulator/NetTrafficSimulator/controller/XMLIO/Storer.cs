@@ -38,7 +38,7 @@ namespace NetTrafficSimulator
 				XmlNode result = xs.CreateElement ("result");
 
 				XmlAttribute version = xs.CreateAttribute ("version");
-				version.Value = "0.02";
+				version.Value = "0.03";
 				result.Attributes.Append (version);
 
 				if (rm.EndNodeNames.Length != 0) {
@@ -105,7 +105,7 @@ namespace NetTrafficSimulator
 						timeWaited.Value = rm.GetServerNodeTimeWaited (serverNodeName)+"";
 						serverNode.Attributes.Append (timeWaited);
 
-						XmlAttribute percentageTimeIdle = xs.CreateAttribute ("percentageTimeIdle");
+						XmlAttribute percentageTimeIdle = xs.CreateAttribute ("percentTimeIdle");
 						percentageTimeIdle.Value = rm.GetServerNodePercentTimeIdle (serverNodeName)+"";
 						serverNode.Attributes.Append (percentageTimeIdle);
 
@@ -157,7 +157,7 @@ namespace NetTrafficSimulator
 						routingPacketsReceived.Value = rm.GetNetworkNodeRoutingPacketsReceived (networkNodeName) + "";
 						networkNode.Attributes.Append(routingPacketsReceived);
 
-						XmlAttribute percentageProcessedRoutingPackets = xs.CreateAttribute ("percentageProcessedRoutingPackets");
+						XmlAttribute percentageProcessedRoutingPackets = xs.CreateAttribute ("percentProcessedRoutingPackets");
 						percentageProcessedRoutingPackets.Value = rm.GetNetworkNodePercentageRoutingPackets (networkNodeName) + "";
 						networkNode.Attributes.Append (percentageProcessedRoutingPackets);
 
@@ -178,14 +178,6 @@ namespace NetTrafficSimulator
 						packetsCarried.Value = rm.GetLinkPacketsCarried (linkName)+"";
 						link.Attributes.Append (packetsCarried);
 
-						XmlAttribute packetsDropped = xs.CreateAttribute ("packetsDropped");
-						packetsDropped.Value = rm.GetLinkPacketsDropped (linkName)+"";
-						link.Attributes.Append (packetsDropped);
-
-						XmlAttribute dropPercentage = xs.CreateAttribute ("dropPercentage");
-						dropPercentage.Value = rm.GetLinkDropPercentage (linkName)+"";
-						link.Attributes.Append (dropPercentage);
-
 						XmlAttribute activeTime = xs.CreateAttribute ("activeTime");
 						activeTime.Value = rm.GetLinkActiveTime (linkName)+"";
 						link.Attributes.Append (activeTime);
@@ -197,6 +189,38 @@ namespace NetTrafficSimulator
 						XmlAttribute timeIdle = xs.CreateAttribute ("percentTimeIdle");
 						timeIdle.Value = rm.GetLinkIdleTimePercentage (linkName)+"";
 						link.Attributes.Append (timeIdle);
+
+						XmlAttribute dataCarried = xs.CreateAttribute("dataCarried");
+						dataCarried.Value = rm.GetLinkDataCarried (linkName) + "";
+						link.Attributes.Append (dataCarried);
+
+						XmlAttribute dataPerTic = xs.CreateAttribute ("dataPerTic");
+						dataPerTic.Value = rm.GetLinkDataPerTic (linkName) + "";
+						link.Attributes.Append (dataPerTic);
+
+						XmlAttribute usage = xs.CreateAttribute ("usage");
+						usage.Value = rm.GetLinkUsage (linkName)+"";
+						link.Attributes.Append (usage);
+
+						XmlAttribute dataSent = xs.CreateAttribute ("dataSent");
+						dataSent.Value = rm.GetLinkDataSent (linkName)+"";
+						link.Attributes.Append (dataSent);
+
+						XmlAttribute dataLost = xs.CreateAttribute ("dataLost");
+						dataLost.Value = rm.GetLinkDataLost (linkName)+"";
+						link.Attributes.Append (dataLost);
+
+						XmlAttribute percentageDataLost = xs.CreateAttribute ("percentDataLost");
+						percentageDataLost.Value = rm.GetLinkPercentageDataLost (linkName)+"";
+						link.Attributes.Append (percentageDataLost);
+
+						XmlAttribute percentageDataDelivered = xs.CreateAttribute ("percentDataDelivered");
+						percentageDataDelivered.Value = rm.GetLinkPercentageDataDelivered (linkName)+"";
+						link.Attributes.Append (percentageDataDelivered);
+
+						XmlAttribute lostInCarry = xs.CreateAttribute ("percentLostInCarry");
+						lostInCarry.Value = rm.GetLinkPercentageDataLostInCarry (linkName) + "";
+						link.Attributes.Append (lostInCarry);
 
 						links.AppendChild (link);
 					}

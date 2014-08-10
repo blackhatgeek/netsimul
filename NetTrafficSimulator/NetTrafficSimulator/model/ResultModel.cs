@@ -232,20 +232,30 @@ namespace NetTrafficSimulator
 		{
 			string name;
 			int packetsCarried;
-			int packetsDropped;
-			decimal dropPerct;
 			int activeTime;
 			int passiveTime;
 			decimal idleTime;
+			decimal dataCarried;
+			decimal dataPerTic;
+			decimal usage;
 
-			public LinkResult(string name,int packetsCarried, int packetsDropped, decimal dropPerct, int activeTime, int passiveTime, decimal idleTime){
+			decimal dataSent,dataLost,pDataLost,pDataDelivered,pLostInCary;
+
+			public LinkResult(string name,int packetsCarried, int activeTime, int passiveTime, decimal idleTime,decimal dataCarried,decimal dataPerTic,decimal usage, decimal dataSent, decimal dataLost, 
+			                  decimal pDataLost,decimal pDataDelivered,decimal pLostInCarry){
 				this.name=name;
 				this.packetsCarried=packetsCarried;
-				this.packetsDropped=packetsDropped;
-				this.dropPerct=dropPerct;
 				this.activeTime=activeTime;
 				this.passiveTime=passiveTime;
 				this.idleTime=idleTime;
+				this.dataCarried=dataCarried;
+				this.dataPerTic=dataPerTic;
+				this.usage=usage;
+				this.dataLost=dataLost;
+				this.dataSent=dataSent;
+				this.pDataLost=pDataLost;
+				this.pDataDelivered=pDataDelivered;
+				this.pLostInCary=pLostInCarry;
 			}
 
 			public string Name{
@@ -257,18 +267,6 @@ namespace NetTrafficSimulator
 			public int PacketsCarried {
 				get {
 					return packetsCarried;
-				}
-			}
-
-			public int PacketsDropped{
-				get{
-					return packetsDropped;
-				}
-			}
-
-			public decimal DropPercentage{
-				get{
-					return dropPerct;
 				}
 			}
 
@@ -287,6 +285,55 @@ namespace NetTrafficSimulator
 			public decimal IdleTime{
 				get{
 					return idleTime;
+				}
+			}
+
+			public decimal DataCarried{
+				get{
+					return dataCarried;
+				}
+			}
+
+			public decimal DataPerTic{
+				get{
+					return dataPerTic;
+				}
+			}
+
+			public decimal Usage{
+				get{
+					return usage;
+				}
+			}
+			//decimal dataSent, decimal dataLost, 
+			//decimal pDataLost,decimal pDataDelivered,decimal pLostInCarry
+			public decimal DataSent{
+				get{
+					return dataSent;
+				}
+			}
+
+			public decimal DataLost{
+				get{
+					return dataLost;
+				}
+			}
+
+			public decimal PercentageDataLost{
+				get{
+					return pDataLost;
+				}
+			}
+
+			public decimal PercentageDataDelivered{
+				get{
+					return pDataDelivered;
+				}
+			}
+
+			public decimal PercentageDataLostInCarry{
+				get{
+					return pLostInCary;
 				}
 			}
 		}
@@ -413,17 +460,24 @@ namespace NetTrafficSimulator
 		 * Records results of a link, if possible
 		 * @param name
 		 * @param packetsCarried
-		 * @param packetsDropped
-		 * @param dropPerct
 		 * @param activeTime
 		 * @param passiveTime
 		 * @param idleTime
+		 * @param dataCarried
+		 * @param dataPerTic
+		 * @param usage
+		 * @param dataSent
+		 * @param dataLost
+		 * @param pDataLost
+		 * @param pDataDelivered
+		 * @param pLostInCarry
 		 * @throws ArgumentException
 		 */
-		public void SetNewLinkResult(string name,int packetsCarried, int packetsDropped, decimal dropPerct, int activeTime, int passiveTime, decimal idleTime){
+		public void SetNewLinkResult(string name,int packetsCarried, int activeTime, int passiveTime, decimal idleTime,decimal dataCarried,decimal dataPerTic,decimal usage, decimal dataSent, decimal dataLost, 
+		                             decimal pDataLost,decimal pDataDelivered, decimal pLostInCarry){
 			if (linkCount < linkLimit) {
 				links [linkCount] = name;
-				linkNames.Add (name, new LinkResult (name, packetsCarried, packetsDropped, dropPerct, activeTime, passiveTime, idleTime));
+				linkNames.Add (name, new LinkResult (name, packetsCarried, activeTime, passiveTime, idleTime,dataCarried,dataPerTic,usage,dataSent,dataLost,pDataLost,pDataDelivered,pLostInCarry));
 				linkCount++;
 			} else
 				throw new ArgumentException ("Link counter exceeded: "+linkCount);
@@ -696,24 +750,6 @@ namespace NetTrafficSimulator
 			return getLR (name).PacketsCarried;
 		}
 		/**
-		 * If there exists a link with the name provided return amount of packets dropped by the link
-		 * @param name Link name
-		 * @return amount of packets dropped by the link
-		 * @throws ArgumentException link not found
-		 */ 
-		public int GetLinkPacketsDropped(string name){
-			return getLR(name).PacketsDropped;
-		}
-		/**
-		 * If there exists a link with the name provided return how many percents of packets were dropped by the link
-		 * @param name Link name
-		 * @return How many percents of packets were dropped by the link
-		 * @throws ArgumentException Link not found
-		 */ 
-		public decimal GetLinkDropPercentage(string name){
-			return getLR(name).DropPercentage;
-		}
-		/**
 		 * If there exists a link with the name provided return how much time the link was active
 		 * @param name Link name
 		 * @return How much time was the link active
@@ -739,6 +775,31 @@ namespace NetTrafficSimulator
 		 */
 		public decimal GetLinkIdleTimePercentage(string name){
 			return getLR(name).IdleTime;
+		}
+
+		public decimal GetLinkDataCarried(string name){
+			return getLR (name).DataCarried;
+		}
+		public decimal GetLinkDataPerTic(string name){
+			return getLR (name).DataPerTic;
+		}
+		public decimal GetLinkUsage(string name){
+			return getLR (name).Usage;
+		}
+		public decimal GetLinkDataSent(string name){
+			return getLR (name).DataSent;
+		}
+		public decimal GetLinkDataLost(string name){
+			return getLR (name).DataLost;
+		}
+		public decimal GetLinkPercentageDataLost(string name){
+			return getLR (name).PercentageDataLost;
+		}
+		public decimal GetLinkPercentageDataDelivered(string name){
+			return getLR (name).PercentageDataDelivered;
+		}
+		public decimal GetLinkPercentageDataLostInCarry(string name){
+			return getLR (name).PercentageDataLostInCarry;
 		}
 	}
 }

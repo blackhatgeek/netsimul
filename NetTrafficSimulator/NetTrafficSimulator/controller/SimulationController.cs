@@ -53,10 +53,10 @@ namespace NetTrafficSimulator
 		private void InitializeFramework(){
 			//create nodes
 			createNodes ();
-			//create links
-			createLinks ();
 			//create model
 			createModel ();
+			//create links
+			createLinks ();
 			//create events
 			createEvents ();
 			//initialize processes
@@ -118,6 +118,8 @@ namespace NetTrafficSimulator
 		 * count in the network model
 		 */
 		private void createLinks(){
+			if (framework_model == null)
+				throw new InvalidOperationException ("[SimulationController.createLinks] Framework model not initialized");
 			links = new LinkedList<Link> ();
 			if ((network_model != null) && (nodes != null) && (nodes.Length == network_model.NodeCount)) {
 				for (int i = 0; i < network_model.NodeCount; i++) {
@@ -127,7 +129,7 @@ namespace NetTrafficSimulator
 						Node y = nodes [j];
 						if (network_model.AreConnected (i, j)){
 							//TESTME links parsed correctly??
-							Link l = new Link (network_model.GetLinkName(i,j), network_model.LinkCapacity(i,j), x, y,network_model.GetLinkToggleProbability(i,j));
+							Link l = new Link (network_model.GetLinkName(i,j), network_model.LinkCapacity(i,j), x, y,network_model.GetLinkToggleProbability(i,j),framework_model);
 							if (x is EndpointNode)
 								(x as EndpointNode).Link = l;
 							else if (x is NetworkNode)
@@ -155,13 +157,13 @@ namespace NetTrafficSimulator
 		 * @throws InvalidOperationException if SimulationModel is null
 		 */
 		private void createModel(){
-		if (simulation_model != null) {
+			if (simulation_model != null) {
 				if (servers != null) {
 					framework_model = new MFF_NPRG031.Model (simulation_model.Time, servers);
 				}else
 					throw new InvalidOperationException ("Servers array empty");
-		} else
-			throw new InvalidOperationException ("[SimulationController.createModel] SimulationModel null");
+			} else
+				throw new InvalidOperationException ("[SimulationController.createModel] SimulationModel null");
 		}
 
 		/**
@@ -206,9 +208,13 @@ namespace NetTrafficSimulator
 					result_model.SetNewNetworkNodeResult (nn.Name,nn.PacketsProcessed,nn.TimeWaited,nn.GetPercentageTimeIdle(framework_model),nn.AverageWaitTime,nn.PacketsDropped,nn.PercentagePacketsDropped,nn.RoutingMessagesSent,nn.RoutingMessagesReceived,nn.RoutingMessagesPercentageProcessed);
 				}
 			}
+		if (framework_model != null)
 			foreach (Link l in links) {
-				//TODO result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.PacketsDropped, l.DropPercentage, l.ActiveTime, l.PassiveTime, l.PercentageTimeIdle);
+				result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.GetActiveTime (framework_model), l.PassiveTime, l.GetPercentageTimeIdle (framework_model), l.DataCarried, l.GetAvgDataCarriedPerTic (framework_model),
+				                               l.GetAvgLinkUsage (framework_model), l.DataSent, l.DataLost, l.PercentageDataLost, l.PercentageDataDelivered, l.PercentageDataLostInCarry);
 			}
+		else
+			throw new InvalidOperationException ("[SimulationController.PopulateResultModel] Framework model not created");
 		}
 
 		/**
