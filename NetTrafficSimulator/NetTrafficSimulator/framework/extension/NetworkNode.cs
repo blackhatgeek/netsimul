@@ -137,13 +137,6 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Empty
-		 */
-		public override void Run (MFF_NPRG031.Model m)
-		{
-		}
-
-		/**
 		 * If there's a link connected, forward a packet:
 		 * If destination is an EndpointNode directly connected to the NetworkNode, use that connection
 		 * Otherwise use the first interface as default route

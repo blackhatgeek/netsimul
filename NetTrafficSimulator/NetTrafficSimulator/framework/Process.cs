@@ -32,12 +32,6 @@ namespace MFF_NPRG031
 		 * @param model Our simulation model
 		 */
 		abstract public void ProcessEvent(State state, Model model);
-
-		/**
-		 * Initial set up
-		 * @param m Model given
-		 */ 
-		abstract public void Run (Model m);
 	}
 }
 

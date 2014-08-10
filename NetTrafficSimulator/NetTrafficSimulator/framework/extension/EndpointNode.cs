@@ -44,13 +44,6 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Empty
-		 */
-		public override void Run (MFF_NPRG031.Model m)
-		{
-		}
-
-		/**
 		 * Amount of packets received, where destination was other than EndNode's address
 		 */
 		public int PacketsMalreceived{

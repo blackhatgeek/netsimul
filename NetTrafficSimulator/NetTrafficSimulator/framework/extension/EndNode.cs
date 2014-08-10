@@ -9,57 +9,34 @@ namespace NetTrafficSimulator
 	 */
 	public class EndNode:EndpointNode
 	{
-		private int sent, received,server_node_count, max_packet_size,last_send;
+		private int sent, received, last_send;
 		private decimal psizesum;
-		private Random r;
-		private bool randomTalker;
 		private static readonly ILog log=LogManager.GetLogger(typeof(EndNode));
 
 		/**
 		 * Creates an EndNode with given name and address
 		 */
-		public EndNode(String n,int address,int max_packet_size):base(n,address){
+		public EndNode(String n,int address):base(n,address){
 			this.sent = 0;
 			this.received = 0;
 			this.malreceived = 0;
-			this.r = new Random ();
 			this.time_wait = 0;
 			this.last_send = 0;
-			this.max_packet_size = max_packet_size;
 			this.psizesum = 0;
-			this.randomTalker = true;
-		}
-		public EndNode(string n,int address,int max_packet_size,bool randomTalker):this(n,address,max_packet_size){
-			this.randomTalker = randomTalker;
 		}
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
-			server_node_count = model.Servers.GetLength (0);
 			switch (state.Actual) {
 			case MFF_NPRG031.State.state.SEND:
 				time_wait += (model.Time - last_send);
 				last_send = model.Time;
 				log.Debug ("(" + Name + ") Sending at " + model.Time + " link " + this.Link);
-				if (randomTalker) {//komunikuj nahodne
-					if (server_node_count > 0)
-						send (selectDestination (model, server_node_count), selectDataSize ());
-					else //nejsou k dispozici servery
-						send (r.Next (), selectDataSize ());
-					int t = wait_time ();
-					log.Debug ("(" + Name + ") Wait for " + t + " Total wait: " + time_wait);
-					log.Debug ("(" + Name + ") Schedule next send at " + (model.Time + t));
-					this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + t);
-				} else {
-					if (state.Data != null)//preddefinovany event
-						send (state.Data);
-					else
-						throw new ArgumentException ("End node " + Name + " is not random talker, though was scheduled with no data to send at "+model.Time);
-				}
+				if (state.Data != null)//preddefinovany event
+					send (state.Data);
+				else
+					throw new ArgumentException ("End node " + Name + " was scheduled with no data to send at "+model.Time);
 				break;
-			/*case MFF_NPRG031.State.state.WAIT:
-				this.Schedule (model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), model.Time + wait_time ());
-				break;*/
 			case MFF_NPRG031.State.state.RECEIVE:
 				if (state.Data is RoutingMessage)
 					log.Debug ("(" + Name + ") Received routing message, never mind");
@@ -78,13 +55,6 @@ namespace NetTrafficSimulator
 			}
 		}
 
-		public override void Run (MFF_NPRG031.Model m)
-		{
-			if(randomTalker)
-				this.Schedule (m.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND), m.Time);
-			//otherwise already scheduled
-		}
-
 		/**
 		 * Attept to post a new packet to the link, if such exist
 		 * @param destination where to send packet
@@ -99,28 +69,6 @@ namespace NetTrafficSimulator
 				sent++;
 			} else
 				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
-		}
-
-		private void send(int addr,decimal size){
-			send (new Packet (this.Address, addr, size));
-		}
-
-		/**
-		 * Randomly chooses destination for new packet
-		 * @param m framework_model
-		 * @param SNC server node counter
-		 * @return server's address
-		 */ 
-		private int selectDestination(MFF_NPRG031.Model m,int SNC){
-			return m.Servers[r.Next (SNC-1)].Address;
-		}
-
-		/**
-		 * Randomly chooses size for new packet based on max_packet_size parameter
-		 * @return packet size
-		 */
-		private int selectDataSize(){
-			return r.Next(max_packet_size);
 		}
 
 		//results

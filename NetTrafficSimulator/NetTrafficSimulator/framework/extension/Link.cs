@@ -116,18 +116,10 @@ namespace NetTrafficSimulator
 		private Node a, b;
 		private bool active;
 		private string name;
-		private decimal toggle_probability;
-		//private Random r;
 
 		public decimal Capacity{
 			get{
 				return this.capacity;
-			}
-		}
-
-		public decimal ToggleProbability{
-			get{
-				return this.toggle_probability;
 			}
 		}
 
@@ -140,15 +132,11 @@ namespace NetTrafficSimulator
 		 * @throws	ArgumentOutOfRangeException Negative link capacity
 		 * @throws	ArgumentNullException any node null
 		 */
-		public Link (String name,decimal capacity, Node a,Node b,decimal toggle_probability,MFF_NPRG031.Model model)
+		public Link (String name,decimal capacity, Node a,Node b,MFF_NPRG031.Model model)
 		{
 			if (capacity <0) throw new ArgumentOutOfRangeException ("Link capacity cannot be negative");
 			if (a == null || b == null)
 				throw new ArgumentNullException ("Node cannot be null");
-			if ((toggle_probability >= 0.0m) && (toggle_probability <= 1.0m))
-				this.toggle_probability = toggle_probability;
-			else
-				throw new ArgumentOutOfRangeException ("toggle_probability must be between 0.0 and 1.0");
 
 			this.name = name;
 			this.capacity = capacity;
@@ -314,11 +302,6 @@ namespace NetTrafficSimulator
 				}
 			} else
 				throw new ArgumentException ("Link " + name + " state null");
-		}
-
-		public override void Run (MFF_NPRG031.Model m)
-		{
-			this.Schedule (m.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE), m.Time);
 		}
 
 		/**

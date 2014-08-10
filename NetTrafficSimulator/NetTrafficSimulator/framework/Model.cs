@@ -13,18 +13,6 @@ namespace MFF_NPRG031
 		 * Logger
 		 */
 		private static readonly ILog log=LogManager.GetLogger(typeof(Model));
-		/**
-		 * Servers available
-		 */
-		private NetTrafficSimulator.ServerNode[] servers;
-		/**
-		 * Servers available
-		 */
-		public NetTrafficSimulator.ServerNode[] Servers{
-			get{
-				return servers;
-			}
-		}
 
 		/**
 		 * Simulation calendar
@@ -48,12 +36,11 @@ namespace MFF_NPRG031
 		 * @param time_to_run how long to run simulation
 		 * @param servers servers available for random choice
 		 */
-		public Model(int time_to_run,NetTrafficSimulator.ServerNode[] servers)
+		public Model(int time_to_run)
 		{
 			K = new Calendar ();
 			Finish = false;
 			this.time_to_run = time_to_run;
-			this.servers = servers;
 		}
 
 		/**

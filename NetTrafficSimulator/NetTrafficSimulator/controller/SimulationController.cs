@@ -17,7 +17,8 @@ namespace NetTrafficSimulator
 		private int endNodeCounter,networkNodeCounter,serverNodeCounter,addressCounter,nodeCounter;
 		private Node[] nodes;
 		private ServerNode[] servers;
-		private LinkedList<Link> links;
+		private LinkedList<EndNode> randomTalkers;
+		private LinkedList<KeyValuePair<Link,decimal>> links;
 		private Dictionary<string,Node> node_names;
 
 		/**
@@ -45,6 +46,7 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("[SimulationController] Network model not valid");
 			this.simulation_model = sm;
 			this.node_names = new Dictionary<string, Node> ();
+			this.randomTalkers = new LinkedList<EndNode> ();
 		}
 
 		/**
@@ -57,8 +59,6 @@ namespace NetTrafficSimulator
 			createModel ();
 			//create links
 			createLinks ();
-			//create events
-			createEvents ();
 			//initialize processes
 			initializeProcesses ();
 		}
@@ -80,9 +80,12 @@ namespace NetTrafficSimulator
 				switch (network_model.GetNodeType (i)) {
 				case NetworkModel.END_NODE:
 					string name = network_model.GetNodeName (i);
-					EndNode en = new EndNode (name, network_model.GetNodeAddr (i), network_model.GetEndNodeMaxPacketSize (name),simulation_model.IsRandomTalker (name));
+					bool rt = simulation_model.IsRandomTalker (name);
+					EndNode en = new EndNode (name, network_model.GetNodeAddr (i));
 					if (node_names.ContainsKey (name))
 						throw new ArgumentException ("Duplicate node name");
+					if (rt)
+						randomTalkers.AddLast (en);
 					node_names.Add (name, en);
 					nodes [nodeCounter] = en;
 					endNodeCounter++;
@@ -120,7 +123,7 @@ namespace NetTrafficSimulator
 		private void createLinks(){
 			if (framework_model == null)
 				throw new InvalidOperationException ("[SimulationController.createLinks] Framework model not initialized");
-			links = new LinkedList<Link> ();
+			links = new LinkedList<KeyValuePair<Link,decimal>> ();
 			if ((network_model != null) && (nodes != null) && (nodes.Length == network_model.NodeCount)) {
 				for (int i = 0; i < network_model.NodeCount; i++) {
 					Node x = nodes [i];
@@ -129,7 +132,8 @@ namespace NetTrafficSimulator
 						Node y = nodes [j];
 						if (network_model.AreConnected (i, j)){
 							//TESTME links parsed correctly??
-							Link l = new Link (network_model.GetLinkName(i,j), network_model.LinkCapacity(i,j), x, y,network_model.GetLinkToggleProbability(i,j),framework_model);
+							Link l = new Link (network_model.GetLinkName(i,j), network_model.LinkCapacity(i,j), x, y,framework_model);
+							KeyValuePair<Link,decimal> link_rec = new KeyValuePair<Link,decimal> (l, network_model.GetLinkToggleProbability (i, j));
 							if (x is EndpointNode)
 								(x as EndpointNode).Link = l;
 							else if (x is NetworkNode)
@@ -142,7 +146,7 @@ namespace NetTrafficSimulator
 								(y as NetworkNode).ConnectLink (l);
 							else
 								throw new InvalidOperationException ("Node " + y + " is not EndNode nor NetworkNode nor ServerNode");
-							links.AddLast (l);
+							links.AddLast (link_rec);
 						}
 						j++;
 					}
@@ -159,7 +163,7 @@ namespace NetTrafficSimulator
 		private void createModel(){
 			if (simulation_model != null) {
 				if (servers != null) {
-					framework_model = new MFF_NPRG031.Model (simulation_model.Time, servers);
+					framework_model = new MFF_NPRG031.Model (simulation_model.Time);
 				}else
 					throw new InvalidOperationException ("Servers array empty");
 			} else
@@ -168,6 +172,8 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Create loaded events from SimulationModel
+		 * Create random SEND events for RandomTalkers (EndNodes)
+		 * Create random TOGGLE events for links
 		 */
 		private void createEvents(){
 			if ((framework_model != null)&&(network_model!=null)) {
@@ -186,6 +192,41 @@ namespace NetTrafficSimulator
 					} else
 						throw new ArgumentException ("Node not found: " + e.node1);
 				}
+				//random talkers
+				foreach (EndNode en in randomTalkers) {
+					Random r = new Random ();
+					//kolik eventu
+					int events = r.Next (framework_model.Time);
+					for (int i=0; i<=events; i++) {
+						//cas
+						int time = r.Next (framework_model.Time);
+						//server
+						int server = r.Next (serverNodeCounter);
+						//size
+						int sizeUpper = network_model.GetEndNodeMaxPacketSize (en.Name);
+						decimal size = r.Next (sizeUpper) + (decimal)r.NextDouble ();
+						MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, new Packet (en.Address, servers [server].Address, size));
+						framework_model.K.Schedule(new MFF_NPRG031.Event(en,st,time));
+						log.Debug("Scheduled random talker: "+en.Name+" at "+time+" to "+servers[server].Name+" size "+size);
+					}
+						
+				}
+				//link toggles
+				foreach (KeyValuePair<Link,decimal> link_rec in links) {
+					Random r = new Random ();
+					//kolik togglu
+					int toggles = r.Next (framework_model.Time);
+					for (int i=0; i<=toggles; i++) {
+						//cas
+						int time = r.Next (framework_model.Time);
+						decimal random = (decimal)r.NextDouble ();
+						if (random > link_rec.Value) {
+							framework_model.K.Schedule (new MFF_NPRG031.Event (link_rec.Key, new MFF_NPRG031.State (MFF_NPRG031.State.state.TOGGLE), time));
+							log.Debug ("Scheduled link toggle: " + link_rec.Key.Name + " at " + time);
+						}
+					}
+				}
+
 			}else throw new InvalidOperationException ("[SimulationController.createEvents] FrameworkModel or NetworkModel null");
 		}
 
@@ -209,7 +250,8 @@ namespace NetTrafficSimulator
 				}
 			}
 		if (framework_model != null)
-			foreach (Link l in links) {
+			foreach (KeyValuePair<Link,decimal> link_rec in links) {
+				Link l = link_rec.Key;
 				result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.GetActiveTime (framework_model), l.PassiveTime, l.GetPercentageTimeIdle (framework_model), l.DataCarried, l.GetAvgDataCarriedPerTic (framework_model),
 				                               l.GetAvgLinkUsage (framework_model), l.DataSent, l.DataLost, l.PercentageDataLost, l.PercentageDataDelivered, l.PercentageDataLostInCarry);
 			}
@@ -218,16 +260,14 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * If Model is not null, invoke Run method on each Node and Link registered
-		 * @throws InvalidOperationException if model is null (not created yet)
-		 * Create loaded events from SimulationModel
+		 * If Model is not null, createEvents and schedule links to receive at 0
+		 * @throws InvalidOperationException if framework_model is null (not created yet)
 		 */
 		private void initializeProcesses(){
 			if (framework_model != null) {
-				foreach (Node n in nodes)
- 					n.Run (framework_model);
- 				foreach (Link l in links)
- 					l.Run(framework_model);
+				createEvents ();
+ 				foreach (KeyValuePair<Link,decimal> l in links)
+					l.Key.Schedule (framework_model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE), 0);
  			} else
  				throw new InvalidOperationException ("[SimulationController.initializeProcesses] Framework model not created");
 		}
