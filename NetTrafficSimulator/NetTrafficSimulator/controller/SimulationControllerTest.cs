@@ -362,9 +362,9 @@ namespace NetTrafficSimulator
 
 			MFF_NPRG031.Event e = m.K.First ();
 			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
-			Assert.AreEqual (0, e.what.Data.Destination);
-			Assert.AreEqual (1, e.what.Data.Source);
-			Assert.AreEqual (1, e.when);
+			Assert.AreEqual (0, e.what.Data.Destination,"Desination");
+			Assert.AreEqual (1, e.what.Data.Source,"Source");
+			Assert.AreEqual (1, e.when,"When");
 			Assert.AreEqual (sn, e.who);
 			m.Time = 1;
 			sn.ProcessEvent (e.what, m);

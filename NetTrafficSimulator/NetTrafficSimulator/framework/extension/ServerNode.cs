@@ -34,7 +34,7 @@ namespace NetTrafficSimulator
 					log.Debug ("(" + Name + ") Received routing message, never mind");
 				else {
 					if (state.Data.Destination == this.Address) {
-						int t = wait_time ();
+						int t = wait_time (model.Time);
 						this.time_waited += t;
 						this.process++;
 						log.Debug ("(" + Name + ") Received at time " + model.Time + " waiting for " + t + ", total waited " + time_waited + " total processed " + process + " sending at " + (model.Time + t));
@@ -101,8 +101,9 @@ namespace NetTrafficSimulator
 		 * Generates a wait time
 		 * @return 1
 		 */
-		protected int wait_time(){
-			return 1;
+		protected int wait_time(int max){
+			int r = new Random ().Next (max);
+			return r>0?r:1;
 		}
 
 	}
