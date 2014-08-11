@@ -2,6 +2,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.IO;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -10,6 +11,7 @@ namespace NetTrafficSimulator
 	 */
 	public class Storer
 	{
+		static readonly ILog log=LogManager.GetLogger(typeof(Storer));
 		XmlDocument xs;
 		XmlTextWriter xw;
 		public Storer(string fname){
@@ -27,7 +29,11 @@ namespace NetTrafficSimulator
 			xw.Formatting = Formatting.Indented;
 			xw.WriteStartDocument ();
 			xs = new XmlDocument ();
-			xs.Schemas.Add ("http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0", "result.xsd");
+			const string schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:vc=\"http://www.w3.org/2007/XMLSchema-versioning\" elementFormDefault=\"qualified\" attributeFormDefault=\"unqualified\" vc:minVersion=\"1.0\"\ntargetNamespace=\"http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0\" xmlns:ns=\"http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0\">\n<xs:element name=\"simulation\">\n<xs:complexType>\n<xs:choice maxOccurs=\"1\" minOccurs=\"1\">\n<xs:element name=\"result\">\n<xs:complexType>\n<xs:sequence>\n<xs:element name=\"endNodes\" minOccurs=\"0\" maxOccurs=\"1\">\n<xs:complexType>\n<xs:choice minOccurs=\"1\" maxOccurs=\"unbounded\">\n<xs:element name=\"endNode\" type=\"ns:tEndNode\" />\n</xs:choice>\n</xs:complexType>\n</xs:element>\n<xs:element name=\"serverNodes\" minOccurs=\"0\" maxOccurs=\"1\">\n<xs:complexType>\n<xs:choice minOccurs=\"1\" maxOccurs=\"unbounded\">\n<xs:element name=\"serverNode\" type=\"ns:tServerNode\" />\n</xs:choice>\n</xs:complexType>\n</xs:element>\n<xs:element name=\"networkNodes\" minOccurs=\"0\" maxOccurs=\"1\">\n<xs:complexType>\n<xs:choice minOccurs=\"1\" maxOccurs=\"unbounded\">\n<xs:element name=\"networkNode\" type=\"ns:tNetworkNode\" />\n</xs:choice>\n</xs:complexType>\n</xs:element>\n<xs:element name=\"links\" minOccurs=\"0\" maxOccurs=\"1\">\n<xs:complexType>\n<xs:choice minOccurs=\"1\" maxOccurs=\"unbounded\">\n<xs:element name=\"link\" type=\"ns:tLink\" />\n</xs:choice>\n</xs:complexType>\n</xs:element>\n</xs:sequence>\n</xs:complexType>\n</xs:element>\n</xs:choice>\n<xs:attribute name=\"version\" use=\"required\" fixed=\"0.03\"/>\n</xs:complexType>\n</xs:element>\n<xs:complexType name=\"tEndNode\">\n<xs:attribute name=\"name\" type=\"xs:ID\" use=\"required\" />\n<xs:attribute name=\"address\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"packetsSent\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"packetsReceived\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"packetsMalreceived\" type=\"xs:timeWaited\" use=\"required\" />\n<xs:attribute name=\"percentTimeIdle\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"averageWaitTime\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"averagePacketSize\" type=\"xs:decimal\" use=\"required\" />\n</xs:complexType>\n<xs:complexType name=\"tServerNode\">\n<xs:attribute name=\"name\" type=\"xs:ID\" use=\"required\" />\n<xs:attribute name=\"address\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"packetsProcessed\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"packetsMalreceived\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"timeWaited\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"percentTimeIdle\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"averageWaitTime\" type=\"xs:decimal\" use=\"required\" />\n</xs:complexType>\n<xs:complexType name=\"tNetworkNode\">\n<xs:attribute name=\"name\" type=\"xs:ID\" use=\"required\" />\n<xs:attribute name=\"packetsProcessed\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"timeWaited\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"percentTimeIdle\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"averageWaitTime\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"packetsDropped\" type=\"xs:nonNegativeInteger\" use=\"required\"/>\n<xs:attribute name=\"percentPacketsDropped\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"routingPacketsSent\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"routingPacketsReceived\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"percentProcessedRoutingPackets\" type=\"xs:nonNegativeInteger\" use=\"required\"/>\n</xs:complexType>\n<xs:complexType name=\"tLink\">\n<xs:attribute name=\"name\" type=\"xs:ID\" use=\"required\" />\n<xs:attribute name=\"packetsCarried\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"activeTime\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"passiveTime\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n<xs:attribute name=\"percentTimeIdle\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"dataCarried\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"dataPerTic\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"usage\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"dataSent\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"dataLost\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"percentDataLost\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"percentDataDelivered\" type=\"xs:decimal\" use=\"required\" />\n<xs:attribute name=\"percentLostInCarry\" type=\"xs:decimal\" use=\"required\" />\n</xs:complexType>\n</xs:schema>";
+			StringReader sr = new StringReader (schema);
+			XmlSchema model_schema = XmlSchema.Read (sr, resultSchemaValidationEventHandler);
+			xs.Schemas.Add (model_schema);
+			//xs.Schemas.Add ("http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0", "result.xsd");
 		}
 
 		public void StoreResultModel(ResultModel rm){
@@ -231,6 +237,20 @@ namespace NetTrafficSimulator
 				xs.WriteContentTo (xw);
 				xw.Flush ();
 				xw.Close();
+			}
+		}
+
+		
+		private void resultSchemaValidationEventHandler(object sender, ValidationEventArgs e)
+		{
+			if (e.Severity == XmlSeverityType.Warning)
+			{
+				log.Warn (e.Message);
+			}
+			else if (e.Severity == XmlSeverityType.Error)
+			{
+				log.Error (e.Message);
+				throw new Exception ("Result validation failed");
 			}
 		}
 	}

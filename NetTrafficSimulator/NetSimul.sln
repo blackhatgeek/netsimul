@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTrafficSimulator", "NetTrafficSimulator\NetTrafficSimulator.csproj", "{02BB68B0-F25F-479E-B811-DC54E6AE97A7}"
 EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Windows x86 bin", "Windows x86 bin.mdproj", "{7B24E94A-900F-4DCA-A2B7-B2EE0DBABB3B}"
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Tarball", "Tarball.mdproj", "{384BE9BD-1E2A-4579-845C-29E7139517F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +17,12 @@ Global
 		{02BB68B0-F25F-479E-B811-DC54E6AE97A7}.Debug|x86.Build.0 = Debug|x86
 		{02BB68B0-F25F-479E-B811-DC54E6AE97A7}.Release|x86.ActiveCfg = Release|x86
 		{02BB68B0-F25F-479E-B811-DC54E6AE97A7}.Release|x86.Build.0 = Release|x86
+		{384BE9BD-1E2A-4579-845C-29E7139517F9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{384BE9BD-1E2A-4579-845C-29E7139517F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{384BE9BD-1E2A-4579-845C-29E7139517F9}.Release|x86.Build.0 = Release|Any CPU
+		{7B24E94A-900F-4DCA-A2B7-B2EE0DBABB3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7B24E94A-900F-4DCA-A2B7-B2EE0DBABB3B}.Release|x86.ActiveCfg = Release|Any CPU
+		{7B24E94A-900F-4DCA-A2B7-B2EE0DBABB3B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NetTrafficSimulator\NetTrafficSimulator.csproj

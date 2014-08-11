@@ -15,6 +15,7 @@ namespace NetTrafficSimulator
 			if (System.IO.File.Exists ("log4net.xml"))
 				XmlConfigurator.Configure (new System.IO.FileInfo ("log4net.xml"));
 			else {
+				//implicitni konfigurace loggeru
 				log4net.Filter.LevelRangeFilter lrf = new log4net.Filter.LevelRangeFilter ();
 				lrf.LevelMin = log4net.Core.Level.Info;
 				log4net.Appender.ConsoleAppender ca = new log4net.Appender.ConsoleAppender ();
@@ -35,14 +36,14 @@ namespace NetTrafficSimulator
 					if (args [0].Equals ("xmlio")) {
 						XMLIO.Simulate (args [1], args [2]);
 					} else
-						Console.WriteLine (USAGE);
+						log.Error (USAGE);
 				} else if (args.Length == 0) {
 					Application.Init ();
 					MainWindow win = new MainWindow ();
 					win.Show ();
 					Application.Run ();
 				} else
-					Console.WriteLine (USAGE);
+					log.Error (USAGE);
 			}catch(Exception e){
 				log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
 			}
