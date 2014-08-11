@@ -23,12 +23,11 @@ namespace NetTrafficSimulator
 				s.StoreResultModel (rm);
 				log.Info("Leaving XMLIO");
 			}catch(IOException e ){
-				log.Error("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
-				Console.WriteLine ("ERROR: "+e.Message);
+				log.Error (e.Message);
+				log.Debug(e.StackTrace);
 			}catch(XmlSchemaException e){
-				log.Error("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
-				Console.WriteLine ("ERROR: input file not valid");
-				Console.WriteLine (e.Message); 
+				log.Error ("Input file not valid");
+				log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
 			}
 		}
 	}

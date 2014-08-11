@@ -311,48 +311,75 @@ namespace NetTrafficSimulator
 			e = m.K.First ();
 			if (e != null) {
 				Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
-				Assert.AreEqual (1, e.when,"EN rec time");
+				Assert.AreEqual (1, e.when, "EN rec time");
 				Assert.AreEqual (en1, e.who);
-			}
+			} else
+				Assert.True (false, "EN event");
 		}
 
 		[Test()]
 		public void NetworkNodeProcessEvent(){
-			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			log4net.ILog log = log4net.LogManager.GetLogger (typeof(SimulationControllerTest));
+			log.Debug ("** NetworkNodeProcessEvent: new model");
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (4);
+			log.Debug ("** NetworkNodeProcessEvent: new nn");
 			NetworkNode nn = new NetworkNode ("NN0", 1,1,m);
+			log.Debug ("** NetworkNodeProcessEvent: new en");
 			EndNode en = new EndNode ("EN0", 0);
+			log.Debug ("** NetworkNodeProcessEvent: new link");
 			Link l = new Link ("L0", 1, nn, en,m);
+			log.Debug ("** NetworkNodeProcessEvent: connect link");
 			nn.ConnectLink (l,m);
+			log.Debug ("** NetworkNodeProcessEvent: set link");
 			en.Link = l;
+			log.Debug ("** NetworkNodeProcessEvent: new state");
 			MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE,new Packet (1, 0,0));
+			log.Debug ("** NetworkNodeProcessEvent: nn process ev");
 			nn.ProcessEvent (s, m);
+			log.Debug ("** NetworkNodeProcessEvent: get first event");
 			MFF_NPRG031.Event e = m.K.First ();
-			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
-			Assert.AreEqual (0, e.what.Data.Destination);
-			Assert.AreEqual (1, e.what.Data.Source);
-			Assert.AreEqual (1, e.when);
-			Assert.AreEqual (nn, e.who);
+			if (e != null) {
+				Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual, "Actual state");
+				Assert.AreEqual (0, e.what.Data.Destination, "Destination");
+				Assert.AreEqual (1, e.what.Data.Source, "Source");
+				Assert.AreEqual (1, e.when, "When");
+				Assert.AreEqual (nn, e.who, "Whp");
+			} else
+				Assert.True (false, "Event");
+			log.Debug ("** NetworkNodeProcessEvent: model time");
 			m.Time = 1;
+			log.Debug ("** NetworkNodeProcessEvent: nn process ev 1");
 			nn.ProcessEvent (e.what, m);
-			Assert.AreEqual (1, l.PacketsCarried);
-			//Assert.AreEqual (0, l.PacketsDropped);
+			Assert.AreEqual (1, l.PacketsCarried,"Packets carried");
+			Assert.AreEqual (0, l.DataCarried, "Data carried");
+			Assert.AreEqual (0, l.DataLost,"Data lost");
+			log.Debug ("** NetworkNodeProcessEvent: model time");
 			m.Time++;
+			log.Debug ("** NetworkNodeProcessEvent: nn process ev 2");
 			l.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE), m);
+			log.Debug ("** NetworkNodeProcessEvent: get first event");
 			e = m.K.First ();//invalid timer
+			if (e != null) {
+				Assert.AreEqual (MFF_NPRG031.State.state.INVALID_TIMER, e.what.Actual, "INVALID TIMER");
+			} else
+				Assert.True (false,"Timer event");
 			e = m.K.First ();
 			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
 			Assert.AreEqual (l, e.who);
 			l.ProcessEvent (e.what, m);
 			e = m.K.First ();
-			Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
-			Assert.AreEqual (2, e.when);
-			Assert.AreEqual (en, e.who);
+			if (e != null) {
+				Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
+				Assert.AreEqual (2, e.when);
+				Assert.AreEqual (en, e.who);
+			} else
+				Assert.True (false, "EN event");
 		}
 		[Test()]
 		public void ServerNodeProcessEvent(){
 			ServerNode sn = new ServerNode ("SN1", 1);
 			EndNode en = new EndNode ("EN1", 0);
-			MFF_NPRG031.Model m = new MFF_NPRG031.Model (2);
+			MFF_NPRG031.Model m = new MFF_NPRG031.Model (3);
 			Link l = new Link ("L1", 1, sn, en,m);
 			sn.Link = l;
 			en.Link = l;
@@ -361,30 +388,45 @@ namespace NetTrafficSimulator
 			sn.ProcessEvent (s, m);
 
 			MFF_NPRG031.Event e = m.K.First ();
-			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
-			Assert.AreEqual (0, e.what.Data.Destination,"Desination");
-			Assert.AreEqual (1, e.what.Data.Source,"Source");
-			Assert.AreEqual (1, e.when,"When");
-			Assert.AreEqual (sn, e.who);
+			if (e != null) {
+				Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
+				Assert.AreEqual (0, e.what.Data.Destination, "Desination");
+				Assert.AreEqual (1, e.what.Data.Source, "Source");
+				Assert.AreEqual (1, e.when, "When");
+				Assert.AreEqual (sn, e.who);
+			} else
+				Assert.IsTrue (false, "SN event");
 			m.Time = 1;
 			sn.ProcessEvent (e.what, m);
 
 			Assert.AreEqual (1, l.PacketsCarried);
-			//Assert.AreEqual(0,l.PacketsDropped);
+			Assert.AreEqual (0, l.DataCarried);
+			Assert.AreEqual (0, l.DataLost);
+
 			m.Time++;
 			l.ProcessEvent (new MFF_NPRG031.State (MFF_NPRG031.State.state.RECEIVE), m);
 			e = m.K.First ();
-			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
-			Assert.AreEqual (3, e.when);
-			Assert.AreEqual (l, e.who);
+			if (e != null) {
+				Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
+				Assert.AreEqual (3, e.when);
+				Assert.AreEqual (l, e.who);
+			} else
+				Assert.IsTrue (false,"Link send event");
 			m.Time++;
 			l.ProcessEvent (e.what, m);
 
 			e = m.K.First ();//link receive
+			if (e != null)
+				Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
+			else
+				Assert.IsTrue(false,"Link receive event");
 			e = m.K.First ();
-			Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
-			Assert.AreEqual(3,e.when);
-			Assert.AreEqual (en, e.who);
+			if (e != null) {
+				Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);
+				Assert.AreEqual (3, e.when);
+				Assert.AreEqual (en, e.who);
+			} else
+				Assert.IsTrue (false, "EN event");
 		}
 
 		[Test()]
