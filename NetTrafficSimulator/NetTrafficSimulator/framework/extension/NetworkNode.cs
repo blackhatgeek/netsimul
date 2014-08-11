@@ -30,6 +30,8 @@ namespace NetTrafficSimulator
 		 */
 		public NetworkNode (String name,int interfaces_count,int max,MFF_NPRG031.Model m):base(name)
 		{
+			if (m == null)
+				throw new ArgumentNullException ("Model null");
 			this.max = max;
 			if (interfaces_count >= 0) {
 				this.interfaces = new Link[interfaces_count];
@@ -40,7 +42,7 @@ namespace NetTrafficSimulator
 				this.processed = 0;
 				this.time_wait = 0;
 				this.schedule = new Dictionary<Packet, Link> ();
-				rt = new RoutingTable (flush,expiry,max,m);
+				this.rt = new RoutingTable (flush,expiry,max,m);
 				this.last_process = 0;
 				this.dropped = 0;
 
@@ -73,14 +75,19 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentNullException on l null
 		 */
 		public void ConnectLink(Link l,MFF_NPRG031.Model model){
+			log.Debug ("Connect link");
 			if (interfaces_used < interfaces_count) {
 				if (l != null) {
 					if (l.ConnectedTo (this)) {
 						interfaces [interfaces_used] = l;
 						interfaces_used++;
 						Node n = l.GetPartner (this);
+						if(n==null)
+							throw new ArgumentNullException ("Node null");
 						if (n is EndpointNode) {
 							EndpointNode en = n as EndpointNode;
+							if (en == null)
+								throw new ArgumentNullException ("Endpoint node null");
 							rt.SetRecord (en.Address, l, 1);
 						}
 					}

@@ -38,7 +38,7 @@ namespace MFF_NPRG031
 		 */
 		public Model(int time_to_run)
 		{
-			K = new Calendar ();
+			K = new Calendar (time_to_run);
 			Finish = false;
 			this.time_to_run = time_to_run;
 		}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace MFF_NPRG031
 {
@@ -10,11 +11,14 @@ namespace MFF_NPRG031
 	{
 		List<Event> calendar = new List<Event>();
 		const int MAX = 0x7FFFFFFF;
+		readonly int TTR;
+		static readonly ILog log=LogManager.GetLogger(typeof(Calendar));
 		/**
 		 * Create new empty calendar
 		 */
-		public Calendar()
+		public Calendar(int time_to_run)
 		{
+			this.TTR=time_to_run;
 			calendar.Clear();
 		}
 		/**
@@ -47,7 +51,10 @@ namespace MFF_NPRG031
 		 */ 
 		public void Schedule(Event e)
 		{
-			calendar.Add(e);
+			if ((e.when >= 0) && (e.when <= TTR))
+				calendar.Add (e);
+			else
+				log.Debug ("Not scheduling event for time " + e.when);
 		}
 
 		/**

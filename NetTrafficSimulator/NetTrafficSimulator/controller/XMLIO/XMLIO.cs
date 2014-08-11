@@ -9,7 +9,7 @@ namespace NetTrafficSimulator
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(XMLIO));
 		public static void Simulate(string input,string output){
-			log.Info("Entering simulate("+input+","+output+")");
+			log.Info("Entered XMLIO("+input+","+output+")");
 			try{
 				Loader l = new Loader (input);
 				NetworkModel nm = l.LoadNM ();
@@ -21,7 +21,7 @@ namespace NetTrafficSimulator
 				ResultModel rm = sc.Results;
 				Storer s = new Storer (output);
 				s.StoreResultModel (rm);
-				log.Info("Leaving simulate");
+				log.Info("Leaving XMLIO");
 			}catch(IOException e ){
 				log.Error("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
 				Console.WriteLine ("ERROR: "+e.Message);

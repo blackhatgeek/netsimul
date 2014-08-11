@@ -42,10 +42,21 @@ namespace NetTrafficSimulator
 		}
 
 		public void SetRecord(Record r){
+			if (r == null)
+				throw new ArgumentNullException ("Record null");
 			Record rec;
+			if (model == null)
+				throw new ArgumentNullException ("Model null");
 			int expiry = model.Time + expiry_timer;
 			int flush = model.Time + flush_timer;
+			if (bestRoute == null)
+				throw new ArgumentNullException ("bestRoute null");
 			if (bestRoute.TryGetValue (r.Address, out rec)) {
+				if (rec == null) {
+					log.Warn("Got null as record - setting new");
+					setRecord (r);
+					log.Debug ("New record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry+" FLUSH "+flush);
+				}
 				if ((rec.Expired)|| (rec.Metric >= r.Metric)) {
 					//update
 					rec.ZrusPlan (model.K);
@@ -67,15 +78,21 @@ namespace NetTrafficSimulator
 
 		private void setRecord(Record r){
 			//r.Expired = false;
-			r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), model.Time + expiry_timer);
-			r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), model.Time + flush_timer);
+			if (model == null)
+				throw new ArgumentNullException ("Framework model null");
+			if (r != null) {
+				r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), model.Time + expiry_timer);
+				r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), model.Time + flush_timer);
 
-			bestRoute.Add (r.Address, r);
-			records.Add (r);
-			activeRecs++;
+				bestRoute.Add (r.Address, r);
+				records.Add (r);
+				activeRecs++;
+			} else
+				log.Warn ("Record null - not set");
 		}
 
 		public void SetRecord(int addr,Link l, int metric){
+			log.Debug ("Set record");
 			SetRecord (new Record (addr, l, metric, maxHop, this));
 		}
 
@@ -88,6 +105,8 @@ namespace NetTrafficSimulator
 		}
 
 		public RoutingTable(int flush,int expiry,int maxHop,MFF_NPRG031.Model m){
+			if (m == null)
+				throw new ArgumentNullException ("Model null");
 			this.expiry_timer = expiry;
 
 			this.flush_timer = flush;
@@ -96,6 +115,8 @@ namespace NetTrafficSimulator
 
 			this.records = new HashSet<Record> ();
 			this.bestRoute = new Dictionary<int, Record> ();
+			this.model = m;
+			this.activeRecs = 0;
 			this.model = m;
 		}
 

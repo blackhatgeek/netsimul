@@ -426,7 +426,7 @@ namespace NetTrafficSimulator
 			if (capacity == 0) {
 				return 100.0m;
 			} else {
-				return GetAvgDataCarriedPerTic (m) / capacity;
+				return GetAvgDataCarriedPerTic (m) / capacity*100.0m;
 			}
 		}
 

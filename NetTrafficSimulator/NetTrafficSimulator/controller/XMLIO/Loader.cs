@@ -130,14 +130,14 @@ namespace NetTrafficSimulator
 							throw new ArgumentOutOfRangeException ("Wrong packet size (" + size + ") - must not be negative OR who (" + who + ") not EndNode OR loc (" + loc + ") not ServerNode");
 					}
 				} else 
-					throw new Exception ("Model fucked up");
+					throw new Exception ("Model corrupt");
 			} else {
 				log.Debug ("No events in model");
 				sm = new SimulationModel (0);
 			}
 			sm.Time = time;
 			sm.MaxHop = max_hop;
-			log.Debug ("Enter foireach");
+			log.Debug ("Parsing random talkers");
 			foreach (KeyValuePair<string,bool> kvp in en) {
 				if (kvp.Value)
 					sm.SetRandomTalker (kvp.Key);

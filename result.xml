@@ -1,17 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<simulation version="0.00" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0">
-	<result>
-		<endNodes>
-			<endNode name="" address="" packetsSent="" packetsReceived="" packetsMalreceived="" timeWaitted="" percentTimeIdle="" averageWaitTime="" averagePacketSize=""/>
-		</endNodes>
-		<serverNodes>
-			<serverNode name="" address="" packetsProcessed="" packetsMalreceived="" timeWaited="" percentTimeIdle="" averageWaitTime="" />
-		</serverNodes>
-		<networkNodes>
-			<networkNode name="" packetsProcessed="" timeWaited="" percentTimeIdle="" averageWaitTime="" />
-		</networkNodes>
-		<links>
-			<link name="" packetsCarried="" packetsDropped="" dropPercentage="" activeTime="" passiveTime="" percentTimeIdle="" />
-		</links>
-	</result>
+<?xml version="1.0" encoding="utf-8"?>
+<simulation>
+  <result version="0.03">
+    <endNodes>
+      <endNode name="e1" address="2" packetsSent="3" packetsReceived="0" packetsMalreceived="0" percentTimeIdle="60.000000000000000000000000000" averageWaitTime="1" averagePacketSize="0.772531896661253" />
+    </endNodes>
+    <serverNodes>
+      <serverNode name="s1" address="1" packetsProcessed="0" packetsMalreceived="0" timeWaited="0" percentTimeIdle="0" averageWaitTime="0" />
+    </serverNodes>
+    <networkNodes>
+      <networkNode name="n1" packetsProcessed="7" timeWaited="4" percentTimeIdle="0" averageWaitTime="0.5714285714285714285714285714" packetsDropped="0" percentPacketsDropped="0" routingPacketsSent="4" routingPacketsReceived="0" percentProcessedRoutingPackets="0" />
+    </networkNodes>
+    <links>
+      <link name="l1" packetsCarried="5" activeTime="5" passiveTime="0" percentTimeIdle="0" dataCarried="5.317595689983759" dataPerTic="1.0635191379967518000000000000" usage="21.270382759935036000000000000" dataSent="3.0" dataLost="2.317595689983759" percentDataLost="43.583525809402734047023892820" percentDataDelivered="56.416474190597265952976107180" percentLostInCarry="0" />
+      <link name="l2" packetsCarried="5" activeTime="5" passiveTime="0" percentTimeIdle="0" dataCarried="5.317595689983759" dataPerTic="1.0635191379967518000000000000" usage="10.635191379967518000000000000" dataSent="5.317595689983759" dataLost="0.000000000000000" percentDataLost="0" percentDataDelivered="100.0" percentLostInCarry="0" />
+    </links>
+  </result>
 </simulation>
