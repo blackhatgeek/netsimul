@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Gtk;
 using log4net;
 using log4net.Config;
@@ -16,17 +17,8 @@ namespace NetTrafficSimulator
 				XmlConfigurator.Configure (new System.IO.FileInfo ("log4net.xml"));
 			else {
 				//implicitni konfigurace loggeru
-				log4net.Filter.LevelRangeFilter lrf = new log4net.Filter.LevelRangeFilter ();
-				lrf.LevelMin = log4net.Core.Level.Info;
-				log4net.Appender.ConsoleAppender ca = new log4net.Appender.ConsoleAppender ();
-				ca.AddFilter (lrf);
-				log4net.Appender.RollingFileAppender rfa = new log4net.Appender.RollingFileAppender ();
-				rfa.AppendToFile = true;
-				rfa.File = "trasim.log";
-				rfa.MaximumFileSize = "100KB";
-				rfa.MaxSizeRollBackups = 2;
-				log4net.Repository.Hierarchy.Hierarchy h = new log4net.Repository.Hierarchy.Hierarchy ();
-				BasicConfigurator.Configure (h,ca,rfa);
+				const string logconf = "<log4net>\n    <!-- A1 is set to be a ConsoleAppender -->\n    <appender name=\"A1\" type=\"log4net.Appender.ConsoleAppender\">\n        <filter type=\"log4net.Filter.LevelRangeFilter\">\n\t\t<levelMin value=\"INFO\" />\n\t</filter>\n        <!-- A1 uses PatternLayout -->\n        <layout type=\"log4net.Layout.PatternLayout\">\n\t    <conversionPattern value=\"%5level [%thread] (%file:%line) - %message%newline\" />\n        </layout>\n    </appender>\n\n   <appender name=\"RollingFile\" type=\"log4net.Appender.RollingFileAppender\">\n        <file value=\"trasim.log\" />\n        <appendToFile value=\"true\" />\n        <maximumFileSize value=\"100KB\" />\n        <maxSizeRollBackups value=\"2\" />\n\n        <layout type=\"log4net.Layout.PatternLayout\">\n            <conversionPattern value=\"%level %thread %logger - %message%newline\" />\n        </layout>\n    </appender>\n    \n    <!-- Set root logger level to ALL and its appenders to A1  and RollingFile -->\n    <root>\n        <level value=\"ALL\" />\n        <appender-ref ref=\"A1\" />\n\t<appender-ref ref=\"RollingFile\" />\n    </root>\n</log4net>";
+				XmlConfigurator.Configure(generateStreamFromString(logconf));
 			}
 			//pokud je konzolovy parametr XMLIO, nacist data z XML
 			//jinak pustit GUI
@@ -48,6 +40,16 @@ namespace NetTrafficSimulator
 				log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
 			}
 			log.Info ("Leaving application");
+		}
+
+		private static Stream generateStreamFromString(string s)
+		{
+			MemoryStream stream = new MemoryStream();
+			StreamWriter writer = new StreamWriter(stream);
+			writer.Write(s);
+			writer.Flush();
+			stream.Position = 0;
+			return stream;
 		}
 	}
 }
