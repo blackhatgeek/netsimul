@@ -9,15 +9,16 @@ namespace NetTrafficSimulator
 	 */
 	public class NetworkNode:Node
 	{
+		const int update=3,flush=6,expiry=3;
 		static readonly ILog log = LogManager.GetLogger (typeof(NetworkNode));
-		readonly int max;
+		readonly int max;//,update_timer=10;//TODO
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
-		//Dictionary<int,int> route;
 		RoutingTable rt;
 		int[] interface_use_count;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped,rm_received,rm_sent;
-		int delay;
+		int delay;//, scheduled_update;
+		//private Timer update, invalid;
 
 		/**
 		 * Creates a new network node with given name and interfaces count
@@ -27,7 +28,7 @@ namespace NetTrafficSimulator
 		 * @param max Max hop count for a packet
 		 * @throws ArgumentException on negative interfaces_count
 		 */
-		public NetworkNode (String name,int interfaces_count,int max):base(name)
+		public NetworkNode (String name,int interfaces_count,int max,MFF_NPRG031.Model m):base(name)
 		{
 			this.max = max;
 			if (interfaces_count >= 0) {
@@ -39,10 +40,18 @@ namespace NetTrafficSimulator
 				this.processed = 0;
 				this.time_wait = 0;
 				this.schedule = new Dictionary<Packet, Link> ();
-				//this.route=new Dictionary<int,int>();
-				rt = new RoutingTable (max);
+				rt = new RoutingTable (flush,expiry,max,m);
 				this.last_process = 0;
 				this.dropped = 0;
+
+				//nastavit se do stavu UPDATE_TIMER
+				//poslat REQUESTY vsem okolo
+
+
+				//this.scheduled_update = -1;
+				//this.update = new Timer (this);
+				//this.invalid = new Timer (this);
+				//this.update.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.TIMER), model.Time); - SIMU CONTROL
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
 		}
@@ -57,26 +66,26 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * If possible, note a new link in use on first interface available
+		 * If possible add link and appropriate record to routing table
 		 * @param l Link to connect
+		 * @param model Framework model
 		 * @throws ArgumentException if no port is available
 		 * @throws ArgumentNullException on l null
 		 */
-		public void ConnectLink(Link l){
+		public void ConnectLink(Link l,MFF_NPRG031.Model model){
 			if (interfaces_used < interfaces_count) {
 				if (l != null) {
-					try{
-						Node n=l.GetPartner(this);
+					if (l.ConnectedTo (this)) {
 						interfaces [interfaces_used] = l;
 						interfaces_used++;
-						if(n is EndpointNode){
-							log.Debug("Set record to routing table: "+(n as EndpointNode).Address+" via "+l.Name+" (1)");
-							rt.SetRecord((n as EndpointNode).Address,l,1);
+						Node n = l.GetPartner (this);
+						if (n is EndpointNode) {
+							EndpointNode en = n as EndpointNode;
+							rt.SetRecord (en.Address, l, 1);
 						}
-					}catch(ArgumentException){
-						throw new ArgumentException ("Link not connected to this NetworkNode");
 					}
-
+					else
+						throw new ArgumentException ("Link not connected to this NetworkNode");
 				} else
 					throw new ArgumentNullException ("Link null");
 			} else
@@ -110,7 +119,7 @@ namespace NetTrafficSimulator
 						Response r = state.Data as Response;
 						if (!verifyRM (r))
 							throw new Exception ("Invalid response - link not present in interfaces: " + r.Link.Name);
-						updateRT (r.Link,model,r.Table);
+						updateRT (r.Table);
 					}
 					scheduleForward (state.Data, selectDestination (state.Data), model);
 				} else {
@@ -131,6 +140,10 @@ namespace NetTrafficSimulator
 				}else
 					throw new ArgumentException ("("+Name+") Packet was not scheduled for sending - missing record for link to use");
 				break;
+			case MFF_NPRG031.State.state.UPDATE_TIMER:
+				//send responses around
+				sendResponse (model);
+				break;
 			default:
 				throw new ArgumentException ("[NetworkNode "+Name+"] Neplatny stav: "+state);
 			}
@@ -146,7 +159,7 @@ namespace NetTrafficSimulator
 		 */
 		private Link selectDestination(Packet p){
 			log.Debug ("Link for destination: " + p.Destination);
-			Link link=rt.GetLinkForAddress (p.Destination);
+			Link link=rt.GetLinkForAddr (p.Destination);
 			for (int i=0; i<interfaces_used; i++) {
 				if (link.Equals (interfaces [i])) {
 					interface_use_count [i]++;
@@ -253,42 +266,34 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * When link switches state, it notifies connected NetworkNodes using this method
-		 * If link became active: send request for routing table to neighbour
-		 * If link became passive: remove related elements from routing table and send updated table to neighbours
-		 */ 
-		public void LinkSwitchTrigger(Link l,MFF_NPRG031.Model model){
-			if (l.Active) {
-				//send request
-				sendRequest (l,model);
-			} else {
-				//update table
-				rt.RemoveLink (l);
-				//send updated table
-				sendResponse (l, model);
-
+		 * Send requests for routing table
+		 */
+		public void SendRequest(MFF_NPRG031.Model model){
+			for (int i=0; i<interfaces_used; i++) {
+				Link l = interfaces [i];
+				log.Debug ("(" + Name + ") Scheduling request to " + l.GetPartner (this).Name + " via " + l.Name + " at " + (model.Time + 1));
+				scheduleForward (new Request (l), l, model);
 			}
 		}
 
 		/**
-		 * Send request for routing table
-		 */ 
-		private void sendRequest(Link l,MFF_NPRG031.Model model){
-			log.Debug ("(" + Name + ") Scheduling request to " + l.GetPartner (this).Name + " via " + l.Name+" at "+(model.Time+1));
-			scheduleForward (new Request (l), l, model);
-		}
-
-		/**
-		 * Send response - our routing table
-		 */ 
-		private void sendResponse(Link link,MFF_NPRG031.Model model){
+ 		 * Send response - our routing table
+		 */
+		private void sendResponse(MFF_NPRG031.Model model){
 			foreach (Link l in interfaces) {
-				if (!l.Equals (link)) {
 					log.Debug ("(" + Name + ") Sending response to " + l.GetPartner (this).Name + " via " + l.Name);
 					scheduleForward (new Response (l,rt), l, model);
-				}
 			}
 		}
+
+		/**
+		 * Send response to particular request
+		 */
+		private void sendResponse(Link l,MFF_NPRG031.Model model){
+			log.Debug ("(" + Name + ") Sending response to " + l.GetPartner (this).Name + " via " + l.Name);
+			scheduleForward (new Response (l,rt), l, model);
+		}
+
 
 		/**
 		 * Check request's link is from our set
@@ -307,14 +312,12 @@ namespace NetTrafficSimulator
 		/**
 		 * Merge received routing table into our
 		 */
-		private void updateRT(Link l,MFF_NPRG031.Model m,RoutingTable received){
-			bool change=false;
-			foreach(RoutingTable.Record r in received.GenerateRecordTable()){
-				change=change | rt.SetRecord (r.Addr, r.Link, r.Metric+1);
+		private void updateRT(RoutingTable received){
+			foreach (Record r in received.GetRecords()) {
+				rt.SetRecord (r);
 			}
-			if (change)
-				sendResponse (l, m);
 		}
+
 	}
 }
 

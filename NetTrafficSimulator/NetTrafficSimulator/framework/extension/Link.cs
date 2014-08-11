@@ -278,14 +278,6 @@ namespace NetTrafficSimulator
 				case MFF_NPRG031.State.state.TOGGLE:
 					log.Debug ("(" + name + ") Switching link state");
 					active = !active;
-					if (a is NetworkNode) {
-						log.Debug ("(" + name + ") Triggering switch on " + a.Name);
-						(a as NetworkNode).LinkSwitchTrigger (this, model);
-					}
-					if (b is NetworkNode) {
-						log.Debug ("(" + Name + ") Triggering switch on " + b.Name);
-						(b as NetworkNode).LinkSwitchTrigger (this, model);
-					}
 					if (!active) {
 						active_time += model.Time - last_toggle;
 						this.ZrusPlan (model.K);
@@ -453,6 +445,10 @@ namespace NetTrafficSimulator
 		public override string ToString ()
 		{
 			return name;
+		}
+
+		public bool ConnectedTo(Node n){
+			return (a == n) || (b == n);
 		}
 	}
 }

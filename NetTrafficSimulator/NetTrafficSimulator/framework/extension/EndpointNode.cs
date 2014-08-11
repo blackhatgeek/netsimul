@@ -36,14 +36,6 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Generates a wait time
-		 * @return 1
-		 */
-		protected int wait_time(){
-			return 1;
-		}
-
-		/**
 		 * Amount of packets received, where destination was other than EndNode's address
 		 */
 		public int PacketsMalreceived{

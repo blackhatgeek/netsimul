@@ -24,7 +24,11 @@ namespace MFF_NPRG031
 			/**
 			 * Send link state from active to passive and vice versa
 			 */
-			TOGGLE
+			TOGGLE,
+			/**
+			 * Trigger timer
+			 */
+			UPDATE_TIMER,INVALID_TIMER,FLUSH_TIMER
 		}
 
 		private state actual_state;
