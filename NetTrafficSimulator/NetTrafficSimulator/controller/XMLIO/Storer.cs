@@ -14,6 +14,7 @@ namespace NetTrafficSimulator
 		static readonly ILog log=LogManager.GetLogger(typeof(Storer));
 		XmlDocument xs;
 		XmlTextWriter xw;
+		const int decimals=2;
 
 		/**
 		 * Create new storer - prepare to write to file and create necessary objects
@@ -80,15 +81,15 @@ namespace NetTrafficSimulator
 						endNode.Attributes.Append (packetsMalreceived);
 
 						XmlAttribute percentTimeIdle = xs.CreateAttribute ("percentTimeIdle");
-						percentTimeIdle.Value = rm.GetEndNodePercentTimeIdle (endNodeName)+"";
+						percentTimeIdle.Value = Math.Round(rm.GetEndNodePercentTimeIdle (endNodeName),decimals)+"";
 						endNode.Attributes.Append (percentTimeIdle);
 
 						XmlAttribute averageWaitTime = xs.CreateAttribute ("averageWaitTime");
-						averageWaitTime.Value = rm.GetEndNodeAverageWaitTime (endNodeName)+"";
+						averageWaitTime.Value = Math.Round(rm.GetEndNodeAverageWaitTime (endNodeName),decimals)+"";
 						endNode.Attributes.Append (averageWaitTime);
 
 						XmlAttribute averagePacketSize = xs.CreateAttribute ("averagePacketSize");
-						averagePacketSize.Value = rm.GetEndNodeAveragePacketSize (endNodeName)+"";
+						averagePacketSize.Value = Math.Round(rm.GetEndNodeAveragePacketSize (endNodeName),decimals)+"";
 						endNode.Attributes.Append (averagePacketSize);
 
 						endNodes.AppendChild (endNode);
@@ -120,11 +121,11 @@ namespace NetTrafficSimulator
 						serverNode.Attributes.Append (timeWaited);
 
 						XmlAttribute percentageTimeIdle = xs.CreateAttribute ("percentTimeIdle");
-						percentageTimeIdle.Value = rm.GetServerNodePercentTimeIdle (serverNodeName)+"";
+						percentageTimeIdle.Value = Math.Round(rm.GetServerNodePercentTimeIdle (serverNodeName),decimals)+"";
 						serverNode.Attributes.Append (percentageTimeIdle);
 
 						XmlAttribute averageWaitTime = xs.CreateAttribute ("averageWaitTime");
-						averageWaitTime.Value = rm.GetServerNodeAverageWaitTime (serverNodeName)+"";
+						averageWaitTime.Value = Math.Round(rm.GetServerNodeAverageWaitTime (serverNodeName),decimals)+"";
 						serverNode.Attributes.Append (averageWaitTime);
 
 						serverNodes.AppendChild (serverNode);
@@ -148,11 +149,11 @@ namespace NetTrafficSimulator
 						networkNode.Attributes.Append (timeWaited);
 
 						XmlAttribute percentTimeIdle = xs.CreateAttribute ("percentTimeIdle");
-						percentTimeIdle.Value = rm.GetNetworkNodePercentTimeIdle (networkNodeName) + "";
+						percentTimeIdle.Value = Math.Round(rm.GetNetworkNodePercentTimeIdle (networkNodeName),decimals) + "";
 						networkNode.Attributes.Append (percentTimeIdle);
 
 						XmlAttribute averageWaitTime = xs.CreateAttribute ("averageWaitTime");
-						averageWaitTime.Value = rm.GetNetworkNodeAverageWaitTime (networkNodeName) + "";
+						averageWaitTime.Value = Math.Round(rm.GetNetworkNodeAverageWaitTime (networkNodeName),decimals) + "";
 						networkNode.Attributes.Append (averageWaitTime);
 
 						XmlAttribute packetsDropped = xs.CreateAttribute ("packetsDropped");
@@ -160,7 +161,7 @@ namespace NetTrafficSimulator
 						networkNode.Attributes.Append (packetsDropped);
 
 						XmlAttribute percentPacketsDropped = xs.CreateAttribute ("percentPacketsDropped");
-						percentPacketsDropped.Value = rm.GetNetworkNodePercentagePacketsDropped (networkNodeName) + "";
+						percentPacketsDropped.Value = Math.Round(rm.GetNetworkNodePercentagePacketsDropped (networkNodeName),decimals) + "";
 						networkNode.Attributes.Append (percentPacketsDropped);
 
 						XmlAttribute routingPacketsSent = xs.CreateAttribute ("routingPacketsSent");
@@ -172,7 +173,7 @@ namespace NetTrafficSimulator
 						networkNode.Attributes.Append(routingPacketsReceived);
 
 						XmlAttribute percentageProcessedRoutingPackets = xs.CreateAttribute ("percentProcessedRoutingPackets");
-						percentageProcessedRoutingPackets.Value = rm.GetNetworkNodePercentageRoutingPackets (networkNodeName) + "";
+						percentageProcessedRoutingPackets.Value = Math.Round(rm.GetNetworkNodePercentageRoutingPackets (networkNodeName),decimals) + "";
 						networkNode.Attributes.Append (percentageProcessedRoutingPackets);
 
 						networkNodes.AppendChild (networkNode);
@@ -201,39 +202,39 @@ namespace NetTrafficSimulator
 						link.Attributes.Append (passiveTime);
 
 						XmlAttribute timeIdle = xs.CreateAttribute ("percentTimeIdle");
-						timeIdle.Value = rm.GetLinkIdleTimePercentage (linkName)+"";
+						timeIdle.Value = Math.Round(rm.GetLinkIdleTimePercentage (linkName),decimals)+"";
 						link.Attributes.Append (timeIdle);
 
 						XmlAttribute dataCarried = xs.CreateAttribute("dataCarried");
-						dataCarried.Value = rm.GetLinkDataCarried (linkName) + "";
+						dataCarried.Value = Math.Round(rm.GetLinkDataCarried (linkName),decimals) + "";
 						link.Attributes.Append (dataCarried);
 
 						XmlAttribute dataPerTic = xs.CreateAttribute ("dataPerTic");
-						dataPerTic.Value = rm.GetLinkDataPerTic (linkName) + "";
+						dataPerTic.Value = Math.Round(rm.GetLinkDataPerTic (linkName),decimals) + "";
 						link.Attributes.Append (dataPerTic);
 
 						XmlAttribute usage = xs.CreateAttribute ("usage");
-						usage.Value = rm.GetLinkUsage (linkName)+"";
+						usage.Value = Math.Round(rm.GetLinkUsage (linkName),decimals)+"";
 						link.Attributes.Append (usage);
 
 						XmlAttribute dataSent = xs.CreateAttribute ("dataSent");
-						dataSent.Value = rm.GetLinkDataSent (linkName)+"";
+						dataSent.Value = Math.Round(rm.GetLinkDataSent (linkName),decimals)+"";
 						link.Attributes.Append (dataSent);
 
 						XmlAttribute dataLost = xs.CreateAttribute ("dataLost");
-						dataLost.Value = rm.GetLinkDataLost (linkName)+"";
+						dataLost.Value = Math.Round(rm.GetLinkDataLost (linkName),decimals)+"";
 						link.Attributes.Append (dataLost);
 
 						XmlAttribute percentageDataLost = xs.CreateAttribute ("percentDataLost");
-						percentageDataLost.Value = rm.GetLinkPercentageDataLost (linkName)+"";
+						percentageDataLost.Value = Math.Round(rm.GetLinkPercentageDataLost (linkName),decimals)+"";
 						link.Attributes.Append (percentageDataLost);
 
 						XmlAttribute percentageDataDelivered = xs.CreateAttribute ("percentDataDelivered");
-						percentageDataDelivered.Value = rm.GetLinkPercentageDataDelivered (linkName)+"";
+						percentageDataDelivered.Value = Math.Round(rm.GetLinkPercentageDataDelivered (linkName),decimals)+"";
 						link.Attributes.Append (percentageDataDelivered);
 
 						XmlAttribute lostInCarry = xs.CreateAttribute ("percentLostInCarry");
-						lostInCarry.Value = rm.GetLinkPercentageDataLostInCarry (linkName) + "";
+						lostInCarry.Value = Math.Round(rm.GetLinkPercentageDataLostInCarry (linkName),decimals) + "";
 						link.Attributes.Append (lostInCarry);
 
 						links.AppendChild (link);
