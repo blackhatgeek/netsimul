@@ -450,6 +450,18 @@ namespace NetTrafficSimulator
 		public bool ConnectedTo(Node n){
 			return (a == n) || (b == n);
 		}
+
+		public Node A{
+			get{
+				return a;
+			}
+		}
+
+		public Node B{
+			get{
+				return b;
+			}
+		}
 	}
 }
 

@@ -81,8 +81,10 @@ namespace NetTrafficSimulator
 			if (model == null)
 				throw new ArgumentNullException ("Framework model null");
 			if (r != null) {
-				r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), model.Time + expiry_timer);
-				r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), model.Time + flush_timer);
+				if (!((r.Route.A is EndpointNode) || (r.Route.B is EndpointNode))) {
+					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), model.Time + expiry_timer);
+					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), model.Time + flush_timer);
+				}
 
 				bestRoute.Add (r.Address, r);
 				records.Add (r);

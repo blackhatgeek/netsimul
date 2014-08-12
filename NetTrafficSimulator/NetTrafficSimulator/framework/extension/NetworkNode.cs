@@ -126,9 +126,10 @@ namespace NetTrafficSimulator
 						Response r = state.Data as Response;
 						if (!verifyRM (r))
 							throw new Exception ("Invalid response - link not present in interfaces: " + r.Link.Name);
-						updateRT (r.Table);
+						updateRT (r.Table,r.Link);
 					}
-					scheduleForward (state.Data, selectDestination (state.Data), model);
+					else
+						scheduleForward (state.Data, selectDestination (state.Data), model);
 				} else {
 					dropped++;
 					log.Debug ("Hop counter over max .. packet dropped");
@@ -138,18 +139,27 @@ namespace NetTrafficSimulator
 				log.Debug ("(" + Name + ") Sending.");
 				Packet p = state.Data;
 				Link l;
-				if (schedule.TryGetValue (p, out l)) {
-					if (p is RoutingMessage) {
-						processed++;
-						rm_sent++;
-					}
-					l.Carry (p, this, l.GetPartner (this));
-				}else
-					throw new ArgumentException ("("+Name+") Packet was not scheduled for sending - missing record for link to use");
+				if (p != null) {
+					if (schedule.TryGetValue (p, out l)) {
+						if (l != null) {
+							if (p is RoutingMessage) {
+								log.Debug ("Sending routing message");
+								processed++;
+								rm_sent++;
+							}
+							l.Carry (p, this, l.GetPartner (this));
+						} else
+							throw new ArgumentNullException ("(" + Name + ") Link null");
+					} else
+						throw new ArgumentException ("(" + Name + ") Packet was not scheduled for sending - missing record for link to use");
+				} else
+					throw new ArgumentNullException ("(" + Name + ") Packet null");
 				break;
 			case MFF_NPRG031.State.state.UPDATE_TIMER:
 				//send responses around
 				sendResponse (model);
+				//schedule timer
+				this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.UPDATE_TIMER), model.Time + update);
 				break;
 			default:
 				throw new ArgumentException ("[NetworkNode "+Name+"] Neplatny stav: "+state);
@@ -165,15 +175,27 @@ namespace NetTrafficSimulator
 		 * @throws InvalidOperationException No link connected
 		 */
 		private Link selectDestination(Packet p){
-			log.Debug ("Link for destination: " + p.Destination);
-			Link link=rt.GetLinkForAddr (p.Destination);
-			for (int i=0; i<interfaces_used; i++) {
-				if (link.Equals (interfaces [i])) {
-					interface_use_count [i]++;
-					return link;
+			if (p is RoutingMessage) {
+				log.Error ("Link for routing message");
+				throw new Exception ();
+				return (p as RoutingMessage).Link;
+			} else {
+				log.Debug ("Link for destination: " + p.Destination);
+				Link link = rt.GetLinkForAddr (p.Destination);
+				if (link != null) {
+					for (int i=0; i<interfaces_used; i++) {
+						if (link.Equals (interfaces [i])) {
+							interface_use_count [i]++;
+							return link;
+						}
+					}
+					throw new InvalidOperationException ("Routing through invalid link");
+				} else {
+					log.Warn ("No link for " + p.Destination);
+					return null;
 				}
 			}
-			throw new InvalidOperationException ("Routing through invalid link");
+			//throw new InvalidOperationException ("Routing through invalid link");
 		}
 
 		/**
@@ -183,12 +205,16 @@ namespace NetTrafficSimulator
 		 * @param model the Model
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
-			log.Debug ("("+Name+") Routing via link " + l + " at " + (model.Time + delay));
-			if (schedule.ContainsKey (p))
-				throw new InvalidOperationException ("Same packet to schedule twice");
-			this.schedule.Add (p, l);
-			this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), model.Time + delay);
-			//l.Schedule(model.K,new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,p),model.Time+delay);
+			if (l != null) {
+				log.Debug ("(" + Name + ") Routing via link " + l + " at " + (model.Time + delay));
+				if (schedule.ContainsKey (p))
+					throw new InvalidOperationException ("Same packet to schedule twice");
+				this.schedule.Add (p, l);
+				this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), model.Time + delay);
+			} else {
+				log.Warn ("(" + Name + ") No link to " + p.Destination + " packet dropped");
+				dropped++;
+			}
 		}
 
 		//results
@@ -319,9 +345,9 @@ namespace NetTrafficSimulator
 		/**
 		 * Merge received routing table into our
 		 */
-		private void updateRT(RoutingTable received){
+		private void updateRT(RoutingTable received,Link direction){
 			foreach (Record r in received.GetRecords()) {
-				rt.SetRecord (r);
+				rt.SetRecord (new Record(r.Address,direction,r.Metric+1,this.max,rt));
 			}
 		}
 

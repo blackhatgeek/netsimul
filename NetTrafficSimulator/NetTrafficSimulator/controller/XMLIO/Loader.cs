@@ -110,6 +110,7 @@ namespace NetTrafficSimulator
 			XmlElement ttr = xd.GetElementsByTagName ("simulation").Item(0) as XmlElement;
 			int time = Convert.ToInt32 (ttr.GetAttribute ("time_run"));
 			int max_hop = Convert.ToInt32 (ttr.GetAttribute ("max_hop"));
+			log.Debug ("Time to run: " + time + " Max hop: " + max_hop);
 			XmlElement events = xd.GetElementsByTagName ("events").Item(0) as XmlElement;
 
 			SimulationModel sm;

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<simulation time_run="5" version="0.03" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0 model.xsd">
+<simulation time_run="20" xmlns="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0 model.xsd">
 	<network>
 		<nodes>
 			<server name="s1" address="1"/>
-			<end name="e1" address="2" mps="5" randomTalk="true" />
+			<end name="e1" address="2" />
 			<network name="n1"/>
+			<network name="n2"/>
 		</nodes>
 		<links>
-			<link name="l1" node1="s1" node2="n1" capacity="5" toggle_probability="0.0" />
+			<link name="l1" node1="s1" node2="n2" capacity="5" toggle_probability="0.0" />
 			<link name="l2" node1="e1" node2="n1" capacity="10" toggle_probability="0.0" />
+			<link name="l3" node1="n1" node2="n2" capacity="30" toggle_probability="0.0" />
 		</links>
 	</network>
+	<events>
+		<event who="e1" when="0" where="s1" size="1" />
+		<event who="e1" when="5" where="s1" size="1" />
+	</events>
 </simulation>
