@@ -68,7 +68,7 @@ namespace NetTrafficSimulator
 				this.Link.Carry (p, this, this.Link.GetPartner (this));
 				sent++;
 			} else
-				throw new InvalidOperationException ("[Node " + Name + "] Link neni pripojen");
+				log.Warn ("[Node " + Name + "] Link neni pripojen");
 		}
 
 		//results

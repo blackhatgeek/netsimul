@@ -253,12 +253,12 @@ namespace NetTrafficSimulator
 			//Assert.AreEqual (0, l.PacketsDropped);
 		}
 
-		[Test()]
+		/*[Test()]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void EndNodeSend0(){
 			new EndNode ("EN", 0).ProcessEvent (
 				new MFF_NPRG031.State(MFF_NPRG031.State.state.SEND,new Packet(0,10,10)), new MFF_NPRG031.Model (1));
-		}
+		}*/ //pokud k node nevede link, pouze napise varovani
 
 		[Test()]
 		public void EndNodeSend1(){
@@ -360,13 +360,15 @@ namespace NetTrafficSimulator
 			log.Debug ("** NetworkNodeProcessEvent: get first event");
 			e = m.K.First ();//invalid timer
 			if (e != null) {
-				Assert.AreEqual (MFF_NPRG031.State.state.INVALID_TIMER, e.what.Actual, "INVALID TIMER");
+				/*	Assert.AreEqual (MFF_NPRG031.State.state.INVALID_TIMER, e.what.Actual, "INVALID TIMER");
 			} else
 				Assert.True (false,"Timer event");
-			e = m.K.First ();
-			Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
-			Assert.AreEqual (l, e.who);
-			l.ProcessEvent (e.what, m);
+			e = m.K.First ();*/
+				Assert.AreEqual (MFF_NPRG031.State.state.SEND, e.what.Actual);
+				Assert.AreEqual (l, e.who);
+				l.ProcessEvent (e.what, m);
+			} else
+				Assert.True (false, "event");
 			e = m.K.First ();
 			if (e != null) {
 				Assert.AreEqual (MFF_NPRG031.State.state.RECEIVE, e.what.Actual);

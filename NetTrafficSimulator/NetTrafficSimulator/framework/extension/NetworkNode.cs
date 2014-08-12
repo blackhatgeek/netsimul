@@ -313,9 +313,18 @@ namespace NetTrafficSimulator
  		 * Send response - our routing table
 		 */
 		private void sendResponse(MFF_NPRG031.Model model){
+			if (model == null)
+				throw new ArgumentNullException ("Model null ( net. node: " + Name + ")");
+			if (interfaces == null)
+				throw new ArgumentNullException ("Interfaces null");
+			if (rt == null)
+				throw new ArgumentNullException ("RT null");
 			foreach (Link l in interfaces) {
+				if (l != null) {
 					log.Debug ("(" + Name + ") Sending response to " + l.GetPartner (this).Name + " via " + l.Name);
-					scheduleForward (new Response (l,rt), l, model);
+					scheduleForward (new Response (l, rt), l, model);
+				} else
+					throw new Exception ("Link null in send response");
 			}
 		}
 
