@@ -404,7 +404,7 @@ namespace NetTrafficSimulator
 		public int GetNodeNum(string node){
 			int num;
 			if (!n_name.TryGetValue (node, out num))
-				throw new ArgumentException ("Node not found");
+				throw new ArgumentException ("Node not found "+node);
 			else
 				return num;
 		}

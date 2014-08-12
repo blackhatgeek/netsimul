@@ -119,10 +119,10 @@ namespace NetTrafficSimulator
 				XmlNodeList nl = events.ChildNodes;
 
 				if ((nl != null) && (ttr != null)) {
-					log.Debug ("Passed if");
+					log.Debug ("Have <simulation>, have <events>");
 					sm = new SimulationModel (nl.Count);
 
-					log.Debug ("Enter for");
+					log.Debug ("Parsing events");
 					for (int i=0; i<nl.Count; i++) {
 						XmlElement ev = nl.Item (i) as XmlElement;
 						if (!ev.Name.Equals ("event")) {
@@ -134,10 +134,17 @@ namespace NetTrafficSimulator
 						string loc = ev.Attributes.GetNamedItem ("where").Value;
 						decimal size = Convert.ToDecimal (ev.Attributes.GetNamedItem ("size").Value);
 						//verifikace: who je EN, loc je SN, velikost je nezap.
-						if (en.ContainsKey (who) && sn.Contains (loc) && (size >= 0.0m))
-							sm.SetEvent (who, loc, when, size);
+						if (en.ContainsKey (who)) {
+							if (sn.Contains (loc)) {
+								if (size >= 0.0m)
+									sm.SetEvent (who, loc, when, size);
+								else
+									throw new ArgumentOutOfRangeException ("Error parsing event: size ("+size+") negative");
+							} else throw new ArgumentOutOfRangeException("Error parsing event: where ("+loc+") not ServerNode");
+						}
 						else
-							throw new ArgumentOutOfRangeException ("Wrong packet size (" + size + ") - must not be negative OR who (" + who + ") not EndNode OR loc (" + loc + ") not ServerNode");
+							throw new ArgumentOutOfRangeException ("Error parsing event: who (" + who + ") not EndNode");
+						//Wrong packet size (" + size + ") - must not be negative OR where (" + loc + ") not ServerNode
 					}
 				} else 
 					throw new Exception ("Model corrupt");

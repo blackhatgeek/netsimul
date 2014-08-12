@@ -22,6 +22,12 @@ namespace NetTrafficSimulator
 				Storer s = new Storer (output);
 				s.StoreResultModel (rm);
 				log.Info("Leaving XMLIO");
+			}catch(ArgumentOutOfRangeException e){
+				log.Error ("Attribute value out of range: "+e.Message);
+				log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
+			}catch(ArgumentException e){
+				log.Error ("Error: " + e.Message);
+				log.Debug ("EXCEPTION: " + e.Message + "\n" + e.StackTrace);
 			}catch(IOException e ){
 				log.Error (e.Message);
 				log.Debug(e.StackTrace);
