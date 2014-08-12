@@ -46,7 +46,7 @@ namespace MFF_NPRG031
 			return first;
 		}
 		/**
-		 * Schedules an event by adding it to calendar
+		 * Schedules an event by adding it to calendar if the event is to happen within simulation time
 		 * @param e Event to schedule
 		 */ 
 		public void Schedule(Event e)

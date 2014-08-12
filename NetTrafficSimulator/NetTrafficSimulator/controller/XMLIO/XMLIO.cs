@@ -5,9 +5,16 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	 * Given input and output XML files, loads and runs a simulation
+	 */ 
 	public class XMLIO
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(XMLIO));
+
+		/**
+		 * Set up Loader, get NetworkModel and SimulationModel, pass them to SimulationController, run SimulationController, get ResultModel, set up Storer and store ResiultModel
+		 */
 		public static void Simulate(string input,string output){
 			log.Info("Entered XMLIO("+input+","+output+")");
 			try{

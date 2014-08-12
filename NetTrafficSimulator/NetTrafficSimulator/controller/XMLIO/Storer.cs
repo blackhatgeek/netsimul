@@ -14,6 +14,10 @@ namespace NetTrafficSimulator
 		static readonly ILog log=LogManager.GetLogger(typeof(Storer));
 		XmlDocument xs;
 		XmlTextWriter xw;
+
+		/**
+		 * Create new storer - prepare to write to file and create necessary objects
+		 */ 
 		public Storer(string fname){
 			XmlWriterSettings xws = new XmlWriterSettings ();
 			//xws.WriteEndDocumentOnClose = true;
@@ -36,6 +40,10 @@ namespace NetTrafficSimulator
 			//xs.Schemas.Add ("http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0", "result.xsd");
 		}
 
+		/**
+		 * Save provided ResultModel into output file
+		 * @param rm Results of simulation
+		 */
 		public void StoreResultModel(ResultModel rm){
 			if (rm != null) {
 				XmlElement simulation = xs.CreateElement ("simulation");

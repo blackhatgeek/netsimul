@@ -5,8 +5,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	 * Server node is receiver of data sent by EndNode
-	 * When data arrives it sends back a response packet of same size
+	 * Server node is receiver of data sent by EndNode. When data arrives it sends back a response packet of same size
 	 */
 	public class ServerNode:EndpointNode
 	{

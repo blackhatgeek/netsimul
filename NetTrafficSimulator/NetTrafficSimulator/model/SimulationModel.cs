@@ -20,6 +20,9 @@ namespace NetTrafficSimulator
 
 		private HashSet<string> randomTalkers;
 
+		/**
+		 * Information about a simulation event
+		 */
 		public struct Event{
 			public Event(string node1,string node2,int when,decimal size){
 				this.node1=node1;
@@ -33,6 +36,9 @@ namespace NetTrafficSimulator
 		}
 		private Event[] evs;
 
+		/**
+		 * Create new simulation model with defined events count
+		 */
 		public SimulationModel (int events)
 		{
 			maxHop = DEFAULT_MAX_HOP;
@@ -61,6 +67,10 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * MaxHop for packet
+		 * @throws ArgumentException - Max hop must be positive - on set
+		 */
 		public int MaxHop{
 			get{
 				return maxHop;
@@ -73,6 +83,14 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * Set event in simulation: EndNode sends to ServerNode
+		 * @param node1 node
+		 * @param node2 node
+		 * @param when time
+		 * @param size packet size
+		 * @throws ArgumentException event counter overflow
+		 */
 		public void SetEvent(string node1,string node2,int when,decimal size){
 			if (eventCount < events) {
 				evs [eventCount] = new Event (node1, node2, when, size);
@@ -80,14 +98,27 @@ namespace NetTrafficSimulator
 			}else throw new ArgumentException("Event counter overflow");
 		}
 
+		/**
+		 * Returns array of scheduled events
+		 * @return events scheduled
+		 */
 		public Event[] GetEvents(){
 			return evs;
 		}
 
+		/**
+		 * Mark node as random talker - no verifications are done here
+		 * @param nodeName node name
+		 */
 		public void SetRandomTalker(string nodeName){
 			randomTalkers.Add (nodeName);
 		}
 
+		/**
+		 * Is node with the name provided marked as random talker?
+		 * @param node node name
+		 * @return node is marked as random talker
+		 */
 		public bool IsRandomTalker(string node){
 			return randomTalkers.Contains (node);
 		}

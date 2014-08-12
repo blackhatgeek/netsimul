@@ -225,6 +225,9 @@ namespace NetTrafficSimulator
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetConnectionCount(" + node + ")] "+ILLEGAL_PARAMETER);
 		}
 
+		/**
+		 * Amount of servers in model
+		 */
 		public int ServerNodeCount{
 			get{
 				return SNCount;
@@ -381,6 +384,13 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * <p>Notes a name for a node</p>
+		 * <p>Here we don't care if the node is namable or not</p>
+		 * @param node node number
+		 * @param name node name
+		 * @throws ArgumentOutOfRangeException node number out of range
+		 */
 		public void SetNodeName(int node,string name){
 			if ((node >= 0) && (node < node_count)) {
 				if (n_name.ContainsKey (name))
@@ -391,6 +401,12 @@ namespace NetTrafficSimulator
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetNodeName(" + node + "," + name + ")] " + ILLEGAL_PARAMETER);
 		}
 
+		/**
+		 * For given node number return node name
+		 * @param node node number
+		 * @return node name
+		 * @throws ArgumentException node not found
+		 */
 		public string GetNodeName(int node){
 			foreach (string key in n_name.Keys) {
 				int num=-255;
@@ -401,6 +417,12 @@ namespace NetTrafficSimulator
 			throw new ArgumentException ("Not found");
 		}
 
+		/**
+		 * For given node name get node number
+		 * @param node node name
+		 * @return node number
+		 * @throws ArgumentException node not found
+		 */
 		public int GetNodeNum(string node){
 			int num;
 			if (!n_name.TryGetValue (node, out num))
@@ -409,6 +431,12 @@ namespace NetTrafficSimulator
 				return num;
 		}
 
+		/**
+		 * <p>Set network address for given node number. Here we care if node is addressable or not</p>
+		 * @param node node number
+		 * @param addr new network address for node
+		 * @throws ArgumentOutOfRangeException invalid node number, negative address, node not EndNode not ServerNode
+		 */
 		public void SetNodeAddr(int node,int addr){
 			if ((node >= 0) && (node < node_count)&&(addr>=0)&&((types[node]==END_NODE)||(types[node]==SERVER_NODE)))
 				this.addr[node]=addr;
@@ -416,6 +444,12 @@ namespace NetTrafficSimulator
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetNodeAddr(" + node + "," + addr + ")] " + ILLEGAL_PARAMETER);
 		}
 
+		/**
+		 * Get network address for node number
+		 * @param node node number
+		 * @return network address of the node
+		 * @throws ArgumentOutOfRangeException invalid node number or type of node is not END NODE or SERVER NODE
+		 */
 		public int GetNodeAddr(int node){
 			if ((node >= 0) && (node < node_count)&&((types[node]==END_NODE)||(types[node]==SERVER_NODE)))
 				return this.addr [node];
@@ -423,10 +457,22 @@ namespace NetTrafficSimulator
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetNodeAddr(" + node+")] " + ILLEGAL_PARAMETER);
 		}
 
+		/**
+		 * Do we have a node with name provided in our model
+		 * @param name node name
+		 * @return exists node with name given in the model
+		 */
 		public bool HaveNode(string name){
 			return this.n_name.ContainsKey (name);
 		}
 
+		/**
+		 * Set name for link
+		 * @param x a node number of a node connected to the link
+		 * @param y a node number of a node connected to the link
+		 * @param name new node name
+		 * @throws ArgumentException invalid node number or no connection between x and y
+		 */
 		public void SetLinkName(int x,int y,string name){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&links[x,y].capacity!=NO_CONNECTION) 
 				links [x, y].name = name;
@@ -434,15 +480,25 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("[NetworkModel.SetLinkName(" + x + "," + y + "," + name + ")] " + ILLEGAL_PARAMETER);
 		}
 
+		/**
+		 * For given node numbers get the name of link between them
+		 * @param x a node number of a node connected to the link
+		 * @param y a node number of a node connected to the link
+		 * @return node name
+		 * @throws ArgumentException invalid node number or no connection between x and y
+		 */
 		public string GetLinkName(int x,int y){
-			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&links[x,y].capacity!=NO_CONNECTION)
 				return links [x, y].name;
 			else 
 				throw new ArgumentException ("[NetworkModel.GetLinkName(" + x + "," + y + ")] " + ILLEGAL_PARAMETER);
 		}
 
 		/**
-		 * Sets max packet size for EndNode
+		 * Sets max packet size for EndNode when using random talker communication
+		 * @param n end node name
+		 * @param mps max packet size
+		 * @throws ArgumentException mps negative, node name not found, node not END_NODE
 		 */
 		public void SetEndNodeMaxPacketSize(string n,int mps){
 			int node;
@@ -461,6 +517,12 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("[NetworkModel.SetEndNodeMaxPacketSize(" + n + "," + mps + ")] " + ILLEGAL_PARAMETER);
 		}
 
+		/**
+		 * Gets max packet size for EndNode when using random talker communication
+		 * @param n end node name 
+		 * @return max packet size for an end node
+		 * @throws ArgumentException no EndNode with such name
+		 */
 		public int GetEndNodeMaxPacketSize(string n){
 			if (this.en_mps.ContainsKey (n)) {
 				int mps;
@@ -480,6 +542,12 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * Return toggle probability of a link between two nodes
+		 * @param x a node connected to the link
+		 * @param y a node connected to the link
+		 * @return link toggle probability of the link
+		 */
 		public decimal GetLinkToggleProbability(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
 				return links[x,y].ToggleProb;

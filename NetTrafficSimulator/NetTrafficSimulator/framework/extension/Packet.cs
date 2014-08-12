@@ -52,12 +52,18 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * Hop counter value - through how many NetworkNodes did the packet travelled
+		 */
 		public int Hop{
 			get{
 				return this.hopcounter;
 			}
 		}
 
+		/**
+		 * Increment hop counter value by one
+		 */
 		public void HopInc(){
 			this.hopcounter++;
 		}

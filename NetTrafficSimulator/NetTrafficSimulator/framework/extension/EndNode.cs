@@ -56,10 +56,8 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Attept to post a new packet to the link, if such exist
-		 * @param destination where to send packet
-		 * @param size what size of data to send
-		 * @throws InvalidOperationException if link is not connected
+		 * Attept to post a new packet to the link if such exist, if not warning is logged
+		 * @param p packet to send
 		 */
 		private void send(Packet p){
 			//must send to existing node!!
@@ -102,6 +100,9 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * Average size of a packet sent
+		 */
 		public decimal AveragePacketSize{
 			get{
 				if (sent!=0)

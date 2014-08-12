@@ -3,13 +3,18 @@ using System;
 namespace NetTrafficSimulator
 {
 	/**
-	 * Abstract EndpointNode. EndpointNode is node where packets are generated or where packets are to flow
+	 * Abstract EndpointNode. EndpointNode is node where packets are generated or where packets are to flow. This class combines common properties of EndNode and ServerNode
 	 */
 	public abstract class EndpointNode:Node,IAddressable
 	{
 		private readonly int address;
 		private Link link;
 		protected int malreceived,time_wait;
+		/**
+		 * Create new EndpointNode with given name and address
+		 * @param name EndpointNode name
+		 * @param address Network address of EndpointNode
+		 */ 
 		public EndpointNode(String name,int address):base(name){
 			this.address=address;
 			this.link = null;
@@ -24,7 +29,7 @@ namespace NetTrafficSimulator
 			}
 		}
 
-		/*
+		/**
 		 * Link connecting the EndpointNode to the rest of the network
 		 */
 		public Link Link{

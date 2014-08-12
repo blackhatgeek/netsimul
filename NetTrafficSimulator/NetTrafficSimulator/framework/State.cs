@@ -26,9 +26,17 @@ namespace MFF_NPRG031
 			 */
 			TOGGLE,
 			/**
-			 * Trigger timer
+			 * Network node send response
 			 */
-			UPDATE_TIMER,INVALID_TIMER,FLUSH_TIMER
+			UPDATE_TIMER,
+			/**
+			 * Mark record in routing table as unreachable
+			 */
+			INVALID_TIMER,
+			/**
+			 * Remove record from routing table
+			 */
+			FLUSH_TIMER
 		}
 
 		private state actual_state;

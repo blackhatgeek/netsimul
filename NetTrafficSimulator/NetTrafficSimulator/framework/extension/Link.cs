@@ -28,6 +28,7 @@ namespace NetTrafficSimulator
 			 * @param p Packet to deliver
 			 * @param source Packet sender
 			 * @param target Packet receiver
+			 * @param time Time accepted packet
 			 */
 			public DataEnvelope(Packet p,Node source,Node target,int time):base(p.Source,p.Destination,p.Size){
 				if((source==null)||(target==null))
@@ -81,12 +82,18 @@ namespace NetTrafficSimulator
 				return size_remainder > 0;
 			}
 
+			/**
+			 * Steps needed to deliver the DataEnveloped
+			 */
 			public int Steps{
 				get{
 					return steps;
 				}
 			}
 
+			/**
+			 * Next DataEnvelope in queue
+			 */
 			public DataEnvelope Next{
 				set{
 					if(value!=this)
@@ -97,6 +104,9 @@ namespace NetTrafficSimulator
 				}
 			}
 
+			/**
+			 * When the DataEnvelope was carried by Link
+			 */
 			public int TimeAccepted{
 				get{
 					return timeAccepted;
@@ -129,6 +139,7 @@ namespace NetTrafficSimulator
 		 * @param capacity	how many data a link can deliver per time unit
 		 * @param a			node at one end
 		 * @param b			node at other end
+		 * @param model		framework model
 		 * @throws	ArgumentOutOfRangeException Negative link capacity
 		 * @throws	ArgumentNullException any node null
 		 */
@@ -447,16 +458,25 @@ namespace NetTrafficSimulator
 			return name;
 		}
 
+		/**
+		 * Is this link connected to particular node
+		 */
 		public bool ConnectedTo(Node n){
 			return (a == n) || (b == n);
 		}
 
+		/**
+		 * One of connected nodes
+		 */
 		public Node A{
 			get{
 				return a;
 			}
 		}
 
+		/**
+		 * One of connected nodes
+		 */
 		public Node B{
 			get{
 				return b;

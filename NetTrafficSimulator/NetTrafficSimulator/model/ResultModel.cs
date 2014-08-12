@@ -596,6 +596,12 @@ namespace NetTrafficSimulator
 			return getENR(name).AvgPSize;
 		}
 
+		/**
+		 * For ServerNode name try to retrieve ServerNodeResult
+		 * @param name ServerNode name
+		 * @return ServerNodeResult
+		 * @throws ArgumentException Server node not found
+		 */
 		private ServerNodeResult getSNR(string name){
 			ServerNodeResult snr;
 			if (serverNodeNames.TryGetValue (name, out snr))
@@ -607,7 +613,7 @@ namespace NetTrafficSimulator
 		 * If there exists a ServerNode with the name provided, return it's network address
 		 * @param name ServerNode name
 		 * @return ServerNode network address
-		 * @throws ArgumentException node not found
+		 * @throws ArgumentException server node not found
 		 */
 		public int GetServerNodeAddress(string name){
 			return getSNR (name).Address;
@@ -658,6 +664,12 @@ namespace NetTrafficSimulator
 			return getSNR(name).AvgWaitTime;
 		}
 
+		/**
+		 * If there exists a NetworkNode with the name provided, return it's network node result
+		 * @param name NetworkNode name
+		 * @return NetworkNodeResult
+		 * @throws ArgumentException network node not found
+		 */
 		private NetworkNodeResult getNNR(string name){
 			NetworkNodeResult nnr;
 			if (networkNodeNames.TryGetValue (name, out nnr))
@@ -717,22 +729,42 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException Network node not found
 		 */
 		public decimal GetNetworkNodePercentagePacketsDropped(string name){
-			NetworkNodeResult nnr;
-			if (networkNodeNames.TryGetValue (name, out nnr))
-				return nnr.PercPacketsDropped;
-			else
-				throw new ArgumentException (NN+NF);
+			return getNNR (name).PercPacketsDropped;
 		}
+		/**
+		 * If there exists a NetworkNode with the name provided return the amount of routing packets sent
+		 * @param name NetworkNode name
+		 * @return amount of routing packets sent
+		 * @throws ArgumentException Network node not found
+		 */
 		public int GetNetworkNodeRoutingPacketsSent(string name){
 			return getNNR(name).RouteSent;
 		}
+		/**
+		 * If there exists a NetworkNode with the name provided return the amount of routing packets received
+		 * @param name NetworkNode name
+		 * @return amount of routing packets received
+		 * @throws ArgumentException Network node not found
+		 */
 		public int GetNetworkNodeRoutingPacketsReceived(string name){
 			return getNNR (name).RouteReceived;
 		}
+		/**
+		 * If there exists a NetworkNode with the name provided return the percentage of routing packets relative to total packets processed by the network node
+		 * @param name NetworkNode name
+		 * @return percentage of routing packets processed
+		 * @throws ArgumentExcepion Network node not found
+		 */
 		public decimal GetNetworkNodePercentageRoutingPackets(string name){
 			return getNNR (name).PercentageRoutePackets;
 		}
 
+		/**
+		 * If there exists a Link with the name provided retrieve it's link result
+		 * @param name link name
+		 * @return LinkResult
+		 * @throws ArgumentException Link not found
+		 */
 		private LinkResult getLR(string name){
 			LinkResult lr;
 			if (linkNames.TryGetValue (name, out lr))
@@ -777,27 +809,80 @@ namespace NetTrafficSimulator
 			return getLR(name).IdleTime;
 		}
 
+		/**
+		 * If there exists a link with the name provided return the amount of data carried by the link
+		 * @param name link name
+		 * @return amount of data carried by the link
+		 * @throws ArgumentException link not found
+		 */
 		public decimal GetLinkDataCarried(string name){
 			return getLR (name).DataCarried;
 		}
+
+		/**
+		 * If there exists a link with the name provided return the average amount of data carried by link per one unit of simulation time
+		 * @param name Link name
+		 * @return average amount of data carried per unit of time
+		 * @throws ArgumentException link not found
+		 */
 		public decimal GetLinkDataPerTic(string name){
 			return getLR (name).DataPerTic;
 		}
+
+		/**
+		 * If there exists a link with the name provided return link usage as percentage of data carried to link capacity
+		 * @param name link name
+		 * @return link usage
+		 * @throws ArgumentException link not found
+		 */ 
 		public decimal GetLinkUsage(string name){
 			return getLR (name).Usage;
 		}
+
+		/**
+		 * If there exists a link with the name provided return the amount of data sent by link
+		 * @param name link name
+		 * @return amount of data sent
+		 * @throws ArgumentException link not found
+		 */
 		public decimal GetLinkDataSent(string name){
 			return getLR (name).DataSent;
 		}
+
+		/**
+		 * If there exists a link with the name provided return the amount of data lost by link
+		 * @param name link name
+		 * @return amount of data lost by link
+		 * @throws ArgumentException link not found
+		 */
 		public decimal GetLinkDataLost(string name){
 			return getLR (name).DataLost;
 		}
+
+		/**
+		 * If there exists a link with the name provided return the amount of data lost by the link as percentage to the amount of data processed
+		 * @param name link name
+		 * @return percentage of data lost
+		 * @throws ArgumentException link not found
+		 */
 		public decimal GetLinkPercentageDataLost(string name){
 			return getLR (name).PercentageDataLost;
 		}
+		/**
+		 * If there exists a link with the name provided return the amount of data delivered by the link as percentage to the amount of data processed
+		 * @param name link name
+		 * @return percentage of data delivered
+		 * @throws ArgumentException link not found
+		 */
 		public decimal GetLinkPercentageDataDelivered(string name){
 			return getLR (name).PercentageDataDelivered;
 		}
+		/**
+		 * If there exists a link with the name provided return the amount of data lost because link was not "Active" when carry was called as percentage to the amount of data processed
+		 * @param name link name
+		 * @return percentage of data lost because link was not active when received the data
+		 * @throws ArgumentException link not found
+		 */
 		public decimal GetLinkPercentageDataLostInCarry(string name){
 			return getLR (name).PercentageDataLostInCarry;
 		}

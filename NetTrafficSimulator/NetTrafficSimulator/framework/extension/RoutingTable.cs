@@ -5,12 +5,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	* Routing table
-	* List of addresses - destinations
-	* List of expiry times
-	* Allowing to get best route for given address in O(1)
-	* Allowing to remove remove expired records in O(n)
-	* Allowing to update record in 
+	* Routing table holds best routes for particular network address
 	*/
 	public class RoutingTable
 	{
@@ -20,7 +15,39 @@ namespace NetTrafficSimulator
 		readonly int flush_timer,expiry_timer,maxHop;
 		readonly MFF_NPRG031.Model model;
 		int activeRecs;
+	
+		/**
+		 * Create new RoutingTable
+		 * @param expiry expiry timer - after ET record is no longer send to surrounding nodes
+		 * @param flush flush timer - after FT record is removed from table
+		 * @param maxHop Maximum value of hop counter
+		 * @param m Framework model
+		 * @throws ArgumentNullException model null
+		 */
+		public RoutingTable(int flush,int expiry,int maxHop,MFF_NPRG031.Model m){
+			if (m == null)
+				throw new ArgumentNullException ("Model null");
+			this.expiry_timer = expiry;
 
+			this.flush_timer = flush;
+			if (flush <= expiry)
+				log.Warn ("Flush timer is supposed to be higher then expiry timer");
+
+			this.maxHop = maxHop;
+
+			this.records = new HashSet<Record> ();
+			this.bestRoute = new Dictionary<int, Record> ();
+			this.model = m;
+			this.activeRecs = 0;
+			this.model = m;
+		}
+
+		/**
+		 * For given network address return best link known to deliver packet
+		 * @param addr Network address
+		 * @return best direction or null when route is expired or no route is available
+		 * @throws ArgumentNullException record retrieved from routing table is null
+		 */
 		public Link GetLinkForAddr(int addr){
 			Record r;
 			if (bestRoute.TryGetValue (addr, out r)) {
@@ -40,7 +67,11 @@ namespace NetTrafficSimulator
 				return null;
 			}
 		}
-
+		/**
+		 * Enters or updates a record in the routing table
+		 * @param r Record to enter/update
+		 * @throws ArgumentNullException record null, model null, bestRoute (actual routing table) null 
+		 */
 		public void SetRecord(Record r){
 			if (r == null)
 				throw new ArgumentNullException ("Record null");
@@ -76,6 +107,11 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * Lists new record into Routing table and sets timers, if record is null warning is logged
+		 * @param r new Record
+		 * @throws ArgumentNullException framework model null
+		 */
 		private void setRecord(Record r){
 			//r.Expired = false;
 			if (model == null)
@@ -93,56 +129,69 @@ namespace NetTrafficSimulator
 				log.Warn ("Record null - not set");
 		}
 
+		/**
+		 * Create new Record based on values provided and invokes SetRecord on it
+		 * @param addr network address of new route
+		 * @param l link to use
+		 * @param metric hop count metric
+		 */
 		public void SetRecord(int addr,Link l, int metric){
 			log.Debug ("Set record");
 			SetRecord (new Record (addr, l, metric, maxHop, this));
 		}
 
+		/**
+		 * Removes given record from the routing table
+		 * @param r Record to remove
+		 */
 		public void DeleteRecord(Record r){
 			Record test;
 			if (bestRoute.TryGetValue (r.Address, out test)) {
-				if (test == r)
+				if (test == r) {
+					if (!test.Expired)
+						activeRecs--;
 					bestRoute.Remove (r.Address);
+				}
 			}
 		}
 
-		public RoutingTable(int flush,int expiry,int maxHop,MFF_NPRG031.Model m){
-			if (m == null)
-				throw new ArgumentNullException ("Model null");
-			this.expiry_timer = expiry;
-
-			this.flush_timer = flush;
-
-			this.maxHop = maxHop;
-
-			this.records = new HashSet<Record> ();
-			this.bestRoute = new Dictionary<int, Record> ();
-			this.model = m;
-			this.activeRecs = 0;
-			this.model = m;
-		}
-
+		/**
+		 * Get records in a HashSet
+		 * @return records
+		 */
 		public HashSet<Record> GetRecords(){
 			return records;
 		}
 
+		/**
+		 * Get amount of records in routing table
+		 */
 		public int RecordsCount{
 			get{
 				return bestRoute.Count;
 			}
 		}
 
+		/**
+		 * Get amount of active records in the routing table
+		 */
 		public int ActiveRecs{
 			get{
 				return activeRecs;
 			}
 		}
 
+		/**
+		 * Decrease amount of active records in the routing table
+		 */
 		public void DecActiveRecs(){
 			activeRecs--;
 		}
 	}
 
+	/**
+	 * Record in the routing table
+	 */
 	public class Record:MFF_NPRG031.Process{
 		int address;
 		Link route;
@@ -151,21 +200,35 @@ namespace NetTrafficSimulator
 		bool expired;
 		RoutingTable rt;
 
+		/**
+		 * Create new record
+		 * @param address network address of the destination
+		 * @param route direction to the destination
+		 * @param metric metric
+		 * @param maxHop if updated metric is to be higher than maxHop it will be the maxHop value
+		 * @param rt routing table the record is located in
+		 */
 		public Record(int address,Link route,int metric,int maxHop,RoutingTable rt){
 			this.address = address;
 			this.route = route;
-			this.metric = metric;
 			this.expired = false;
 			this.maxHop = maxHop;
+		 	this.Metric=metric;
 			this.rt = rt;
 		}
 
+		/**
+		 * Network address of the destination
+		 */
 		public int Address{
 			get{
 				return address;
 			}
 		}
 
+		/**
+		 * Direction to the destination
+		 */
 		public Link Route{
 			get{
 				return route;
@@ -174,6 +237,9 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * Metric of the route
+		 */
 		public int Metric{
 			get{
 				return metric;
@@ -186,12 +252,18 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * If record is expired
+		 */
 		public bool Expired{
 			get{
 				return this.expired;
 			}
 		}
 
+		/**
+		 * Set record as expired (it will decrease activeRecord counter in the routing table
+		 */
 		private void setExpired(){
 			this.expired = false;
 			rt.DecActiveRecs ();

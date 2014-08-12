@@ -8,7 +8,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	 * XMLIO Loader loads data from XML file and creates appropriate models
+	 * XMLIO Loader loads data from XML file, does necessary verifications and creates appropriate models
 	 */
 	public class Loader
 	{
@@ -17,18 +17,19 @@ namespace NetTrafficSimulator
 		private HashSet<string> sn;
 		private Dictionary<string,bool> en;
 
+		/**
+		 * <p>Initialize Loader by opening model file, validating input model file and creating necessary objects</p> 
+		 */ 
 		public Loader(string fname){
 			//Set-up validator
 			XmlReaderSettings settings = new XmlReaderSettings ();
-			if (System.IO.File.Exists ("model.xsd"))
-				settings.Schemas.Add ("http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0", "model.xsd");
-			else {
 				//Hardcoded model schema
-				const string schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:vc=\"http://www.w3.org/2007/XMLSchema-versioning\" elementFormDefault=\"qualified\" attributeFormDefault=\"unqualified\" vc:minVersion=\"1.1\"\ntargetNamespace=\"http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0\" xmlns:ns=\"http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0\">\n\t<xs:element name=\"simulation\">\n\t\t<xs:complexType>\n\t\t\t<xs:sequence>\n\t\t\t\t<xs:element name=\"network\">\n\t\t\t\t\t<xs:complexType>\n\t\t\t\t\t\t<xs:sequence>\n\t\t\t\t\t\t\t<xs:element name=\"nodes\" type=\"ns:tNode\" minOccurs=\"0\" maxOccurs=\"1\"/>\n\t\t\t\t\t\t\t<xs:element name=\"links\" type=\"ns:tLink\" minOccurs=\"0\" maxOccurs=\"1\"/>\n\t\t\t\t\t\t</xs:sequence>\n\t\t\t\t\t</xs:complexType>\n\t\t\t\t</xs:element>\n\t\t\t\t<xs:element name=\"events\" maxOccurs=\"1\" minOccurs=\"0\">\n\t\t\t\t\t<xs:complexType>\n\t\t\t\t\t\t<xs:choice>\n\t\t\t\t\t\t\t<xs:element name=\"event\" type=\"ns:tEvent\" minOccurs=\"1\" maxOccurs=\"unbounded\"/>\n\t\t\t\t\t\t</xs:choice>\n\t\t\t\t\t</xs:complexType>\n\t\t\t\t</xs:element>\n\t\t\t</xs:sequence>\n\t\t\t<xs:attribute name=\"time_run\" use=\"required\" type=\"xs:nonNegativeInteger\"/>\n\t\t\t<xs:attribute name=\"max_hop\" use=\"optional\" default=\"30\" type=\"xs:positiveInteger\"/>\n\t\t\t<xs:attribute name=\"version\" use=\"required\" type=\"xs:decimal\" fixed=\"0.03\"/>\n\t\t</xs:complexType>\n\t\t<xs:unique name=\"NodeName\">\n\t\t\t<xs:selector xpath=\"child::network/nodes\" />\n\t\t\t<xs:field xpath=\"./@name\" />\n\t\t</xs:unique>\n\t\t<xs:unique name=\"LinkName\">\n\t\t\t<xs:selector xpath=\"network/links/link\" />\n\t\t\t<xs:field xpath=\"./@name\" />\n\t\t</xs:unique>\n\t\t<xs:keyref name=\"LinkNode1\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"network/links/link\" />\n\t\t\t<xs:field xpath=\"./@node1\" />\n\t\t</xs:keyref>\n\t\t<xs:keyref name=\"LinkNode2\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"network/links/link\" />\n\t\t\t<xs:field xpath=\"./@node2\" />\n\t\t</xs:keyref>\n\t\t<xs:keyref name=\"EventWho\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"events/event\" />\n\t\t\t<xs:field xpath=\"./@who\" />\n\t\t</xs:keyref>\n\t\t<xs:keyref name=\"EventWhere\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"events/event\" />\n\t\t\t<xs:field xpath=\"./@where\" />\n\t\t</xs:keyref>\n\t</xs:element>\n\t<xs:complexType name=\"tNode\">\n\t\t<xs:choice minOccurs=\"0\" maxOccurs=\"unbounded\">\n\t\t\t<xs:element name=\"server\" type=\"ns:tEndpoint\" />\n\t\t\t<xs:element name=\"end\">\n\t\t\t\t<xs:complexType>\n\t\t\t\t\t<xs:complexContent>\n\t\t\t\t\t\t<xs:extension base=\"ns:tEndpoint\">\n\t\t\t\t\t\t\t<xs:attribute name=\"mps\" type=\"xs:nonNegativeInteger\" use=\"optional\" />\n\t\t\t\t\t\t\t<xs:attribute name=\"randomTalk\" type=\"xs:boolean\" use=\"optional\" default=\"false\" />\n\t\t\t\t\t\t</xs:extension>\n\t\t\t\t\t</xs:complexContent>\n\t\t\t\t</xs:complexType>\n\t\t\t</xs:element>\n\t\t\t<xs:element name=\"network\" type=\"ns:tNetwork\" />\n\t\t</xs:choice>\n\t</xs:complexType>\n\t<xs:complexType name=\"tEndpoint\">\n\t\t<xs:attribute name=\"name\" type=\"xs:token\" use=\"required\" />\n\t\t<xs:attribute name=\"address\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n\t</xs:complexType>\n\t<xs:complexType name=\"tNetwork\">\n\t\t<xs:attribute name=\"name\" type=\"xs:token\" use=\"required\" />\n\t</xs:complexType>\n\t<xs:complexType name=\"tLink\">\n\t\t<xs:choice minOccurs=\"0\" maxOccurs=\"unbounded\">\n\t\t\t<xs:element name=\"link\">\n\t\t\t\t<xs:complexType>\n\t\t\t\t\t<xs:attribute name=\"name\" type=\"xs:token\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"node1\" type=\"xs:token\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"node2\" type=\"xs:token\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"capacity\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"toggle_probability\" type=\"xs:decimal\" use=\"required\" />\n\t\t\t\t</xs:complexType>\n\t\t\t</xs:element>\n\t\t</xs:choice>\n\t</xs:complexType>\n\t<xs:complexType name=\"tEvent\">\n\t\t<xs:attribute name=\"who\" type=\"xs:token\" use=\"required\" />\n\t\t<xs:attribute name=\"when\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n\t\t<xs:attribute name=\"where\" type=\"xs:token\" use=\"required\" />\n\t\t<xs:attribute name=\"size\" type=\"xs:decimal\" use=\"optional\" default=\"1\" />\n\t</xs:complexType>\n</xs:schema>";
+				const string schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:vc=\"http://www.w3.org/2007/XMLSchema-versioning\" elementFormDefault=\"qualified\" " +
+					"attributeFormDefault=\"unqualified\" vc:minVersion=\"1.1\"\ntargetNamespace=\"http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0\" xmlns:ns=\"http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0\">\n\t" +
+					"<xs:element name=\"simulation\">\n\t\t<xs:complexType>\n\t\t\t<xs:sequence>\n\t\t\t\t<xs:element name=\"model\">\n\t\t\t\t\t<xs:complexType>\n\t\t\t\t\t\t<xs:sequence>\n\t\t\t\t\t\t\t<xs:element name=\"nodes\" type=\"ns:tNode\" minOccurs=\"0\" maxOccurs=\"1\"/>\n\t\t\t\t\t\t\t<xs:element name=\"links\" type=\"ns:tLink\" minOccurs=\"0\" maxOccurs=\"1\"/>\n\t\t\t\t\t\t</xs:sequence>\n\t\t\t\t\t</xs:complexType>\n\t\t\t\t</xs:element>\n\t\t\t\t<xs:element name=\"events\" maxOccurs=\"1\" minOccurs=\"0\">\n\t\t\t\t\t<xs:complexType>\n\t\t\t\t\t\t<xs:choice>\n\t\t\t\t\t\t\t<xs:element name=\"event\" type=\"ns:tEvent\" minOccurs=\"1\" maxOccurs=\"unbounded\"/>\n\t\t\t\t\t\t</xs:choice>\n\t\t\t\t\t</xs:complexType>\n\t\t\t\t</xs:element>\n\t\t\t</xs:sequence>\n\t\t\t<xs:attribute name=\"time_run\" use=\"required\" type=\"xs:nonNegativeInteger\"/>\n\t\t\t<xs:attribute name=\"max_hop\" use=\"optional\" default=\"30\" type=\"xs:positiveInteger\"/>\n\t\t\t<xs:attribute name=\"version\" use=\"required\" type=\"xs:decimal\" fixed=\"0.03\"/>\n\t\t</xs:complexType>\n\t\t<xs:unique name=\"NodeName\">\n\t\t\t<xs:selector xpath=\"child::network/nodes\" />\n\t\t\t<xs:field xpath=\"./@name\" />\n\t\t</xs:unique>\n\t\t<xs:unique name=\"LinkName\">\n\t\t\t<xs:selector xpath=\"network/links/link\" />\n\t\t\t<xs:field xpath=\"./@name\" />\n\t\t</xs:unique>\n\t\t<xs:keyref name=\"LinkNode1\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"network/links/link\" />\n\t\t\t<xs:field xpath=\"./@node1\" />\n\t\t</xs:keyref>\n\t\t<xs:keyref name=\"LinkNode2\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"network/links/link\" />\n\t\t\t<xs:field xpath=\"./@node2\" />\n\t\t</xs:keyref>\n\t\t<xs:keyref name=\"EventWho\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"events/event\" />\n\t\t\t<xs:field xpath=\"./@who\" />\n\t\t</xs:keyref>\n\t\t<xs:keyref name=\"EventWhere\" refer=\"ns:NodeName\">\n\t\t\t<xs:selector xpath=\"events/event\" />\n\t\t\t<xs:field xpath=\"./@where\" />\n\t\t</xs:keyref>\n\t</xs:element>\n\t<xs:complexType name=\"tNode\">\n\t\t<xs:choice minOccurs=\"0\" maxOccurs=\"unbounded\">\n\t\t\t<xs:element name=\"server\" type=\"ns:tEndpoint\" />\n\t\t\t<xs:element name=\"end\">\n\t\t\t\t<xs:complexType>\n\t\t\t\t\t<xs:complexContent>\n\t\t\t\t\t\t<xs:extension base=\"ns:tEndpoint\">\n\t\t\t\t\t\t\t<xs:attribute name=\"mps\" type=\"xs:nonNegativeInteger\" use=\"optional\" />\n\t\t\t\t\t\t\t<xs:attribute name=\"randomTalk\" type=\"xs:boolean\" use=\"optional\" default=\"false\" />\n\t\t\t\t\t\t</xs:extension>\n\t\t\t\t\t</xs:complexContent>\n\t\t\t\t</xs:complexType>\n\t\t\t</xs:element>\n\t\t\t<xs:element name=\"network\" type=\"ns:tNetwork\" />\n\t\t</xs:choice>\n\t</xs:complexType>\n\t<xs:complexType name=\"tEndpoint\">\n\t\t<xs:attribute name=\"name\" type=\"xs:token\" use=\"required\" />\n\t\t<xs:attribute name=\"address\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n\t</xs:complexType>\n\t<xs:complexType name=\"tNetwork\">\n\t\t<xs:attribute name=\"name\" type=\"xs:token\" use=\"required\" />\n\t</xs:complexType>\n\t<xs:complexType name=\"tLink\">\n\t\t<xs:choice minOccurs=\"0\" maxOccurs=\"unbounded\">\n\t\t\t<xs:element name=\"link\">\n\t\t\t\t<xs:complexType>\n\t\t\t\t\t<xs:attribute name=\"name\" type=\"xs:token\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"node1\" type=\"xs:token\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"node2\" type=\"xs:token\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"capacity\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n\t\t\t\t\t<xs:attribute name=\"toggle_probability\" type=\"xs:decimal\" use=\"required\" />\n\t\t\t\t</xs:complexType>\n\t\t\t</xs:element>\n\t\t</xs:choice>\n\t</xs:complexType>\n\t<xs:complexType name=\"tEvent\">\n\t\t<xs:attribute name=\"who\" type=\"xs:token\" use=\"required\" />\n\t\t<xs:attribute name=\"when\" type=\"xs:nonNegativeInteger\" use=\"required\" />\n\t\t<xs:attribute name=\"where\" type=\"xs:token\" use=\"required\" />\n\t\t<xs:attribute name=\"size\" type=\"xs:decimal\" use=\"optional\" default=\"1\" />\n\t</xs:complexType>\n</xs:schema>";
 				StringReader sr = new StringReader (schema);
 				XmlSchema model_schema = XmlSchema.Read (sr, modelSchemaValidationEventHandler);
 				settings.Schemas.Add (model_schema);
-			}
 			settings.ValidationType = ValidationType.Schema;
 			settings.ValidationEventHandler += new ValidationEventHandler (modelSchemaValidationEventHandler);
 
@@ -46,6 +47,11 @@ namespace NetTrafficSimulator
 			sn = new HashSet<string> ();
 		}
 
+		/**
+		 * Generate NetworkModel by parsing input model file and doing necessary validations
+		 * @return NetworkModel based on XML model
+		 * @throws ArgumentOutOfRangeException wrong toggle probability for link
+		 */ 
 		public NetworkModel LoadNM(){
 			XmlElement nodes = xd.GetElementsByTagName ("nodes").Item(0) as XmlElement;
 			NetworkModel nm = new NetworkModel (nodes.ChildNodes.Count);
@@ -105,6 +111,11 @@ namespace NetTrafficSimulator
 			return nm;
 		}
 
+		/**
+		 * Generate SimulationModel by parsing input file and doing necessary validations
+		 * @return SimulationModel based on XML model
+		 * @throws ArgumentOutOfRangeException event size negative, event where not ServerNode, wvent who not EndNode
+		 */
 		public SimulationModel LoadSM(){
 			log.Debug ("Enter LoadSM");
 			XmlElement ttr = xd.GetElementsByTagName ("simulation").Item(0) as XmlElement;
@@ -162,6 +173,12 @@ namespace NetTrafficSimulator
 			return sm;
 		}
 
+		/**
+		 * Logs warning and Error with exception in response to validation events
+		 * @param sender validation event sender
+		 * @param e validation event arguments
+		 * @throws Exception model validation failed
+		 */
 		private void modelSchemaValidationEventHandler(object sender, ValidationEventArgs e)
 		{
 			if (e.Severity == XmlSeverityType.Warning)

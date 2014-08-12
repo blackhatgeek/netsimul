@@ -5,7 +5,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	 * Simulation controller takes data from NetworkModel and SimulationModel and sets up simulation framework
+	 * Simulation controller takes data from NetworkModel and SimulationModel and sets up simulation framework, runs a simulation, collects results and populates ResultModel
 	 */
 	public class SimulationController
 	{
@@ -81,8 +81,7 @@ namespace NetTrafficSimulator
 			}
 		}
 		/**
-		 * For each node in Network Model create an appropriate Node instance and store it in nodes array. Nodes array and counters are initialized here.
-		 * Address generated here for nodes requiring an address.
+		 * For each node in Network Model create an appropriate Node instance and store it in nodes array. Nodes array and counters are initialized here. Address set here for nodes requiring an address.
 		 * @throws InvalidOperationException if found unidentified node type
 		 */
 		private void createEndpointNodes(){
@@ -132,7 +131,6 @@ namespace NetTrafficSimulator
 		/**
 		 * <p>For each pair of nodes where connection is marked, create a new Link instance and register the link to each node. New links are stored in LinkedList<Link> links 
 		 * initialized here (as their count is unknown)</p>
-		 * <p>Test is necessary to verify links are created properly according to the model</p>
 		 * @throws InvalidOperationException if any node is of unidentified type, the network model is null, the nodes array is null or length of the nodes array don't match node 
 		 * count in the network model
 		 */
@@ -174,7 +172,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Unless simulation model is null initialize Model with appropriate Time To Run
+		 * Unless simulation model is null initialize Framework Model with appropriate Time To Run
 		 * @throws InvalidOperationException if SimulationModel is null
 		 */
 		private void createModel(){
@@ -189,9 +187,9 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Create loaded events from SimulationModel
-		 * Create random SEND events for RandomTalkers (EndNodes)
-		 * Create random TOGGLE events for links
+		 * <p>Create loaded events from SimulationModel</p>
+		 * <p>Create random SEND events for RandomTalkers (EndNodes)</p>
+		 * <p>Create random TOGGLE events for links</p>
 		 */
 		private void createEvents(){
 			log.Debug ("Create events");

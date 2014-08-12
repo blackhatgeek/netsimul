@@ -4,8 +4,8 @@ using log4net;
 namespace MFF_NPRG031
 {
 	/**
-	 * Framework model holds Calendar and Time
-	 * The simulation is started using it's Simulate() method
+	 * <p>Framework model holds Calendar and Time</p>
+	 * <p>The simulation is started using it's Simulate() method</p>
 	 */
 	public class Model
 	{
@@ -34,7 +34,6 @@ namespace MFF_NPRG031
 		/**
 		 * Creates a model
 		 * @param time_to_run how long to run simulation
-		 * @param servers servers available for random choice
 		 */
 		public Model(int time_to_run)
 		{

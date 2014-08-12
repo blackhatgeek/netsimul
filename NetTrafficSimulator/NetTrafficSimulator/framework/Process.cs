@@ -29,7 +29,7 @@ namespace MFF_NPRG031
 		/**
 		 * Abstract method ProcessEvent for process to react on event hapened
 		 * @param state In what state the process is now
-		 * @param model Our simulation model
+		 * @param model Framework model
 		 */
 		abstract public void ProcessEvent(State state, Model model);
 	}

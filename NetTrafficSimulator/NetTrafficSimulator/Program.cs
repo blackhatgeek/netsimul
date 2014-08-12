@@ -10,6 +10,10 @@ namespace NetTrafficSimulator
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(MainClass));
 		const string USAGE="Usage:\nXML IO:\tapp xmlio <input> <output>\nGUI:\tno parameters";
+
+		/**
+		 * Loads logger configuration, based on console parameters starts GUI or XMLIO
+		 */
 		public static void Main (string[] args)
 		{
 			//nacist konfiguraci loggeru z XML pokud existuje
@@ -42,6 +46,9 @@ namespace NetTrafficSimulator
 			log.Info ("Leaving application");
 		}
 
+		/**
+		 * Used to convert string based implicit log configuration to stream
+		 */
 		private static Stream generateStreamFromString(string s)
 		{
 			MemoryStream stream = new MemoryStream();

@@ -26,6 +26,7 @@ namespace NetTrafficSimulator
 		 * @param name Human readable node name
 		 * @param interfaces_count How many ports does the network node have
 		 * @param max Max hop count for a packet
+		 * @param m Framework model
 		 * @throws ArgumentException on negative interfaces_count
 		 */
 		public NetworkNode (String name,int interfaces_count,int max,MFF_NPRG031.Model m):base(name)
@@ -256,16 +257,27 @@ namespace NetTrafficSimulator
 
 			}
 		}
+		/**
+		 * Amount of received routing messages
+		 */
 		public int RoutingMessagesReceived{
 			get{
 				return rm_received;
 			}
 		}
+
+		/**
+		 * Amount of sent routing messages
+		 */
 		public int RoutingMessagesSent{
 			get{
 				return rm_sent;
 			}
 		}
+
+		/**
+		 * What portion of processed packages took routing messages
+		 */
 		public decimal RoutingMessagesPercentageProcessed{
 			get{
 				if (processed != 0)
@@ -310,6 +322,9 @@ namespace NetTrafficSimulator
 
 		/**
  		 * Send response - our routing table
+ 		 * @param model Framework model
+ 		 * @throws ArgmentNullException Model null or interfaces null or RoutingTable null
+ 		 * @throws Exception Link null
 		 */
 		private void sendResponse(MFF_NPRG031.Model model){
 			if (model == null)
@@ -329,6 +344,8 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Send response to particular request
+		 * @param l Link to use
+		 * @param model Framwork model
 		 */
 		private void sendResponse(Link l,MFF_NPRG031.Model model){
 			log.Debug ("(" + Name + ") Sending response to " + l.GetPartner (this).Name + " via " + l.Name);
@@ -338,6 +355,8 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Check request's link is from our set
+		 * @param r RoutingMessage received
+		 * @return Sender of r is connected to this NetworkNode
 		 */
 		private bool verifyRM(RoutingMessage r){
 			bool ok = false;
@@ -352,6 +371,8 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Merge received routing table into our
+		 * @param received Received routing table
+		 * @param direction Who delivered the routing table
 		 */
 		private void updateRT(RoutingTable received,Link direction){
 			foreach (Record r in received.GetRecords()) {
