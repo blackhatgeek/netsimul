@@ -82,9 +82,9 @@ namespace NetTrafficSimulator
 		public decimal AverageWaitTime{
 			get{
 				if (process != 0)
-					return time_waited / process;
+					return (decimal)time_waited / process*1.0m;
 				else
-					return 0;
+					return 0.0m;
 			}
 		}
 

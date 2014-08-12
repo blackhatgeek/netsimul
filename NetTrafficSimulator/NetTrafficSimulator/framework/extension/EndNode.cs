@@ -96,17 +96,17 @@ namespace NetTrafficSimulator
 		public decimal AverageWaitTime{
 			get{
 				if (sent != 0)
-					return (decimal)time_wait / sent;
+					return (decimal)time_wait / sent*1.0m;
 				else
-					return 0;
+					return 0.0m;
 			}
 		}
 
 		public decimal AveragePacketSize{
 			get{
 				if (sent!=0)
-					return psizesum / sent;
-				return 0;
+					return (decimal)psizesum / sent*1.0m;
+				return 0.0m;
 			}
 		}
 	}

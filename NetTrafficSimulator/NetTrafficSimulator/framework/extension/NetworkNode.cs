@@ -219,7 +219,6 @@ namespace NetTrafficSimulator
 
 		//results
 		//TODO: vybrat nekolik nejcasteji vybranych interfacu
-		//TODO: delay je konstantni - bude-li random, tak prumerny
 		/**
 		 * Amount of packets processed
 		 */
@@ -253,7 +252,7 @@ namespace NetTrafficSimulator
 				if (processed != 0)
 					return (decimal)time_wait / processed;
 				else
-					return 0;
+					return 0.0m;
 
 			}
 		}
@@ -272,7 +271,7 @@ namespace NetTrafficSimulator
 				if (processed != 0)
 					return (rm_sent + rm_received) / processed*100.0m;
 				else
-					return 0;
+					return 0.0m;
 			}
 		}
 
@@ -294,7 +293,7 @@ namespace NetTrafficSimulator
 				if (i != 0)
 					return (decimal)dropped / i*100.0m;
 				else
-					return 0;
+					return 0.0m;
 			}
 		}
 
