@@ -102,6 +102,16 @@
     <Compile Include="framework\extension\RoutingTable.cs" />
     <Compile Include="framework\extension\RoutingTableTest.cs" />
     <Compile Include="framework\extension\RoutingMessage.cs" />
+    <Compile Include="view\EndNodeParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.EndNodeParamWidget.cs" />
+    <Compile Include="view\ServerNodeParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.ServerNodeParamWidget.cs" />
+    <Compile Include="view\NetworkNodeParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.NetworkNodeParamWidget.cs" />
+    <Compile Include="view\LinkParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.LinkParamWidget.cs" />
+    <Compile Include="view\EndNodeEventsWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.EndNodeEventsWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -109,5 +119,6 @@
     <Folder Include="controller\" />
     <Folder Include="framework\extension\" />
     <Folder Include="misc\" />
+    <Folder Include="view\" />
   </ItemGroup>
 </Project>
