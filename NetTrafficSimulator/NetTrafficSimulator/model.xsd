@@ -4,7 +4,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 	<xs:element name="simulation">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="network">
+				<xs:element name="model" maxOccurs="1" minOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="nodes" type="ns:tNode" minOccurs="0" maxOccurs="1"/>
