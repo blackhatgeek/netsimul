@@ -110,8 +110,4 @@
     <Folder Include="framework\extension\" />
     <Folder Include="misc\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="model.xsd" />
-    <None Include="result.xsd" />
-  </ItemGroup>
 </Project>

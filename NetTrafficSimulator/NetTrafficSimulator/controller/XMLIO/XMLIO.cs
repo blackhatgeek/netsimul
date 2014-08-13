@@ -13,7 +13,7 @@ namespace NetTrafficSimulator
 		private static readonly ILog log = LogManager.GetLogger(typeof(XMLIO));
 
 		/**
-		 * Set up Loader, get NetworkModel and SimulationModel, pass them to SimulationController, run SimulationController, get ResultModel, set up Storer and store ResiultModel
+		 * Set up Loader, get NetworkModel and SimulationModel, pass them to SimulationController, run SimulationController, get ResultModel, set up Storer and store ResultModel
 		 */
 		public static void Simulate(string input,string output){
 			log.Info("Entered XMLIO("+input+","+output+")");

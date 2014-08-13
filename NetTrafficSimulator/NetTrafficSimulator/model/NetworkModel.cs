@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using log4net;
 
 namespace NetTrafficSimulator
 {
@@ -10,6 +11,7 @@ namespace NetTrafficSimulator
 	 */
 	public class NetworkModel
 	{
+		static readonly ILog log = LogManager.GetLogger(typeof(NetworkModel));
 		//graf site
 		//uzly a spoje
 
@@ -186,7 +188,9 @@ namespace NetTrafficSimulator
 				if (links [x, y].capacity == NO_CONNECTION) {
 					link_count [x]++;
 					link_count [y]++;
-				}
+				} else
+					log.Warn ("Overwriting connection between " + GetNodeName (x) + " and " + GetNodeName (y));
+
 				links [x, y].capacity = capacity;
 				links [y, x].capacity = capacity;
 				links [x, y].ToggleProb = toggle_probability;
