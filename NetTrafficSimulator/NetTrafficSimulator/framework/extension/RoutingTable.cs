@@ -103,6 +103,10 @@ namespace NetTrafficSimulator
 			} else {
 				//new
 				setRecord (r);
+				if (r.Route == null)
+					throw new ArgumentNullException ("Link null");
+				if (r.Route.Name == null)
+					throw new ArgumentNullException ("Link name null");
 				log.Debug ("New record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry+" FLUSH "+flush);
 			}
 		}
@@ -114,12 +118,13 @@ namespace NetTrafficSimulator
 		 */
 		private void setRecord(Record r){
 			//r.Expired = false;
+			log.Debug ("setR");
 			if (model == null)
 				throw new ArgumentNullException ("Framework model null");
 			if (r != null) {
 				if (!((r.Route.A is EndpointNode) || (r.Route.B is EndpointNode))) {
-					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), model.Time + expiry_timer);
-					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), model.Time + flush_timer);
+					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), (model.Time + expiry_timer));
+					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), (model.Time + flush_timer));
 				}
 
 				bestRoute.Add (r.Address, r);
@@ -137,6 +142,10 @@ namespace NetTrafficSimulator
 		 */
 		public void SetRecord(int addr,Link l, int metric){
 			log.Debug ("Set record");
+			if (l == null)
+				throw new ArgumentNullException ("Link null");
+			if (l.Name == null)
+				throw new ArgumentNullException ("Link name null");
 			SetRecord (new Record (addr, l, metric, maxHop, this));
 		}
 

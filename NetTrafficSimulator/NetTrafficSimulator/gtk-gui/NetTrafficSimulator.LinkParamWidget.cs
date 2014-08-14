@@ -142,6 +142,7 @@ namespace NetTrafficSimulator
 			w12.Fill = false;
 			// Container child vbox6.Gtk.Box+BoxChild
 			this.hbox16 = new global::Gtk.HBox ();
+			this.hbox16.Name = "hbox16";
 			this.hbox16.Spacing = 6;
 			// Container child hbox16.Gtk.Box+BoxChild
 			this.label16 = new global::Gtk.Label ();

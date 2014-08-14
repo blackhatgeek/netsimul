@@ -80,6 +80,8 @@ namespace NetTrafficSimulator
 			if (interfaces_used < interfaces_count) {
 				if (l != null) {
 					if (l.ConnectedTo (this)) {
+						if (l.Name == null)
+							throw new ArgumentNullException ("Link name null");
 						interfaces [interfaces_used] = l;
 						interfaces_used++;
 						Node n = l.GetPartner (this);

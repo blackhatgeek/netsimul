@@ -147,7 +147,10 @@ namespace NetTrafficSimulator
 						Node y = nodes [j];
 						if (network_model.AreConnected (i, j)){
 							//TESTME links parsed correctly??
-							Link l = new Link (network_model.GetLinkName(i,j), network_model.LinkCapacity(i,j), x, y,framework_model);
+							string lname = network_model.GetLinkName (i, j);
+							if (lname == null)
+								throw new ArgumentNullException ("Link name null");	
+							Link l = new Link (lname, network_model.LinkCapacity(i,j), x, y,framework_model);
 							KeyValuePair<Link,decimal> link_rec = new KeyValuePair<Link,decimal> (l, network_model.GetLinkToggleProbability (i, j));
 							if (x is EndpointNode)
 								(x as EndpointNode).Link = l;

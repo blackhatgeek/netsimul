@@ -478,8 +478,13 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException invalid node number or no connection between x and y
 		 */
 		public void SetLinkName(int x,int y,string name){
-			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&links[x,y].capacity!=NO_CONNECTION) 
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count) && links [x, y].capacity != NO_CONNECTION) {
+				if (name == null)
+					throw new ArgumentNullException ("Link name null");
+				log.Debug ("Link: " + x + "<--->" + y + " new name:" + name);
 				links [x, y].name = name;
+				links [y, x].name = name;
+			}
 			else
 				throw new ArgumentException ("[NetworkModel.SetLinkName(" + x + "," + y + "," + name + ")] " + ILLEGAL_PARAMETER);
 		}
@@ -490,10 +495,14 @@ namespace NetTrafficSimulator
 		 * @param y a node number of a node connected to the link
 		 * @return node name
 		 * @throws ArgumentException invalid node number or no connection between x and y
-		 */
+		 */ 
 		public string GetLinkName(int x,int y){
-			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&links[x,y].capacity!=NO_CONNECTION)
-				return links [x, y].name;
+			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count) && links [x, y].capacity != NO_CONNECTION) {
+				if (links [x, y].name != null)
+					return links [x, y].name;
+				else
+					throw new ArgumentNullException ("Link name null: " + x + "<-->" + y);
+			}
 			else 
 				throw new ArgumentException ("[NetworkModel.GetLinkName(" + x + "," + y + ")] " + ILLEGAL_PARAMETER);
 		}

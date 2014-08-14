@@ -22,25 +22,19 @@ namespace NetTrafficSimulator
 			this.vbox9.Name = "vbox9";
 			this.vbox9.Spacing = 6;
 			// Container child vbox9.Gtk.Box+BoxChild
-			this.endnodeparamwidget3 = new global::NetTrafficSimulator.EndNodeParamWidget ();
-			this.endnodeparamwidget3.Events = ((global::Gdk.EventMask)(256));
-			this.endnodeparamwidget3.Name = "endnodeparamwidget3";
+			this.endnodeparamwidget3 = null;
 			this.vbox9.Add (this.endnodeparamwidget3);
 			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox9 [this.endnodeparamwidget3]));
 			w1.Position = 0;
 			w1.Expand = false;
 			w1.Fill = false;
 			// Container child vbox9.Gtk.Box+BoxChild
-			this.endnodeeventswidget2 = new global::NetTrafficSimulator.EndNodeEventsWidget ();
-			this.endnodeeventswidget2.Events = ((global::Gdk.EventMask)(256));
-			this.endnodeeventswidget2.Name = "endnodeeventswidget2";
+			this.endnodeeventswidget2 = null;
 			this.vbox9.Add (this.endnodeeventswidget2);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox9 [this.endnodeeventswidget2]));
 			w2.Position = 1;
 			// Container child vbox9.Gtk.Box+BoxChild
-			this.endnoderesultwidget3 = new global::NetTrafficSimulator.EndNodeResultWidget ();
-			this.endnoderesultwidget3.Events = ((global::Gdk.EventMask)(256));
-			this.endnoderesultwidget3.Name = "endnoderesultwidget3";
+			this.endnoderesultwidget3 = null;
 			this.vbox9.Add (this.endnoderesultwidget3);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox9 [this.endnoderesultwidget3]));
 			w3.Position = 2;

@@ -36,7 +36,6 @@ public partial class MainWindow
 		this.ModelAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Model");
 		w1.Add (this.ModelAction, null);
 		this.Action = new global::Gtk.Action ("Action", null, null, null);
-		this.Action.ShortLabel = "";
 		w1.Add (this.Action, null);
 		this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
 		this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
@@ -95,9 +94,7 @@ public partial class MainWindow
 		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.vbox2]));
 		w7.Position = 0;
 		// Container child hbox2.Gtk.Box+BoxChild
-		this.endnodewidget1 = new global::NetTrafficSimulator.EndNodeWidget ();
-		this.endnodewidget1.Events = ((global::Gdk.EventMask)(256));
-		this.endnodewidget1.Name = "endnodewidget1";
+		this.endnodewidget1 = null;
 		this.hbox2.Add (this.endnodewidget1);
 		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.endnodewidget1]));
 		w8.Position = 1;

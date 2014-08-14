@@ -6,6 +6,7 @@ namespace NetTrafficSimulator
 	{
 		private global::Gtk.VBox vbox8;
 		private global::NetTrafficSimulator.LinkParamWidget linkparamwidget1;
+		private global::NetTrafficSimulator.LinkResultWidget linkresultwidget2;
 
 		protected virtual void Build ()
 		{
@@ -18,14 +19,19 @@ namespace NetTrafficSimulator
 			this.vbox8.Name = "vbox8";
 			this.vbox8.Spacing = 6;
 			// Container child vbox8.Gtk.Box+BoxChild
-			this.linkparamwidget1 = new global::NetTrafficSimulator.LinkParamWidget ();
-			this.linkparamwidget1.Events = ((global::Gdk.EventMask)(256));
-			this.linkparamwidget1.Name = "linkparamwidget1";
+			this.linkparamwidget1 = null;
 			this.vbox8.Add (this.linkparamwidget1);
 			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox8 [this.linkparamwidget1]));
 			w1.Position = 0;
 			w1.Expand = false;
 			w1.Fill = false;
+			// Container child vbox8.Gtk.Box+BoxChild
+			this.linkresultwidget2 = null;
+			this.vbox8.Add (this.linkresultwidget2);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox8 [this.linkresultwidget2]));
+			w2.Position = 1;
+			w2.Expand = false;
+			w2.Fill = false;
 			this.Add (this.vbox8);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

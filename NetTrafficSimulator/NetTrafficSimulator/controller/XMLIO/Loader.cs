@@ -96,13 +96,21 @@ namespace NetTrafficSimulator
 					break;
 				}
 				string name = link.Attributes.GetNamedItem ("name").Value;
+				if (name == null)
+					throw new ArgumentNullException ("Link name null (link:" + i + ")");
 				string n1 = link.Attributes.GetNamedItem ("node1").Value;
+				if (n1 == null)
+					throw new ArgumentNullException ("Link node1 null (link:" + i + ")");
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
+				if (n2 == null)
+					throw new ArgumentNullException ("Link node2 null (link:" + i + ")");
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
 				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
 				//verifikace
 				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
+					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle);
 					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa, toggle);
+					log.Debug ("Set link name: " + name);
 					nm.SetLinkName (nm.GetNodeNum (n1), nm.GetNodeNum (n2), name);
 				} else {
 					throw new ArgumentOutOfRangeException ("Wrong toggle_probability " + toggle+ " for link "+name);

@@ -19,18 +19,14 @@ namespace NetTrafficSimulator
 			this.vbox4.Name = "vbox4";
 			this.vbox4.Spacing = 6;
 			// Container child vbox4.Gtk.Box+BoxChild
-			this.servernodeparamwidget1 = new global::NetTrafficSimulator.ServerNodeParamWidget ();
-			this.servernodeparamwidget1.Events = ((global::Gdk.EventMask)(256));
-			this.servernodeparamwidget1.Name = "servernodeparamwidget1";
+			this.servernodeparamwidget1 = null;
 			this.vbox4.Add (this.servernodeparamwidget1);
 			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.servernodeparamwidget1]));
 			w1.Position = 0;
 			w1.Expand = false;
 			w1.Fill = false;
 			// Container child vbox4.Gtk.Box+BoxChild
-			this.servernoderesultwidget1 = new global::NetTrafficSimulator.ServerNodeResultWidget ();
-			this.servernoderesultwidget1.Events = ((global::Gdk.EventMask)(256));
-			this.servernoderesultwidget1.Name = "servernoderesultwidget1";
+			this.servernoderesultwidget1 = null;
 			this.vbox4.Add (this.servernoderesultwidget1);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.servernoderesultwidget1]));
 			w2.Position = 1;
