@@ -95,6 +95,33 @@
     <Compile Include="controller\XMLIO\XMLIO.cs" />
     <Compile Include="framework\extension\RoutingTable.cs" />
     <Compile Include="framework\extension\RoutingMessage.cs" />
+    <Compile Include="view\EndNodeParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.EndNodeParamWidget.cs" />
+    <Compile Include="view\ServerNodeParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.ServerNodeParamWidget.cs" />
+    <Compile Include="view\NetworkNodeParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.NetworkNodeParamWidget.cs" />
+    <Compile Include="view\LinkParamWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.LinkParamWidget.cs" />
+    <Compile Include="view\EndNodeEventsWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.EndNodeEventsWidget.cs" />
+    <Compile Include="view\EndNodeResultWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.EndNodeResultWidget.cs" />
+    <Compile Include="view\EndNodeWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.EndNodeWidget.cs" />
+    <Compile Include="view\MainWindow.cs" />
+    <Compile Include="view\ServerNodeResultWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.ServerNodeResultWidget.cs" />
+    <Compile Include="view\ServerNodeWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.ServerNodeWidget.cs" />
+    <Compile Include="view\NetworkNodeResultWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.NetworkNodeResultWidget.cs" />
+    <Compile Include="view\NetworkNodeWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.NetworkNodeWidget.cs" />
+    <Compile Include="view\LinkResultWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.LinkResultWidget.cs" />
+    <Compile Include="view\LinkWidget.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.LinkWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -102,5 +129,6 @@
     <Folder Include="controller\" />
     <Folder Include="framework\extension\" />
     <Folder Include="misc\" />
+    <Folder Include="view\" />
   </ItemGroup>
 </Project>
