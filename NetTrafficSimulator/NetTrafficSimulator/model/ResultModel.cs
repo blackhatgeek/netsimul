@@ -357,6 +357,9 @@ namespace NetTrafficSimulator
 		private Dictionary<string,NetworkNodeResult> networkNodeNames;
 		private Dictionary<string,LinkResult> linkNames;
 
+		//vysledky trasovanych packetu
+		private LinkedList<LinkedList<KeyValuePair<Node,int>>> traces;
+
 		private int endNodeLimit, endNodeCount, serverNodeLimit, serverNodeCount, networkNodeLimit, networkNodeCount,linkLimit,linkCount;
 
 		/**
@@ -387,6 +390,8 @@ namespace NetTrafficSimulator
 			this.linkLimit = linkNodes;
 			this.linkCount = 0;
 			this.linkNames = new Dictionary<string, LinkResult> ();
+
+			this.traces = new LinkedList<LinkedList<KeyValuePair<Node,int>>> ();
 		}
 		/**
 		 * Records results of an end node, if possible
@@ -481,6 +486,13 @@ namespace NetTrafficSimulator
 				linkCount++;
 			} else
 				throw new ArgumentException ("Link counter exceeded: "+linkCount);
+		}
+
+		public void SetPacketTrace(Packet p){
+			if (p.Traced)
+				this.traces.AddLast (p.Trace);
+			else
+				throw new ArgumentException ("Packet not traced!");
 		}
 
 		/**
@@ -885,6 +897,10 @@ namespace NetTrafficSimulator
 		 */
 		public decimal GetLinkPercentageDataLostInCarry(string name){
 			return getLR (name).PercentageDataLostInCarry;
+		}
+
+		public LinkedList<LinkedList<KeyValuePair<Node,int>>> GetPacketTraces(){
+			return traces;
 		}
 	}
 }

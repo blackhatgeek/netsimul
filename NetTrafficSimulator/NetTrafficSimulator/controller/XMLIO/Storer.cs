@@ -2,6 +2,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.IO;
+using System.Collections.Generic;
 using log4net;
 
 namespace NetTrafficSimulator
@@ -240,6 +241,33 @@ namespace NetTrafficSimulator
 						links.AppendChild (link);
 					}
 					result.AppendChild (links);
+
+					if (rm.GetPacketTraces ().Count != 0) {
+						log.Debug ("Processing packet traces");
+						XmlElement traces = xs.CreateElement ("packetTraces");
+						LinkedList<LinkedList<KeyValuePair<Node,int>>> list_traces = rm.GetPacketTraces ();
+						while (list_traces.Count != 0) {
+							log.Debug ("Processing traced packet");
+							XmlElement trace = xs.CreateElement ("packet");
+							LinkedListNode<LinkedList<KeyValuePair<Node,int>>> list_trace_node = list_traces.First;
+							LinkedList<KeyValuePair<Node,int>> list_trace = list_trace_node.Value;
+							while (list_trace.Count>0) {
+								XmlElement step = xs.CreateElement ("step");
+								XmlAttribute name = xs.CreateAttribute ("name");
+								name.Value = list_trace.First.Value.Key.Name;
+								step.Attributes.Append (name);
+								XmlAttribute time = xs.CreateAttribute ("time");
+								time.Value = list_trace.First.Value.Value + "";
+								step.Attributes.Append (time);
+								trace.AppendChild (step);
+								list_trace.RemoveFirst ();
+								log.Debug ("\tProcessed traced step");
+							}
+							log.Debug ("Processed traced packet");
+							traces.AppendChild (trace);
+						}
+						result.AppendChild (traces);
+					}
 				}
 
 				simulation.AppendChild (result);

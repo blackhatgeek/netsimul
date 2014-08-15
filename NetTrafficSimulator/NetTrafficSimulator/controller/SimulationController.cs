@@ -20,6 +20,7 @@ namespace NetTrafficSimulator
 		private LinkedList<EndNode> randomTalkers;//TODO: count counts and make an array
 		private LinkedList<NetworkNode> routers;//TODO: count counts and make an array
 		private LinkedList<KeyValuePair<Link,decimal>> links;
+		private LinkedList<Packet> tracedPackets;
 		private Dictionary<string,Node> node_names;
 
 		/**
@@ -146,7 +147,6 @@ namespace NetTrafficSimulator
 					while (j<network_model.NodeCount) {
 						Node y = nodes [j];
 						if (network_model.AreConnected (i, j)){
-							//TESTME links parsed correctly??
 							string lname = network_model.GetLinkName (i, j);
 							if (lname == null)
 								throw new ArgumentNullException ("Link name null");	
@@ -198,6 +198,7 @@ namespace NetTrafficSimulator
 			log.Debug ("Create events");
 			if ((framework_model != null)&&(network_model!=null)) {
 				log.Debug ("User defined simulation events");
+				this.tracedPackets = new LinkedList<Packet> ();
 				foreach (SimulationModel.Event e in simulation_model.GetEvents()) {
 					Node from_node; 
 					int node2_num = network_model.GetNodeNum (e.node2);
@@ -205,7 +206,9 @@ namespace NetTrafficSimulator
 					if (node_names.TryGetValue (e.node1, out from_node)) {
 						if (from_node is EndNode && network_model.GetNodeType (node2_num).Equals (NetworkModel.SERVER_NODE)) {
 							//schedule node e.node1 to state SEND (with packet from e.node1 to e.node2 of e.size as parameter) at time e.when
-							MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND,new Packet (from_addr, network_model.GetNodeAddr (node2_num), e.size));
+							Packet p = new Packet (from_addr, network_model.GetNodeAddr (node2_num), e.size, true);
+							tracedPackets.AddLast (p);
+							MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND,p);
 							MFF_NPRG031.Event ev = new MFF_NPRG031.Event (from_node, st, e.when);
 							framework_model.K.Schedule (ev);
 						} else
@@ -282,6 +285,11 @@ namespace NetTrafficSimulator
 			}
 		else
 			throw new InvalidOperationException ("[SimulationController.PopulateResultModel] Framework model not created");
+			if (tracedPackets != null)
+				foreach (Packet p in tracedPackets)
+					result_model.SetPacketTrace (p);
+			else
+				throw new InvalidOperationException ("[SimulationController.PopulateResultModel] Traced packets not initialized");
 		}
 
 		/**

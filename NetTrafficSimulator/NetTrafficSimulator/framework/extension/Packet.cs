@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace NetTrafficSimulator
 {
@@ -9,6 +10,8 @@ namespace NetTrafficSimulator
 	{
 		private readonly int source, destination;
 		private readonly decimal size;
+		private readonly bool trace;
+		private LinkedList<KeyValuePair<Node,int>> journey;
 		private int hopcounter;
 
 		/**
@@ -23,6 +26,12 @@ namespace NetTrafficSimulator
 			this.destination = destination;
 			this.size = size;
 			this.hopcounter = 0;
+			this.trace = false;
+		}
+
+		public Packet (int source, int destination,decimal size,bool trace):this(source,destination,size){
+			this.trace = trace;
+			this.journey = new LinkedList<KeyValuePair<Node,int>> ();
 		}
 
 		/**
@@ -66,6 +75,25 @@ namespace NetTrafficSimulator
 		 */
 		public void HopInc(){
 			this.hopcounter++;
+		}
+
+		public bool Traced{
+			get{
+				return this.trace;
+			}
+		}
+
+		public void SetNodePassedThrough(Node n,int time){
+			if (this.trace)
+				this.journey.AddLast (new KeyValuePair<Node, int>(n,time));
+			else
+				throw new ArgumentException ("Packet not set as traced!");
+		}
+
+		public LinkedList<KeyValuePair<Node,int>> Trace{
+			get{
+				return this.journey;
+			}
 		}
 	}
 }

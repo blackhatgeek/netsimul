@@ -118,11 +118,11 @@ namespace NetTrafficSimulator
 		 */
 		private void setRecord(Record r){
 			//r.Expired = false;
-			log.Debug ("setR");
 			if (model == null)
 				throw new ArgumentNullException ("Framework model null");
 			if (r != null) {
 				if (!((r.Route.A is EndpointNode) || (r.Route.B is EndpointNode))) {
+					r.ZrusPlan (model.K);
 					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), (model.Time + expiry_timer));
 					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), (model.Time + flush_timer));
 				}

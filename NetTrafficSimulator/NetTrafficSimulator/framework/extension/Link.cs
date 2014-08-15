@@ -148,6 +148,8 @@ namespace NetTrafficSimulator
 			if (capacity <0) throw new ArgumentOutOfRangeException ("Link capacity cannot be negative");
 			if (a == null || b == null)
 				throw new ArgumentNullException ("Node cannot be null");
+			if (a == b)
+				throw new ArgumentException ("Nodes must be different");
 
 			this.name = name;
 			this.capacity = capacity;
