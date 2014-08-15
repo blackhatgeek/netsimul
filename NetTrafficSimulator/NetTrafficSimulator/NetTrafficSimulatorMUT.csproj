@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>NetTrafficSimulator</RootNamespace>
     <AssemblyName>NetTrafficSimulator</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +58,7 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
     <Reference Include="log4net">
       <HintPath>lib\log4net\mono\2.0\release\log4net.dll</HintPath>
     </Reference>
