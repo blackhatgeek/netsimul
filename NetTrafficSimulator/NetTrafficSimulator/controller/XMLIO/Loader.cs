@@ -16,6 +16,7 @@ namespace NetTrafficSimulator
 		private XmlDocument xd;
 		private HashSet<string> sn;
 		private Dictionary<string,bool> en;
+		private Dictionary<string,string> false_default_routes;
 
 		/**
 		 * <p>Initialize Loader by opening model file, validating input model file and creating necessary objects</p> 
@@ -54,6 +55,7 @@ namespace NetTrafficSimulator
 			XmlElement nodes = xd.GetElementsByTagName ("nodes").Item(0) as XmlElement;
 			NetworkModel nm = new NetworkModel (nodes.ChildNodes.Count);
 			XmlNodeList nl = nodes.ChildNodes;
+			false_default_routes = new Dictionary<string, string> ();
 			for (int i=0; i<nl.Count; i++) {
 				XmlElement node = nl.Item (i) as XmlElement;
 				string name;
@@ -78,22 +80,14 @@ namespace NetTrafficSimulator
 					en.Add (name,random);
 					break;
 				case "network":
+					name = node.Attributes.GetNamedItem ("name").Value;
 					nm.SetNodeType (i, NetworkModel.NETWORK_NODE);
-					nm.SetNodeName (i, node.Attributes.GetNamedItem ("name").Value);
+					nm.SetNodeName (i, name);
 					string lname = node.Attributes.GetNamedItem ("default").Value;
-					XmlElement links0 = xd.GetElementsByTagName ("links").Item (0) as XmlElement;
-					nl = links0.ChildNodes;
-					bool valid = false;
-					for (int j=0; i<nl.Count; i++) {
-						XmlElement link = nl.Item (i) as XmlElement;
-						if (link.Attributes.GetNamedItem ("name").Equals (lname)) {
-							valid = true;
-							break;
-						}
-					}
-					if (!valid)
-						throw new Exception ("Wrong default route");
-
+					//zaregistrovat default route
+					if (false_default_routes.ContainsKey (lname))
+						throw new ArgumentException ("Link " + lname + " default route on both ends");
+					false_default_routes.Add (lname,name);
 					break;
 				default:
 					break;
@@ -116,9 +110,17 @@ namespace NetTrafficSimulator
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
 				if (n2 == null)
 					throw new ArgumentNullException ("Link node2 null (link:" + i + ")");
+				//verifikace default route
+				string nnode_name;
+				if (false_default_routes.TryGetValue (name, out nnode_name)) {
+					if ((nnode_name != n1) && (nnode_name != n2))
+						throw new ArgumentException ("Default route "+name+" is not connected to the network node "+nnode_name);
+				}
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
 				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
 				//verifikace
+				if (false_default_routes.Count!=0)
+					throw new Exception ("False default routes empty");
 				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
 					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle);
 					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa, toggle);
