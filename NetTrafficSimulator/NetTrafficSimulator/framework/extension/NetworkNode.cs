@@ -77,7 +77,7 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentNullException on l null
 		 */
 		public void ConnectLink(Link l,MFF_NPRG031.Model model){
-			this.ConnectLink (l, model, false);
+			this.ConnectLink(l,model,false);
 		}
 		public void ConnectLink(Link l,MFF_NPRG031.Model model,bool defroute){
 			log.Debug ("Connect link");
@@ -200,7 +200,7 @@ namespace NetTrafficSimulator
 					}
 					throw new InvalidOperationException ("Routing through invalid link");
 				} else {
-					log.Debug ("No link for " + p.Destination+", using default route "+def_r.Name);
+					log.Debug ("No link for " + p.Destination+", trying to use default route ");
 					return def_r;
 				}
 			}
