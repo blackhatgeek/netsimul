@@ -48,6 +48,10 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 			<xs:selector xpath="events/event" />
 			<xs:field xpath="./@where" />
 		</xs:keyref>
+		<xs:keyref name="DefaultRoute" refer="ns:LinkName">
+			<xs:selector xpath="network/nodes/network"/>
+			<xs:field xpath="./@default"/>
+		</xs:keyref>
 	</xs:element>
 	<xs:complexType name="tNode">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -71,6 +75,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 	</xs:complexType>
 	<xs:complexType name="tNetwork">
 		<xs:attribute name="name" type="xs:token" use="required" />
+		<xs:attribute name="default" type="xs:token" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tLink">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">

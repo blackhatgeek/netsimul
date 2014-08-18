@@ -35,6 +35,24 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 									</xs:choice>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="packetTraces" minOccurs="0" maxOccurs="1">
+						 		<xs:complexType>
+									<xs:choice minOccurs="1" maxOccurs="unbounded">
+						 			<xs:element name="packet">
+						 				<xs:complexType>
+											<xs:choice minOccurs="1" maxOccurs="unbounded">
+						 					<xs:element name="step">
+						 						<xs:complexType>
+						 							<xs:attribute name="name" type="xs:string" />
+						 							<xs:attribute name="time" type="xs:nonNegativeInteger" />
+						 						</xs:complexType>
+						 					</xs:element>
+											</xs:choice>
+						 				</xs:complexType>
+						 			</xs:element>
+									</xs:choice>
+						 		</xs:complexType>
+						 	</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>

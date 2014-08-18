@@ -547,5 +547,9 @@ namespace NetTrafficSimulator
 
 		public void PopulateResultModel(){
 		}
+
+		public void ModelSchema(){
+			Console.WriteLine(Loader.GetSchema ());
+		}
 	}
 }

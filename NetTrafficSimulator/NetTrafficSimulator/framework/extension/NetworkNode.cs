@@ -18,6 +18,7 @@ namespace NetTrafficSimulator
 		int[] interface_use_count;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped,rm_received,rm_sent;
 		int delay;//, scheduled_update;
+		Link def_r;
 		//private Timer update, invalid;
 
 		/**
@@ -76,6 +77,9 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentNullException on l null
 		 */
 		public void ConnectLink(Link l,MFF_NPRG031.Model model){
+			this.ConnectLink (l, model, false);
+		}
+		public void ConnectLink(Link l,MFF_NPRG031.Model model,bool defroute){
 			log.Debug ("Connect link");
 			if (interfaces_used < interfaces_count) {
 				if (l != null) {
@@ -93,6 +97,8 @@ namespace NetTrafficSimulator
 								throw new ArgumentNullException ("Endpoint node null");
 							rt.SetRecord (en.Address, l, 1);
 						}
+						if (defroute)
+							def_r = l;
 					}
 					else
 						throw new ArgumentException ("Link not connected to this NetworkNode");
@@ -180,7 +186,7 @@ namespace NetTrafficSimulator
 		private Link selectDestination(Packet p){
 			if (p is RoutingMessage) {
 				log.Error ("Link for routing message");
-				throw new Exception ();
+				//throw new Exception ();
 				return (p as RoutingMessage).Link;
 			} else {
 				log.Debug ("Link for destination: " + p.Destination);
@@ -194,8 +200,8 @@ namespace NetTrafficSimulator
 					}
 					throw new InvalidOperationException ("Routing through invalid link");
 				} else {
-					log.Warn ("No link for " + p.Destination);
-					return null;
+					log.Debug ("No link for " + p.Destination+", using default route "+def_r.Name);
+					return def_r;
 				}
 			}
 			//throw new InvalidOperationException ("Routing through invalid link");

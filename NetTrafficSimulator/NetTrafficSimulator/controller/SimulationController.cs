@@ -149,19 +149,19 @@ namespace NetTrafficSimulator
 						if (network_model.AreConnected (i, j)){
 							string lname = network_model.GetLinkName (i, j);
 							if (lname == null)
-								throw new ArgumentNullException ("Link name null");	
+								throw new ArgumentNullException ("Link name null");
 							Link l = new Link (lname, network_model.LinkCapacity(i,j), x, y,framework_model);
 							KeyValuePair<Link,decimal> link_rec = new KeyValuePair<Link,decimal> (l, network_model.GetLinkToggleProbability (i, j));
 							if (x is EndpointNode)
 								(x as EndpointNode).Link = l;
 							else if (x is NetworkNode)
-								(x as NetworkNode).ConnectLink (l,framework_model);
+								(x as NetworkNode).ConnectLink (l, framework_model,network_model.GetNetworkNodeDefaultRoute (i).Equals (lname));
 							else
 								throw new InvalidOperationException ("Node " + x + "is not EndNode nor NetworkNode nor ServerNode");
 							if (y is EndpointNode)
 								(y as EndpointNode).Link = l;
 							else if (y is NetworkNode)
-								(y as NetworkNode).ConnectLink (l,framework_model);
+								(y as NetworkNode).ConnectLink (l,framework_model,network_model.GetNetworkNodeDefaultRoute(j).Equals(lname));
 							else
 								throw new InvalidOperationException ("Node " + y + " is not EndNode nor NetworkNode nor ServerNode");
 							links.AddLast (link_rec);

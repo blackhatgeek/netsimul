@@ -109,6 +109,7 @@ namespace NetTrafficSimulator
 		private int[] addr;//addr[x] is address of node x
 		private Dictionary<string,int> n_name;//node name
 		private Dictionary<string,int> en_mps;//end node max packet size
+		private Dictionary<int,int> nn_default;//default route for network node
 		/**
 		 * Server node count
 		 */
@@ -141,6 +142,8 @@ namespace NetTrafficSimulator
 					link_count [i] = 0;
 				}
 				this.SNCount = 0;
+
+				this.nn_default = new Dictionary<int, int> ();
 			} else
 				throw new ArgumentOutOfRangeException ("[new NetworkModel("+node_count+"] " + ILLEGAL_PARAMETER);
 		}
@@ -357,6 +360,7 @@ namespace NetTrafficSimulator
 		 * - adjacency matrix is symmetric
 		 * - each link capacity is non-negative
 		 * @return if model is valid or not
+		 * TODO update
 		 */
 		public bool Valid{
 			get{
@@ -566,6 +570,21 @@ namespace NetTrafficSimulator
 				return links[x,y].ToggleProb;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetLinkToggleProbability("+x+","+y+")] "+ILLEGAL_PARAMETER);
+		}
+
+		public void SetDefaultRoute(int node, int gateway){
+			if ((node >= 0) && (node < node_count) && (gateway >= 0) && (gateway < node_count) && (node != gateway)) {
+				nn_default.Add (node, gateway);
+			} else
+				throw new ArgumentOutOfRangeException ("[NetworkModel.SetDefaultRoute(" + node + "," + gateway + ")] " + ILLEGAL_PARAMETER);
+		}
+
+		public string GetNetworkNodeDefaultRoute(int node){
+			int route;
+			if (nn_default.TryGetValue (node, out route))
+				return links [node, route].name;
+			else
+				throw new ArgumentException ("[NetworkModel.GetDefaultRoute(" + node + ")] " + ILLEGAL_PARAMETER);
 		}
 	}
 }
