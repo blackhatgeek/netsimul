@@ -10,6 +10,7 @@ namespace NetTrafficSimulator
 		private global::Gtk.Entry entry4;
 		private global::Gtk.HBox hbox10;
 		private global::Gtk.Label label10;
+		private global::Gtk.Fixed fixed5;
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		private global::Gtk.NodeView nodeview1;
 		private global::Gtk.HBox hbox11;
@@ -68,11 +69,18 @@ namespace NetTrafficSimulator
 			w4.Position = 0;
 			w4.Expand = false;
 			w4.Fill = false;
-			this.vbox5.Add (this.hbox10);
-			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox10]));
+			// Container child hbox10.Gtk.Box+BoxChild
+			this.fixed5 = new global::Gtk.Fixed ();
+			this.fixed5.Name = "fixed5";
+			this.fixed5.HasWindow = false;
+			this.hbox10.Add (this.fixed5);
+			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.hbox10 [this.fixed5]));
 			w5.Position = 1;
-			w5.Expand = false;
-			w5.Fill = false;
+			this.vbox5.Add (this.hbox10);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox10]));
+			w6.Position = 1;
+			w6.Expand = false;
+			w6.Fill = false;
 			// Container child vbox5.Gtk.Box+BoxChild
 			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
 			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -83,8 +91,8 @@ namespace NetTrafficSimulator
 			this.nodeview1.Name = "nodeview1";
 			this.GtkScrolledWindow.Add (this.nodeview1);
 			this.vbox5.Add (this.GtkScrolledWindow);
-			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow]));
-			w7.Position = 2;
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow]));
+			w8.Position = 2;
 			// Container child vbox5.Gtk.Box+BoxChild
 			this.hbox11 = new global::Gtk.HBox ();
 			this.hbox11.Name = "hbox11";
@@ -94,18 +102,18 @@ namespace NetTrafficSimulator
 			this.label11.Name = "label11";
 			this.label11.LabelProp = global::Mono.Unix.Catalog.GetString ("Connect link");
 			this.hbox11.Add (this.label11);
-			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.label11]));
-			w8.Position = 0;
-			w8.Expand = false;
-			w8.Fill = false;
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.label11]));
+			w9.Position = 0;
+			w9.Expand = false;
+			w9.Fill = false;
 			// Container child hbox11.Gtk.Box+BoxChild
 			this.combobox3 = global::Gtk.ComboBox.NewText ();
 			this.combobox3.Name = "combobox3";
 			this.hbox11.Add (this.combobox3);
-			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.combobox3]));
-			w9.Position = 1;
-			w9.Expand = false;
-			w9.Fill = false;
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.combobox3]));
+			w10.Position = 1;
+			w10.Expand = false;
+			w10.Fill = false;
 			// Container child hbox11.Gtk.Box+BoxChild
 			this.button1 = new global::Gtk.Button ();
 			this.button1.CanFocus = true;
@@ -113,10 +121,10 @@ namespace NetTrafficSimulator
 			this.button1.UseUnderline = true;
 			this.button1.Label = global::Mono.Unix.Catalog.GetString ("Connect");
 			this.hbox11.Add (this.button1);
-			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.button1]));
-			w10.Position = 2;
-			w10.Expand = false;
-			w10.Fill = false;
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.button1]));
+			w11.Position = 2;
+			w11.Expand = false;
+			w11.Fill = false;
 			// Container child hbox11.Gtk.Box+BoxChild
 			this.checkbutton1 = new global::Gtk.CheckButton ();
 			this.checkbutton1.CanFocus = true;
@@ -125,14 +133,14 @@ namespace NetTrafficSimulator
 			this.checkbutton1.DrawIndicator = true;
 			this.checkbutton1.UseUnderline = true;
 			this.hbox11.Add (this.checkbutton1);
-			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.checkbutton1]));
-			w11.PackType = ((global::Gtk.PackType)(1));
-			w11.Position = 3;
-			this.vbox5.Add (this.hbox11);
-			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox11]));
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.checkbutton1]));
+			w12.PackType = ((global::Gtk.PackType)(1));
 			w12.Position = 3;
-			w12.Expand = false;
-			w12.Fill = false;
+			this.vbox5.Add (this.hbox11);
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox11]));
+			w13.Position = 3;
+			w13.Expand = false;
+			w13.Fill = false;
 			this.Add (this.vbox5);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

@@ -6,20 +6,18 @@ public partial class MainWindow
 	private global::Gtk.Action FileAction;
 	private global::Gtk.Action SimulationAction;
 	private global::Gtk.Action ModelAction;
-	private global::Gtk.Action Action;
 	private global::Gtk.Action HelpAction;
-	private global::Gtk.Action LoadModelFromFileAction;
-	private global::Gtk.Action SaveResultsToFileAction;
+	private global::Gtk.Action LoadModelAction;
+	private global::Gtk.Action SaveModelAsAction;
+	private global::Gtk.Action SaveResultsAsAction;
 	private global::Gtk.Action NewModelAction;
-	private global::Gtk.Action ExitApplicationAction;
-	private global::Gtk.Action RunSimulationAction;
+	private global::Gtk.Action ExitSimulatorAction;
+	private global::Gtk.Action ParametersAction;
+	private global::Gtk.Action RunAction;
 	private global::Gtk.Action AddEndNodeAction;
 	private global::Gtk.Action AddNetworkNodeAction;
 	private global::Gtk.Action AddServerNodeAction;
-	private global::Gtk.Action AddLinkAction;
 	private global::Gtk.Action AboutAction;
-	private global::Gtk.Action ParametersAction;
-	private global::Gtk.Action ParametersAction1;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
 	private global::Gtk.HBox hbox2;
@@ -34,15 +32,21 @@ public partial class MainWindow
 	private global::Gtk.ScrolledWindow GtkScrolledWindow1;
 	private global::Gtk.TreeView treeview4;
 	private global::Gtk.Label GtkLabel9;
+	private global::Gtk.VBox vbox5;
 	private global::Gtk.Frame frame12;
 	private global::Gtk.Alignment GtkAlignment2;
 	private global::NetTrafficSimulator.EndNodeWidget endnodewidget2;
-	private global::Gtk.Label GtkLabel4;
-	private global::Gtk.Frame frame13;
-	private global::Gtk.Alignment GtkAlignment3;
-	private global::NetTrafficSimulator.PacketTraceWidget packettracewidget4;
-	private global::Gtk.Label GtkLabel11;
-	private global::Gtk.HBox hbox7;
+	private global::Gtk.Label GtkLabel12;
+	private global::Gtk.HBox hbox9;
+	private global::Gtk.Fixed fixed2;
+	private global::Gtk.Button button18;
+	private global::Gtk.Frame frame4;
+	private global::Gtk.Alignment GtkAlignment6;
+	private global::NetTrafficSimulator.PacketTraceWidget packettracewidget1;
+	private global::Gtk.Label GtkLabel14;
+	private global::Gtk.HBox hbox8;
+	private global::Gtk.Fixed fixed4;
+	private global::Gtk.Fixed fixed3;
 	private global::Gtk.ProgressBar progressbar1;
 
 	protected virtual void Build ()
@@ -60,26 +64,30 @@ public partial class MainWindow
 		this.ModelAction = new global::Gtk.Action ("ModelAction", global::Mono.Unix.Catalog.GetString ("Model"), null, null);
 		this.ModelAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Model");
 		w1.Add (this.ModelAction, null);
-		this.Action = new global::Gtk.Action ("Action", null, null, null);
-		w1.Add (this.Action, null);
 		this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
 		this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
 		w1.Add (this.HelpAction, null);
-		this.LoadModelFromFileAction = new global::Gtk.Action ("LoadModelFromFileAction", global::Mono.Unix.Catalog.GetString ("Load model from file"), null, null);
-		this.LoadModelFromFileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Load model from file");
-		w1.Add (this.LoadModelFromFileAction, null);
-		this.SaveResultsToFileAction = new global::Gtk.Action ("SaveResultsToFileAction", global::Mono.Unix.Catalog.GetString ("Save results to file"), null, null);
-		this.SaveResultsToFileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save results to file");
-		w1.Add (this.SaveResultsToFileAction, null);
+		this.LoadModelAction = new global::Gtk.Action ("LoadModelAction", global::Mono.Unix.Catalog.GetString ("Load model"), null, null);
+		this.LoadModelAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Load model");
+		w1.Add (this.LoadModelAction, null);
+		this.SaveModelAsAction = new global::Gtk.Action ("SaveModelAsAction", global::Mono.Unix.Catalog.GetString ("Save model as"), null, null);
+		this.SaveModelAsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save model as");
+		w1.Add (this.SaveModelAsAction, null);
+		this.SaveResultsAsAction = new global::Gtk.Action ("SaveResultsAsAction", global::Mono.Unix.Catalog.GetString ("Save results as"), null, null);
+		this.SaveResultsAsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save results as");
+		w1.Add (this.SaveResultsAsAction, null);
 		this.NewModelAction = new global::Gtk.Action ("NewModelAction", global::Mono.Unix.Catalog.GetString ("New model"), null, null);
 		this.NewModelAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("New model");
 		w1.Add (this.NewModelAction, null);
-		this.ExitApplicationAction = new global::Gtk.Action ("ExitApplicationAction", global::Mono.Unix.Catalog.GetString ("Exit application"), null, null);
-		this.ExitApplicationAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Exit application");
-		w1.Add (this.ExitApplicationAction, null);
-		this.RunSimulationAction = new global::Gtk.Action ("RunSimulationAction", global::Mono.Unix.Catalog.GetString ("Run simulation"), null, null);
-		this.RunSimulationAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Run simulation");
-		w1.Add (this.RunSimulationAction, null);
+		this.ExitSimulatorAction = new global::Gtk.Action ("ExitSimulatorAction", global::Mono.Unix.Catalog.GetString ("Exit simulator"), null, null);
+		this.ExitSimulatorAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Exit simulator");
+		w1.Add (this.ExitSimulatorAction, null);
+		this.ParametersAction = new global::Gtk.Action ("ParametersAction", global::Mono.Unix.Catalog.GetString ("Parameters"), null, null);
+		this.ParametersAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Parameters");
+		w1.Add (this.ParametersAction, null);
+		this.RunAction = new global::Gtk.Action ("RunAction", global::Mono.Unix.Catalog.GetString ("Run"), null, null);
+		this.RunAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Run");
+		w1.Add (this.RunAction, null);
 		this.AddEndNodeAction = new global::Gtk.Action ("AddEndNodeAction", global::Mono.Unix.Catalog.GetString ("Add end node"), null, null);
 		this.AddEndNodeAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add end node");
 		w1.Add (this.AddEndNodeAction, null);
@@ -89,18 +97,9 @@ public partial class MainWindow
 		this.AddServerNodeAction = new global::Gtk.Action ("AddServerNodeAction", global::Mono.Unix.Catalog.GetString ("Add server node"), null, null);
 		this.AddServerNodeAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add server node");
 		w1.Add (this.AddServerNodeAction, null);
-		this.AddLinkAction = new global::Gtk.Action ("AddLinkAction", global::Mono.Unix.Catalog.GetString ("Add link"), null, null);
-		this.AddLinkAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add link");
-		w1.Add (this.AddLinkAction, null);
 		this.AboutAction = new global::Gtk.Action ("AboutAction", global::Mono.Unix.Catalog.GetString ("About"), null, null);
 		this.AboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("About");
 		w1.Add (this.AboutAction, null);
-		this.ParametersAction = new global::Gtk.Action ("ParametersAction", global::Mono.Unix.Catalog.GetString ("Parameters"), null, null);
-		this.ParametersAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Parameters");
-		w1.Add (this.ParametersAction, null);
-		this.ParametersAction1 = new global::Gtk.Action ("ParametersAction1", global::Mono.Unix.Catalog.GetString ("Parameters"), null, null);
-		this.ParametersAction1.ShortLabel = global::Mono.Unix.Catalog.GetString ("Parameters");
-		w1.Add (this.ParametersAction1, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -111,7 +110,7 @@ public partial class MainWindow
 		this.vbox1.Name = "vbox1";
 		this.vbox1.Spacing = 6;
 		// Container child vbox1.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='LoadModelFromFileAction' action='LoadModelFromFileAction'/><menuitem name='SaveResultsToFileAction' action='SaveResultsToFileAction'/><menuitem name='NewModelAction' action='NewModelAction'/><menuitem name='ExitApplicationAction' action='ExitApplicationAction'/></menu><menu name='SimulationAction' action='SimulationAction'><menuitem name='ParametersAction1' action='ParametersAction1'/><menuitem name='RunSimulationAction' action='RunSimulationAction'/></menu><menu name='ModelAction' action='ModelAction'><menuitem name='AddEndNodeAction' action='AddEndNodeAction'/><menuitem name='AddNetworkNodeAction' action='AddNetworkNodeAction'/><menuitem name='AddServerNodeAction' action='AddServerNodeAction'/><menuitem name='AddLinkAction' action='AddLinkAction'/></menu><menu/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu></menubar></ui>");
+		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='LoadModelAction' action='LoadModelAction'/><menuitem name='SaveModelAsAction' action='SaveModelAsAction'/><menuitem name='SaveResultsAsAction' action='SaveResultsAsAction'/><menuitem name='NewModelAction' action='NewModelAction'/><menuitem name='ExitSimulatorAction' action='ExitSimulatorAction'/></menu><menu name='SimulationAction' action='SimulationAction'><menuitem name='ParametersAction' action='ParametersAction'/><menuitem name='RunAction' action='RunAction'/></menu><menu name='ModelAction' action='ModelAction'><menuitem name='AddEndNodeAction' action='AddEndNodeAction'/><menuitem name='AddNetworkNodeAction' action='AddNetworkNodeAction'/><menuitem name='AddServerNodeAction' action='AddServerNodeAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu></menubar></ui>");
 		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 		this.menubar2.Name = "menubar2";
 		this.vbox1.Add (this.menubar2);
@@ -188,6 +187,10 @@ public partial class MainWindow
 		w11.Expand = false;
 		w11.Fill = false;
 		// Container child hbox2.Gtk.Box+BoxChild
+		this.vbox5 = new global::Gtk.VBox ();
+		this.vbox5.Name = "vbox5";
+		this.vbox5.Spacing = 6;
+		// Container child vbox5.Gtk.Box+BoxChild
 		this.frame12 = new global::Gtk.Frame ();
 		this.frame12.Name = "frame12";
 		this.frame12.ShadowType = ((global::Gtk.ShadowType)(0));
@@ -201,68 +204,112 @@ public partial class MainWindow
 		this.endnodewidget2.Name = "endnodewidget2";
 		this.GtkAlignment2.Add (this.endnodewidget2);
 		this.frame12.Add (this.GtkAlignment2);
-		this.GtkLabel4 = new global::Gtk.Label ();
-		this.GtkLabel4.Name = "GtkLabel4";
-		this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>GtkFrame</b>");
-		this.GtkLabel4.UseMarkup = true;
-		this.frame12.LabelWidget = this.GtkLabel4;
-		this.hbox2.Add (this.frame12);
-		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.frame12]));
-		w14.Position = 1;
-		w14.Expand = false;
-		w14.Fill = false;
-		// Container child hbox2.Gtk.Box+BoxChild
-		this.frame13 = new global::Gtk.Frame ();
-		this.frame13.Name = "frame13";
-		this.frame13.ShadowType = ((global::Gtk.ShadowType)(0));
-		// Container child frame13.Gtk.Container+ContainerChild
-		this.GtkAlignment3 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-		this.GtkAlignment3.Name = "GtkAlignment3";
-		this.GtkAlignment3.LeftPadding = ((uint)(12));
-		// Container child GtkAlignment3.Gtk.Container+ContainerChild
-		this.packettracewidget4 = new global::NetTrafficSimulator.PacketTraceWidget ();
-		this.packettracewidget4.Events = ((global::Gdk.EventMask)(256));
-		this.packettracewidget4.Name = "packettracewidget4";
-		this.GtkAlignment3.Add (this.packettracewidget4);
-		this.frame13.Add (this.GtkAlignment3);
-		this.GtkLabel11 = new global::Gtk.Label ();
-		this.GtkLabel11.Name = "GtkLabel11";
-		this.GtkLabel11.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Packet traces</b>");
-		this.GtkLabel11.UseMarkup = true;
-		this.frame13.LabelWidget = this.GtkLabel11;
-		this.hbox2.Add (this.frame13);
-		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.frame13]));
-		w17.PackType = ((global::Gtk.PackType)(1));
-		w17.Position = 2;
+		this.GtkLabel12 = new global::Gtk.Label ();
+		this.GtkLabel12.Name = "GtkLabel12";
+		this.GtkLabel12.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>GtkFrame</b>");
+		this.GtkLabel12.UseMarkup = true;
+		this.frame12.LabelWidget = this.GtkLabel12;
+		this.vbox5.Add (this.frame12);
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.frame12]));
+		w14.Position = 0;
+		// Container child vbox5.Gtk.Box+BoxChild
+		this.hbox9 = new global::Gtk.HBox ();
+		this.hbox9.Name = "hbox9";
+		this.hbox9.Spacing = 6;
+		// Container child hbox9.Gtk.Box+BoxChild
+		this.fixed2 = new global::Gtk.Fixed ();
+		this.fixed2.Name = "fixed2";
+		this.fixed2.HasWindow = false;
+		this.hbox9.Add (this.fixed2);
+		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.fixed2]));
+		w15.Position = 0;
+		// Container child hbox9.Gtk.Box+BoxChild
+		this.button18 = new global::Gtk.Button ();
+		this.button18.CanFocus = true;
+		this.button18.Name = "button18";
+		this.button18.UseUnderline = true;
+		this.button18.Label = global::Mono.Unix.Catalog.GetString ("Delete");
+		this.hbox9.Add (this.button18);
+		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.button18]));
+		w16.Position = 1;
+		w16.Expand = false;
+		w16.Fill = false;
+		this.vbox5.Add (this.hbox9);
+		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox9]));
+		w17.Position = 1;
 		w17.Expand = false;
 		w17.Fill = false;
-		this.vbox1.Add (this.hbox2);
-		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
+		this.hbox2.Add (this.vbox5);
+		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.vbox5]));
 		w18.Position = 1;
+		w18.Expand = false;
+		w18.Fill = false;
+		// Container child hbox2.Gtk.Box+BoxChild
+		this.frame4 = new global::Gtk.Frame ();
+		this.frame4.Name = "frame4";
+		this.frame4.ShadowType = ((global::Gtk.ShadowType)(0));
+		// Container child frame4.Gtk.Container+ContainerChild
+		this.GtkAlignment6 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+		this.GtkAlignment6.Name = "GtkAlignment6";
+		this.GtkAlignment6.LeftPadding = ((uint)(12));
+		// Container child GtkAlignment6.Gtk.Container+ContainerChild
+		this.packettracewidget1 = new global::NetTrafficSimulator.PacketTraceWidget ();
+		this.packettracewidget1.Events = ((global::Gdk.EventMask)(256));
+		this.packettracewidget1.Name = "packettracewidget1";
+		this.GtkAlignment6.Add (this.packettracewidget1);
+		this.frame4.Add (this.GtkAlignment6);
+		this.GtkLabel14 = new global::Gtk.Label ();
+		this.GtkLabel14.Name = "GtkLabel14";
+		this.GtkLabel14.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Packet traces</b>");
+		this.GtkLabel14.UseMarkup = true;
+		this.frame4.LabelWidget = this.GtkLabel14;
+		this.hbox2.Add (this.frame4);
+		global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.frame4]));
+		w21.PackType = ((global::Gtk.PackType)(1));
+		w21.Position = 2;
+		w21.Expand = false;
+		w21.Fill = false;
+		this.vbox1.Add (this.hbox2);
+		global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
+		w22.Position = 1;
 		// Container child vbox1.Gtk.Box+BoxChild
-		this.hbox7 = new global::Gtk.HBox ();
-		this.hbox7.Name = "hbox7";
-		this.hbox7.Spacing = 6;
-		// Container child hbox7.Gtk.Box+BoxChild
+		this.hbox8 = new global::Gtk.HBox ();
+		this.hbox8.Name = "hbox8";
+		this.hbox8.Spacing = 6;
+		// Container child hbox8.Gtk.Box+BoxChild
+		this.fixed4 = new global::Gtk.Fixed ();
+		this.fixed4.Name = "fixed4";
+		this.fixed4.HasWindow = false;
+		this.hbox8.Add (this.fixed4);
+		global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.fixed4]));
+		w23.Position = 0;
+		// Container child hbox8.Gtk.Box+BoxChild
+		this.fixed3 = new global::Gtk.Fixed ();
+		this.fixed3.Name = "fixed3";
+		this.fixed3.HasWindow = false;
+		this.hbox8.Add (this.fixed3);
+		global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.fixed3]));
+		w24.Position = 1;
+		// Container child hbox8.Gtk.Box+BoxChild
 		this.progressbar1 = new global::Gtk.ProgressBar ();
 		this.progressbar1.Name = "progressbar1";
-		this.hbox7.Add (this.progressbar1);
-		global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.hbox7 [this.progressbar1]));
-		w19.Position = 2;
-		this.vbox1.Add (this.hbox7);
-		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox7]));
-		w20.Position = 2;
-		w20.Expand = false;
-		w20.Fill = false;
+		this.hbox8.Add (this.progressbar1);
+		global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.progressbar1]));
+		w25.Position = 2;
+		this.vbox1.Add (this.hbox8);
+		global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox8]));
+		w26.Position = 2;
+		w26.Expand = false;
+		w26.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
 		this.DefaultWidth = 845;
-		this.DefaultHeight = 544;
+		this.DefaultHeight = 577;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
-		this.LoadModelFromFileAction.Activated += new global::System.EventHandler (this.loadFromFileHandler);
-		this.ExitApplicationAction.Activated += new global::System.EventHandler (this.exitHandler);
+		this.LoadModelAction.Activated += new global::System.EventHandler (this.loadFromFileHandler);
+		this.ExitSimulatorAction.Activated += new global::System.EventHandler (this.exitHandler);
 	}
 }

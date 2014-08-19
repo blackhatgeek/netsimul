@@ -176,11 +176,12 @@ public partial class MainWindow: Gtk.Window
 			//node name ... model.GetValue(iter,0);
 			//node type ... model.GetValue(iter,1);
 			GtkAlignment2.Child.Destroy();
-			GtkLabel4.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
-			GtkLabel4.UseMarkup = true;
+			GtkLabel12.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
+			GtkLabel12.UseMarkup = true;
 			switch (model.GetValue (iter, 1).ToString()) {
 			case SERVER:
-				GtkAlignment2.Child = new NetTrafficSimulator.ServerNodeWidget ();
+				NetTrafficSimulator.ServerNodeWidget sw = new NetTrafficSimulator.ServerNodeWidget ();
+				GtkAlignment2.Child = sw;
 				break;
 			case END:
 				GtkAlignment2.Child = new NetTrafficSimulator.EndNodeWidget ();
@@ -205,9 +206,11 @@ public partial class MainWindow: Gtk.Window
 			//node A    ... model.GetValue(iter,1);
 			//node B    ... model.GetValue(iter,2);
 			GtkAlignment2.Child.Destroy();
-			GtkLabel4.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
-			GtkLabel4.UseMarkup = true;
-			GtkAlignment2.Child = new NetTrafficSimulator.LinkWidget ();
+			GtkLabel12.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
+			GtkLabel12.UseMarkup = true;
+			NetTrafficSimulator.LinkWidget lw = new NetTrafficSimulator.LinkWidget ();
+			lw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
+			GtkAlignment2.Child = lw;
 			GtkAlignment2.Child.Visible = true;
 		}
 	}

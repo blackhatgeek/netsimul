@@ -9,6 +9,18 @@ namespace NetTrafficSimulator
 		{
 			this.Build ();
 		}
+
+		public ServerNodeParamWidget ParamWidget{
+			get{
+				return this.servernodeparamwidget1;
+			}
+		}
+
+		public ServerNodeResultWidget ResultWidget{
+			get{
+				return this.servernoderesultwidget1;
+			}
+		}
 	}
 }
 
