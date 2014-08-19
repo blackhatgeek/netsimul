@@ -5,8 +5,14 @@ namespace NetTrafficSimulator
 	public partial class NetworkNodeWidget
 	{
 		private global::Gtk.VBox vbox6;
+		private global::Gtk.Frame frame6;
+		private global::Gtk.Alignment GtkAlignment;
 		private global::NetTrafficSimulator.NetworkNodeParamWidget networknodeparamwidget1;
+		private global::Gtk.Label GtkLabel1;
+		private global::Gtk.Frame frame7;
+		private global::Gtk.Alignment GtkAlignment1;
 		private global::NetTrafficSimulator.NetworkNodeResultWidget networknoderesultwidget1;
+		private global::Gtk.Label GtkLabel3;
 
 		protected virtual void Build ()
 		{
@@ -19,17 +25,51 @@ namespace NetTrafficSimulator
 			this.vbox6.Name = "vbox6";
 			this.vbox6.Spacing = 6;
 			// Container child vbox6.Gtk.Box+BoxChild
-			this.networknodeparamwidget1 = null;
-			this.vbox6.Add (this.networknodeparamwidget1);
-			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.networknodeparamwidget1]));
-			w1.Position = 0;
+			this.frame6 = new global::Gtk.Frame ();
+			this.frame6.Name = "frame6";
+			this.frame6.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame6.Gtk.Container+ContainerChild
+			this.GtkAlignment = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment.Name = "GtkAlignment";
+			this.GtkAlignment.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.networknodeparamwidget1 = new global::NetTrafficSimulator.NetworkNodeParamWidget ();
+			this.networknodeparamwidget1.Events = ((global::Gdk.EventMask)(256));
+			this.networknodeparamwidget1.Name = "networknodeparamwidget1";
+			this.GtkAlignment.Add (this.networknodeparamwidget1);
+			this.frame6.Add (this.GtkAlignment);
+			this.GtkLabel1 = new global::Gtk.Label ();
+			this.GtkLabel1.Name = "GtkLabel1";
+			this.GtkLabel1.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Parameters</b>");
+			this.GtkLabel1.UseMarkup = true;
+			this.frame6.LabelWidget = this.GtkLabel1;
+			this.vbox6.Add (this.frame6);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.frame6]));
+			w3.Position = 0;
 			// Container child vbox6.Gtk.Box+BoxChild
-			this.networknoderesultwidget1 = null;
-			this.vbox6.Add (this.networknoderesultwidget1);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.networknoderesultwidget1]));
-			w2.Position = 1;
-			w2.Expand = false;
-			w2.Fill = false;
+			this.frame7 = new global::Gtk.Frame ();
+			this.frame7.Name = "frame7";
+			this.frame7.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame7.Gtk.Container+ContainerChild
+			this.GtkAlignment1 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment1.Name = "GtkAlignment1";
+			this.GtkAlignment1.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment1.Gtk.Container+ContainerChild
+			this.networknoderesultwidget1 = new global::NetTrafficSimulator.NetworkNodeResultWidget ();
+			this.networknoderesultwidget1.Events = ((global::Gdk.EventMask)(256));
+			this.networknoderesultwidget1.Name = "networknoderesultwidget1";
+			this.GtkAlignment1.Add (this.networknoderesultwidget1);
+			this.frame7.Add (this.GtkAlignment1);
+			this.GtkLabel3 = new global::Gtk.Label ();
+			this.GtkLabel3.Name = "GtkLabel3";
+			this.GtkLabel3.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Results</b>");
+			this.GtkLabel3.UseMarkup = true;
+			this.frame7.LabelWidget = this.GtkLabel3;
+			this.vbox6.Add (this.frame7);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.frame7]));
+			w6.Position = 1;
+			w6.Expand = false;
+			w6.Fill = false;
 			this.Add (this.vbox6);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

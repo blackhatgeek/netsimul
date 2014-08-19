@@ -85,7 +85,6 @@ namespace NetTrafficSimulator
 					nm.SetNodeType (i, NetworkModel.NETWORK_NODE);
 					nm.SetNodeName (i, name);
 					string lname = node.Attributes.GetNamedItem ("default").Value;
-					//zaregistrovat default route
 					if (false_default_routes.ContainsKey (lname))
 						throw new ArgumentException ("Link " + lname + " default route on both ends");
 					false_default_routes.Add (lname,name);
@@ -119,14 +118,20 @@ namespace NetTrafficSimulator
 					else {
 						string partner = (nnode_name == n1) ? n2 : n1;
 						nm.SetDefaultRoute (nm.GetNodeNum (nnode_name), nm.GetNodeNum(partner));
+						false_default_routes.Remove (name);
 					}
 
 				}
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
 				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
 				//verifikace
-				if (false_default_routes.Count!=0)
-					throw new Exception ("False default route exist");
+				if (false_default_routes.Count != 0) {
+					log.Error ("Unsatisfied default routes:");
+					foreach (KeyValuePair<string,string> kvp in false_default_routes) {
+						log.Error ("Link name:" + kvp.Key + " Network node name:" + kvp.Value);
+					}
+					throw new ArgumentException ("False default route exist");
+				}
 				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
 					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle);
 					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa, toggle);
@@ -216,7 +221,7 @@ namespace NetTrafficSimulator
 			else if (e.Severity == XmlSeverityType.Error)
 			{
 				log.Error (e.Message);
-				throw new Exception ("Model validation failed");
+				throw new XmlSchemaException ("Model validation failed");
 			}
 		}
 

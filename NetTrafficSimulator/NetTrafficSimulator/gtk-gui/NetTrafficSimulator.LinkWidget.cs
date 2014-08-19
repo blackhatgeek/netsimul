@@ -5,8 +5,14 @@ namespace NetTrafficSimulator
 	public partial class LinkWidget
 	{
 		private global::Gtk.VBox vbox8;
+		private global::Gtk.Frame frame5;
+		private global::Gtk.Alignment GtkAlignment1;
 		private global::NetTrafficSimulator.LinkParamWidget linkparamwidget1;
-		private global::NetTrafficSimulator.LinkResultWidget linkresultwidget2;
+		private global::Gtk.Label GtkLabel1;
+		private global::Gtk.Frame frame4;
+		private global::Gtk.Alignment GtkAlignment;
+		private global::NetTrafficSimulator.LinkResultWidget linkresultwidget1;
+		private global::Gtk.Label GtkLabel;
 
 		protected virtual void Build ()
 		{
@@ -19,19 +25,53 @@ namespace NetTrafficSimulator
 			this.vbox8.Name = "vbox8";
 			this.vbox8.Spacing = 6;
 			// Container child vbox8.Gtk.Box+BoxChild
-			this.linkparamwidget1 = null;
-			this.vbox8.Add (this.linkparamwidget1);
-			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox8 [this.linkparamwidget1]));
-			w1.Position = 0;
-			w1.Expand = false;
-			w1.Fill = false;
+			this.frame5 = new global::Gtk.Frame ();
+			this.frame5.Name = "frame5";
+			this.frame5.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame5.Gtk.Container+ContainerChild
+			this.GtkAlignment1 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment1.Name = "GtkAlignment1";
+			this.GtkAlignment1.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment1.Gtk.Container+ContainerChild
+			this.linkparamwidget1 = new global::NetTrafficSimulator.LinkParamWidget ();
+			this.linkparamwidget1.Events = ((global::Gdk.EventMask)(256));
+			this.linkparamwidget1.Name = "linkparamwidget1";
+			this.GtkAlignment1.Add (this.linkparamwidget1);
+			this.frame5.Add (this.GtkAlignment1);
+			this.GtkLabel1 = new global::Gtk.Label ();
+			this.GtkLabel1.Name = "GtkLabel1";
+			this.GtkLabel1.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Parameters</b>");
+			this.GtkLabel1.UseMarkup = true;
+			this.frame5.LabelWidget = this.GtkLabel1;
+			this.vbox8.Add (this.frame5);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox8 [this.frame5]));
+			w3.Position = 0;
+			w3.Expand = false;
+			w3.Fill = false;
 			// Container child vbox8.Gtk.Box+BoxChild
-			this.linkresultwidget2 = null;
-			this.vbox8.Add (this.linkresultwidget2);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox8 [this.linkresultwidget2]));
-			w2.Position = 1;
-			w2.Expand = false;
-			w2.Fill = false;
+			this.frame4 = new global::Gtk.Frame ();
+			this.frame4.Name = "frame4";
+			this.frame4.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame4.Gtk.Container+ContainerChild
+			this.GtkAlignment = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment.Name = "GtkAlignment";
+			this.GtkAlignment.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.linkresultwidget1 = new global::NetTrafficSimulator.LinkResultWidget ();
+			this.linkresultwidget1.Events = ((global::Gdk.EventMask)(256));
+			this.linkresultwidget1.Name = "linkresultwidget1";
+			this.GtkAlignment.Add (this.linkresultwidget1);
+			this.frame4.Add (this.GtkAlignment);
+			this.GtkLabel = new global::Gtk.Label ();
+			this.GtkLabel.Name = "GtkLabel";
+			this.GtkLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Results</b>");
+			this.GtkLabel.UseMarkup = true;
+			this.frame4.LabelWidget = this.GtkLabel;
+			this.vbox8.Add (this.frame4);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox8 [this.frame4]));
+			w6.Position = 1;
+			w6.Expand = false;
+			w6.Fill = false;
 			this.Add (this.vbox8);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

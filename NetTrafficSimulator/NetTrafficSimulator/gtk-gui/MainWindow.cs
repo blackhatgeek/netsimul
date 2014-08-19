@@ -8,15 +8,40 @@ public partial class MainWindow
 	private global::Gtk.Action ModelAction;
 	private global::Gtk.Action Action;
 	private global::Gtk.Action HelpAction;
+	private global::Gtk.Action LoadModelFromFileAction;
+	private global::Gtk.Action SaveResultsToFileAction;
+	private global::Gtk.Action NewModelAction;
+	private global::Gtk.Action ExitApplicationAction;
+	private global::Gtk.Action RunSimulationAction;
+	private global::Gtk.Action AddEndNodeAction;
+	private global::Gtk.Action AddNetworkNodeAction;
+	private global::Gtk.Action AddServerNodeAction;
+	private global::Gtk.Action AddLinkAction;
+	private global::Gtk.Action AboutAction;
+	private global::Gtk.Action ParametersAction;
+	private global::Gtk.Action ParametersAction1;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
 	private global::Gtk.HBox hbox2;
 	private global::Gtk.VBox vbox2;
+	private global::Gtk.Frame frame10;
+	private global::Gtk.Alignment GtkAlignment;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow2;
-	private global::Gtk.TreeView treeview1;
+	private global::Gtk.TreeView treeview3;
+	private global::Gtk.Label GtkLabel8;
+	private global::Gtk.Frame frame11;
+	private global::Gtk.Alignment GtkAlignment1;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow1;
-	private global::Gtk.TreeView treeview2;
-	private global::NetTrafficSimulator.EndNodeWidget endnodewidget1;
+	private global::Gtk.TreeView treeview4;
+	private global::Gtk.Label GtkLabel9;
+	private global::Gtk.Frame frame12;
+	private global::Gtk.Alignment GtkAlignment2;
+	private global::NetTrafficSimulator.EndNodeWidget endnodewidget2;
+	private global::Gtk.Label GtkLabel4;
+	private global::Gtk.Frame frame13;
+	private global::Gtk.Alignment GtkAlignment3;
+	private global::NetTrafficSimulator.PacketTraceWidget packettracewidget4;
+	private global::Gtk.Label GtkLabel11;
 	private global::Gtk.HBox hbox7;
 	private global::Gtk.ProgressBar progressbar1;
 
@@ -40,6 +65,42 @@ public partial class MainWindow
 		this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
 		this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
 		w1.Add (this.HelpAction, null);
+		this.LoadModelFromFileAction = new global::Gtk.Action ("LoadModelFromFileAction", global::Mono.Unix.Catalog.GetString ("Load model from file"), null, null);
+		this.LoadModelFromFileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Load model from file");
+		w1.Add (this.LoadModelFromFileAction, null);
+		this.SaveResultsToFileAction = new global::Gtk.Action ("SaveResultsToFileAction", global::Mono.Unix.Catalog.GetString ("Save results to file"), null, null);
+		this.SaveResultsToFileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save results to file");
+		w1.Add (this.SaveResultsToFileAction, null);
+		this.NewModelAction = new global::Gtk.Action ("NewModelAction", global::Mono.Unix.Catalog.GetString ("New model"), null, null);
+		this.NewModelAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("New model");
+		w1.Add (this.NewModelAction, null);
+		this.ExitApplicationAction = new global::Gtk.Action ("ExitApplicationAction", global::Mono.Unix.Catalog.GetString ("Exit application"), null, null);
+		this.ExitApplicationAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Exit application");
+		w1.Add (this.ExitApplicationAction, null);
+		this.RunSimulationAction = new global::Gtk.Action ("RunSimulationAction", global::Mono.Unix.Catalog.GetString ("Run simulation"), null, null);
+		this.RunSimulationAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Run simulation");
+		w1.Add (this.RunSimulationAction, null);
+		this.AddEndNodeAction = new global::Gtk.Action ("AddEndNodeAction", global::Mono.Unix.Catalog.GetString ("Add end node"), null, null);
+		this.AddEndNodeAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add end node");
+		w1.Add (this.AddEndNodeAction, null);
+		this.AddNetworkNodeAction = new global::Gtk.Action ("AddNetworkNodeAction", global::Mono.Unix.Catalog.GetString ("Add network node"), null, null);
+		this.AddNetworkNodeAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add network node");
+		w1.Add (this.AddNetworkNodeAction, null);
+		this.AddServerNodeAction = new global::Gtk.Action ("AddServerNodeAction", global::Mono.Unix.Catalog.GetString ("Add server node"), null, null);
+		this.AddServerNodeAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add server node");
+		w1.Add (this.AddServerNodeAction, null);
+		this.AddLinkAction = new global::Gtk.Action ("AddLinkAction", global::Mono.Unix.Catalog.GetString ("Add link"), null, null);
+		this.AddLinkAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add link");
+		w1.Add (this.AddLinkAction, null);
+		this.AboutAction = new global::Gtk.Action ("AboutAction", global::Mono.Unix.Catalog.GetString ("About"), null, null);
+		this.AboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("About");
+		w1.Add (this.AboutAction, null);
+		this.ParametersAction = new global::Gtk.Action ("ParametersAction", global::Mono.Unix.Catalog.GetString ("Parameters"), null, null);
+		this.ParametersAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Parameters");
+		w1.Add (this.ParametersAction, null);
+		this.ParametersAction1 = new global::Gtk.Action ("ParametersAction1", global::Mono.Unix.Catalog.GetString ("Parameters"), null, null);
+		this.ParametersAction1.ShortLabel = global::Mono.Unix.Catalog.GetString ("Parameters");
+		w1.Add (this.ParametersAction1, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -50,7 +111,7 @@ public partial class MainWindow
 		this.vbox1.Name = "vbox1";
 		this.vbox1.Spacing = 6;
 		// Container child vbox1.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'/><menu name='SimulationAction' action='SimulationAction'/><menu name='ModelAction' action='ModelAction'/><menu/><menu name='HelpAction' action='HelpAction'/></menubar></ui>");
+		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='LoadModelFromFileAction' action='LoadModelFromFileAction'/><menuitem name='SaveResultsToFileAction' action='SaveResultsToFileAction'/><menuitem name='NewModelAction' action='NewModelAction'/><menuitem name='ExitApplicationAction' action='ExitApplicationAction'/></menu><menu name='SimulationAction' action='SimulationAction'><menuitem name='ParametersAction1' action='ParametersAction1'/><menuitem name='RunSimulationAction' action='RunSimulationAction'/></menu><menu name='ModelAction' action='ModelAction'><menuitem name='AddEndNodeAction' action='AddEndNodeAction'/><menuitem name='AddNetworkNodeAction' action='AddNetworkNodeAction'/><menuitem name='AddServerNodeAction' action='AddServerNodeAction'/><menuitem name='AddLinkAction' action='AddLinkAction'/></menu><menu/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu></menubar></ui>");
 		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 		this.menubar2.Name = "menubar2";
 		this.vbox1.Add (this.menubar2);
@@ -67,42 +128,117 @@ public partial class MainWindow
 		this.vbox2.Name = "vbox2";
 		this.vbox2.Spacing = 6;
 		// Container child vbox2.Gtk.Box+BoxChild
+		this.frame10 = new global::Gtk.Frame ();
+		this.frame10.Name = "frame10";
+		this.frame10.ShadowType = ((global::Gtk.ShadowType)(0));
+		// Container child frame10.Gtk.Container+ContainerChild
+		this.GtkAlignment = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+		this.GtkAlignment.Name = "GtkAlignment";
+		this.GtkAlignment.LeftPadding = ((uint)(12));
+		// Container child GtkAlignment.Gtk.Container+ContainerChild
 		this.GtkScrolledWindow2 = new global::Gtk.ScrolledWindow ();
 		this.GtkScrolledWindow2.Name = "GtkScrolledWindow2";
 		this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
 		// Container child GtkScrolledWindow2.Gtk.Container+ContainerChild
-		this.treeview1 = new global::Gtk.TreeView ();
-		this.treeview1.CanFocus = true;
-		this.treeview1.Name = "treeview1";
-		this.GtkScrolledWindow2.Add (this.treeview1);
-		this.vbox2.Add (this.GtkScrolledWindow2);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.GtkScrolledWindow2]));
-		w4.Position = 0;
+		this.treeview3 = new global::Gtk.TreeView ();
+		this.treeview3.WidthRequest = 200;
+		this.treeview3.CanFocus = true;
+		this.treeview3.Name = "treeview3";
+		this.GtkScrolledWindow2.Add (this.treeview3);
+		this.GtkAlignment.Add (this.GtkScrolledWindow2);
+		this.frame10.Add (this.GtkAlignment);
+		this.GtkLabel8 = new global::Gtk.Label ();
+		this.GtkLabel8.Name = "GtkLabel8";
+		this.GtkLabel8.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Nodes</b>");
+		this.GtkLabel8.UseMarkup = true;
+		this.frame10.LabelWidget = this.GtkLabel8;
+		this.vbox2.Add (this.frame10);
+		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame10]));
+		w6.Position = 0;
 		// Container child vbox2.Gtk.Box+BoxChild
+		this.frame11 = new global::Gtk.Frame ();
+		this.frame11.Name = "frame11";
+		this.frame11.ShadowType = ((global::Gtk.ShadowType)(0));
+		// Container child frame11.Gtk.Container+ContainerChild
+		this.GtkAlignment1 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+		this.GtkAlignment1.Name = "GtkAlignment1";
+		this.GtkAlignment1.LeftPadding = ((uint)(12));
+		// Container child GtkAlignment1.Gtk.Container+ContainerChild
 		this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow ();
 		this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
 		this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
 		// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
-		this.treeview2 = new global::Gtk.TreeView ();
-		this.treeview2.CanFocus = true;
-		this.treeview2.Name = "treeview2";
-		this.GtkScrolledWindow1.Add (this.treeview2);
-		this.vbox2.Add (this.GtkScrolledWindow1);
-		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.GtkScrolledWindow1]));
-		w6.Position = 1;
+		this.treeview4 = new global::Gtk.TreeView ();
+		this.treeview4.CanFocus = true;
+		this.treeview4.Name = "treeview4";
+		this.GtkScrolledWindow1.Add (this.treeview4);
+		this.GtkAlignment1.Add (this.GtkScrolledWindow1);
+		this.frame11.Add (this.GtkAlignment1);
+		this.GtkLabel9 = new global::Gtk.Label ();
+		this.GtkLabel9.Name = "GtkLabel9";
+		this.GtkLabel9.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Links</b>");
+		this.GtkLabel9.UseMarkup = true;
+		this.frame11.LabelWidget = this.GtkLabel9;
+		this.vbox2.Add (this.frame11);
+		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame11]));
+		w10.Position = 1;
 		this.hbox2.Add (this.vbox2);
-		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.vbox2]));
-		w7.Position = 0;
+		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.vbox2]));
+		w11.Position = 0;
+		w11.Expand = false;
+		w11.Fill = false;
 		// Container child hbox2.Gtk.Box+BoxChild
-		this.endnodewidget1 = null;
-		this.hbox2.Add (this.endnodewidget1);
-		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.endnodewidget1]));
-		w8.Position = 1;
-		w8.Expand = false;
-		w8.Fill = false;
+		this.frame12 = new global::Gtk.Frame ();
+		this.frame12.Name = "frame12";
+		this.frame12.ShadowType = ((global::Gtk.ShadowType)(0));
+		// Container child frame12.Gtk.Container+ContainerChild
+		this.GtkAlignment2 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+		this.GtkAlignment2.Name = "GtkAlignment2";
+		this.GtkAlignment2.LeftPadding = ((uint)(12));
+		// Container child GtkAlignment2.Gtk.Container+ContainerChild
+		this.endnodewidget2 = new global::NetTrafficSimulator.EndNodeWidget ();
+		this.endnodewidget2.Events = ((global::Gdk.EventMask)(256));
+		this.endnodewidget2.Name = "endnodewidget2";
+		this.GtkAlignment2.Add (this.endnodewidget2);
+		this.frame12.Add (this.GtkAlignment2);
+		this.GtkLabel4 = new global::Gtk.Label ();
+		this.GtkLabel4.Name = "GtkLabel4";
+		this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>GtkFrame</b>");
+		this.GtkLabel4.UseMarkup = true;
+		this.frame12.LabelWidget = this.GtkLabel4;
+		this.hbox2.Add (this.frame12);
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.frame12]));
+		w14.Position = 1;
+		w14.Expand = false;
+		w14.Fill = false;
+		// Container child hbox2.Gtk.Box+BoxChild
+		this.frame13 = new global::Gtk.Frame ();
+		this.frame13.Name = "frame13";
+		this.frame13.ShadowType = ((global::Gtk.ShadowType)(0));
+		// Container child frame13.Gtk.Container+ContainerChild
+		this.GtkAlignment3 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+		this.GtkAlignment3.Name = "GtkAlignment3";
+		this.GtkAlignment3.LeftPadding = ((uint)(12));
+		// Container child GtkAlignment3.Gtk.Container+ContainerChild
+		this.packettracewidget4 = new global::NetTrafficSimulator.PacketTraceWidget ();
+		this.packettracewidget4.Events = ((global::Gdk.EventMask)(256));
+		this.packettracewidget4.Name = "packettracewidget4";
+		this.GtkAlignment3.Add (this.packettracewidget4);
+		this.frame13.Add (this.GtkAlignment3);
+		this.GtkLabel11 = new global::Gtk.Label ();
+		this.GtkLabel11.Name = "GtkLabel11";
+		this.GtkLabel11.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Packet traces</b>");
+		this.GtkLabel11.UseMarkup = true;
+		this.frame13.LabelWidget = this.GtkLabel11;
+		this.hbox2.Add (this.frame13);
+		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.frame13]));
+		w17.PackType = ((global::Gtk.PackType)(1));
+		w17.Position = 2;
+		w17.Expand = false;
+		w17.Fill = false;
 		this.vbox1.Add (this.hbox2);
-		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
-		w9.Position = 1;
+		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
+		w18.Position = 1;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.hbox7 = new global::Gtk.HBox ();
 		this.hbox7.Name = "hbox7";
@@ -111,20 +247,22 @@ public partial class MainWindow
 		this.progressbar1 = new global::Gtk.ProgressBar ();
 		this.progressbar1.Name = "progressbar1";
 		this.hbox7.Add (this.progressbar1);
-		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox7 [this.progressbar1]));
-		w10.Position = 2;
+		global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.hbox7 [this.progressbar1]));
+		w19.Position = 2;
 		this.vbox1.Add (this.hbox7);
-		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox7]));
-		w11.Position = 2;
-		w11.Expand = false;
-		w11.Fill = false;
+		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox7]));
+		w20.Position = 2;
+		w20.Expand = false;
+		w20.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
 		this.DefaultWidth = 845;
-		this.DefaultHeight = 492;
+		this.DefaultHeight = 544;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
+		this.LoadModelFromFileAction.Activated += new global::System.EventHandler (this.loadFromFileHandler);
+		this.ExitApplicationAction.Activated += new global::System.EventHandler (this.exitHandler);
 	}
 }

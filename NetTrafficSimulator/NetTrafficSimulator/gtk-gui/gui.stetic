@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Release/NetTrafficSimulator.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="845 492">
+  <widget class="Gtk.Window" id="MainWindow" design-size="845 544">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -28,12 +28,73 @@
       <action id="Action">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="ShortLabel" translatable="yes" />
       </action>
       <action id="HelpAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">Help</property>
         <property name="ShortLabel" translatable="yes">Help</property>
+      </action>
+      <action id="LoadModelFromFileAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Load model from file</property>
+        <property name="ShortLabel" translatable="yes">Load model from file</property>
+        <signal name="Activated" handler="loadFromFileHandler" />
+      </action>
+      <action id="SaveResultsToFileAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Save results to file</property>
+        <property name="ShortLabel" translatable="yes">Save results to file</property>
+      </action>
+      <action id="NewModelAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">New model</property>
+        <property name="ShortLabel" translatable="yes">New model</property>
+      </action>
+      <action id="ExitApplicationAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Exit application</property>
+        <property name="ShortLabel" translatable="yes">Exit application</property>
+        <signal name="Activated" handler="exitHandler" />
+      </action>
+      <action id="RunSimulationAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Run simulation</property>
+        <property name="ShortLabel" translatable="yes">Run simulation</property>
+      </action>
+      <action id="AddEndNodeAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add end node</property>
+        <property name="ShortLabel" translatable="yes">Add end node</property>
+      </action>
+      <action id="AddNetworkNodeAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add network node</property>
+        <property name="ShortLabel" translatable="yes">Add network node</property>
+      </action>
+      <action id="AddServerNodeAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add server node</property>
+        <property name="ShortLabel" translatable="yes">Add server node</property>
+      </action>
+      <action id="AddLinkAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add link</property>
+        <property name="ShortLabel" translatable="yes">Add link</property>
+      </action>
+      <action id="AboutAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">About</property>
+        <property name="ShortLabel" translatable="yes">About</property>
+      </action>
+      <action id="ParametersAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Parameters</property>
+        <property name="ShortLabel" translatable="yes">Parameters</property>
+      </action>
+      <action id="ParametersAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Parameters</property>
+        <property name="ShortLabel" translatable="yes">Parameters</property>
       </action>
     </action-group>
     <property name="MemberName" />
@@ -47,12 +108,27 @@
         <child>
           <widget class="Gtk.MenuBar" id="menubar2">
             <property name="MemberName" />
-            <node name="__gtksharp_107_Stetic_Editor_ActionMenuBar" type="Menubar">
-              <node type="Menu" action="FileAction" />
-              <node type="Menu" action="SimulationAction" />
-              <node type="Menu" action="ModelAction" />
+            <node name="menubar2" type="Menubar">
+              <node type="Menu" action="FileAction">
+                <node type="Menuitem" action="LoadModelFromFileAction" />
+                <node type="Menuitem" action="SaveResultsToFileAction" />
+                <node type="Menuitem" action="NewModelAction" />
+                <node type="Menuitem" action="ExitApplicationAction" />
+              </node>
+              <node type="Menu" action="SimulationAction">
+                <node type="Menuitem" action="ParametersAction1" />
+                <node type="Menuitem" action="RunSimulationAction" />
+              </node>
+              <node type="Menu" action="ModelAction">
+                <node type="Menuitem" action="AddEndNodeAction" />
+                <node type="Menuitem" action="AddNetworkNodeAction" />
+                <node type="Menuitem" action="AddServerNodeAction" />
+                <node type="Menuitem" action="AddLinkAction" />
+              </node>
               <node type="Menu" />
-              <node type="Menu" action="HelpAction" />
+              <node type="Menu" action="HelpAction">
+                <node type="Menuitem" action="AboutAction" />
+              </node>
             </node>
           </widget>
           <packing>
@@ -71,15 +147,40 @@
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow2">
+                  <widget class="Gtk.Frame" id="frame10">
                     <property name="MemberName" />
-                    <property name="ShadowType">In</property>
+                    <property name="ShadowType">None</property>
                     <child>
-                      <widget class="Gtk.TreeView" id="treeview1">
+                      <widget class="Gtk.Alignment" id="GtkAlignment">
                         <property name="MemberName" />
-                        <property name="CanFocus">True</property>
-                        <property name="ShowScrollbars">True</property>
+                        <property name="Xalign">0</property>
+                        <property name="Yalign">0</property>
+                        <property name="LeftPadding">12</property>
+                        <child>
+                          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow2">
+                            <property name="MemberName" />
+                            <property name="ShadowType">In</property>
+                            <child>
+                              <widget class="Gtk.TreeView" id="treeview3">
+                                <property name="MemberName" />
+                                <property name="WidthRequest">200</property>
+                                <property name="CanFocus">True</property>
+                                <property name="ShowScrollbars">True</property>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
                       </widget>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Label" id="GtkLabel8">
+                        <property name="MemberName" />
+                        <property name="LabelProp" translatable="yes">&lt;b&gt;Nodes&lt;/b&gt;</property>
+                        <property name="UseMarkup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="type">label_item</property>
+                      </packing>
                     </child>
                   </widget>
                   <packing>
@@ -88,15 +189,39 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                  <widget class="Gtk.Frame" id="frame11">
                     <property name="MemberName" />
-                    <property name="ShadowType">In</property>
+                    <property name="ShadowType">None</property>
                     <child>
-                      <widget class="Gtk.TreeView" id="treeview2">
+                      <widget class="Gtk.Alignment" id="GtkAlignment1">
                         <property name="MemberName" />
-                        <property name="CanFocus">True</property>
-                        <property name="ShowScrollbars">True</property>
+                        <property name="Xalign">0</property>
+                        <property name="Yalign">0</property>
+                        <property name="LeftPadding">12</property>
+                        <child>
+                          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                            <property name="MemberName" />
+                            <property name="ShadowType">In</property>
+                            <child>
+                              <widget class="Gtk.TreeView" id="treeview4">
+                                <property name="MemberName" />
+                                <property name="CanFocus">True</property>
+                                <property name="ShowScrollbars">True</property>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
                       </widget>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Label" id="GtkLabel9">
+                        <property name="MemberName" />
+                        <property name="LabelProp" translatable="yes">&lt;b&gt;Links&lt;/b&gt;</property>
+                        <property name="UseMarkup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="type">label_item</property>
+                      </packing>
                     </child>
                   </widget>
                   <packing>
@@ -108,15 +233,78 @@
               <packing>
                 <property name="Position">0</property>
                 <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
               </packing>
             </child>
             <child>
-              <widget class="NetTrafficSimulator.EndNodeWidget" id="endnodewidget1">
+              <widget class="Gtk.Frame" id="frame12">
                 <property name="MemberName" />
-                <property name="Events">ButtonPressMask</property>
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment2">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <widget class="NetTrafficSimulator.EndNodeWidget" id="endnodewidget2">
+                        <property name="MemberName" />
+                        <property name="Events">ButtonPressMask</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel4">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;GtkFrame&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Frame" id="frame13">
+                <property name="MemberName" />
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment3">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <widget class="NetTrafficSimulator.PacketTraceWidget" id="packettracewidget4">
+                        <property name="MemberName" />
+                        <property name="Events">ButtonPressMask</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel11">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Packet traces&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="PackType">End</property>
+                <property name="Position">2</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
@@ -501,7 +689,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeParamWidget" design-size="300 300">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeParamWidget" design-size="305 300">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -630,6 +818,21 @@
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="checkbutton1">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Label" translatable="yes">Default route</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="UseUnderline">True</property>
+              </widget>
+              <packing>
+                <property name="PackType">End</property>
+                <property name="Position">3</property>
+                <property name="AutoSize">True</property>
               </packing>
             </child>
           </widget>
@@ -1128,64 +1331,118 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.EndNodeWidget" design-size="300 433">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.EndNodeWidget" design-size="229 696">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
-      <widget class="Gtk.VBox" id="vbox9">
+      <widget class="Gtk.HBox" id="hbox1">
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="NetTrafficSimulator.EndNodeParamWidget" id="endnodeparamwidget3">
-            <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
-          </widget>
-          <packing>
-            <property name="Position">0</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="NetTrafficSimulator.EndNodeEventsWidget" id="endnodeeventswidget2">
-            <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
-          </widget>
-          <packing>
-            <property name="Position">1</property>
-            <property name="AutoSize">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="NetTrafficSimulator.EndNodeResultWidget" id="endnoderesultwidget3">
-            <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
-          </widget>
-          <packing>
-            <property name="Position">2</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.HBox" id="hbox24">
+          <widget class="Gtk.VBox" id="vbox3">
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <placeholder />
+              <widget class="Gtk.Frame" id="frame1">
+                <property name="MemberName" />
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <widget class="NetTrafficSimulator.EndNodeParamWidget" id="endnodeparamwidget3">
+                        <property name="MemberName" />
+                        <property name="Events">ButtonPressMask</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel1">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Parameters&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
             </child>
             <child>
-              <widget class="Gtk.Button" id="button3">
+              <widget class="Gtk.Frame" id="frame2">
                 <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Remove</property>
-                <property name="UseUnderline">True</property>
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment1">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <widget class="NetTrafficSimulator.EndNodeEventsWidget" id="endnodeeventswidget4">
+                        <property name="MemberName" />
+                        <property name="Events">ButtonPressMask</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel3">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Events&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Frame" id="frame3">
+                <property name="MemberName" />
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment2">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <widget class="NetTrafficSimulator.EndNodeResultWidget" id="endnoderesultwidget4">
+                        <property name="MemberName" />
+                        <property name="Events">ButtonPressMask</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel5">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Results&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
@@ -1193,7 +1450,7 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">3</property>
+            <property name="Position">0</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -1392,7 +1649,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.ServerNodeWidget" design-size="300 214">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.ServerNodeWidget" design-size="300 244">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -1400,9 +1657,33 @@
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="NetTrafficSimulator.ServerNodeParamWidget" id="servernodeparamwidget1">
+          <widget class="Gtk.Frame" id="frame8">
             <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="NetTrafficSimulator.ServerNodeParamWidget" id="servernodeparamwidget1">
+                    <property name="MemberName" />
+                    <property name="Events">ButtonPressMask</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Parameters&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">0</property>
@@ -1412,9 +1693,33 @@
           </packing>
         </child>
         <child>
-          <widget class="NetTrafficSimulator.ServerNodeResultWidget" id="servernoderesultwidget1">
+          <widget class="Gtk.Frame" id="frame9">
             <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment1">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="NetTrafficSimulator.ServerNodeResultWidget" id="servernoderesultwidget1">
+                    <property name="MemberName" />
+                    <property name="Events">ButtonPressMask</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel1">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Results&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -1760,7 +2065,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeWidget" design-size="300 370">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeWidget" design-size="313 408">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -1768,9 +2073,33 @@
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="NetTrafficSimulator.NetworkNodeParamWidget" id="networknodeparamwidget1">
+          <widget class="Gtk.Frame" id="frame6">
             <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="NetTrafficSimulator.NetworkNodeParamWidget" id="networknodeparamwidget1">
+                    <property name="MemberName" />
+                    <property name="Events">ButtonPressMask</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel1">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Parameters&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">0</property>
@@ -1778,9 +2107,33 @@
           </packing>
         </child>
         <child>
-          <widget class="NetTrafficSimulator.NetworkNodeResultWidget" id="networknoderesultwidget1">
+          <widget class="Gtk.Frame" id="frame7">
             <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment1">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="NetTrafficSimulator.NetworkNodeResultWidget" id="networknoderesultwidget1">
+                    <property name="MemberName" />
+                    <property name="Events">ButtonPressMask</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel3">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Results&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -2018,7 +2371,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.LinkWidget" design-size="300 300">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.LinkWidget" design-size="300 333">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -2026,9 +2379,33 @@
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="NetTrafficSimulator.LinkParamWidget" id="linkparamwidget1">
+          <widget class="Gtk.Frame" id="frame5">
             <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment1">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="NetTrafficSimulator.LinkParamWidget" id="linkparamwidget1">
+                    <property name="MemberName" />
+                    <property name="Events">ButtonPressMask</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel1">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Parameters&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">0</property>
@@ -2038,13 +2415,182 @@
           </packing>
         </child>
         <child>
-          <widget class="NetTrafficSimulator.LinkResultWidget" id="linkresultwidget2">
+          <widget class="Gtk.Frame" id="frame4">
             <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="NetTrafficSimulator.LinkResultWidget" id="linkresultwidget1">
+                    <property name="MemberName" />
+                    <property name="Events">ButtonPressMask</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Results&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.PacketTraceWidget" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+        <property name="MemberName" />
+        <property name="ShadowType">In</property>
+        <child>
+          <widget class="Gtk.TreeView" id="treeview1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="ShowScrollbars">True</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Dialog" id="NetTrafficSimulator.ModelLoaderDialog" design-size="801 545">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Model to load</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <property name="Buttons">2</property>
+    <property name="HelpButton">False</property>
+    <child internal-child="VBox">
+      <widget class="Gtk.VBox" id="dialog1_VBox">
+        <property name="MemberName" />
+        <property name="BorderWidth">2</property>
+        <child>
+          <widget class="Gtk.FileChooserWidget" id="filechooserwidget1">
+            <property name="MemberName" />
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+    <child internal-child="ActionArea">
+      <widget class="Gtk.HButtonBox" id="dialog1_ActionArea">
+        <property name="MemberName" />
+        <property name="Spacing">10</property>
+        <property name="BorderWidth">5</property>
+        <property name="Size">2</property>
+        <property name="LayoutStyle">End</property>
+        <child>
+          <widget class="Gtk.Button" id="buttonCancel">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-cancel</property>
+            <property name="ResponseId">-6</property>
+            <property name="label">gtk-cancel</property>
+          </widget>
+          <packing>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="buttonOk">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-ok</property>
+            <property name="ResponseId">-5</property>
+            <property name="label">gtk-ok</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Dialog" id="NetTrafficSimulator.ModelLoaderDialog" design-size="801 545">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Model to load</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <property name="Buttons">2</property>
+    <property name="HelpButton">False</property>
+    <child internal-child="VBox">
+      <widget class="Gtk.VBox" id="dialog1_VBox">
+        <property name="MemberName" />
+        <property name="BorderWidth">2</property>
+        <child>
+          <widget class="Gtk.FileChooserWidget" id="filechooserwidget1">
+            <property name="MemberName" />
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+    <child internal-child="ActionArea">
+      <widget class="Gtk.HButtonBox" id="dialog1_ActionArea">
+        <property name="MemberName" />
+        <property name="Spacing">10</property>
+        <property name="BorderWidth">5</property>
+        <property name="Size">2</property>
+        <property name="LayoutStyle">End</property>
+        <child>
+          <widget class="Gtk.Button" id="buttonCancel">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-cancel</property>
+            <property name="ResponseId">-6</property>
+            <property name="label">gtk-cancel</property>
+          </widget>
+          <packing>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="buttonOk">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-ok</property>
+            <property name="ResponseId">-5</property>
+            <property name="label">gtk-ok</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>

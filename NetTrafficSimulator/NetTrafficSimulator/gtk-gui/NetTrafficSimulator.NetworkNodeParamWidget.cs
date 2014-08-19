@@ -16,6 +16,7 @@ namespace NetTrafficSimulator
 		private global::Gtk.Label label11;
 		private global::Gtk.ComboBox combobox3;
 		private global::Gtk.Button button1;
+		private global::Gtk.CheckButton checkbutton1;
 
 		protected virtual void Build ()
 		{
@@ -116,11 +117,22 @@ namespace NetTrafficSimulator
 			w10.Position = 2;
 			w10.Expand = false;
 			w10.Fill = false;
-			this.vbox5.Add (this.hbox11);
-			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox11]));
+			// Container child hbox11.Gtk.Box+BoxChild
+			this.checkbutton1 = new global::Gtk.CheckButton ();
+			this.checkbutton1.CanFocus = true;
+			this.checkbutton1.Name = "checkbutton1";
+			this.checkbutton1.Label = global::Mono.Unix.Catalog.GetString ("Default route");
+			this.checkbutton1.DrawIndicator = true;
+			this.checkbutton1.UseUnderline = true;
+			this.hbox11.Add (this.checkbutton1);
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.checkbutton1]));
+			w11.PackType = ((global::Gtk.PackType)(1));
 			w11.Position = 3;
-			w11.Expand = false;
-			w11.Fill = false;
+			this.vbox5.Add (this.hbox11);
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox11]));
+			w12.Position = 3;
+			w12.Expand = false;
+			w12.Fill = false;
 			this.Add (this.vbox5);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

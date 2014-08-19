@@ -32,6 +32,9 @@ namespace NetTrafficSimulator
 			}catch(ArgumentOutOfRangeException e){
 				log.Error ("Attribute value out of range: "+e.Message);
 				log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
+			}catch(ArgumentNullException e){
+				log.Error ("Argument null: " + e.Message);
+				log.Debug ("EXCEPTION: " + e.Message + "\n" + e.StackTrace);
 			}catch(ArgumentException e){
 				log.Error ("Error: " + e.Message);
 				log.Debug ("EXCEPTION: " + e.Message + "\n" + e.StackTrace);
