@@ -10,6 +10,24 @@ namespace NetTrafficSimulator
 			this.Build ();
 
 		}
+
+		public EndNodeParamWidget ParamWidget{
+			get{
+				return this.endnodeparamwidget3;
+			}
+		}
+
+		public EndNodeResultWidget ResultWidget{
+			get{
+				return this.endnoderesultwidget4;
+			}
+		}
+
+		public EndNodeEventsWidget EventWidget{
+			get{
+				return this.endnodeeventswidget4;
+			}
+		}
 	}
 }
 

@@ -9,6 +9,10 @@ namespace NetTrafficSimulator
 		{
 			this.Build ();
 		}
+
+		public void LoadParams(NetworkModel nm,String nname){
+			this.entry4.Text = nname;
+		}
 	}
 }
 

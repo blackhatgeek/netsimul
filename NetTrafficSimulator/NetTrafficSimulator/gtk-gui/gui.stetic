@@ -87,6 +87,11 @@
         <property name="Label" translatable="yes">About</property>
         <property name="ShortLabel" translatable="yes">About</property>
       </action>
+      <action id="AddLinkAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add link</property>
+        <property name="ShortLabel" translatable="yes">Add link</property>
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">MainWindow</property>
@@ -115,6 +120,7 @@
                 <node type="Menuitem" action="AddEndNodeAction" />
                 <node type="Menuitem" action="AddNetworkNodeAction" />
                 <node type="Menuitem" action="AddServerNodeAction" />
+                <node type="Menuitem" action="AddLinkAction" />
               </node>
               <node type="Menu" action="HelpAction">
                 <node type="Menuitem" action="AboutAction" />
@@ -1135,7 +1141,14 @@
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <placeholder />
+              <widget class="Gtk.Fixed" id="fixed1">
+                <property name="MemberName" />
+                <property name="HasWindow">False</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+              </packing>
             </child>
             <child>
               <widget class="Gtk.Button" id="button2">
@@ -1147,6 +1160,23 @@
               </widget>
               <packing>
                 <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="button1">
+                <property name="MemberName" />
+                <property name="Sensitive">False</property>
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Delete</property>
+                <property name="UseUnderline">True</property>
+              </widget>
+              <packing>
+                <property name="PackType">End</property>
+                <property name="Position">2</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>

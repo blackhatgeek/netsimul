@@ -18,6 +18,7 @@ public partial class MainWindow
 	private global::Gtk.Action AddNetworkNodeAction;
 	private global::Gtk.Action AddServerNodeAction;
 	private global::Gtk.Action AboutAction;
+	private global::Gtk.Action AddLinkAction;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
 	private global::Gtk.HBox hbox2;
@@ -100,6 +101,9 @@ public partial class MainWindow
 		this.AboutAction = new global::Gtk.Action ("AboutAction", global::Mono.Unix.Catalog.GetString ("About"), null, null);
 		this.AboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("About");
 		w1.Add (this.AboutAction, null);
+		this.AddLinkAction = new global::Gtk.Action ("AddLinkAction", global::Mono.Unix.Catalog.GetString ("Add link"), null, null);
+		this.AddLinkAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add link");
+		w1.Add (this.AddLinkAction, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -110,7 +114,7 @@ public partial class MainWindow
 		this.vbox1.Name = "vbox1";
 		this.vbox1.Spacing = 6;
 		// Container child vbox1.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='LoadModelAction' action='LoadModelAction'/><menuitem name='SaveModelAsAction' action='SaveModelAsAction'/><menuitem name='SaveResultsAsAction' action='SaveResultsAsAction'/><menuitem name='NewModelAction' action='NewModelAction'/><menuitem name='ExitSimulatorAction' action='ExitSimulatorAction'/></menu><menu name='SimulationAction' action='SimulationAction'><menuitem name='ParametersAction' action='ParametersAction'/><menuitem name='RunAction' action='RunAction'/></menu><menu name='ModelAction' action='ModelAction'><menuitem name='AddEndNodeAction' action='AddEndNodeAction'/><menuitem name='AddNetworkNodeAction' action='AddNetworkNodeAction'/><menuitem name='AddServerNodeAction' action='AddServerNodeAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu></menubar></ui>");
+		this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='LoadModelAction' action='LoadModelAction'/><menuitem name='SaveModelAsAction' action='SaveModelAsAction'/><menuitem name='SaveResultsAsAction' action='SaveResultsAsAction'/><menuitem name='NewModelAction' action='NewModelAction'/><menuitem name='ExitSimulatorAction' action='ExitSimulatorAction'/></menu><menu name='SimulationAction' action='SimulationAction'><menuitem name='ParametersAction' action='ParametersAction'/><menuitem name='RunAction' action='RunAction'/></menu><menu name='ModelAction' action='ModelAction'><menuitem name='AddEndNodeAction' action='AddEndNodeAction'/><menuitem name='AddNetworkNodeAction' action='AddNetworkNodeAction'/><menuitem name='AddServerNodeAction' action='AddServerNodeAction'/><menuitem name='AddLinkAction' action='AddLinkAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu></menubar></ui>");
 		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 		this.menubar2.Name = "menubar2";
 		this.vbox1.Add (this.menubar2);
