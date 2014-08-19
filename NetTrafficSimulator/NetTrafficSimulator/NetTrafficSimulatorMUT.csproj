@@ -47,7 +47,7 @@
     <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
       <Package>glade-sharp-2.0</Package><Compile Include="view\PacketTraceWidget.cs" />
-<     <Compile Include="gtk-gui\NetTrafficSimulator.PacketTraceWidget.cs" />
+      <Compile Include="gtk-gui\NetTrafficSimulator.PacketTraceWidget.cs" />
 
     </Reference>
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
