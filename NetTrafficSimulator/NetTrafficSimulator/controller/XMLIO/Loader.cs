@@ -87,7 +87,8 @@ namespace NetTrafficSimulator
 					string lname = node.Attributes.GetNamedItem ("default").Value;
 					if (false_default_routes.ContainsKey (lname))
 						throw new ArgumentException ("Link " + lname + " default route on both ends");
-					false_default_routes.Add (lname,name);
+					false_default_routes.Add (lname, name);
+					log.Debug ("Marked: " + lname + ":" + name);
 					break;
 				default:
 					break;
@@ -96,6 +97,7 @@ namespace NetTrafficSimulator
 			XmlElement links = xd.GetElementsByTagName ("links").Item(0) as XmlElement;
 			nl = links.ChildNodes;
 			for (int i=0; i<nl.Count; i++) {
+				log.Debug ("Link #" + i);
 				XmlElement link = nl.Item (i) as XmlElement;
 				if (!link.Name.Equals ("link")) {
 					log.Error ("Parsing links: Element name not link (link "+i+") name:"+link.Name);
@@ -117,21 +119,15 @@ namespace NetTrafficSimulator
 						throw new ArgumentException ("Default route " + name + " is not connected to the network node " + nnode_name);
 					else {
 						string partner = (nnode_name == n1) ? n2 : n1;
-						nm.SetDefaultRoute (nm.GetNodeNum (nnode_name), nm.GetNodeNum(partner));
+						nm.SetDefaultRoute (nm.GetNodeNum (nnode_name), nm.GetNodeNum (partner));
 						false_default_routes.Remove (name);
+						log.Debug ("Set default route: " + nnode_name + "->" + partner);
+						log.Debug ("Removed " + name);
 					}
-
 				}
 				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
 				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
 				//verifikace
-				if (false_default_routes.Count != 0) {
-					log.Error ("Unsatisfied default routes:");
-					foreach (KeyValuePair<string,string> kvp in false_default_routes) {
-						log.Error ("Link name:" + kvp.Key + " Network node name:" + kvp.Value);
-					}
-					throw new ArgumentException ("False default route exist");
-				}
 				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
 					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle);
 					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa, toggle);
@@ -140,6 +136,13 @@ namespace NetTrafficSimulator
 				} else {
 					throw new ArgumentOutOfRangeException ("Wrong toggle_probability " + toggle+ " for link "+name);
 				} //dalsi verifikace soucast model.xsd 0.03
+			}
+			if (false_default_routes.Count != 0) {
+				log.Error ("Unsatisfied default routes:");
+				foreach (KeyValuePair<string,string> kvp in false_default_routes) {
+					log.Error ("Link name:" + kvp.Key + " Network node name:" + kvp.Value);
+				}
+				throw new ArgumentException ("False default route exist");
 			}
 			return nm;
 		}
