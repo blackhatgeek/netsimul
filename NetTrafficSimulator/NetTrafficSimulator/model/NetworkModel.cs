@@ -12,55 +12,7 @@ namespace NetTrafficSimulator
 	public class NetworkModel
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(NetworkModel));
-		//graf site
-		//uzly a spoje
 
-		//end node - spojen nejvyse s jednim
-		//network node - mnoho spojeni
-		//server node - spojen nejvyse s jednim
-
-		/**
-		 * Information about link
-		 */
-		public struct link_rec{
-			private int cap;
-			/**
-			 * Link capacity
-			 */
-			public int capacity{
-				get{
-					return this.cap;
-				}
-				set{
-					if (value >= 0)
-						this.cap = value;
-					else
-						throw new ArgumentException ("Negative link capacity "+value+" ("+name+")");
-				}
-			}
-			/**
-			 * Link name
-			 */
-			public string name;
-
-			/**
-			 * Link drop probability
-			 */
-			private decimal toggle_probability;
-			public decimal ToggleProb{
-				get{
-					return this.toggle_probability;
-				}
-				set{
-					if ((value >= 0.0m) && (value <= 1.0m))
-						this.toggle_probability = value;
-					else
-						throw new ArgumentException ("Toggle probability must be between 0.0 and 1.0, was "+value);
-				}
-			}
-		}
-
-		//linky - node x spojen s node y
 		/**
 		 * END_NODE is a end-user node, which initiates connection to server-node
 		 */
@@ -92,24 +44,25 @@ namespace NetTrafficSimulator
 		/**
 		 * Amount of nodes in the model
 		 */
-		private int node_count;
+		//private int node_count;
 		/**
 		 * Adjacency matrix of the network: links[x,y] is positive if there is a direct connection between nodes x and y
 		 * and the number represents the link capacity
 		 */
-		private link_rec[,] links;
+//		private link_rec[,] links;
 		/**
 		 * link_count[x] is amount of links connected to a node x
 		 */
-		private int[] link_count;
+//		private int[] link_count;
 		/**
 		 * types[x] is type of a node x
 		 */
-		private int[] types;
-		private int[] addr;//addr[x] is address of node x
-		private Dictionary<string,int> n_name;//node name
-		private Dictionary<string,int> en_mps;//end node max packet size
-		private Dictionary<int,int> nn_default;//default route for network node
+//		private int[] types;
+//		private int[] addr;//addr[x] is address of node x
+//		private Dictionary<string,int> n_name;//node name
+		//private Dictionary<string,int> en_mps;//end node max packet size
+//		private Dictionary<int,int> nn_default;//default route for network node
+//		private Dictionary<string,link_rec> l_name;//link name
 		/**
 		 * Server node count
 		 */
@@ -120,32 +73,33 @@ namespace NetTrafficSimulator
 		 * @param node_count amount of nodes in model
 		 * @throws ArgumentOutOfRangeException if given node_count is less than 0
 		 */
-		public NetworkModel (int node_count)
+		public NetworkModel ()
 		{
-			if (node_count >= 0) {
-				this.node_count = node_count;
-				this.links = new link_rec[node_count, node_count];
-				this.types = new int[node_count];
-				this.link_count=new int[node_count];
-				this.addr=new int[node_count];
-				this.n_name = new Dictionary<string, int> ();
-				this.en_mps = new Dictionary<string, int> ();
+			//if (node_count >= 0) {
+			//	this.node_count = node_count;
+			//	this.links = new link_rec[node_count, node_count];
+			//	this.types = new int[node_count];
+			//	this.link_count=new int[node_count];
+			//	this.addr=new int[node_count];
+			//	this.n_name = new Dictionary<string, int> ();
+				//this.en_mps = new Dictionary<string, int> ();
 
-				for (int i=0; i<node_count; i++) {
-					for (int j=0; j<node_count; j++) {
-						links [i, j].capacity = NO_CONNECTION;
-					}
-				}
+			//	for (int i=0; i<node_count; i++) {
+			//		for (int j=0; j<node_count; j++) {
+			//			links [i, j].capacity = NO_CONNECTION;
+			//		}
+			//	}
 
-				for (int i=0; i<node_count; i++) {
-					types [i] = UNIDENTIFIED_NODE;
-					link_count [i] = 0;
-				}
+			//	for (int i=0; i<node_count; i++) {
+			//		types [i] = UNIDENTIFIED_NODE;
+			//		link_count [i] = 0;
+			//	}
 				this.SNCount = 0;
 
-				this.nn_default = new Dictionary<int, int> ();
-			} else
-				throw new ArgumentOutOfRangeException ("[new NetworkModel("+node_count+"] " + ILLEGAL_PARAMETER);
+			//	this.nn_default = new Dictionary<int, int> ();
+			//	this.l_name = new Dictionary<string, link_rec> ();
+			//} else
+			//	throw new ArgumentOutOfRangeException ("[new NetworkModel("+node_count+"] " + ILLEGAL_PARAMETER);
 		}
 
 		//getters and setters
@@ -157,12 +111,13 @@ namespace NetTrafficSimulator
 		 * @return if there's a link
 		 * @throws ArgumentOutOfRangeException when x or y are incorrect
 		 */
-		public bool AreConnected(int x,int y){
+		//UPDATED
+		/*public bool AreConnected(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
 				return links [x, y].capacity!=NO_CONNECTION;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.AreConnected("+x+","+y+")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * Returns capacity of a link between two nodes
@@ -170,12 +125,13 @@ namespace NetTrafficSimulator
 		 * @param y node
 		 * @return link capacity (positive integer) or zero if there's no link between particular nodes
 		 */
-		public int LinkCapacity(int x,int y){
+		//UPDATED
+		/*public int LinkCapacity(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
 				return links[x,y].capacity;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.LinkCapacity("+x+","+y+")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * <p>Marks a direct link between nodes x and y with given capacity.</p>
@@ -186,7 +142,8 @@ namespace NetTrafficSimulator
 		 * @param toggle_probability probability link toggles (switches from active to passive ... appears/disappears)
 		 * @throws ArgumentOutOfRangeException if any of x or y or capacity are incorrect
 		 */
-		public void SetConnected(int x,int y,int capacity,decimal toggle_probability){
+		//UPDATED
+		/*public void SetConnected(int x,int y,int capacity,decimal toggle_probability){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)&&(capacity>0)&&(toggle_probability>=0.0m)&&(toggle_probability<=1.0m)) {
 				if (links [x, y].capacity == NO_CONNECTION) {
 					link_count [x]++;
@@ -197,10 +154,15 @@ namespace NetTrafficSimulator
 				links [x, y].capacity = capacity;
 				links [y, x].capacity = capacity;
 				links [x, y].ToggleProb = toggle_probability;
+				links [y, x].ToggleProb = toggle_probability;
+				links [x, y].A = x;
+				links [x, y].B = y;
+				links [y, x].A = x;
+				links [y, x].B = y;
 			}
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetConnected("+x+","+y+","+capacity+","+toggle_probability+")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 		/**
 		 * <p>Ensures there's no direct link between nodes x and y</p>
 		 * <p>If there previously was a direct link, also decrements link_count counters</p>
@@ -208,7 +170,8 @@ namespace NetTrafficSimulator
 		 * @param y node
 		 * @throws ArgumentOutOfRangeException if x or y are incorrect
 		 */
-		public void SetDisconnected(int x,int y){
+		//UPDATED
+		/*public void SetDisconnected(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count)) {
 				if (links [x, y].capacity!=NO_CONNECTION) {
 					link_count [x]--;
@@ -218,23 +181,25 @@ namespace NetTrafficSimulator
 				links [y, x].capacity = NO_CONNECTION;
 			} else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetDisconnected(" + x + "," + y + ")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 		/**
 		 * For given node returns value of link_count counter
 		 * @param node node of interest
 		 * @return amount of direct links connected to that node
 		 * @throws ArgumentOutOfRangeException if node is incorrect
 		 */
-		public int GetConnectionCount(int node){
+		//UPDATE NOT NEEDED? -> DELETE
+		/*public int GetConnectionCount(int node){
 			if ((node >= 0) && (node < node_count))
 				return link_count [node];
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetConnectionCount(" + node + ")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * Amount of servers in model
 		 */
+		//UPDATE NOT NEEDED -> LEAVE AS IS
 		public int ServerNodeCount{
 			get{
 				return SNCount;
@@ -248,12 +213,13 @@ namespace NetTrafficSimulator
 		 * @return one of following constants: END_NODE, SERVER_NODE, NETWORK_NODE, UNIDENTIFIED_NODE
 		 * @throws ArgumentOutOfRangeException if given node is incorrect
 		 */
-		public int GetNodeType(int node){
+		//UPDATED
+		/*public int GetNodeType(int node){
 			if ((node >= 0) && (node < node_count))
 				return types [node];
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetNodeType(" + node + ")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * For given node sets a type of node
@@ -261,7 +227,8 @@ namespace NetTrafficSimulator
 		 * @param type one of following constants: END_NODE,SERVER_NODE,NETWORK_NODE
 		 * @throws ArgumentOutOfRangeException if given node is incorrect or type is UNIDENTIFIED_NODE or is not any of declared constants
 		 */
-		public void SetNodeType(int node,int type){
+		//UPDATED
+		/*public void SetNodeType(int node,int type){
 			if ((node >= 0) && (node < node_count) && ((type == END_NODE) || (type == NETWORK_NODE)))
 				types [node] = type;
 			else if (type == SERVER_NODE) {
@@ -270,41 +237,45 @@ namespace NetTrafficSimulator
 			}
 			else
 				throw new ArgumentOutOfRangeException("[NetworkModel.SetNodeType("+node+","+type+")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		//properties
 		/**
 		 * Amount of nodes in the model
 		 */
+		//UPDATED LOCALLY
 		public int NodeCount{
 			get{
-				return node_count;
+				return node_records.Count;
 			}
 		}
 		/**
 		 * Adjacency matrix for the network
 		 */
-		public link_rec[,] Link{
+		//NO UPDATE NEEDED -> DELETE
+		/*public link_rec[,] Link{
 			get{
 				return links;
 			}
-		}
+		}*/
 		/**
 		 * Types of nodes
 		 */
-		public int[] Type{
+		//NO UPDATE NEEDED -> DELETE
+		/*public int[] Type{
 			get{
 				return types;
 			}
-		}
+		}*/
 		/**
 		 * Amount of links connected to nodes
 		 */
-		public int[] LinkCount{
+		//NO UPDATE NEEDED -> DELETE
+		/*public int[] LinkCount{
 			get{
 				return link_count;
 			}
-		}
+		}*/
 
 		/**
 		 * <p>Prints matrix of adjacency and node type for each node on Console</p>
@@ -313,7 +284,8 @@ namespace NetTrafficSimulator
 		 * <p>NETWORK_NODE is marked as NN</p>
 		 * <p>otherwise type is marked as N/A</p>
 		 */
-		public void Print(){
+		//NO UPDATE NEEDED -> DELETE
+		/*public void Print(){
 			//header
 			Console.Write ("Node\tType\t");
 			for (int i = 1; i < node_count; i++) {
@@ -347,7 +319,7 @@ namespace NetTrafficSimulator
 					Console.Write ("+");
 				Console.WriteLine ("");
 			}
-		}
+		}*/
 
 		/**
 		 * Validates the model
@@ -362,7 +334,8 @@ namespace NetTrafficSimulator
 		 * @return if model is valid or not
 		 * TODO update
 		 */
-		public bool Valid{
+		//NO UPDATE NEEDED -> DELETE
+		/*public bool Valid{
 			get{
 				bool valid=true;
 				int i = 0;
@@ -390,7 +363,7 @@ namespace NetTrafficSimulator
 					}
 				return valid;
 			}
-		}
+		}*/
 
 		/**
 		 * <p>Notes a name for a node</p>
@@ -399,7 +372,8 @@ namespace NetTrafficSimulator
 		 * @param name node name
 		 * @throws ArgumentOutOfRangeException node number out of range
 		 */
-		public void SetNodeName(int node,string name){
+		//UPDATED
+		/*public void SetNodeName(int node,string name){
 			if ((node >= 0) && (node < node_count)) {
 				if (n_name.ContainsKey (name))
 					n_name.Remove (name);
@@ -407,7 +381,7 @@ namespace NetTrafficSimulator
 			}
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetNodeName(" + node + "," + name + ")] " + ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * For given node number return node name
@@ -415,7 +389,8 @@ namespace NetTrafficSimulator
 		 * @return node name
 		 * @throws ArgumentException node not found
 		 */
-		public string GetNodeName(int node){
+		//NO UPDATE NEEDED -> DELETE
+		/*public string GetNodeName(int node){
 			foreach (string key in n_name.Keys) {
 				int num=-255;
 				n_name.TryGetValue (key, out num);
@@ -423,7 +398,7 @@ namespace NetTrafficSimulator
 					return key;
 			}
 			throw new ArgumentException ("Not found");
-		}
+		}*/
 
 		/**
 		 * For given node name get node number
@@ -431,13 +406,14 @@ namespace NetTrafficSimulator
 		 * @return node number
 		 * @throws ArgumentException node not found
 		 */
-		public int GetNodeNum(string node){
+		//NO UPDATE NEEDED -> DELETE
+		/*public int GetNodeNum(string node){
 			int num;
 			if (!n_name.TryGetValue (node, out num))
 				throw new ArgumentException ("Node not found "+node);
 			else
 				return num;
-		}
+		}*/
 
 		/**
 		 * <p>Set network address for given node number. Here we care if node is addressable or not</p>
@@ -445,12 +421,13 @@ namespace NetTrafficSimulator
 		 * @param addr new network address for node
 		 * @throws ArgumentOutOfRangeException invalid node number, negative address, node not EndNode not ServerNode
 		 */
-		public void SetNodeAddr(int node,int addr){
+		//UPDATED
+		/*public void SetNodeAddr(int node,int addr){
 			if ((node >= 0) && (node < node_count)&&(addr>=0)&&((types[node]==END_NODE)||(types[node]==SERVER_NODE)))
 				this.addr[node]=addr;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetNodeAddr(" + node + "," + addr + ")] " + ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * Get network address for node number
@@ -458,20 +435,22 @@ namespace NetTrafficSimulator
 		 * @return network address of the node
 		 * @throws ArgumentOutOfRangeException invalid node number or type of node is not END NODE or SERVER NODE
 		 */
-		public int GetNodeAddr(int node){
+		//UPDATED
+		/*public int GetNodeAddr(int node){
 			if ((node >= 0) && (node < node_count)&&((types[node]==END_NODE)||(types[node]==SERVER_NODE)))
 				return this.addr [node];
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetNodeAddr(" + node+")] " + ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * Do we have a node with name provided in our model
 		 * @param name node name
 		 * @return exists node with name given in the model
 		 */
+		//UPDATED LOCALLY
 		public bool HaveNode(string name){
-			return this.n_name.ContainsKey (name);
+			return this.node_records.ContainsKey(name);
 		}
 
 		/**
@@ -481,17 +460,22 @@ namespace NetTrafficSimulator
 		 * @param name new node name
 		 * @throws ArgumentException invalid node number or no connection between x and y
 		 */
-		public void SetLinkName(int x,int y,string name){
+		//UPDATED
+		/*public void SetLinkName(int x,int y,string name){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count) && links [x, y].capacity != NO_CONNECTION) {
 				if (name == null)
 					throw new ArgumentNullException ("Link name null");
 				log.Debug ("Link: " + x + "<--->" + y + " new name:" + name);
 				links [x, y].name = name;
 				links [y, x].name = name;
+				if (l_name.ContainsKey (name)) {
+					l_name.Remove (name);
+				}
+				l_name.Add (name,links [x, y]);
 			}
 			else
 				throw new ArgumentException ("[NetworkModel.SetLinkName(" + x + "," + y + "," + name + ")] " + ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * For given node numbers get the name of link between them
@@ -500,7 +484,8 @@ namespace NetTrafficSimulator
 		 * @return node name
 		 * @throws ArgumentException invalid node number or no connection between x and y
 		 */ 
-		public string GetLinkName(int x,int y){
+		//NO UPDATE NEEDED -> DELETE
+		/*public string GetLinkName(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count) && links [x, y].capacity != NO_CONNECTION) {
 				if (links [x, y].name != null)
 					return links [x, y].name;
@@ -509,7 +494,7 @@ namespace NetTrafficSimulator
 			}
 			else 
 				throw new ArgumentException ("[NetworkModel.GetLinkName(" + x + "," + y + ")] " + ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * Sets max packet size for EndNode when using random talker communication
@@ -517,7 +502,8 @@ namespace NetTrafficSimulator
 		 * @param mps max packet size
 		 * @throws ArgumentException mps negative, node name not found, node not END_NODE
 		 */
-		public void SetEndNodeMaxPacketSize(string n,int mps){
+		//UPDATED
+		/*public void SetEndNodeMaxPacketSize(string n,int mps){
 			int node;
 			if (mps >= 0)
 				if (n_name.TryGetValue (n, out node))//existuje takovy node
@@ -532,7 +518,7 @@ namespace NetTrafficSimulator
 					throw new ArgumentException ("[NetworkModel.SetEndNodeMaxPacketSize(" + n + "," + mps + ")] " + ILLEGAL_PARAMETER);
 			else
 				throw new ArgumentException ("[NetworkModel.SetEndNodeMaxPacketSize(" + n + "," + mps + ")] " + ILLEGAL_PARAMETER);
-		}
+		}*/
 
 		/**
 		 * Gets max packet size for EndNode when using random talker communication
@@ -540,7 +526,8 @@ namespace NetTrafficSimulator
 		 * @return max packet size for an end node
 		 * @throws ArgumentException no EndNode with such name
 		 */
-		public int GetEndNodeMaxPacketSize(string n){
+		//UPDATED
+		/*public int GetEndNodeMaxPacketSize(string n){
 			if (this.en_mps.ContainsKey (n)) {
 				int mps;
 				this.en_mps.TryGetValue (n, out mps);
@@ -557,7 +544,7 @@ namespace NetTrafficSimulator
 				} else //neni to NODE
 					throw new ArgumentException ("[NetworkModel.GetEndNodeMaxPacketSize(" + n + ")] " + ILLEGAL_PARAMETER);
 			}
-		}
+		}*/
 
 		/**
 		 * Return toggle probability of a link between two nodes
@@ -565,26 +552,364 @@ namespace NetTrafficSimulator
 		 * @param y a node connected to the link
 		 * @return link toggle probability of the link
 		 */
-		public decimal GetLinkToggleProbability(int x,int y){
+		//UPDATED
+		/*public decimal GetLinkToggleProbability(int x,int y){
 			if ((x >= 0) && (x < node_count) && (y >= 0) && (y < node_count))
 				return links[x,y].ToggleProb;
 			else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.GetLinkToggleProbability("+x+","+y+")] "+ILLEGAL_PARAMETER);
-		}
+		}*/
 
-		public void SetDefaultRoute(int node, int gateway){
+		//UPDATED
+		/*public void SetDefaultRoute(int node, int gateway){
 			if ((node >= 0) && (node < node_count) && (gateway >= 0) && (gateway < node_count) && (node != gateway)) {
 				nn_default.Add (node, gateway);
 			} else
 				throw new ArgumentOutOfRangeException ("[NetworkModel.SetDefaultRoute(" + node + "," + gateway + ")] " + ILLEGAL_PARAMETER);
-		}
+		}*/
 
-		public string GetNetworkNodeDefaultRoute(int node){
+		//UPDATED
+		/*public string GetNetworkNodeDefaultRoute(int node){
 			int route;
 			if (nn_default.TryGetValue (node, out route))
 				return links [node, route].name;
 			else
 				throw new ArgumentException ("[NetworkModel.GetDefaultRoute(" + node + ")] " + ILLEGAL_PARAMETER);
+		}*/
+
+		//"seznam nodes" - dictionary
+		//"seznam links"
+		private class LinkRecord:IEquatable<LinkRecord>{
+			public string node1,node2,name;
+			public int capacity;
+			public decimal toggle_probability;
+			public NodeRecord nodeA, nodeB;
+			public LinkRecord(string name,string n1,string n2,int cap,decimal tp){
+				this.name = name;
+				this.node1 = n1;
+				this.node2 = n2;
+				this.capacity = cap;
+				this.toggle_probability=tp;
+			}
+			public bool Equals (LinkRecord obj)
+			{
+				if (obj is LinkRecord) {
+					return (obj as LinkRecord).name.Equals (name);
+				} else
+					return false;
+			}
+		}
+
+		Dictionary<string,LinkRecord> link_records = new Dictionary<string, LinkRecord>();
+
+		private class NodeRecord{
+			public string name;
+			public int type;
+			public NodeRecord(string name){
+				this.name=name;
+			}
+		}
+		private class EndpointNodeRecord:NodeRecord{
+			public int addr;
+			public LinkRecord link;
+			public EndpointNodeRecord(string name):base(name){
+				type = NetworkModel.SERVER_NODE;
+			}
+		}
+		private class EndNodeRecord:EndpointNodeRecord{
+			public int maxPacketSize;
+			public EndNodeRecord(string name):base(name){
+				type = NetworkModel.END_NODE;
+			}
+		}
+		private class NetworkNodeRecord:NodeRecord{
+			public HashSet<LinkRecord> links = new HashSet<LinkRecord>();
+			public LinkRecord default_route;
+			public NetworkNodeRecord(string name):base(name){
+				type = NetworkModel.NETWORK_NODE;
+			}
+		}
+
+		Dictionary<string,NodeRecord> node_records = new Dictionary<string, NodeRecord>();
+
+		public bool AreConnected(string x,string y){
+			NodeRecord X, Y;
+			if (node_records.TryGetValue (x, out X)) {
+				if (node_records.TryGetValue (y, out Y)) {
+					if (X is EndpointNodeRecord) {
+						if ((X as EndpointNodeRecord).link.node1.Equals (y) || (X as EndpointNodeRecord).link.node2.Equals (y))
+							return true;
+						else
+							return false;
+					} else if (Y is EndpointNodeRecord) {
+						if ((Y as EndpointNodeRecord).link.node1.Equals (x) || (Y as EndpointNodeRecord).link.node2.Equals (x))
+							return true;
+						else
+							return false;
+					} else {
+						bool ret = false;
+						if ((X as NetworkNodeRecord).links.Count > (Y as NetworkNodeRecord).links.Count) {
+							foreach (LinkRecord lr in (Y as NetworkNodeRecord).links) {
+								if (lr.node1.Equals (x) || lr.node2.Equals (x)) {
+									ret = true;
+									break;
+								}
+							}
+						} else {
+							foreach (LinkRecord lr in (X as NetworkNodeRecord).links) {
+								if (lr.node1.Equals (y) || lr.node2.Equals (y)) {
+									ret = true;
+									break;
+								}
+							}
+						}
+						return ret;
+					}
+				} else
+					throw new ArgumentException ("[NetworkModel.AreConnected(" + x + "," + y + ")] Node not found:"+y);
+			} else
+				throw new ArgumentException ("[NetworkModel.AreConnected(" + x + "," + y + ")] Node not found:"+x);
+		}
+		public int LinkCapacity(string link){
+			LinkRecord lr;
+			if (link_records.TryGetValue (link, out lr)) {
+				return lr.capacity;
+			} else
+				throw new ArgumentException ("[NetworkModel.LinkCapacity(" + link + ") Link not found");
+		}
+		public void SetConnected(string x,string y,string lname,int capacity, decimal toggle_probability){
+			NodeRecord X, Y;
+			if (node_records.TryGetValue (x, out X)) {
+				if (node_records.TryGetValue (y, out Y)) {
+					if ((capacity > 0) && (toggle_probability >= 0.0m) && (toggle_probability <= 1.0m)) {
+						LinkRecord lr = new LinkRecord (lname,x, y, capacity, toggle_probability);
+						if (X is EndpointNodeRecord) {
+							(X as EndpointNodeRecord).link = lr;
+						} else {
+							(X as NetworkNodeRecord).links.Add (lr);
+						}
+						link_records.Add (lname, lr);
+					} else
+						throw new ArgumentOutOfRangeException ("[NetworkModel.SetConnected(" + x + "," + y + "," + capacity + "," + toggle_probability + ")] " + ILLEGAL_PARAMETER);
+				} else
+					throw new ArgumentException ("[NetworkModel.SetConnected(" + x + "," + y + "," + capacity + "," + toggle_probability + ")] Node not found: " + y);
+			} else
+				throw new ArgumentException ("[NetworkModel.SetConnected(" + x + "," + y + "," + capacity + "," + toggle_probability + ")] Node not found: " + x);
+		}
+		public void SetDisconnected(string link){
+			LinkRecord lr;
+			if (link_records.TryGetValue (link,out lr)) {
+				if (lr.nodeA is EndpointNodeRecord)
+					(lr.nodeA as EndpointNodeRecord).link = null;
+				else {
+					(lr.nodeA as NetworkNodeRecord).links.Remove (lr);
+					if ((lr.nodeA as NetworkNodeRecord).default_route.Equals (lr))
+						(lr.nodeA as NetworkNodeRecord).default_route = null;
+				}
+
+				if (lr.nodeB is EndpointNodeRecord)
+					(lr.nodeB as EndpointNodeRecord).link = null;
+				else {
+					(lr.nodeB as NetworkNodeRecord).links.Remove (lr);
+					if ((lr.nodeB as NetworkNodeRecord).default_route.Equals (lr))
+						(lr.nodeB as NetworkNodeRecord).default_route = null;
+				}
+
+				link_records.Remove (link);
+			}
+		}
+		public int GetNodeType(string node){
+			NodeRecord nr;
+			if (node_records.TryGetValue (node, out nr)) {
+				return nr.type;
+			} else throw new ArgumentException("[NetworkModel.GetNodeType("+node+")] Node not found");
+		}
+		public void AddNode(string name,int type){
+			switch (type) {
+			case END_NODE:
+				EndNodeRecord enr = new EndNodeRecord (name);
+				enr.maxPacketSize = DEFAULT_END_NODE_MPS;
+				node_records.Add (name, enr);
+				break;
+			case SERVER_NODE:
+				EndpointNodeRecord epnr = new EndpointNodeRecord (name);
+				node_records.Add (name, epnr);
+				SNCount++;
+				break;
+			case NETWORK_NODE:
+				NetworkNodeRecord nnr = new NetworkNodeRecord (name);
+				node_records.Add (name, nnr);
+				break;
+			default:
+				throw new ArgumentException ("Invalid type: " + type);
+			}
+		}
+		public void SetNodeName(string oldname,string newname){
+			NodeRecord nr;
+			if (node_records.TryGetValue (oldname, out nr)) {
+				if (!oldname.Equals (newname)) {
+					if (node_records.ContainsKey (newname)) {
+						throw new ArgumentException ("New name " + newname + " already taken. Names must be unique for nodes.");
+					} else {
+						nr.name = newname;
+						node_records.Remove (oldname);
+						node_records.Add (newname, nr);
+					}
+				}
+			} throw new ArgumentException ("Node not found: " + oldname);
+		}
+		public void SetEndpointNodeAddr(string name,int addr){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is EndpointNodeRecord) {
+					(nr as EndpointNodeRecord).addr = addr;
+				} else
+					throw new ArgumentException ("Node not endpoint node: " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+		public int GetEndpointNodeAddr(string name){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is EndpointNodeRecord) {
+					return (nr as EndpointNodeRecord).addr;
+				} else
+					throw new ArgumentException ("Node not endpoint node: " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+		public void SetLinkName(string oldname,string newname){
+			LinkRecord lr;
+			if(link_records.TryGetValue(oldname,out lr)){
+				if (!oldname.Equals (newname)) {
+					if (link_records.ContainsKey (newname)) {
+						throw new ArgumentException ("New name " + newname + " already taken. Names must be unique for links.");
+					} else {
+						lr.name = newname;
+						link_records.Remove (oldname);
+						link_records.Add (newname, lr);
+					}
+				}
+			}else throw new ArgumentException("Link not found: "+oldname);
+		}
+		public void SetEndNodeMaxPacketSize(string name,int mps){
+			NodeRecord nr;
+			if(node_records.TryGetValue(name,out nr)){
+				if (nr is EndNodeRecord) {
+					if (mps >= 0) {
+						(nr as EndNodeRecord).maxPacketSize = mps;
+					} else
+						throw new ArgumentOutOfRangeException ("Max packet size must not be negative");
+				} else
+					throw new ArgumentException ("Node not end node: " + name);
+			}else throw new ArgumentException("Node not found: "+name);
+		}
+		public int GetEndNodeMaxPacketSize(string name){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is EndNodeRecord) {
+					return (nr as EndNodeRecord).maxPacketSize;
+				} else
+					throw new ArgumentException ("Node not end node: " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+		public decimal GetLinkToggleProbability(string name){
+			LinkRecord lr;
+			if (link_records.TryGetValue (name, out lr)) {
+				return lr.toggle_probability;
+			} else
+				throw new ArgumentException ("Link not found: " + name);
+		}
+		public void SetLinkToggleProbability(string name,decimal tp){
+			LinkRecord lr;
+			if (link_records.TryGetValue (name, out lr)) {
+				if ((tp >= 0.0m) && (tp <= 1.0m)) {
+					lr.toggle_probability = tp;
+				} else
+					throw new ArgumentOutOfRangeException ("Toggle probability must be between 0.0 and 1.0, was " + tp);
+			} else
+				throw new ArgumentException ("Link not found: " + name);
+		}
+		public void SetNetworkNodeDefaultRoute(string node,string link){
+			NodeRecord nr;
+			if (node_records.TryGetValue (node, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					LinkRecord lr;
+					if (link_records.TryGetValue(link,out lr)) {
+						if ((nr as NetworkNodeRecord).links.Contains (lr)) {
+							(nr as NetworkNodeRecord).default_route = lr;
+						} else
+							throw new ArgumentException ("Link (" + link + ") not connected to the network node " + node);
+					} else
+						throw new ArgumentException ("Link not found: " + link);
+				} else
+					throw new ArgumentException ("Node not network node: " + node);
+			} else
+				throw new ArgumentException ("Node not found: " + node);
+		}
+		public string GetNetworkNodeDefaultRoute(string node){
+			NodeRecord nr;
+			if (node_records.TryGetValue (node,out nr)) {
+				if (nr is NetworkNodeRecord) {
+					return (nr as NetworkNodeRecord).default_route.name;
+				} else
+					throw new ArgumentException ("Node not network node: " + node);
+			} else
+				throw new ArgumentException ("Node not found: " + node);
+		}
+		public int GetNetworkNodeInterfacesCount(string node){
+			NodeRecord nr;
+			if(node_records.TryGetValue(node,out nr)){
+				if (nr is NetworkNodeRecord) {
+					return (nr as NetworkNodeRecord).links.Count;
+				} else
+					throw new ArgumentException ("Node not network node:" + node);
+			}else throw new ArgumentException("Node not found:"+node);
+		}
+		public string GetLinkNode1(string link){
+			LinkRecord lr;
+			if (link_records.TryGetValue (link, out lr)) {
+				return lr.node1;
+			} else
+				throw new ArgumentException ("Link not found: " + link);
+		}
+		public string GetLinkNode2(string link){
+			LinkRecord lr;
+			if (link_records.TryGetValue (link, out lr)) {
+				return lr.node2;
+			} else
+				throw new ArgumentException ("Link not found: " + link);
+		}
+		public int GetLinkCapacity(string link){
+			LinkRecord lr;
+			if (link_records.TryGetValue (link, out lr)) {
+				return lr.capacity;
+			} else
+				throw new ArgumentException ("Link not found: " + link);
+		}
+		public bool IsLinkDefaultRouteForNetworkNode(string node,string link){
+			NodeRecord nr;
+			if (node_records.TryGetValue (node, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					return (nr as NetworkNodeRecord).default_route.name.Equals (link);
+				}else throw new ArgumentException("Node not network node: "+node);
+			} else
+				throw new ArgumentException ("Node not found: " + node);
+		}
+
+		public string[] GetNodeNames(){
+			string[] names = new string[node_records.Count];
+			node_records.Keys.CopyTo (names,0);
+			return names;
+		}
+		public string[] GetLinkNames(){
+			string[] names = new string[link_records.Count];
+			link_records.Keys.CopyTo (names, 0);
+			return names;
+		}
+		public int GetLinkCount(){
+			return this.link_records.Count;
 		}
 	}
 }

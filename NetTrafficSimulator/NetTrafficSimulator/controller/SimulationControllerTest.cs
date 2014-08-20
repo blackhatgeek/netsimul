@@ -49,11 +49,11 @@ namespace NetTrafficSimulator
 			Assert.Null (sn.Link);
 		}
 
-		private Node[] createNodes(NetworkModel network_model,MFF_NPRG031.Model model){
+	/*	private Node[] createNodes(NetworkModel network_model,MFF_NPRG031.Model model){
 			Node[] nodes;
 			if (network_model == null)
 				throw new ArgumentNullException ("[SimulationController] No model provided should be null");
-			if (network_model.Valid) {
+			//if (network_model.Valid) {
 				int endNodeCounter = 0;
 				int networkNodeCounter = 0;
 				int serverNodeCounter = 0;
@@ -61,7 +61,7 @@ namespace NetTrafficSimulator
 				int nodeCounter = 0;
 				nodes = new Node[network_model.NodeCount];
 				for (int i=0; i<network_model.NodeCount; i++) {
-					switch (network_model.GetNodeType (i)) {
+	//				switch (network_model.GetNodeType (i)) {
 						case NetworkModel.END_NODE:
 						EndNode en = new EndNode ("End node " + endNodeCounter, addressCounter);
 						nodes [nodeCounter] = en;
@@ -90,19 +90,19 @@ namespace NetTrafficSimulator
 			}
 			else
 				throw new ArgumentException ("[SimulationController] Network model not valid");
-			return nodes;
-		}
+	//		return nodes;
+		}*/
 
-		[Test()]
-		public void CreateNodesFromNetworkModel(){
-			NetworkModel network_model=new NetworkModel(4);
-			network_model.SetNodeType (0, NetworkModel.END_NODE);
-			network_model.SetNodeType (1, NetworkModel.END_NODE);
-			network_model.SetNodeType (2, NetworkModel.NETWORK_NODE);
-			network_model.SetNodeType (3, NetworkModel.SERVER_NODE);
+	//	[Test()]
+	/*	public void CreateNodesFromNetworkModel(){
+	//		NetworkModel network_model=new NetworkModel(4);
+	//		network_model.SetNodeType (0, NetworkModel.END_NODE);
+	//		network_model.SetNodeType (1, NetworkModel.END_NODE);
+	//		network_model.SetNodeType (2, NetworkModel.NETWORK_NODE);
+	//		network_model.SetNodeType (3, NetworkModel.SERVER_NODE);
 
 			MFF_NPRG031.Model m = new MFF_NPRG031.Model (1);
-			Node[] nodes = createNodes (network_model,m);
+		//	Node[] nodes = createNodes (network_model,m);
 			Assert.AreEqual (4, nodes.Length);
 
 			Assert.True (nodes [0] is EndNode);
@@ -130,7 +130,7 @@ namespace NetTrafficSimulator
 		[ExpectedException(typeof(ArgumentException))]
 		public void CreateNodesFromNetworkModel_InvalidModel(){
 			createNodes(new NetworkModel (1),new MFF_NPRG031.Model(1));
-		}
+		}*/
 
 		[Test()]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -431,7 +431,7 @@ namespace NetTrafficSimulator
 				Assert.IsTrue (false, "EN event");
 		}
 
-		[Test()]
+	/*	[Test()]
 		public void CreateLinksFromNetworkModel(){
 			NetworkModel nm = new NetworkModel (4);
 			nm.SetNodeType (0,NetworkModel.END_NODE);
@@ -449,9 +449,9 @@ namespace NetTrafficSimulator
 			Assert.AreEqual (8, links.First.Next.Value.Capacity);
 			Assert.AreEqual (nodes [1], links.Last.Value.GetPartner (nodes [3]));
 			Assert.AreEqual (1, links.Last.Value.Capacity);
-		}
+		}*/
 
-		private LinkedList<Link> createLinks(NetworkModel network_model,Node[] nodes,MFF_NPRG031.Model framework_model){
+	/*	private LinkedList<Link> createLinks(NetworkModel network_model,Node[] nodes,MFF_NPRG031.Model framework_model){
 			LinkedList<Link> links = new LinkedList<Link> ();
 			//Node[] nodes=new Node[network_model.NodeCount];
 			if ((network_model != null) && (nodes != null) && (nodes.Length == network_model.NodeCount)) {
@@ -488,7 +488,7 @@ namespace NetTrafficSimulator
 			} else
 				throw new InvalidOperationException ("[SimulationController.createLinks] Network model null or nodes array null or length of nodes array don't match " +
 				                                     "node count in network model");
-		}
+		}*/
 
 		[Test()]
 		public void NetworkNodeEndpointDelivery(){

@@ -54,7 +54,7 @@ namespace NetTrafficSimulator
 		 */ 
 		public NetworkModel LoadNM(){
 			XmlElement nodes = xd.GetElementsByTagName ("nodes").Item(0) as XmlElement;
-			NetworkModel nm = new NetworkModel (nodes.ChildNodes.Count);
+			NetworkModel nm = new NetworkModel ();
 			XmlNodeList nl = nodes.ChildNodes;
 			false_default_routes = new Dictionary<string, string> ();
 			for (int i=0; i<nl.Count; i++) {
@@ -63,16 +63,15 @@ namespace NetTrafficSimulator
 				switch (node.Name) {
 				case "server":
 					name = node.Attributes.GetNamedItem ("name").Value;
-					nm.SetNodeType (i, NetworkModel.SERVER_NODE);
-					nm.SetNodeName (i, name);
-					nm.SetNodeAddr (i, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
+					nm.AddNode (name, NetworkModel.SERVER_NODE);
+					nm.SetEndpointNodeAddr (name, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
 					sn.Add (name);
 					break;
 				case "end":
-					nm.SetNodeType (i, NetworkModel.END_NODE);
 					name = node.Attributes.GetNamedItem ("name").Value;
-					nm.SetNodeName (i, name);
-					nm.SetNodeAddr (i, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
+					nm.AddNode (name, NetworkModel.END_NODE);
+					nm.SetEndpointNodeAddr (name, Convert.ToInt32 (node.Attributes.GetNamedItem ("address").Value));
+
 					if (node.HasAttribute ("mps"))
 						nm.SetEndNodeMaxPacketSize (name, Convert.ToInt32 (node.Attributes.GetNamedItem ("mps").Value));
 					bool random = false;
@@ -82,8 +81,7 @@ namespace NetTrafficSimulator
 					break;
 				case "network":
 					name = node.Attributes.GetNamedItem ("name").Value;
-					nm.SetNodeType (i, NetworkModel.NETWORK_NODE);
-					nm.SetNodeName (i, name);
+					nm.AddNode (name, NetworkModel.NETWORK_NODE);
 					string lname = node.Attributes.GetNamedItem ("default").Value;
 					if (false_default_routes.ContainsKey (lname))
 						throw new ArgumentException ("Link " + lname + " default route on both ends");
@@ -118,10 +116,9 @@ namespace NetTrafficSimulator
 					if ((nnode_name != n1) && (nnode_name != n2))
 						throw new ArgumentException ("Default route " + name + " is not connected to the network node " + nnode_name);
 					else {
-						string partner = (nnode_name == n1) ? n2 : n1;
-						nm.SetDefaultRoute (nm.GetNodeNum (nnode_name), nm.GetNodeNum (partner));
+						nm.SetNetworkNodeDefaultRoute (nnode_name, name);
 						false_default_routes.Remove (name);
-						log.Debug ("Set default route: " + nnode_name + "->" + partner);
+						log.Debug ("Set default route: " + nnode_name + " via "+name);
 						log.Debug ("Removed " + name);
 					}
 				}
@@ -129,10 +126,8 @@ namespace NetTrafficSimulator
 				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
 				//verifikace
 				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
-					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle);
-					nm.SetConnected (nm.GetNodeNum (n1), nm.GetNodeNum (n2), capa, toggle);
-					log.Debug ("Set link name: " + name);
-					nm.SetLinkName (nm.GetNodeNum (n1), nm.GetNodeNum (n2), name);
+					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle+" link name: "+name);
+					nm.SetConnected (n1, n2, name, capa, toggle);
 				} else {
 					throw new ArgumentOutOfRangeException ("Wrong toggle_probability " + toggle+ " for link "+name);
 				} //dalsi verifikace soucast model.xsd 0.03

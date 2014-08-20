@@ -11,6 +11,7 @@ public partial class MainWindow: Gtk.Window
 	private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
 	ListStore linkListStore,nodeListStore;
 	TreeViewColumn nodeNameColumn,nodeTypeColumn,linkNameColumn,linkNodeAColumn,linkNodeBColumn;
+	string[] node_names,link_names;
 
 	const string END = "END", SERVER = "SERVER", NETWORK = "NETWORK";
 
@@ -78,6 +79,9 @@ public partial class MainWindow: Gtk.Window
 					nm = loader.LoadNM ();
 					sm = loader.LoadSM ();
 
+					node_names=nm.GetNodeNames();
+					link_names=nm.GetLinkNames();
+
 					//naplnit nodes
 					loadNodesBox();
 					//naplnit links
@@ -129,10 +133,9 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	private void loadNodesBox(){
-		for (int i=0; i<nm.NodeCount; i++) {
-			int i_type = nm.GetNodeType (i);
+		foreach (string node in node_names) {
 			string type="";
-			switch (i_type) {
+			switch (nm.GetNodeType (node)) {
 			case NetTrafficSimulator.NetworkModel.END_NODE:
 				type = END;
 				break;
@@ -149,22 +152,15 @@ public partial class MainWindow: Gtk.Window
 				md.Destroy ();
 				break;
 			}
-			log.Debug ("Appending: " + nm.GetNodeName (i) + " (" + type + ")");
-			nodeListStore.AppendValues (nm.GetNodeName (i), type);
-
+			log.Debug ("Appending: " + node + " (" + type + ")");
+			nodeListStore.AppendValues (node, type);
 		}
 	}
 
 	private void loadLinksBox(){
-		for (int i=0; i<nm.NodeCount; i++) {
-			int j = i;
-			while (j<nm.NodeCount) {
-				if (nm.AreConnected (i, j)) {
-					linkListStore.AppendValues (nm.GetLinkName (i,j),nm.GetNodeName(i),nm.GetNodeName(j));
-					log.Debug ("Appending: " + nm.GetLinkName (i, j) + " node: " + nm.GetNodeName (i) + " node:" + nm.GetNodeName (j));
-				}
-				j++;
-			}
+		foreach (string link in link_names) {
+			linkListStore.AppendValues (link, nm.GetLinkNode1 (link), nm.GetLinkNode2 (link));
+			log.Debug ("Appending: " + link + " node: " + nm.GetLinkNode1(link) + " node:" + nm.GetLinkNode2(link));
 		}
 	}
 

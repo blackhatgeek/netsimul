@@ -14,14 +14,16 @@ namespace NetTrafficSimulator
 		private SimulationModel simulation_model;
 		private MFF_NPRG031.Model framework_model;
 		private ResultModel result_model;
-		private int endNodeCounter,networkNodeCounter,serverNodeCounter,addressCounter,nodeCounter;
+		private int endNodeCounter,networkNodeCounter,serverNodeCounter,nodeCounter,linkCounter;
 		private Node[] nodes;
 		private ServerNode[] servers;
 		private LinkedList<EndNode> randomTalkers;//TODO: count counts and make an array
 		private LinkedList<NetworkNode> routers;//TODO: count counts and make an array
-		private LinkedList<KeyValuePair<Link,decimal>> links;
 		private LinkedList<Packet> tracedPackets;
 		private Dictionary<string,Node> node_names;
+
+		private string[] node_names_array;
+		private Link[] links;
 
 		/**
 		 * Populated result model to pick-up
@@ -42,10 +44,12 @@ namespace NetTrafficSimulator
 		{
 			if ((nm == null) || (sm == null))
 				throw new ArgumentNullException ("[SimulationController] No model provided should be null");
-			if (nm.Valid)
-				this.network_model = nm;
-			else
-				throw new ArgumentException ("[SimulationController] Network model not valid");
+			//if (nm.Valid)
+			this.network_model = nm;
+			this.node_names_array = nm.GetNodeNames ();
+			this.links = new Link[network_model.GetLinkCount()];
+			//else
+			//	throw new ArgumentException ("[SimulationController] Network model not valid");
 			this.simulation_model = sm;
 		}
 
@@ -68,14 +72,17 @@ namespace NetTrafficSimulator
 
 		private void createNetworkNodes(){
 			networkNodeCounter = 0;
-			for (int i=0; i<network_model.NodeCount; i++) {
-				switch (network_model.GetNodeType (i)) {
+			this.routers = new LinkedList<NetworkNode> ();
+
+			foreach (string name in node_names_array) {
+				switch (network_model.GetNodeType (name)) {
 				case NetworkModel.NETWORK_NODE:
-					int interfaces = network_model.GetConnectionCount (i);
-					NetworkNode nn = new NetworkNode (network_model.GetNodeName (i), interfaces, simulation_model.MaxHop, framework_model);
+					int interfaces = network_model.GetNetworkNodeInterfacesCount (name);
+					NetworkNode nn = new NetworkNode (name, interfaces, simulation_model.MaxHop, framework_model);
 					nodes [nodeCounter] = nn;
-					routers.AddLast (nn);
+					node_names.Add (name, nn);
 					networkNodeCounter++;
+					routers.AddLast (nn);
 					nodeCounter++;
 					break;
 				}
@@ -89,39 +96,32 @@ namespace NetTrafficSimulator
 			log.Debug ("Create nodes");
 			endNodeCounter = 0;
 			serverNodeCounter = 0;
-			addressCounter = 0;
 			nodeCounter = 0;
 			nodes = new Node[network_model.NodeCount];
 			this.servers = new ServerNode[network_model.ServerNodeCount];
 			this.node_names = new Dictionary<string, Node> ();
 			this.randomTalkers = new LinkedList<EndNode> ();
-			this.routers = new LinkedList<NetworkNode> ();
 
-			for (int i=0; i<network_model.NodeCount; i++) {
-				switch (network_model.GetNodeType (i)) {
+			foreach (string name in node_names_array) {
+				switch (network_model.GetNodeType (name)) {
 				case NetworkModel.END_NODE:
-					string name = network_model.GetNodeName (i);
 					bool rt = simulation_model.IsRandomTalker (name);
-					EndNode en = new EndNode (name, network_model.GetNodeAddr (i));
-					if (node_names.ContainsKey (name))
-						throw new ArgumentException ("Duplicate node name");
+					EndNode en = new EndNode (name, network_model.GetEndpointNodeAddr (name));
 					if (rt)
 						randomTalkers.AddLast (en);
 					node_names.Add (name, en);
 					nodes [nodeCounter] = en;
 					endNodeCounter++;
-					addressCounter++;
 					nodeCounter++;
 					break;
 				case NetworkModel.NETWORK_NODE:
 					break;
 				case NetworkModel.SERVER_NODE:
-					ServerNode sn = new ServerNode (network_model.GetNodeName(i), network_model.GetNodeAddr(i));
+					ServerNode sn = new ServerNode (name, network_model.GetEndpointNodeAddr (name));
+					node_names.Add (name, sn);
 					nodes [nodeCounter] = sn;
-					servers [serverNodeCounter] = sn;
 					serverNodeCounter++;
 					nodeCounter++;
-					addressCounter++;
 					break;
 				default:
 					throw new InvalidOperationException ("[SimulationController.createNodes] Unidentified node type");
@@ -139,39 +139,27 @@ namespace NetTrafficSimulator
 			log.Debug ("Create links");
 			if (framework_model == null)
 				throw new InvalidOperationException ("[SimulationController.createLinks] Framework model not initialized");
-			links = new LinkedList<KeyValuePair<Link,decimal>> ();
-			if ((network_model != null) && (nodes != null) && (nodes.Length == network_model.NodeCount)) {
-				for (int i = 0; i < network_model.NodeCount; i++) {
-					Node x = nodes [i];
-					int j = i+1;//[i,i] connection forbidden
-					while (j<network_model.NodeCount) {
-						Node y = nodes [j];
-						if (network_model.AreConnected (i, j)){
-							string lname = network_model.GetLinkName (i, j);
-							if (lname == null)
-								throw new ArgumentNullException ("Link name null");
-							Link l = new Link (lname, network_model.LinkCapacity(i,j), x, y,framework_model);
-							KeyValuePair<Link,decimal> link_rec = new KeyValuePair<Link,decimal> (l, network_model.GetLinkToggleProbability (i, j));
-							if (x is EndpointNode)
-								(x as EndpointNode).Link = l;
-							else if (x is NetworkNode)
-								(x as NetworkNode).ConnectLink (l, framework_model,network_model.GetNetworkNodeDefaultRoute (i).Equals (lname));
-							else
-								throw new InvalidOperationException ("Node " + x + "is not EndNode nor NetworkNode nor ServerNode");
-							if (y is EndpointNode)
-								(y as EndpointNode).Link = l;
-							else if (y is NetworkNode)
-								(y as NetworkNode).ConnectLink (l,framework_model,network_model.GetNetworkNodeDefaultRoute(j).Equals(lname));
-							else
-								throw new InvalidOperationException ("Node " + y + " is not EndNode nor NetworkNode nor ServerNode");
-							links.AddLast (link_rec);
-						}
-						j++;
-					}
-				}
-			} else
-				throw new InvalidOperationException ("[SimulationController.createLinks] Network model null or nodes array null or length of nodes array don't match " +
-					"node count in network model");
+			this.linkCounter = 0;
+			foreach(string link in network_model.GetLinkNames ()){
+				Node a;
+				if (node_names.TryGetValue (network_model.GetLinkNode1 (link), out a)) {
+					Node b;
+					if (node_names.TryGetValue (network_model.GetLinkNode2 (link), out b)) {
+						Link l = new Link (link, network_model.GetLinkCapacity (link), a, b, framework_model);
+						links [linkCounter] = l;
+						linkCounter++;
+						if (a is EndpointNode)
+							(a as EndpointNode).Link = l;
+						else
+							(a as NetworkNode).ConnectLink (l, framework_model,network_model.IsLinkDefaultRouteForNetworkNode(a.Name,link));
+						if (b is EndpointNode)
+							(b as EndpointNode).Link = l;
+						else
+							(b as NetworkNode).ConnectLink (l, framework_model, network_model.IsLinkDefaultRouteForNetworkNode (b.Name, link));
+					}throw new ArgumentException ("Node not found: " + network_model.GetLinkNode2 (link));
+				} else
+					throw new ArgumentException ("Node not found: " + network_model.GetLinkNode1 (link));
+			}
 		}
 
 		/**
@@ -181,10 +169,7 @@ namespace NetTrafficSimulator
 		private void createModel(){
 			log.Debug ("Create model");
 			if (simulation_model != null) {
-				if (servers != null) {
-					framework_model = new MFF_NPRG031.Model (simulation_model.Time);
-				}else
-					throw new InvalidOperationException ("Servers array empty");
+				framework_model = new MFF_NPRG031.Model (simulation_model.Time);
 			} else
 				throw new InvalidOperationException ("[SimulationController.createModel] SimulationModel null");
 		}
@@ -201,12 +186,11 @@ namespace NetTrafficSimulator
 				this.tracedPackets = new LinkedList<Packet> ();
 				foreach (SimulationModel.Event e in simulation_model.GetEvents()) {
 					Node from_node; 
-					int node2_num = network_model.GetNodeNum (e.node2);
-					int from_addr = network_model.GetNodeAddr (network_model.GetNodeNum (e.node1));
+					int from_addr = network_model.GetEndpointNodeAddr (e.node1);
 					if (node_names.TryGetValue (e.node1, out from_node)) {
-						if (from_node is EndNode && network_model.GetNodeType (node2_num).Equals (NetworkModel.SERVER_NODE)) {
+						if (from_node is EndNode && network_model.GetNodeType (e.node2).Equals (NetworkModel.SERVER_NODE)) {
 							//schedule node e.node1 to state SEND (with packet from e.node1 to e.node2 of e.size as parameter) at time e.when
-							Packet p = new Packet (from_addr, network_model.GetNodeAddr (node2_num), e.size, true);
+							Packet p = new Packet (from_addr, network_model.GetEndpointNodeAddr (e.node2), e.size, true);
 							tracedPackets.AddLast (p);
 							MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND,p);
 							MFF_NPRG031.Event ev = new MFF_NPRG031.Event (from_node, st, e.when);
@@ -238,8 +222,9 @@ namespace NetTrafficSimulator
 				}
 				//link toggles
 				log.Debug ("Link toggles");
-				foreach (KeyValuePair<Link,decimal> link_rec in links) {
-					log.Debug ("Link name " + link_rec.Key.Name+" toggle_probability "+link_rec.Value);
+				foreach (Link l in links) {
+					decimal tp = network_model.GetLinkToggleProbability (l.Name);
+					log.Debug ("Link name " + l.Name+" toggle_probability "+tp);
 					Random r = new Random ();
 					//kolik togglu
 					int toggles = r.Next (framework_model.Time);
@@ -248,9 +233,9 @@ namespace NetTrafficSimulator
 						int time = r.Next (framework_model.Time);
 						decimal random = (decimal)r.NextDouble ();
 						log.Debug ("Random: " + random);
-						if (random < link_rec.Value) {
-							framework_model.K.Schedule (new MFF_NPRG031.Event (link_rec.Key, new MFF_NPRG031.State (MFF_NPRG031.State.state.TOGGLE), time));
-							log.Debug ("Scheduled link toggle: " + link_rec.Key.Name + " at " + time);
+						if (random < tp) {
+							framework_model.K.Schedule (new MFF_NPRG031.Event (l, new MFF_NPRG031.State (MFF_NPRG031.State.state.TOGGLE), time));
+							log.Debug ("Scheduled link toggle: " + l.Name + " at " + time);
 						}
 					}
 
@@ -262,7 +247,7 @@ namespace NetTrafficSimulator
 		 * Stores statistics into Result Model
 		 */
 		private void PopulateResultModel(){
-			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, links.Count);
+			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, linkCounter);
 			foreach (Node n in nodes) {
 				if (n is EndNode) {
 					EndNode en = n as EndNode;
@@ -278,8 +263,7 @@ namespace NetTrafficSimulator
 				}
 			}
 		if (framework_model != null)
-			foreach (KeyValuePair<Link,decimal> link_rec in links) {
-				Link l = link_rec.Key;
+			foreach (Link l in links) {
 				result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.GetActiveTime (framework_model), l.PassiveTime, l.GetPercentageTimeIdle (framework_model), l.DataCarried, l.GetAvgDataCarriedPerTic (framework_model),
 				                               l.GetAvgLinkUsage (framework_model), l.DataSent, l.DataLost, l.PercentageDataLost, l.PercentageDataDelivered, l.PercentageDataLostInCarry);
 			}
@@ -301,8 +285,8 @@ namespace NetTrafficSimulator
 			if (framework_model != null) {
 				createEvents ();
 				//link receive
- 				foreach (KeyValuePair<Link,decimal> l in links)
-					l.Key.Schedule (framework_model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE), 0);
+ 				foreach (Link l in links)
+					l.Schedule (framework_model.K, new MFF_NPRG031.State(MFF_NPRG031.State.state.RECEIVE), 0);
 				//network node timers
 				foreach (NetworkNode n in routers) {
 					n.Schedule (framework_model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.UPDATE_TIMER), 0);
