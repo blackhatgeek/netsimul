@@ -45,6 +45,7 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">Save results as</property>
         <property name="ShortLabel" translatable="yes">Save results as</property>
+        <signal name="Activated" handler="saveResultsHandler" />
       </action>
       <action id="NewModelAction">
         <property name="Type">Action</property>

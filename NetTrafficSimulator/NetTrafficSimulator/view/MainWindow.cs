@@ -13,6 +13,7 @@ public partial class MainWindow: Gtk.Window
 	ListStore linkListStore,nodeListStore;
 	TreeViewColumn nodeNameColumn,nodeTypeColumn,linkNameColumn,linkNodeAColumn,linkNodeBColumn;
 	string[] node_names,link_names;
+	string model_path,result_path;
 
 	const string END = "END", SERVER = "SERVER", NETWORK = "NETWORK";
 
@@ -74,7 +75,10 @@ public partial class MainWindow: Gtk.Window
 	{
 			FileChooserDialog fc = new Gtk.FileChooserDialog ("Model to load", this, FileChooserAction.Open, 
 			                                                      "Cancel", ResponseType.Cancel, "Load", ResponseType.Accept);
+			if (model_path != null)
+				fc.SetCurrentFolder(model_path);
 			if (fc.Run () == (int)ResponseType.Accept) {
+				model_path = fc.CurrentFolder;
 				NetTrafficSimulator.Loader loader = new NetTrafficSimulator.Loader (fc.Filename);
 				try{
 					nm = loader.LoadNM ();
@@ -149,6 +153,28 @@ public partial class MainWindow: Gtk.Window
 
 	protected void exitHandler (object sender, EventArgs ev){
 		Application.Quit ();
+	}
+
+	protected void saveResultsHandler(object sender,EventArgs ev){
+		if (rm != null) {
+			FileChooserDialog fd = new Gtk.FileChooserDialog ("Save results as ", this, FileChooserAction.Save, "Cancel", ResponseType.Close, "Save", ResponseType.Accept);
+			if (result_path != null)
+				fd.SetCurrentFolder (result_path);
+			else if (model_path != null)
+				fd.SetCurrentFolder (model_path);
+
+			if (fd.Run () == (int)ResponseType.Accept) {
+				result_path = fd.CurrentFolder;
+				NetTrafficSimulator.Storer storer = new NetTrafficSimulator.Storer (fd.Filename);
+				storer.StoreResultModel (rm);
+			}
+			fd.Destroy ();
+		} else {
+			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "Run simulation first!");
+			md.Run ();
+			md.Destroy ();
+		}
+
 	}
 
 	private void loadNodesBox(){
