@@ -207,6 +207,8 @@ namespace NetTrafficSimulator
 				if (node_records.TryGetValue (y, out Y)) {
 					if ((capacity > 0) && (toggle_probability >= 0.0m) && (toggle_probability <= 1.0m)) {
 						LinkRecord lr = new LinkRecord (lname,x, y, capacity, toggle_probability);
+						lr.nodeA = X;
+						lr.nodeB = Y;
 						log.Debug ("Created link record " + lname);
 						if (X is EndpointNodeRecord) {
 							(X as EndpointNodeRecord).link = lr;
@@ -268,6 +270,8 @@ namespace NetTrafficSimulator
 			} else throw new ArgumentException("[NetworkModel.GetNodeType("+node+")] Node not found");
 		}
 		public void AddNode(string name,int type){
+			if (node_records.ContainsKey (name))
+				throw new ArgumentException ("Duplicate node name");
 			switch (type) {
 			case END_NODE:
 				EndNodeRecord enr = new EndNodeRecord (name);

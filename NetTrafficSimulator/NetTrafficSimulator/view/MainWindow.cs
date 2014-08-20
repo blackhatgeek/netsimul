@@ -289,4 +289,35 @@ public partial class MainWindow: Gtk.Window
 		nm = new NetTrafficSimulator.NetworkModel ();
 		sm = new NetTrafficSimulator.SimulationModel (0);
 	}
+
+
+	protected void onAddNewEndNode (object sender, EventArgs e)
+	{
+		if (nm != null) {
+			NetTrafficSimulator.NewEndNodeDialog nend = new NetTrafficSimulator.NewEndNodeDialog (nm);
+			switch (nend.Run ()) {
+			case (int)ResponseType.Reject:
+				nend.Destroy ();
+				MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Duplicate node name! Node names must remain unique in the model. Node was not added.");
+				md.Run ();
+				md.Destroy ();
+				break;
+			case (int)ResponseType.Ok:
+				TreeIter ti = nodeListStore.AppendValues (nend.node_name, END);
+				treeview3.Selection.UnselectAll ();
+				treeview3.Selection.SelectIter (ti);
+				TreePath tp = treeview3.Selection.GetSelectedRows () [0];
+				treeview3.SetCursor (tp, nodeNameColumn, false);
+				nend.Destroy ();
+				break;
+			default:
+				nend.Destroy ();
+				break;
+			}
+		} else {
+			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Close, "Load or create model first!");
+			md.Run ();
+			md.Destroy ();
+		}
+	}
 }

@@ -132,6 +132,8 @@
     <Compile Include="gtk-gui\NetTrafficSimulator.PacketTraceWidget.cs" />
     <Compile Include="view\SimulationParametersDialog.cs" />
     <Compile Include="gtk-gui\NetTrafficSimulator.SimulationParametersDialog.cs" />
+    <Compile Include="view\NewEndNodeDialog.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.NewEndNodeDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

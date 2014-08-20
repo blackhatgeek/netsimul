@@ -320,5 +320,6 @@ public partial class MainWindow
 		this.ExitSimulatorAction.Activated += new global::System.EventHandler (this.exitHandler);
 		this.ParametersAction.Activated += new global::System.EventHandler (this.OnParametersMenuClick);
 		this.RunAction.Activated += new global::System.EventHandler (this.OnRunMenuClick);
+		this.AddEndNodeAction.Activated += new global::System.EventHandler (this.onAddNewEndNode);
 	}
 }
