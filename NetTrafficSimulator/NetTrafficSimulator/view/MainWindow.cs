@@ -188,8 +188,6 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
-
-
 	private void loadNodesBox(){
 		foreach (string node in node_names) {
 			string type="";
@@ -289,35 +287,62 @@ public partial class MainWindow: Gtk.Window
 		nm = new NetTrafficSimulator.NetworkModel ();
 		sm = new NetTrafficSimulator.SimulationModel (0);
 	}
-
-
+	
 	protected void onAddNewEndNode (object sender, EventArgs e)
 	{
-		if (nm != null) {
-			NetTrafficSimulator.NewEndNodeDialog nend = new NetTrafficSimulator.NewEndNodeDialog (nm);
-			switch (nend.Run ()) {
-			case (int)ResponseType.Reject:
-				nend.Destroy ();
-				MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Duplicate node name! Node names must remain unique in the model. Node was not added.");
+		addNode (NetTrafficSimulator.NetworkModel.END_NODE);
+	}
+	protected void onAddNetNode (object sender, EventArgs e)
+	{
+		addNode (NetTrafficSimulator.NetworkModel.NETWORK_NODE);
+	}
+	protected void onAddServNode (object sender, EventArgs e)
+	{
+		addNode (NetTrafficSimulator.NetworkModel.SERVER_NODE);
+	}
+
+
+	private void addNode(int ntype){
+		if ((ntype == NetTrafficSimulator.NetworkModel.END_NODE) || (ntype == NetTrafficSimulator.NetworkModel.NETWORK_NODE) || (ntype == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
+			if (nm != null) {
+				NetTrafficSimulator.NewNodeDialog nend = new NetTrafficSimulator.NewNodeDialog (nm, ntype);
+				switch (nend.Run ()) {
+				case (int)ResponseType.Reject:
+					nend.Destroy ();
+					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Duplicate node name! Node names must remain unique in the model. Node was not added.");
+					md.Run ();
+					md.Destroy ();
+					break;
+				case (int)ResponseType.Ok:
+					string dsc = "";
+					switch (ntype) {
+					case NetTrafficSimulator.NetworkModel.END_NODE:
+						dsc = END;
+						break;
+					case NetTrafficSimulator.NetworkModel.SERVER_NODE:
+						dsc = SERVER;
+						break;
+					case NetTrafficSimulator.NetworkModel.NETWORK_NODE:
+						dsc = NETWORK;
+						break;
+					}
+					TreeIter ti = nodeListStore.AppendValues (nend.node_name, dsc);
+					treeview3.Selection.UnselectAll ();
+					treeview3.Selection.SelectIter (ti);
+					TreePath tp = treeview3.Selection.GetSelectedRows () [0];
+					treeview3.SetCursor (tp, nodeNameColumn, false);
+					nend.Destroy ();
+					break;
+				default:
+					nend.Destroy ();
+					break;
+				}
+			} else {
+				MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Close, "Load or create model first!");
 				md.Run ();
 				md.Destroy ();
-				break;
-			case (int)ResponseType.Ok:
-				TreeIter ti = nodeListStore.AppendValues (nend.node_name, END);
-				treeview3.Selection.UnselectAll ();
-				treeview3.Selection.SelectIter (ti);
-				TreePath tp = treeview3.Selection.GetSelectedRows () [0];
-				treeview3.SetCursor (tp, nodeNameColumn, false);
-				nend.Destroy ();
-				break;
-			default:
-				nend.Destroy ();
-				break;
 			}
-		} else {
-			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Close, "Load or create model first!");
-			md.Run ();
-			md.Destroy ();
-		}
+		} else
+			throw new ArgumentException ("Invalid node type: " + ntype);
 	}
 }

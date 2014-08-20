@@ -81,11 +81,13 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">Add network node</property>
         <property name="ShortLabel" translatable="yes">Add network node</property>
+        <signal name="Activated" handler="onAddNetNode" />
       </action>
       <action id="AddServerNodeAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">Add server node</property>
         <property name="ShortLabel" translatable="yes">Add server node</property>
+        <signal name="Activated" handler="onAddServNode" />
       </action>
       <action id="AboutAction">
         <property name="Type">Action</property>
@@ -2983,7 +2985,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Dialog" id="NetTrafficSimulator.NewEndNodeDialog" design-size="400 125">
+  <widget class="Gtk.Dialog" id="NetTrafficSimulator.NewNodeDialog" design-size="400 125">
     <property name="MemberName" />
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Buttons">2</property>
@@ -3099,7 +3101,7 @@
             <property name="Type">StockItem</property>
             <property name="StockId">gtk-ok</property>
             <property name="ResponseId">-5</property>
-            <signal name="Clicked" handler="btnOKClicked" />
+            <signal name="Clicked" handler="OnButtonOkClicked" />
             <property name="label">gtk-ok</property>
           </widget>
           <packing>
