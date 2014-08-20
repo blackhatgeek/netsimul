@@ -134,21 +134,33 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	protected void OnParametersMenuClick (object sender, EventArgs ev){
-		NetTrafficSimulator.SimulationParametersDialog spd = new NetTrafficSimulator.SimulationParametersDialog (sm);
-		if (spd.Run () == (int)ResponseType.Ok) {
-			sm.MaxHop = spd.maxHop;
-			sm.Time = spd.time;
+		if (sm != null) {
+			NetTrafficSimulator.SimulationParametersDialog spd = new NetTrafficSimulator.SimulationParametersDialog (sm);
+			if (spd.Run () == (int)ResponseType.Ok) {
+				sm.MaxHop = spd.maxHop;
+				sm.Time = spd.time;
+			}
+			spd.Destroy ();
+		} else {
+			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Close, "Load or create model first!");
+			md.Run ();
+			md.Destroy ();
 		}
-		spd.Destroy ();
 	}
 
 	protected void OnRunMenuClick (object sender, EventArgs ev){
-		NetTrafficSimulator.SimulationController sc = new NetTrafficSimulator.SimulationController (nm, sm);
-		log.Info("Loaded data, created models and controller, starting simulation");
-		sc.Run ();
-		log.Info("Storing results");
-		rm = sc.Results;
-		packettracewidget1.Load (rm);
+		if ((nm != null) && (sm != null)) {
+			NetTrafficSimulator.SimulationController sc = new NetTrafficSimulator.SimulationController (nm, sm);
+			log.Info ("Loaded data, created models and controller, starting simulation");
+			sc.Run ();
+			log.Info ("Storing results");
+			rm = sc.Results;
+			packettracewidget1.Load (rm);
+		} else {
+			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Close, "Load or create model first!");
+			md.Run ();
+			md.Destroy ();
+		}
 	}
 
 	protected void exitHandler (object sender, EventArgs ev){
@@ -174,8 +186,9 @@ public partial class MainWindow: Gtk.Window
 			md.Run ();
 			md.Destroy ();
 		}
-
 	}
+
+
 
 	private void loadNodesBox(){
 		foreach (string node in node_names) {
@@ -258,8 +271,8 @@ public partial class MainWindow: Gtk.Window
 			//link name ... model.GetValue(iter,0);
 			//node A    ... model.GetValue(iter,1);
 			//node B    ... model.GetValue(iter,2);
-			GtkAlignment2.Child.Destroy();
-			GtkLabel13.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
+			GtkAlignment2.Child.Destroy ();
+			GtkLabel13.Text = "<b>" + model.GetValue (iter, 0).ToString () + "</b>";
 			GtkLabel13.UseMarkup = true;
 			NetTrafficSimulator.LinkWidget lw = new NetTrafficSimulator.LinkWidget ();
 			lw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
@@ -268,5 +281,12 @@ public partial class MainWindow: Gtk.Window
 			GtkAlignment2.Child = lw;
 			GtkAlignment2.Child.Visible = true;
 		}
+
+	}
+
+	protected void newModelHandler (object sender, EventArgs e)
+	{
+		nm = new NetTrafficSimulator.NetworkModel ();
+		sm = new NetTrafficSimulator.SimulationModel (0);
 	}
 }

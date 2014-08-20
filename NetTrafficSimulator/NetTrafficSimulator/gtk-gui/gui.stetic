@@ -51,6 +51,7 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">New model</property>
         <property name="ShortLabel" translatable="yes">New model</property>
+        <signal name="Activated" handler="newModelHandler" />
       </action>
       <action id="ExitSimulatorAction">
         <property name="Type">Action</property>
