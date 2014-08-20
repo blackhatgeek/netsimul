@@ -122,7 +122,7 @@ namespace NetTrafficSimulator
 			// Container child hbox21.Gtk.Box+BoxChild
 			this.label20 = new global::Gtk.Label ();
 			this.label20.Name = "label20";
-			this.label20.LabelProp = global::Mono.Unix.Catalog.GetString ("Time idle");
+			this.label20.LabelProp = global::Mono.Unix.Catalog.GetString ("Percent time idle");
 			this.hbox21.Add (this.label20);
 			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox21 [this.label20]));
 			w10.Position = 0;

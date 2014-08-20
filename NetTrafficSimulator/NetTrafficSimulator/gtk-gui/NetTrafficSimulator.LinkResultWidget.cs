@@ -23,6 +23,24 @@ namespace NetTrafficSimulator
 		private global::Gtk.HBox hbox24;
 		private global::Gtk.Label label34;
 		private global::Gtk.Label label40;
+		private global::Gtk.HBox hbox1;
+		private global::Gtk.Label label1;
+		private global::Gtk.Label label7;
+		private global::Gtk.HBox hbox2;
+		private global::Gtk.Label label2;
+		private global::Gtk.Label label8;
+		private global::Gtk.HBox hbox3;
+		private global::Gtk.Label label3;
+		private global::Gtk.Label label9;
+		private global::Gtk.HBox hbox4;
+		private global::Gtk.Label label4;
+		private global::Gtk.Label label10;
+		private global::Gtk.HBox hbox5;
+		private global::Gtk.Label label5;
+		private global::Gtk.Label label11;
+		private global::Gtk.HBox hbox6;
+		private global::Gtk.Label label6;
+		private global::Gtk.Label label12;
 
 		protected virtual void Build ()
 		{
@@ -68,7 +86,7 @@ namespace NetTrafficSimulator
 			// Container child hbox20.Gtk.Box+BoxChild
 			this.label30 = new global::Gtk.Label ();
 			this.label30.Name = "label30";
-			this.label30.LabelProp = global::Mono.Unix.Catalog.GetString ("Packets dropped");
+			this.label30.LabelProp = global::Mono.Unix.Catalog.GetString ("Active time");
 			this.hbox20.Add (this.label30);
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox20 [this.label30]));
 			w4.Position = 0;
@@ -95,7 +113,7 @@ namespace NetTrafficSimulator
 			// Container child hbox21.Gtk.Box+BoxChild
 			this.label31 = new global::Gtk.Label ();
 			this.label31.Name = "label31";
-			this.label31.LabelProp = global::Mono.Unix.Catalog.GetString ("Drop percentage");
+			this.label31.LabelProp = global::Mono.Unix.Catalog.GetString ("Passive time");
 			this.hbox21.Add (this.label31);
 			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox21 [this.label31]));
 			w7.Position = 0;
@@ -122,7 +140,7 @@ namespace NetTrafficSimulator
 			// Container child hbox22.Gtk.Box+BoxChild
 			this.label32 = new global::Gtk.Label ();
 			this.label32.Name = "label32";
-			this.label32.LabelProp = global::Mono.Unix.Catalog.GetString ("Passive time");
+			this.label32.LabelProp = global::Mono.Unix.Catalog.GetString ("Percentage time idle");
 			this.hbox22.Add (this.label32);
 			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox22 [this.label32]));
 			w10.Position = 0;
@@ -149,7 +167,7 @@ namespace NetTrafficSimulator
 			// Container child hbox23.Gtk.Box+BoxChild
 			this.label33 = new global::Gtk.Label ();
 			this.label33.Name = "label33";
-			this.label33.LabelProp = global::Mono.Unix.Catalog.GetString ("Active time");
+			this.label33.LabelProp = global::Mono.Unix.Catalog.GetString ("Data carried");
 			this.hbox23.Add (this.label33);
 			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.hbox23 [this.label33]));
 			w13.Position = 0;
@@ -176,7 +194,7 @@ namespace NetTrafficSimulator
 			// Container child hbox24.Gtk.Box+BoxChild
 			this.label34 = new global::Gtk.Label ();
 			this.label34.Name = "label34";
-			this.label34.LabelProp = global::Mono.Unix.Catalog.GetString ("Percent time idle");
+			this.label34.LabelProp = global::Mono.Unix.Catalog.GetString ("Data per time average");
 			this.hbox24.Add (this.label34);
 			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox24 [this.label34]));
 			w16.Position = 0;
@@ -196,6 +214,168 @@ namespace NetTrafficSimulator
 			w18.Position = 5;
 			w18.Expand = false;
 			w18.Fill = false;
+			// Container child vbox7.Gtk.Box+BoxChild
+			this.hbox1 = new global::Gtk.HBox ();
+			this.hbox1.Name = "hbox1";
+			this.hbox1.Spacing = 6;
+			// Container child hbox1.Gtk.Box+BoxChild
+			this.label1 = new global::Gtk.Label ();
+			this.label1.Name = "label1";
+			this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("Usage %");
+			this.hbox1.Add (this.label1);
+			global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.label1]));
+			w19.Position = 0;
+			w19.Expand = false;
+			w19.Fill = false;
+			// Container child hbox1.Gtk.Box+BoxChild
+			this.label7 = new global::Gtk.Label ();
+			this.label7.Name = "label7";
+			this.label7.LabelProp = global::Mono.Unix.Catalog.GetString ("label7");
+			this.hbox1.Add (this.label7);
+			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.label7]));
+			w20.Position = 1;
+			w20.Expand = false;
+			w20.Fill = false;
+			this.vbox7.Add (this.hbox1);
+			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.hbox1]));
+			w21.Position = 6;
+			w21.Expand = false;
+			w21.Fill = false;
+			// Container child vbox7.Gtk.Box+BoxChild
+			this.hbox2 = new global::Gtk.HBox ();
+			this.hbox2.Name = "hbox2";
+			this.hbox2.Spacing = 6;
+			// Container child hbox2.Gtk.Box+BoxChild
+			this.label2 = new global::Gtk.Label ();
+			this.label2.Name = "label2";
+			this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("Data sent");
+			this.hbox2.Add (this.label2);
+			global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.label2]));
+			w22.Position = 0;
+			w22.Expand = false;
+			w22.Fill = false;
+			// Container child hbox2.Gtk.Box+BoxChild
+			this.label8 = new global::Gtk.Label ();
+			this.label8.Name = "label8";
+			this.label8.LabelProp = global::Mono.Unix.Catalog.GetString ("label8");
+			this.hbox2.Add (this.label8);
+			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.label8]));
+			w23.Position = 1;
+			w23.Expand = false;
+			w23.Fill = false;
+			this.vbox7.Add (this.hbox2);
+			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.hbox2]));
+			w24.Position = 7;
+			w24.Expand = false;
+			w24.Fill = false;
+			// Container child vbox7.Gtk.Box+BoxChild
+			this.hbox3 = new global::Gtk.HBox ();
+			this.hbox3.Name = "hbox3";
+			this.hbox3.Spacing = 6;
+			// Container child hbox3.Gtk.Box+BoxChild
+			this.label3 = new global::Gtk.Label ();
+			this.label3.Name = "label3";
+			this.label3.LabelProp = global::Mono.Unix.Catalog.GetString ("Data lost");
+			this.hbox3.Add (this.label3);
+			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.label3]));
+			w25.Position = 0;
+			w25.Expand = false;
+			w25.Fill = false;
+			// Container child hbox3.Gtk.Box+BoxChild
+			this.label9 = new global::Gtk.Label ();
+			this.label9.Name = "label9";
+			this.label9.LabelProp = global::Mono.Unix.Catalog.GetString ("label9");
+			this.hbox3.Add (this.label9);
+			global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.label9]));
+			w26.Position = 1;
+			w26.Expand = false;
+			w26.Fill = false;
+			this.vbox7.Add (this.hbox3);
+			global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.hbox3]));
+			w27.Position = 8;
+			w27.Expand = false;
+			w27.Fill = false;
+			// Container child vbox7.Gtk.Box+BoxChild
+			this.hbox4 = new global::Gtk.HBox ();
+			this.hbox4.Name = "hbox4";
+			this.hbox4.Spacing = 6;
+			// Container child hbox4.Gtk.Box+BoxChild
+			this.label4 = new global::Gtk.Label ();
+			this.label4.Name = "label4";
+			this.label4.LabelProp = global::Mono.Unix.Catalog.GetString ("Percentage data lost");
+			this.hbox4.Add (this.label4);
+			global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.label4]));
+			w28.Position = 0;
+			w28.Expand = false;
+			w28.Fill = false;
+			// Container child hbox4.Gtk.Box+BoxChild
+			this.label10 = new global::Gtk.Label ();
+			this.label10.Name = "label10";
+			this.label10.LabelProp = global::Mono.Unix.Catalog.GetString ("label10");
+			this.hbox4.Add (this.label10);
+			global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.label10]));
+			w29.Position = 1;
+			w29.Expand = false;
+			w29.Fill = false;
+			this.vbox7.Add (this.hbox4);
+			global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.hbox4]));
+			w30.Position = 9;
+			w30.Expand = false;
+			w30.Fill = false;
+			// Container child vbox7.Gtk.Box+BoxChild
+			this.hbox5 = new global::Gtk.HBox ();
+			this.hbox5.Name = "hbox5";
+			this.hbox5.Spacing = 6;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.label5 = new global::Gtk.Label ();
+			this.label5.Name = "label5";
+			this.label5.LabelProp = global::Mono.Unix.Catalog.GetString ("Percent data delivered");
+			this.hbox5.Add (this.label5);
+			global::Gtk.Box.BoxChild w31 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.label5]));
+			w31.Position = 0;
+			w31.Expand = false;
+			w31.Fill = false;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.label11 = new global::Gtk.Label ();
+			this.label11.Name = "label11";
+			this.label11.LabelProp = global::Mono.Unix.Catalog.GetString ("label11");
+			this.hbox5.Add (this.label11);
+			global::Gtk.Box.BoxChild w32 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.label11]));
+			w32.Position = 1;
+			w32.Expand = false;
+			w32.Fill = false;
+			this.vbox7.Add (this.hbox5);
+			global::Gtk.Box.BoxChild w33 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.hbox5]));
+			w33.Position = 10;
+			w33.Expand = false;
+			w33.Fill = false;
+			// Container child vbox7.Gtk.Box+BoxChild
+			this.hbox6 = new global::Gtk.HBox ();
+			this.hbox6.Name = "hbox6";
+			this.hbox6.Spacing = 6;
+			// Container child hbox6.Gtk.Box+BoxChild
+			this.label6 = new global::Gtk.Label ();
+			this.label6.Name = "label6";
+			this.label6.LabelProp = global::Mono.Unix.Catalog.GetString ("Percent data lost - link not active");
+			this.hbox6.Add (this.label6);
+			global::Gtk.Box.BoxChild w34 = ((global::Gtk.Box.BoxChild)(this.hbox6 [this.label6]));
+			w34.Position = 0;
+			w34.Expand = false;
+			w34.Fill = false;
+			// Container child hbox6.Gtk.Box+BoxChild
+			this.label12 = new global::Gtk.Label ();
+			this.label12.Name = "label12";
+			this.label12.LabelProp = global::Mono.Unix.Catalog.GetString ("label12");
+			this.hbox6.Add (this.label12);
+			global::Gtk.Box.BoxChild w35 = ((global::Gtk.Box.BoxChild)(this.hbox6 [this.label12]));
+			w35.Position = 1;
+			w35.Expand = false;
+			w35.Fill = false;
+			this.vbox7.Add (this.hbox6);
+			global::Gtk.Box.BoxChild w36 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.hbox6]));
+			w36.Position = 11;
+			w36.Expand = false;
+			w36.Fill = false;
 			this.Add (this.vbox7);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

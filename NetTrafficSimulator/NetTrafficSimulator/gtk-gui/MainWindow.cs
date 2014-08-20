@@ -37,14 +37,14 @@ public partial class MainWindow
 	private global::Gtk.Frame frame12;
 	private global::Gtk.Alignment GtkAlignment2;
 	private global::NetTrafficSimulator.EndNodeWidget endnodewidget2;
-	private global::Gtk.Label GtkLabel12;
+	private global::Gtk.Label GtkLabel13;
 	private global::Gtk.HBox hbox9;
 	private global::Gtk.Fixed fixed2;
 	private global::Gtk.Button button18;
 	private global::Gtk.Frame frame4;
-	private global::Gtk.Alignment GtkAlignment6;
+	private global::Gtk.Alignment TheAlignment;
 	private global::NetTrafficSimulator.PacketTraceWidget packettracewidget1;
-	private global::Gtk.Label GtkLabel14;
+	private global::Gtk.Label GtkLabel15;
 	private global::Gtk.HBox hbox8;
 	private global::Gtk.Fixed fixed4;
 	private global::Gtk.Fixed fixed3;
@@ -208,11 +208,11 @@ public partial class MainWindow
 		this.endnodewidget2.Name = "endnodewidget2";
 		this.GtkAlignment2.Add (this.endnodewidget2);
 		this.frame12.Add (this.GtkAlignment2);
-		this.GtkLabel12 = new global::Gtk.Label ();
-		this.GtkLabel12.Name = "GtkLabel12";
-		this.GtkLabel12.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>GtkFrame</b>");
-		this.GtkLabel12.UseMarkup = true;
-		this.frame12.LabelWidget = this.GtkLabel12;
+		this.GtkLabel13 = new global::Gtk.Label ();
+		this.GtkLabel13.Name = "GtkLabel13";
+		this.GtkLabel13.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>GtkFrame</b>");
+		this.GtkLabel13.UseMarkup = true;
+		this.frame12.LabelWidget = this.GtkLabel13;
 		this.vbox5.Add (this.frame12);
 		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.frame12]));
 		w14.Position = 0;
@@ -253,20 +253,21 @@ public partial class MainWindow
 		this.frame4.Name = "frame4";
 		this.frame4.ShadowType = ((global::Gtk.ShadowType)(0));
 		// Container child frame4.Gtk.Container+ContainerChild
-		this.GtkAlignment6 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-		this.GtkAlignment6.Name = "GtkAlignment6";
-		this.GtkAlignment6.LeftPadding = ((uint)(12));
-		// Container child GtkAlignment6.Gtk.Container+ContainerChild
+		this.TheAlignment = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+		this.TheAlignment.Name = "TheAlignment";
+		this.TheAlignment.LeftPadding = ((uint)(12));
+		// Container child TheAlignment.Gtk.Container+ContainerChild
 		this.packettracewidget1 = new global::NetTrafficSimulator.PacketTraceWidget ();
+		this.packettracewidget1.WidthRequest = 200;
 		this.packettracewidget1.Events = ((global::Gdk.EventMask)(256));
 		this.packettracewidget1.Name = "packettracewidget1";
-		this.GtkAlignment6.Add (this.packettracewidget1);
-		this.frame4.Add (this.GtkAlignment6);
-		this.GtkLabel14 = new global::Gtk.Label ();
-		this.GtkLabel14.Name = "GtkLabel14";
-		this.GtkLabel14.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Packet traces</b>");
-		this.GtkLabel14.UseMarkup = true;
-		this.frame4.LabelWidget = this.GtkLabel14;
+		this.TheAlignment.Add (this.packettracewidget1);
+		this.frame4.Add (this.TheAlignment);
+		this.GtkLabel15 = new global::Gtk.Label ();
+		this.GtkLabel15.Name = "GtkLabel15";
+		this.GtkLabel15.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Packet traces</b>");
+		this.GtkLabel15.UseMarkup = true;
+		this.frame4.LabelWidget = this.GtkLabel15;
 		this.hbox2.Add (this.frame4);
 		global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.frame4]));
 		w21.PackType = ((global::Gtk.PackType)(1));

@@ -245,7 +245,7 @@
                     <property name="ShadowType">None</property>
                     <child>
                       <widget class="Gtk.Alignment" id="GtkAlignment2">
-                        <property name="MemberName" />
+                        <property name="MemberName">alignment</property>
                         <property name="Xalign">0</property>
                         <property name="Yalign">0</property>
                         <property name="LeftPadding">12</property>
@@ -258,7 +258,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="GtkLabel12">
+                      <widget class="Gtk.Label" id="GtkLabel13">
                         <property name="MemberName" />
                         <property name="LabelProp" translatable="yes">&lt;b&gt;GtkFrame&lt;/b&gt;</property>
                         <property name="UseMarkup">True</property>
@@ -323,7 +323,7 @@
                 <property name="MemberName" />
                 <property name="ShadowType">None</property>
                 <child>
-                  <widget class="Gtk.Alignment" id="GtkAlignment6">
+                  <widget class="Gtk.Alignment" id="TheAlignment">
                     <property name="MemberName" />
                     <property name="Xalign">0</property>
                     <property name="Yalign">0</property>
@@ -331,13 +331,14 @@
                     <child>
                       <widget class="NetTrafficSimulator.PacketTraceWidget" id="packettracewidget1">
                         <property name="MemberName" />
+                        <property name="WidthRequest">200</property>
                         <property name="Events">ButtonPressMask</property>
                       </widget>
                     </child>
                   </widget>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="GtkLabel14">
+                  <widget class="Gtk.Label" id="GtkLabel15">
                     <property name="MemberName" />
                     <property name="LabelProp" translatable="yes">&lt;b&gt;Packet traces&lt;/b&gt;</property>
                     <property name="UseMarkup">True</property>
@@ -1333,7 +1334,7 @@
             <child>
               <widget class="Gtk.Label" id="label20">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Time idle</property>
+                <property name="LabelProp" translatable="yes">Percent time idle</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2251,7 +2252,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.LinkResultWidget" design-size="300 137">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.LinkResultWidget" design-size="300 281">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -2301,7 +2302,7 @@
             <child>
               <widget class="Gtk.Label" id="label30">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Packets dropped</property>
+                <property name="LabelProp" translatable="yes">Active time</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2337,7 +2338,7 @@
             <child>
               <widget class="Gtk.Label" id="label31">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Drop percentage</property>
+                <property name="LabelProp" translatable="yes">Passive time</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2373,7 +2374,7 @@
             <child>
               <widget class="Gtk.Label" id="label32">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Passive time</property>
+                <property name="LabelProp" translatable="yes">Percentage time idle</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2409,7 +2410,7 @@
             <child>
               <widget class="Gtk.Label" id="label33">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Active time</property>
+                <property name="LabelProp" translatable="yes">Data carried</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2445,7 +2446,7 @@
             <child>
               <widget class="Gtk.Label" id="label34">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Percent time idle</property>
+                <property name="LabelProp" translatable="yes">Data per time average</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2469,6 +2470,222 @@
           </widget>
           <packing>
             <property name="Position">5</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox1">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Label" id="label1">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Usage %</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="label7">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">label7</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">6</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox2">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Label" id="label2">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Data sent</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="label8">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">label8</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">7</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox3">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Label" id="label3">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Data lost</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="label9">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">label9</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">8</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox4">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Label" id="label4">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Percentage data lost</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="label10">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">label10</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">9</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox5">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Label" id="label5">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Percent data delivered</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="label11">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">label11</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">10</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox6">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Label" id="label6">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Percent data lost - link not active</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="label12">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">label12</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">11</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>

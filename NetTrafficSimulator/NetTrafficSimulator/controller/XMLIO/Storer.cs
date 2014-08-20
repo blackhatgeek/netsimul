@@ -15,7 +15,7 @@ namespace NetTrafficSimulator
 		static readonly ILog log=LogManager.GetLogger(typeof(Storer));
 		XmlDocument xs;
 		XmlTextWriter xw;
-		const int decimals=2;
+		public const int decimals=2;
 
 		/**
 		 * Create new storer - prepare to write to file and create necessary objects

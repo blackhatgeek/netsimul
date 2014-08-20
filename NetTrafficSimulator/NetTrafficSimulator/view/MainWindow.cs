@@ -191,28 +191,30 @@ public partial class MainWindow: Gtk.Window
 			//node name ... model.GetValue(iter,0);
 			//node type ... model.GetValue(iter,1);
 			GtkAlignment2.Child.Destroy();
-			GtkLabel12.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
-			GtkLabel12.UseMarkup = true;
+			GtkLabel13.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
+			GtkLabel13.UseMarkup = true;
 			switch (model.GetValue (iter, 1).ToString()) {
 			case SERVER:
 				NetTrafficSimulator.ServerNodeWidget sw = new NetTrafficSimulator.ServerNodeWidget ();
 				sw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
+				if (rm != null)
+					sw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 				GtkAlignment2.Child = sw;
 				break;
 			case END:
 				NetTrafficSimulator.EndNodeWidget ew = new NetTrafficSimulator.EndNodeWidget ();
 				ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString ());
 				ew.EventWidget.LoadParams (sm, model.GetValue (iter, 0).ToString ());
+				if (rm != null)
+					ew.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 				GtkAlignment2.Child = ew;
 				break;
 			case NETWORK:
-				log.Debug ("Cursor on NN");
 				NetTrafficSimulator.NetworkNodeWidget nw = new NetTrafficSimulator.NetworkNodeWidget ();
-				log.Debug ("New NN widget");
 				nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
-				log.Debug ("Loaded params");
+				if (rm != null)
+					nw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 				GtkAlignment2.Child = nw;
-				log.Debug ("Done here");
 				break;
 			default:
 				break;
@@ -231,10 +233,12 @@ public partial class MainWindow: Gtk.Window
 			//node A    ... model.GetValue(iter,1);
 			//node B    ... model.GetValue(iter,2);
 			GtkAlignment2.Child.Destroy();
-			GtkLabel12.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
-			GtkLabel12.UseMarkup = true;
+			GtkLabel13.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
+			GtkLabel13.UseMarkup = true;
 			NetTrafficSimulator.LinkWidget lw = new NetTrafficSimulator.LinkWidget ();
 			lw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
+			if (rm != null)
+				lw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 			GtkAlignment2.Child = lw;
 			GtkAlignment2.Child.Visible = true;
 		}
