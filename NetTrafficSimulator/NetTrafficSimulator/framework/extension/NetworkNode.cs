@@ -97,8 +97,10 @@ namespace NetTrafficSimulator
 								throw new ArgumentNullException ("Endpoint node null");
 							rt.SetRecord (en.Address, l, 1);
 						}
-						if (defroute)
+						if (defroute) {
+							log.Debug ("Mark default route");
 							def_r = l;
+						}
 					}
 					else
 						throw new ArgumentException ("Link not connected to this NetworkNode");

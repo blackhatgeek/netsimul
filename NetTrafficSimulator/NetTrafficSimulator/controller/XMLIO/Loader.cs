@@ -110,6 +110,15 @@ namespace NetTrafficSimulator
 				string n2 = link.Attributes.GetNamedItem ("node2").Value;
 				if (n2 == null)
 					throw new ArgumentNullException ("Link node2 null (link:" + i + ")");
+				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
+				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
+				//verifikace
+				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
+					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle+" link name: "+name);
+					nm.SetConnected (n1, n2, name, capa, toggle);
+				} else {
+					throw new ArgumentOutOfRangeException ("Wrong toggle_probability " + toggle+ " for link "+name);
+				} //dalsi verifikace soucast model.xsd 0.03
 				//verifikace default route
 				string nnode_name;
 				if (false_default_routes.TryGetValue (name, out nnode_name)) {
@@ -122,15 +131,6 @@ namespace NetTrafficSimulator
 						log.Debug ("Removed " + name);
 					}
 				}
-				int capa = Convert.ToInt32(link.Attributes.GetNamedItem ("capacity").Value);
-				decimal toggle = Convert.ToDecimal (link.Attributes.GetNamedItem ("toggle_probability").Value);
-				//verifikace
-				if ((toggle >= 0.0m) && (toggle <= 1.0m)) {
-					log.Debug ("Set link: " + n1 + "<-->" + n2 + " capacity " + capa + " toggle prob. " + toggle+" link name: "+name);
-					nm.SetConnected (n1, n2, name, capa, toggle);
-				} else {
-					throw new ArgumentOutOfRangeException ("Wrong toggle_probability " + toggle+ " for link "+name);
-				} //dalsi verifikace soucast model.xsd 0.03
 			}
 			if (false_default_routes.Count != 0) {
 				log.Error ("Unsatisfied default routes:");

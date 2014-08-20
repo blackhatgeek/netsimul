@@ -315,5 +315,7 @@ public partial class MainWindow
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.LoadModelAction.Activated += new global::System.EventHandler (this.loadFromFileHandler);
 		this.ExitSimulatorAction.Activated += new global::System.EventHandler (this.exitHandler);
+		this.ParametersAction.Activated += new global::System.EventHandler (this.OnParametersMenuClick);
+		this.RunAction.Activated += new global::System.EventHandler (this.OnRunMenuClick);
 	}
 }

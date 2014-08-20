@@ -8,6 +8,7 @@ public partial class MainWindow: Gtk.Window
 {	
 	NetTrafficSimulator.NetworkModel nm;
 	NetTrafficSimulator.SimulationModel sm;
+	NetTrafficSimulator.ResultModel rm;
 	private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
 	ListStore linkListStore,nodeListStore;
 	TreeViewColumn nodeNameColumn,nodeTypeColumn,linkNameColumn,linkNodeAColumn,linkNodeBColumn;
@@ -128,6 +129,24 @@ public partial class MainWindow: Gtk.Window
 			fc.Destroy ();
 	}
 
+	protected void OnParametersMenuClick (object sender, EventArgs ev){
+		NetTrafficSimulator.SimulationParametersDialog spd = new NetTrafficSimulator.SimulationParametersDialog (sm);
+		if (spd.Run () == (int)ResponseType.Ok) {
+			sm.MaxHop = spd.maxHop;
+			sm.Time = spd.time;
+		}
+		spd.Destroy ();
+	}
+
+	protected void OnRunMenuClick (object sender, EventArgs ev){
+		NetTrafficSimulator.SimulationController sc = new NetTrafficSimulator.SimulationController (nm, sm);
+		log.Info("Loaded data, created models and controller, starting simulation");
+		sc.Run ();
+		log.Info("Storing results");
+		rm = sc.Results;
+		packettracewidget1.Load (rm);
+	}
+
 	protected void exitHandler (object sender, EventArgs ev){
 		Application.Quit ();
 	}
@@ -187,9 +206,13 @@ public partial class MainWindow: Gtk.Window
 				GtkAlignment2.Child = ew;
 				break;
 			case NETWORK:
+				log.Debug ("Cursor on NN");
 				NetTrafficSimulator.NetworkNodeWidget nw = new NetTrafficSimulator.NetworkNodeWidget ();
+				log.Debug ("New NN widget");
 				nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
+				log.Debug ("Loaded params");
 				GtkAlignment2.Child = nw;
+				log.Debug ("Done here");
 				break;
 			default:
 				break;

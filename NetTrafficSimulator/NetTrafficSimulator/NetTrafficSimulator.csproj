@@ -130,6 +130,8 @@
     <Compile Include="gtk-gui\NetTrafficSimulator.LinkWidget.cs" />
     <Compile Include="view\PacketTraceWidget.cs" />
     <Compile Include="gtk-gui\NetTrafficSimulator.PacketTraceWidget.cs" />
+    <Compile Include="view\SimulationParametersDialog.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.SimulationParametersDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

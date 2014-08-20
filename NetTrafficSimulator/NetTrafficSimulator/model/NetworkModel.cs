@@ -11,6 +11,7 @@ namespace NetTrafficSimulator
 	 */
 	public class NetworkModel
 	{
+		private static readonly ILog log = LogManager.GetLogger(typeof(NetworkModel));
 		/**
 		 * END_NODE is a end-user node, which initiates connection to server-node
 		 */
@@ -206,10 +207,16 @@ namespace NetTrafficSimulator
 				if (node_records.TryGetValue (y, out Y)) {
 					if ((capacity > 0) && (toggle_probability >= 0.0m) && (toggle_probability <= 1.0m)) {
 						LinkRecord lr = new LinkRecord (lname,x, y, capacity, toggle_probability);
+						log.Debug ("Created link record " + lname);
 						if (X is EndpointNodeRecord) {
 							(X as EndpointNodeRecord).link = lr;
 						} else {
 							(X as NetworkNodeRecord).links.Add (lr);
+						}
+						if (Y is EndpointNodeRecord) {
+							(Y as EndpointNodeRecord).link = lr;
+						} else {
+							(Y as NetworkNodeRecord).links.Add (lr);
 						}
 						link_records.Add (lname, lr);
 					} else
@@ -496,6 +503,38 @@ namespace NetTrafficSimulator
 		}
 		public int GetLinkCount(){
 			return this.link_records.Count;
+		}
+
+		public string GetEndpointNodeLink(string node){
+			NodeRecord nr;
+			if (node_records.TryGetValue (node, out nr)) {
+				if (nr is EndpointNodeRecord) {
+					if ((nr as EndpointNodeRecord).link != null) {
+						return (nr as EndpointNodeRecord).link.name;
+					} else
+						return "";
+				} else
+					throw new ArgumentException ("Node not endpoint node: " + node);
+			} else
+				throw new ArgumentException ("Node not found: " + node);
+		}
+
+		public string[] GetNetworkNodeLinks(string node){
+			NodeRecord nr;
+			if (node_records.TryGetValue (node, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					int count = (nr as NetworkNodeRecord).links.Count;
+					string[] lnames = new string[count];
+					int i = 0;
+					foreach (LinkRecord lr in (nr as NetworkNodeRecord).links) {
+						lnames [i] = lr.name;
+						i++;
+					}
+					return lnames;
+				} else
+					throw new ArgumentException ("Node not network node:" + node);
+			} else
+				throw new ArgumentException ("Node not found: " + node);
 		}
 	}
 }

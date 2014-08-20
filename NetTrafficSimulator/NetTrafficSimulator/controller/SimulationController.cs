@@ -71,12 +71,14 @@ namespace NetTrafficSimulator
 
 
 		private void createNetworkNodes(){
+			log.Debug ("Create network nodes");
 			networkNodeCounter = 0;
 			this.routers = new LinkedList<NetworkNode> ();
 
 			foreach (string name in node_names_array) {
 				switch (network_model.GetNodeType (name)) {
 				case NetworkModel.NETWORK_NODE:
+					log.Debug ("NN:" + name);
 					int interfaces = network_model.GetNetworkNodeInterfacesCount (name);
 					NetworkNode nn = new NetworkNode (name, interfaces, simulation_model.MaxHop, framework_model);
 					nodes [nodeCounter] = nn;
@@ -93,7 +95,7 @@ namespace NetTrafficSimulator
 		 * @throws InvalidOperationException if found unidentified node type
 		 */
 		private void createEndpointNodes(){
-			log.Debug ("Create nodes");
+			log.Debug ("Create endpoint nodes");
 			endNodeCounter = 0;
 			serverNodeCounter = 0;
 			nodeCounter = 0;
@@ -105,6 +107,7 @@ namespace NetTrafficSimulator
 			foreach (string name in node_names_array) {
 				switch (network_model.GetNodeType (name)) {
 				case NetworkModel.END_NODE:
+					log.Debug ("EN:" + name);
 					bool rt = simulation_model.IsRandomTalker (name);
 					EndNode en = new EndNode (name, network_model.GetEndpointNodeAddr (name));
 					if (rt)
@@ -117,6 +120,7 @@ namespace NetTrafficSimulator
 				case NetworkModel.NETWORK_NODE:
 					break;
 				case NetworkModel.SERVER_NODE:
+					log.Debug ("SN:" + name);
 					ServerNode sn = new ServerNode (name, network_model.GetEndpointNodeAddr (name));
 					node_names.Add (name, sn);
 					nodes [nodeCounter] = sn;
@@ -141,24 +145,42 @@ namespace NetTrafficSimulator
 				throw new InvalidOperationException ("[SimulationController.createLinks] Framework model not initialized");
 			this.linkCounter = 0;
 			foreach(string link in network_model.GetLinkNames ()){
+				if (link == null)
+					log.Error ("Link null");
+				log.Debug ("Link: " + link);
 				Node a;
-				if (node_names.TryGetValue (network_model.GetLinkNode1 (link), out a)) {
+				string n1 = network_model.GetLinkNode1 (link);
+				log.Debug ("N1:" + n1);
+				if (node_names.TryGetValue (n1, out a)) {
 					Node b;
-					if (node_names.TryGetValue (network_model.GetLinkNode2 (link), out b)) {
-						Link l = new Link (link, network_model.GetLinkCapacity (link), a, b, framework_model);
+					string n2 = network_model.GetLinkNode2 (link);
+					log.Debug ("N2:" + n2);
+					if (node_names.TryGetValue (n2, out b)) {
+						decimal cap = network_model.GetLinkCapacity (link);
+						log.Debug ("Capacity:" + cap);
+						Link l = new Link (link, cap, a, b, framework_model);
 						links [linkCounter] = l;
 						linkCounter++;
-						if (a is EndpointNode)
+						if (a is EndpointNode) {
 							(a as EndpointNode).Link = l;
-						else
-							(a as NetworkNode).ConnectLink (l, framework_model,network_model.IsLinkDefaultRouteForNetworkNode(a.Name,link));
-						if (b is EndpointNode)
+						} else {
+							log.Debug ("NN connect link");
+							(a as NetworkNode).ConnectLink (l, framework_model, network_model.IsLinkDefaultRouteForNetworkNode (a.Name, link));
+						}
+
+						if (b is EndpointNode) {
 							(b as EndpointNode).Link = l;
-						else
+						} else {
+							log.Debug ("NN connect link 2");
 							(b as NetworkNode).ConnectLink (l, framework_model, network_model.IsLinkDefaultRouteForNetworkNode (b.Name, link));
-					}throw new ArgumentException ("Node not found: " + network_model.GetLinkNode2 (link));
-				} else
-					throw new ArgumentException ("Node not found: " + network_model.GetLinkNode1 (link));
+						}
+					} else {
+						throw new ArgumentException ("Node not found: " + n2);
+					}
+				} else {
+					throw new ArgumentException ("Node not found: " + n1);
+				}
+				log.Debug ("FOR iteration done");
 			}
 		}
 
