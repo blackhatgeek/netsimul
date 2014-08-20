@@ -1,11 +1,9 @@
 using System;
-using log4net;
 
 namespace NetTrafficSimulator
 {
 	public partial class NewNodeDialog : Gtk.Dialog
 	{
-		static readonly ILog log = LogManager.GetLogger(typeof(NewNodeDialog));
 		NetTrafficSimulator.NetworkModel nm;
 		public string node_name;
 		int ntype;
@@ -13,9 +11,20 @@ namespace NetTrafficSimulator
 		{
 			this.Build ();
 			this.nm = nm;
-			if ((ntype == NetworkModel.END_NODE) || (ntype == NetworkModel.NETWORK_NODE) || (ntype == NetworkModel.SERVER_NODE))
+			if ((ntype == NetworkModel.END_NODE) || (ntype == NetworkModel.NETWORK_NODE) || (ntype == NetworkModel.SERVER_NODE)) {
 				this.ntype = ntype;
-			else
+				switch (ntype) {
+				case NetworkModel.END_NODE:
+					label1.Text = "Add new end node";
+					break;
+				case NetworkModel.NETWORK_NODE:
+					label1.Text = "Add new network node";
+					break;
+				case NetworkModel.SERVER_NODE:
+					label1.Text = "Add new server node";
+					break;
+				}
+			}else
 				throw new ArgumentException ("Invalid node type: " + ntype);
 		}
 

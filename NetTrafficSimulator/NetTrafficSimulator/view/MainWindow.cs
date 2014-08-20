@@ -286,6 +286,8 @@ public partial class MainWindow: Gtk.Window
 	{
 		nm = new NetTrafficSimulator.NetworkModel ();
 		sm = new NetTrafficSimulator.SimulationModel (0);
+		linkListStore.Clear ();
+		nodeListStore.Clear ();
 	}
 	
 	protected void onAddNewEndNode (object sender, EventArgs e)
@@ -344,5 +346,27 @@ public partial class MainWindow: Gtk.Window
 			}
 		} else
 			throw new ArgumentException ("Invalid node type: " + ntype);
+	}
+
+
+
+	protected void OnAddLinkActionActivated (object sender, EventArgs e)
+	{
+		NetTrafficSimulator.NewLinkDialog nld = new NetTrafficSimulator.NewLinkDialog (nm);
+		switch (nld.Run ()) {
+		case (int)ResponseType.Reject:
+			nld.Destroy ();
+			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Error occured, link was not added!");
+			md.Run ();
+			md.Destroy ();
+			break;
+		case (int)ResponseType.Ok:
+			linkListStore.AppendValues (nld.link_name, nld.node1, nld.node2);
+			nld.Destroy ();
+			break;
+		default:
+			nld.Destroy ();
+			break;
+		}
 	}
 }
