@@ -358,9 +358,10 @@ namespace NetTrafficSimulator
 		private Dictionary<string,LinkResult> linkNames;
 
 		//vysledky trasovanych packetu
-		private LinkedList<LinkedList<KeyValuePair<Node,int>>> traces;
+		//private LinkedList<LinkedList<KeyValuePair<Node,int>>> traces;
+		private LinkedList<KeyValuePair<string,int>>[] traces;
 
-		private int endNodeLimit, endNodeCount, serverNodeLimit, serverNodeCount, networkNodeLimit, networkNodeCount,linkLimit,linkCount;
+		private int endNodeLimit, endNodeCount, serverNodeLimit, serverNodeCount, networkNodeLimit, networkNodeCount,linkLimit,linkCount,traced,tracer;
 
 		/**
 		 * Create result model for nodes amounts specified
@@ -369,7 +370,7 @@ namespace NetTrafficSimulator
 		 * @param networkNodes amount of network nodes
 		 * @param linkNodes amount of links
 		 */
-		public ResultModel (int endNodes,int serverNodes,int networkNodes,int linkNodes)
+		public ResultModel (int endNodes,int serverNodes,int networkNodes,int linkNodes,int traced)
 		{
 			this.endNodes = new string[endNodes];
 			this.endNodeLimit = endNodes;
@@ -391,7 +392,9 @@ namespace NetTrafficSimulator
 			this.linkCount = 0;
 			this.linkNames = new Dictionary<string, LinkResult> ();
 
-			this.traces = new LinkedList<LinkedList<KeyValuePair<Node,int>>> ();
+			this.traced = traced;
+			this.traces = new LinkedList<KeyValuePair<string,int>>[traced];
+			this.tracer = 0;
 		}
 		/**
 		 * Records results of an end node, if possible
@@ -489,10 +492,14 @@ namespace NetTrafficSimulator
 		}
 
 		public void SetPacketTrace(Packet p){
-			if (p.Traced)
-				this.traces.AddLast (p.Trace);
-			else
-				throw new ArgumentException ("Packet not traced!");
+			if (p.Traced) {
+				if (tracer < traced) {
+					this.traces [tracer] = p.Trace;
+					tracer++;
+				} else
+					throw new ArgumentException ("Trace overflow");
+			}else
+					throw new ArgumentException ("Packet not traced!");
 		}
 
 		/**
@@ -899,7 +906,7 @@ namespace NetTrafficSimulator
 			return getLR (name).PercentageDataLostInCarry;
 		}
 
-		public LinkedList<LinkedList<KeyValuePair<Node,int>>> GetPacketTraces(){
+		public LinkedList<KeyValuePair<string,int>>[] GetPacketTraces(){
 			return traces;
 		}
 	}

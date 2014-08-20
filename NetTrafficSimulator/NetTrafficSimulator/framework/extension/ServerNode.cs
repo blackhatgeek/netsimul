@@ -54,6 +54,7 @@ namespace NetTrafficSimulator
 			}
 			else
 				throw new ArgumentException ("[ServerNode "+Name+"] Neplatny stav: "+state);
+			base.ProcessEvent (state, model);
 		}
 
 		/**

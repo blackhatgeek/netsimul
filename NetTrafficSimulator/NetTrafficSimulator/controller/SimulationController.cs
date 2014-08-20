@@ -19,9 +19,9 @@ namespace NetTrafficSimulator
 		private ServerNode[] servers;
 		private LinkedList<EndNode> randomTalkers;//TODO: count counts and make an array
 		private LinkedList<NetworkNode> routers;//TODO: count counts and make an array
-		private LinkedList<Packet> tracedPackets;
+		private Packet[] tracedPackets;
 		private Dictionary<string,Node> node_names;
-
+		private int traced;
 		private string[] node_names_array;
 		private Link[] links;
 
@@ -205,15 +205,17 @@ namespace NetTrafficSimulator
 			log.Debug ("Create events");
 			if ((framework_model != null)&&(network_model!=null)) {
 				log.Debug ("User defined simulation events");
-				this.tracedPackets = new LinkedList<Packet> ();
-				foreach (SimulationModel.Event e in simulation_model.GetEvents()) {
+				traced = simulation_model.GetEvents ().Length;
+				this.tracedPackets = new Packet[traced];
+				for (int i = 0; i < traced; i++) {
+					SimulationModel.Event e = simulation_model.GetEvents () [i];
 					Node from_node; 
 					int from_addr = network_model.GetEndpointNodeAddr (e.node1);
 					if (node_names.TryGetValue (e.node1, out from_node)) {
 						if (from_node is EndNode && network_model.GetNodeType (e.node2).Equals (NetworkModel.SERVER_NODE)) {
 							//schedule node e.node1 to state SEND (with packet from e.node1 to e.node2 of e.size as parameter) at time e.when
 							Packet p = new Packet (from_addr, network_model.GetEndpointNodeAddr (e.node2), e.size, true);
-							tracedPackets.AddLast (p);
+							tracedPackets[i] = p;
 							MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND,p);
 							MFF_NPRG031.Event ev = new MFF_NPRG031.Event (from_node, st, e.when);
 							framework_model.K.Schedule (ev);
@@ -269,7 +271,7 @@ namespace NetTrafficSimulator
 		 * Stores statistics into Result Model
 		 */
 		private void PopulateResultModel(){
-			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, linkCounter);
+			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, linkCounter,traced);
 			foreach (Node n in nodes) {
 				if (n is EndNode) {
 					EndNode en = n as EndNode;

@@ -29,8 +29,12 @@ namespace NetTrafficSimulator
 
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
-			if (state.Data.Traced)
-				state.Data.SetNodePassedThrough (this,model.Time);
+			if (state != null) {
+				if (state.Data != null) {
+					if (state.Data.Traced)
+						state.Data.SetNodePassedThrough (this, model.Time);
+				}
+			}
 		}
 
 		/**

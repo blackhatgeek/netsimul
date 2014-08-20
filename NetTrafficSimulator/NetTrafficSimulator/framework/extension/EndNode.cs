@@ -53,6 +53,7 @@ namespace NetTrafficSimulator
 			default:
 				throw new ArgumentException ("[EndNode "+Name+"] Neplatny stav: "+state);
 			}
+			base.ProcessEvent (state, model);
 		}
 
 		/**

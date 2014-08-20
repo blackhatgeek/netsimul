@@ -35,16 +35,11 @@ namespace NetTrafficSimulator
 
 		public void Load(ResultModel rm){
 			log.Debug ("Loading packet traces");
-			LinkedList<LinkedList<KeyValuePair<Node,int>>> list_traces = rm.GetPacketTraces ();
-			LinkedListNode<LinkedList<KeyValuePair<Node,int>>> list_trace_node = list_traces.First;
-			while (list_trace_node!=null) {
-				LinkedList<KeyValuePair<Node,int>> list_trace = list_trace_node.Value;
-				LinkedListNode<KeyValuePair<Node,int>> node = list_trace.First;
-				while (node!=null) {
-					store.AppendValues (node.Value.Key.Name, node.Value.Value);
-					node = node.Next;
+			LinkedList<KeyValuePair<string,int>>[] traces = rm.GetPacketTraces ();
+			foreach (LinkedList<KeyValuePair<string,int>> ll in traces) {
+				foreach (KeyValuePair<string,int> kvp in ll) {
+					store.AppendValues (kvp.Key, kvp.Value);
 				}
-				list_trace_node = list_trace_node.Next;
 			}
 		}
 	}

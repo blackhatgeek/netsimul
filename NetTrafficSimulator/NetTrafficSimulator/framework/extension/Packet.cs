@@ -11,7 +11,7 @@ namespace NetTrafficSimulator
 		private readonly int source, destination;
 		private readonly decimal size;
 		private readonly bool trace;
-		private LinkedList<KeyValuePair<Node,int>> journey;
+		private LinkedList<KeyValuePair<string,int>> journey;
 		private int hopcounter;
 
 		/**
@@ -31,7 +31,7 @@ namespace NetTrafficSimulator
 
 		public Packet (int source, int destination,decimal size,bool trace):this(source,destination,size){
 			this.trace = trace;
-			this.journey = new LinkedList<KeyValuePair<Node,int>> ();
+			this.journey = new LinkedList<KeyValuePair<string,int>> ();
 		}
 
 		/**
@@ -85,12 +85,12 @@ namespace NetTrafficSimulator
 
 		public void SetNodePassedThrough(Node n,int time){
 			if (this.trace)
-				this.journey.AddLast (new KeyValuePair<Node, int>(n,time));
+				this.journey.AddLast (new KeyValuePair<string, int>(n.Name,time));
 			else
 				throw new ArgumentException ("Packet not set as traced!");
 		}
 
-		public LinkedList<KeyValuePair<Node,int>> Trace{
+		public LinkedList<KeyValuePair<string,int>> Trace{
 			get{
 				return this.journey;
 			}

@@ -175,6 +175,7 @@ namespace NetTrafficSimulator
 			default:
 				throw new ArgumentException ("[NetworkNode "+Name+"] Neplatny stav: "+state);
 			}
+			base.ProcessEvent (state, model);
 		}
 
 		/**
