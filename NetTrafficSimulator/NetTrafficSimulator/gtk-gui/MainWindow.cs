@@ -324,5 +324,6 @@ public partial class MainWindow
 		this.AddNetworkNodeAction.Activated += new global::System.EventHandler (this.onAddNetNode);
 		this.AddServerNodeAction.Activated += new global::System.EventHandler (this.onAddServNode);
 		this.AddLinkAction.Activated += new global::System.EventHandler (this.OnAddLinkActionActivated);
+		this.button18.Clicked += new global::System.EventHandler (this.OnDeleteButtonClicked);
 	}
 }

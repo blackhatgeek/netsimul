@@ -189,31 +189,35 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	private void loadNodesBox(){
-		foreach (string node in node_names) {
-			string type="";
-			switch (nm.GetNodeType (node)) {
-			case NetTrafficSimulator.NetworkModel.END_NODE:
-				type = END;
-				break;
-			case NetTrafficSimulator.NetworkModel.NETWORK_NODE:
-				type = NETWORK;
-				break;
-			case NetTrafficSimulator.NetworkModel.SERVER_NODE:
-				type = SERVER;
-				break;
-			default:
-				MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close,
-				                                      "Unidentified node type");
-				md.Run ();
-				md.Destroy ();
-				break;
+		nodeListStore.Clear ();
+		if (node_names != null) {
+			foreach (string node in node_names) {
+				string type = "";
+				switch (nm.GetNodeType (node)) {
+				case NetTrafficSimulator.NetworkModel.END_NODE:
+					type = END;
+					break;
+				case NetTrafficSimulator.NetworkModel.NETWORK_NODE:
+					type = NETWORK;
+					break;
+				case NetTrafficSimulator.NetworkModel.SERVER_NODE:
+					type = SERVER;
+					break;
+				default:
+					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close,
+					                                     "Unidentified node type");
+					md.Run ();
+					md.Destroy ();
+					break;
+				}
+				log.Debug ("Appending: " + node + " (" + type + ")");
+				nodeListStore.AppendValues (node, type);
 			}
-			log.Debug ("Appending: " + node + " (" + type + ")");
-			nodeListStore.AppendValues (node, type);
 		}
 	}
 
 	private void loadLinksBox(){
+		linkListStore.Clear ();
 		foreach (string link in link_names) {
 			linkListStore.AppendValues (link, nm.GetLinkNode1 (link), nm.GetLinkNode2 (link));
 			log.Debug ("Appending: " + link + " node: " + nm.GetLinkNode1(link) + " node:" + nm.GetLinkNode2(link));
@@ -328,6 +332,7 @@ public partial class MainWindow: Gtk.Window
 						dsc = NETWORK;
 						break;
 					}
+					node_names = nm.GetNodeNames ();
 					TreeIter ti = nodeListStore.AppendValues (nend.node_name, dsc);
 					treeview3.Selection.UnselectAll ();
 					treeview3.Selection.SelectIter (ti);
@@ -362,11 +367,61 @@ public partial class MainWindow: Gtk.Window
 			break;
 		case (int)ResponseType.Ok:
 			linkListStore.AppendValues (nld.link_name, nld.node1, nld.node2);
+			link_names=nm.GetLinkNames();
 			nld.Destroy ();
 			break;
 		default:
 			nld.Destroy ();
 			break;
+		}
+	}
+
+	protected void OnDeleteButtonClicked (object sender, EventArgs e)
+	{
+		if (nm != null) {
+			if (GtkAlignment2.Child is NetTrafficSimulator.LinkWidget) {
+				string[] rel = nm.GetRelatedNodes(GtkLabel13.Text);
+				string msg = "Remove link "+GtkLabel13.Text+"?\n\nAffected nodes:\n";
+				foreach (string n in rel) {
+					msg += "\t" + n + "\n";
+				}
+				MessageDialog md  = new MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,msg);
+				if (md.Run () == (int)ResponseType.Yes) {
+					nm.RemoveLink (GtkLabel13.Text);
+					link_names=nm.GetLinkNames();
+					loadLinksBox ();
+				}
+				md.Destroy ();
+			} else {
+				string[] rel = nm.GetRelatedLinks (GtkLabel13.Text);
+				if (rel.Length != 0) {
+					string msg = "Removing node: " + GtkLabel13.Text + "\nFollowing links connected to the node are about to be removed as well:\n";
+					foreach (string l in rel) {
+						msg += "\t" + l + "\n";
+					}
+					msg += "Proceed?";
+					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, msg);
+					if (md.Run () == (int)ResponseType.Yes) {
+						foreach (string l in rel) {
+							nm.RemoveLink (l);
+						}
+						nm.RemoveNode (GtkLabel13.Text);
+						node_names=nm.GetNodeNames();
+						link_names=nm.GetLinkNames();
+						loadLinksBox ();
+						loadNodesBox ();
+					}
+					md.Destroy ();
+				} else {
+					MessageDialog md = new MessageDialog (this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,"Remove node: " + GtkLabel13.Text + "?");
+					if (md.Run () == (int)ResponseType.Yes) {
+						nm.RemoveNode (GtkLabel13.Text);
+						node_names=nm.GetNodeNames();
+						loadNodesBox ();
+					}
+					md.Destroy ();
+				}
+			}
 		}
 	}
 }

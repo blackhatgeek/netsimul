@@ -542,6 +542,67 @@ namespace NetTrafficSimulator
 			} else
 				throw new ArgumentException ("Node not found: " + node);
 		}
+
+		public void RemoveNode(string name){
+			NodeRecord nr;
+			log.Debug ("Remove node " + name);
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is EndpointNodeRecord) {
+					if ((nr as EndpointNodeRecord).link == null) {
+						node_records.Remove (name);
+						log.Debug ("Endpoint node removed");
+					}
+					else throw new InvalidOperationException("Node "+name+" has links");
+				} else {
+					if ((nr as NetworkNodeRecord).links.Count == 0) {
+						node_records.Remove (name);
+						log.Debug ("Network node removed");
+					}
+					else
+						throw new InvalidOperationException ("Node " + name + " has links");
+				}
+			}
+			//done :)
+		}
+
+		public void RemoveLink(string name){
+			if (link_records.ContainsKey(name)) {
+				this.SetDisconnected (name);
+				link_records.Remove (name);
+			}
+			//done
+		}
+
+		public string[] GetRelatedNodes(string link){
+			LinkRecord lr;
+			if (link_records.TryGetValue (link, out lr)) {
+				return new string[] { lr.node1, lr.node2 };
+			} else
+				return new string[]{};
+		}
+
+		public string[] GetRelatedLinks(string node){
+			NodeRecord nr;
+			if (node_records.TryGetValue (node, out nr)) {
+				if (nr is EndpointNodeRecord) {
+					if ((nr as EndpointNodeRecord).link != null)
+						return new string[] { (nr as EndpointNodeRecord).link.name };
+					else
+						return new string[] { };
+				} else {
+					NetworkNodeRecord nnr = nr as NetworkNodeRecord;
+
+					string[] ret = new string[nnr.links.Count];
+					int i = 0;
+					foreach (LinkRecord lr in nnr.links) {
+						ret [i] = lr.name;
+						i++;
+					}
+					return ret;
+				}
+			} else
+				return new string[] {};
+		}
 	}
 }
 
