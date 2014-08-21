@@ -205,8 +205,18 @@ namespace NetTrafficSimulator
 			NodeRecord X, Y;
 			if(link_records.ContainsKey(lname))
 			   throw new ArgumentException("Link names must be unique!");
+			if(x.Equals(y))
+			   throw new ArgumentException("Nodes to connect must differ");
 			if (node_records.TryGetValue (x, out X)) {
+				if (X is EndpointNodeRecord) {
+					if ((X as EndpointNodeRecord).link != null)
+						throw new ArgumentException ("Link not null on endpoint node");
+				}
 				if (node_records.TryGetValue (y, out Y)) {
+					if (Y is EndpointNodeRecord) {
+						if ((Y as EndpointNodeRecord).link != null)
+							throw new ArgumentException ("Link not null on endpoint node");
+					}
 					if ((capacity >= 0) && (toggle_probability >= 0.0m) && (toggle_probability <= 1.0m)) {
 						LinkRecord lr = new LinkRecord (lname,x, y, capacity, toggle_probability);
 						lr.nodeA = X;
@@ -604,6 +614,32 @@ namespace NetTrafficSimulator
 				}
 			} else
 				return new string[] {};
+		}
+
+		public bool CanSetConnected(string x,string y,string lname,int capacity, decimal toggle_probability){
+			NodeRecord X, Y;
+			if (link_records.ContainsKey (lname))
+				return false;
+			else if (x.Equals (y))
+				return false;
+			else if (node_records.TryGetValue (x, out X)) {
+				if (X is EndpointNodeRecord) {
+					if ((X as EndpointNodeRecord).link != null)
+						return false;
+				}
+				if (node_records.TryGetValue (y, out Y)) {
+					if (Y is EndpointNodeRecord) {
+						if ((Y as EndpointNodeRecord).link != null)
+							return false;
+					}
+					if ((capacity >= 0) && (toggle_probability >= 0.0m) && (toggle_probability <= 1.0m)) {
+						return true;
+					} else
+						return false;
+				} else
+						return false;
+			} else
+				return false;
 		}
 	}
 }

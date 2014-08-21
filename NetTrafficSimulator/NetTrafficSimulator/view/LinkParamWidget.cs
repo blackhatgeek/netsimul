@@ -89,22 +89,32 @@ namespace NetTrafficSimulator
 					}
 
 					try{
-						nm.RemoveLink (name);
-						nm.SetConnected(combobox4.ActiveText,combobox5.ActiveText,name,spinbutton4.ValueAsInt,
-						                (decimal)spinbutton5.Value);
-						if(combobox4.Active!=active1){
-							trigmwc=true;
-							active1=combobox4.Active;
-						}
-						if(combobox5.Active!=active2){
-							trigmwc=false;
-							active2=combobox5.Active;
-						}
-						lcap = spinbutton4.ValueAsInt;
-						tp = (decimal)spinbutton5.Value;
+						if(nm.CanSetConnected(combobox4.ActiveText,combobox5.ActiveText,name,spinbutton4.ValueAsInt,(decimal)spinbutton5.Value)){
+							nm.RemoveLink (name);
+							nm.SetConnected(combobox4.ActiveText,combobox5.ActiveText,name,spinbutton4.ValueAsInt,
+							                (decimal)spinbutton5.Value);
+							if(combobox4.Active!=active1){
+								trigmwc=true;
+								active1=combobox4.Active;
+							}
+							if(combobox5.Active!=active2){
+								trigmwc=false;
+								active2=combobox5.Active;
+							}
+							lcap = spinbutton4.ValueAsInt;
+							tp = (decimal)spinbutton5.Value;
 
-						if(trigmwc)
-							mw.LinkChanged();
+							if(trigmwc)
+								mw.LinkChanged();
+						} else {
+							Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Parameters change failed");
+							md.Run ();
+							md.Destroy ();
+							combobox4.Active = active1;
+							combobox5.Active = active2;
+							spinbutton4.Value = lcap;
+							spinbutton5.Value = (double)tp;
+						}
 					}catch(Exception){
 						Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Parameters change failed");
 						md.Run ();
