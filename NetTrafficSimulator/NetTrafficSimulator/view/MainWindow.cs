@@ -444,13 +444,15 @@ public partial class MainWindow: Gtk.Window
 					if ((t == NetTrafficSimulator.NetworkModel.END_NODE) || (t == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
 						msg+="\nRelated events to be removed:\n";
 						System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents ();
-						System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
-						while (node.Next!=null) {
-							if (node.Value.node1.Equals (GtkLabel13.Text)||node.Value.node2.Equals(GtkLabel13.Text)) {
-								msg += "\t" + node.Value.node1 + " -> " + node.Value.node2 + " at " + node.Value.when + " of size " + node.Value.size+"\n";
-								events_to_remove.AddLast (node.Value);
+						if(events.Count>0){
+							System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
+							while (node.Next!=null) {
+								if (node.Value.node1.Equals (GtkLabel13.Text)||node.Value.node2.Equals(GtkLabel13.Text)) {
+									msg += "\t" + node.Value.node1 + " -> " + node.Value.node2 + " at " + node.Value.when + " of size " + node.Value.size+"\n";
+									events_to_remove.AddLast (node.Value);
+								}
+								node = node.Next;
 							}
-							node = node.Next;
 						}
 					}
 					if (rel.Length != 0) {
