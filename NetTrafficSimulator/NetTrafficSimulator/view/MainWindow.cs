@@ -255,7 +255,7 @@ public partial class MainWindow: Gtk.Window
 				break;
 			case END:
 				NetTrafficSimulator.EndNodeWidget ew = new NetTrafficSimulator.EndNodeWidget ();
-				ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString ());
+				ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (),this);
 				ew.EventWidget.LoadParams (sm, model.GetValue (iter, 0).ToString ());
 				if (rm != null)
 					ew.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
@@ -364,7 +364,16 @@ public partial class MainWindow: Gtk.Window
 			throw new ArgumentException ("Invalid node type: " + ntype);
 	}
 
-
+	public void NodeNameChanged(){
+		log.Debug ("Triggered node name change");
+		node_names = nm.GetNodeNames ();
+		loadNodesBox ();
+		if (GtkAlignment2.Child is NetTrafficSimulator.EndNodeWidget) {
+			GtkLabel13.Text = "<b>"+(GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name+"</b>";
+			GtkLabel13.UseMarkup = true;
+			(GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).EventWidget.name = (GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name;
+		}
+	}
 
 	protected void OnAddLinkActionActivated (object sender, EventArgs e)
 	{

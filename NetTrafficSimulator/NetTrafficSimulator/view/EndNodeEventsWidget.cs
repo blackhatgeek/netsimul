@@ -6,6 +6,7 @@ namespace NetTrafficSimulator
 	public partial class EndNodeEventsWidget : Gtk.Bin
 	{
 		Gtk.ListStore store;
+		public string name;
 		public EndNodeEventsWidget ()
 		{
 			this.Build ();
@@ -33,6 +34,7 @@ namespace NetTrafficSimulator
 		}
 
 		public void LoadParams(SimulationModel sm,String nname){
+			this.name = name;
 			SimulationModel.Event[] evs = sm.GetEvents ();
 			foreach (SimulationModel.Event e in evs) {
 				if (e.node1.Equals (nname)) {

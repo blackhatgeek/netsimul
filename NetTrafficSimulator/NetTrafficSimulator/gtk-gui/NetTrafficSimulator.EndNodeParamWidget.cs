@@ -20,7 +20,9 @@ namespace NetTrafficSimulator
 		private global::Gtk.SpinButton spinbutton2;
 		private global::Gtk.HBox hbox5;
 		private global::Gtk.Label label5;
-		private global::Gtk.ComboBox combobox1;
+		private global::Gtk.Label label6;
+		private global::Gtk.Fixed fixed1;
+		private global::Gtk.Button button277;
 
 		protected virtual void Build ()
 		{
@@ -171,23 +173,43 @@ namespace NetTrafficSimulator
 			w14.Expand = false;
 			w14.Fill = false;
 			// Container child hbox5.Gtk.Box+BoxChild
-			this.combobox1 = global::Gtk.ComboBox.NewText ();
-			this.combobox1.Name = "combobox1";
-			this.hbox5.Add (this.combobox1);
-			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.combobox1]));
+			this.label6 = new global::Gtk.Label ();
+			this.label6.Name = "label6";
+			this.label6.LabelProp = global::Mono.Unix.Catalog.GetString ("N/A");
+			this.hbox5.Add (this.label6);
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.label6]));
 			w15.Position = 1;
 			w15.Expand = false;
 			w15.Fill = false;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.fixed1 = new global::Gtk.Fixed ();
+			this.fixed1.Name = "fixed1";
+			this.fixed1.HasWindow = false;
+			this.hbox5.Add (this.fixed1);
+			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.fixed1]));
+			w16.Position = 2;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.button277 = new global::Gtk.Button ();
+			this.button277.CanFocus = true;
+			this.button277.Name = "button277";
+			this.button277.UseUnderline = true;
+			this.button277.Label = global::Mono.Unix.Catalog.GetString ("Change");
+			this.hbox5.Add (this.button277);
+			global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.button277]));
+			w17.Position = 3;
+			w17.Expand = false;
+			w17.Fill = false;
 			this.vbox1.Add (this.hbox5);
-			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox5]));
-			w16.Position = 4;
-			w16.Expand = false;
-			w16.Fill = false;
+			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox5]));
+			w18.Position = 4;
+			w18.Expand = false;
+			w18.Fill = false;
 			this.Add (this.vbox1);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.button277.Clicked += new global::System.EventHandler (this.OnButton277Clicked);
 		}
 	}
 }

@@ -307,12 +307,14 @@ namespace NetTrafficSimulator
 					if (node_records.ContainsKey (newname)) {
 						throw new ArgumentException ("New name " + newname + " already taken. Names must be unique for nodes.");
 					} else {
+						log.Debug ("Name change!!");
 						nr.name = newname;
 						node_records.Remove (oldname);
 						node_records.Add (newname, nr);
 					}
 				}
-			} throw new ArgumentException ("Node not found: " + oldname);
+			}else 
+				throw new ArgumentException ("Node not found: " + oldname);
 		}
 		/**
 		 * <p>Set network address for given node number. Here we care if node is addressable or not</p>

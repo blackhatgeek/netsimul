@@ -114,6 +114,10 @@ namespace NetTrafficSimulator
 			randomTalkers.Add (nodeName);
 		}
 
+		public void UnsetRandomTalker(string nodeName){
+			randomTalkers.Remove (nodeName);
+		}
+
 		/**
 		 * Is node with the name provided marked as random talker?
 		 * @param node node name
