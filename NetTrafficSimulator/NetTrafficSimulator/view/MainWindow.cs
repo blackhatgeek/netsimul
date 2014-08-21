@@ -79,8 +79,8 @@ public partial class MainWindow: Gtk.Window
 				fc.SetCurrentFolder(model_path);
 			if (fc.Run () == (int)ResponseType.Accept) {
 				model_path = fc.CurrentFolder;
-				NetTrafficSimulator.Loader loader = new NetTrafficSimulator.Loader (fc.Filename);
 				try{
+					NetTrafficSimulator.Loader loader = new NetTrafficSimulator.Loader (fc.Filename);
 					nm = loader.LoadNM ();
 					sm = loader.LoadSM ();
 
@@ -92,6 +92,14 @@ public partial class MainWindow: Gtk.Window
 					//naplnit links
 					loadLinksBox();
 
+				}catch(System.Xml.Schema.XmlSchemaException e){
+					log.Error ("Input file not valid");
+					log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
+					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error,
+					                                      ButtonsType.Close, "Input file not valid");
+					md.Run ();
+					md.Destroy ();
+				
 				}catch(ArgumentOutOfRangeException e){
 					log.Error ("Attribute value out of range: "+e.Message);
 					log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
@@ -118,13 +126,6 @@ public partial class MainWindow: Gtk.Window
 					log.Debug(e.StackTrace);
 					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error,
 				                                          ButtonsType.Close, e.Message);
-					md.Run ();
-					md.Destroy ();
-				}catch(XmlSchemaException e){
-					log.Error ("Input file not valid");
-					log.Debug("EXCEPTION: "+e.Message+"\n"+e.StackTrace);
-					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error,
-					                                          ButtonsType.Close, "Input file not valid");
 					md.Run ();
 					md.Destroy ();
 				}
@@ -386,22 +387,28 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnAddLinkActionActivated (object sender, EventArgs e)
 	{
-		NetTrafficSimulator.NewLinkDialog nld = new NetTrafficSimulator.NewLinkDialog (nm,this);
-		switch (nld.Run ()) {
-		case (int)ResponseType.Reject:
-			nld.Destroy ();
-			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Error occured, link was not added!");
+		if (nm != null) {
+			NetTrafficSimulator.NewLinkDialog nld = new NetTrafficSimulator.NewLinkDialog (nm, this);
+			switch (nld.Run ()) {
+			case (int)ResponseType.Reject:
+				nld.Destroy ();
+				MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Error occured, link was not added!");
+				md.Run ();
+				md.Destroy ();
+				break;
+			case (int)ResponseType.Ok:
+				linkListStore.AppendValues (nld.link_name, nld.node1, nld.node2);
+				link_names = nm.GetLinkNames ();
+				nld.Destroy ();
+				break;
+			default:
+				nld.Destroy ();
+				break;
+			}
+		} else {
+			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Close, "Load or create model first!");
 			md.Run ();
 			md.Destroy ();
-			break;
-		case (int)ResponseType.Ok:
-			linkListStore.AppendValues (nld.link_name, nld.node1, nld.node2);
-			link_names=nm.GetLinkNames();
-			nld.Destroy ();
-			break;
-		default:
-			nld.Destroy ();
-			break;
 		}
 	}
 
@@ -497,5 +504,12 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	protected void OnAboutActionActivated (object sender, EventArgs e)
+	{
+		//AboutDialog ab = new AboutDialog ();
+		NetTrafficSimulator.AboutDialog ab = new NetTrafficSimulator.AboutDialog ();
+		ab.Run ();
+		ab.Destroy ();
+	}
 	
 }

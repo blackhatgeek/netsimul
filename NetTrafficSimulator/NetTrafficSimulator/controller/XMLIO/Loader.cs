@@ -219,7 +219,7 @@ namespace NetTrafficSimulator
 			else if (e.Severity == XmlSeverityType.Error)
 			{
 				log.Error (e.Message);
-				throw new XmlSchemaException ("Model validation failed");
+				throw new System.Xml.Schema.XmlSchemaValidationException ("Model validation failed");
 			}
 		}
 

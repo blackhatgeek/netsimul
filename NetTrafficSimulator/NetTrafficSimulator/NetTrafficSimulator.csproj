@@ -10,6 +10,8 @@
     <RootNamespace>NetTrafficSimulator</RootNamespace>
     <AssemblyName>NetTrafficSimulator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>1.00.000</ReleaseVersion>
+    <Description>Discrete simulator of traffic in computer network</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -138,6 +140,8 @@
     <Compile Include="gtk-gui\NetTrafficSimulator.NewLinkDialog.cs" />
     <Compile Include="view\NewEventDialog.cs" />
     <Compile Include="gtk-gui\NetTrafficSimulator.NewEventDialog.cs" />
+    <Compile Include="view\AboutDialog.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.AboutDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

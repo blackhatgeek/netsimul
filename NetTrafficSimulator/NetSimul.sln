@@ -163,5 +163,7 @@ Global
 		$25.NamingStyle = PascalCase
 		$25.IncludeInstanceMembers = True
 		$25.IncludeStaticEntities = True
+		description = Discrete simulation of traffic in computer network.
+		version = 1.00.000
 	EndGlobalSection
 EndGlobal

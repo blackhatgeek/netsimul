@@ -107,7 +107,7 @@ public partial class MainWindow
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
-		this.Title = global::Mono.Unix.Catalog.GetString ("MainWindow");
+		this.Title = global::Mono.Unix.Catalog.GetString ("NetSimul");
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 		// Container child MainWindow.Gtk.Container+ContainerChild
 		this.vbox1 = new global::Gtk.VBox ();
@@ -324,6 +324,7 @@ public partial class MainWindow
 		this.AddEndNodeAction.Activated += new global::System.EventHandler (this.onAddNewEndNode);
 		this.AddNetworkNodeAction.Activated += new global::System.EventHandler (this.onAddNetNode);
 		this.AddServerNodeAction.Activated += new global::System.EventHandler (this.onAddServNode);
+		this.AboutAction.Activated += new global::System.EventHandler (this.OnAboutActionActivated);
 		this.AddLinkAction.Activated += new global::System.EventHandler (this.OnAddLinkActionActivated);
 		this.button18.Clicked += new global::System.EventHandler (this.OnDeleteButtonClicked);
 	}

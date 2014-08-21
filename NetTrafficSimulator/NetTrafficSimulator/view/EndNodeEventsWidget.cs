@@ -51,12 +51,14 @@ namespace NetTrafficSimulator
 
 		protected void OnButton2Clicked (object sender, EventArgs e)
 		{
-			NewEventDialog ned = new NewEventDialog (name, nm, sm);
-			if (ned.Run () == (int)Gtk.ResponseType.Ok) {
-				log.Debug (ned.generated_event.node2+", "+ned.generated_event.size+", "+ned.generated_event.when);
-				store.AppendValues (ned.generated_event.node2, ned.generated_event.when, (double)ned.generated_event.size);
+			if((nm!=null)&&(sm!=null)){
+				NewEventDialog ned = new NewEventDialog (name, nm, sm);
+				if (ned.Run () == (int)Gtk.ResponseType.Ok) {
+					log.Debug (ned.generated_event.node2+", "+ned.generated_event.size+", "+ned.generated_event.when);
+					store.AppendValues (ned.generated_event.node2, ned.generated_event.when, (double)ned.generated_event.size);
+				}
+				ned.Destroy ();
 			}
-			ned.Destroy ();
 		}
 
 		NetTrafficSimulator.SimulationModel.Event ev;
