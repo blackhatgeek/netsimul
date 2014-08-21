@@ -8,6 +8,9 @@ namespace NetTrafficSimulator
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(NetTrafficSimulator.NetworkNodeParamWidget));
 		Gtk.ListStore store;
+		MainWindow mw;
+		NetworkModel nm;
+		string name;
 		public NetworkNodeParamWidget ()
 		{
 			this.Build ();
@@ -16,30 +19,27 @@ namespace NetTrafficSimulator
 			lnamecol.Title = "Link name";
 			Gtk.TreeViewColumn ltocol = new Gtk.TreeViewColumn ();
 			ltocol.Title = "Connected to";
-			Gtk.TreeViewColumn defcol = new Gtk.TreeViewColumn ();
-			defcol.Title = "Default";
 
 			nodeview1.AppendColumn (lnamecol);
 			nodeview1.AppendColumn (ltocol);
-			nodeview1.AppendColumn (defcol);
 
-			store = new Gtk.ListStore (typeof(string), typeof(string), typeof(bool));
+			store = new Gtk.ListStore (typeof(string), typeof(string));
 			nodeview1.Model = store;
 
 			Gtk.CellRendererText lnamecell = new Gtk.CellRendererText ();
 			lnamecol.PackStart (lnamecell, true);
 			Gtk.CellRendererText ltocell = new Gtk.CellRendererText ();
 			ltocol.PackStart (ltocell, true);
-			Gtk.CellRendererText defcell = new Gtk.CellRendererText ();
-			defcol.PackStart (defcell, true);
 
 			lnamecol.AddAttribute (lnamecell, "text", 0);
 			ltocol.AddAttribute (ltocell, "text", 1);
-			defcol.AddAttribute (defcell, "text", 2);
 
 		}
 
-		public void LoadParams(NetworkModel nm,String nname){
+		public void LoadParams(NetworkModel nm,String nname,MainWindow mw){
+			this.nm=nm;
+			this.mw = mw;
+			this.name = nname;
 			log.Debug ("Load NN params");
 			if (nm == null)
 				log.Error ("NM null");
@@ -52,6 +52,7 @@ namespace NetTrafficSimulator
 			string[] links = nm.GetNetworkNodeLinks (nname);
 			if (links != null) {
 				log.Debug ("Processing links");
+				int i = 0,def=0;
 				foreach (string link in links) {
 					log.Debug ("Link: " + link);
 					string n1 = nm.GetLinkNode1 (link);
@@ -60,16 +61,35 @@ namespace NetTrafficSimulator
 					log.Debug ("TO: " + to);
 					string default_link = nm.GetNetworkNodeDefaultRoute (nname);
 					log.Debug ("Default link:" + default_link);
-					bool is_default = link.Equals (default_link);
-					store.AppendValues (link, to, is_default);
+					store.AppendValues (link, to);
+
+					if (link.Equals (default_link)) {
+						def = i;
+					}
+					combobox2.AppendText (link);
+					i++;
 					log.Debug ("Appended");
 				}
+				combobox2.Active = def;
 			}
-			foreach (string link in nm.GetLinkNames()) {
-				if(!(nm.GetLinkNode1(link).Equals(nname)||nm.GetLinkNode2(link).Equals(nname)))
-					combobox3.AppendText (link);
+		}
+
+		protected void OnButton422Clicked (object sender, EventArgs e)
+		{
+			if (!entry4.Text.Equals (name)) {
+				try{
+					nm.SetNodeName(name,entry4.Text);
+					name=entry4.Text;
+					mw.NodeNameChanged();
+				}catch(ArgumentException){
+					Gtk.MessageDialog md = new Gtk.MessageDialog(mw,Gtk.DialogFlags.DestroyWithParent,Gtk.MessageType.Error,Gtk.ButtonsType.Ok,"Name change failed");
+					md.Run ();
+					md.Destroy ();
+					entry4.Text = name;
+				}
 			}
-			combobox3.Active = 0;
+
+			nm.SetNetworkNodeDefaultRoute (name, combobox2.ActiveText);
 		}
 	}
 }

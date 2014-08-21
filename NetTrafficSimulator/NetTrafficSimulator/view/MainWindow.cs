@@ -248,7 +248,7 @@ public partial class MainWindow: Gtk.Window
 			switch (model.GetValue (iter, 1).ToString()) {
 			case SERVER:
 				NetTrafficSimulator.ServerNodeWidget sw = new NetTrafficSimulator.ServerNodeWidget ();
-				sw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
+				sw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (),this);
 				if (rm != null)
 					sw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 				GtkAlignment2.Child = sw;
@@ -263,7 +263,7 @@ public partial class MainWindow: Gtk.Window
 				break;
 			case NETWORK:
 				NetTrafficSimulator.NetworkNodeWidget nw = new NetTrafficSimulator.NetworkNodeWidget ();
-				nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
+				nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (),this);
 				if (rm != null)
 					nw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 				GtkAlignment2.Child = nw;

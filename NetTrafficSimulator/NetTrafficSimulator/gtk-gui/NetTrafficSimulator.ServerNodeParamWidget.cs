@@ -13,7 +13,9 @@ namespace NetTrafficSimulator
 		private global::Gtk.SpinButton spinbutton3;
 		private global::Gtk.HBox hbox8;
 		private global::Gtk.Label label8;
-		private global::Gtk.ComboBox combobox2;
+		private global::Gtk.Label label3;
+		private global::Gtk.Button button473;
+		private global::Gtk.Fixed fixed3;
 
 		protected virtual void Build ()
 		{
@@ -96,23 +98,45 @@ namespace NetTrafficSimulator
 			w7.Expand = false;
 			w7.Fill = false;
 			// Container child hbox8.Gtk.Box+BoxChild
-			this.combobox2 = global::Gtk.ComboBox.NewText ();
-			this.combobox2.Name = "combobox2";
-			this.hbox8.Add (this.combobox2);
-			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.combobox2]));
+			this.label3 = new global::Gtk.Label ();
+			this.label3.Name = "label3";
+			this.label3.LabelProp = global::Mono.Unix.Catalog.GetString ("label3");
+			this.hbox8.Add (this.label3);
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.label3]));
 			w8.Position = 1;
 			w8.Expand = false;
 			w8.Fill = false;
-			this.vbox4.Add (this.hbox8);
-			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.hbox8]));
+			// Container child hbox8.Gtk.Box+BoxChild
+			this.button473 = new global::Gtk.Button ();
+			this.button473.CanFocus = true;
+			this.button473.Name = "button473";
+			this.button473.UseUnderline = true;
+			this.button473.Label = global::Mono.Unix.Catalog.GetString ("Change");
+			this.hbox8.Add (this.button473);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.button473]));
+			w9.PackType = ((global::Gtk.PackType)(1));
 			w9.Position = 2;
 			w9.Expand = false;
 			w9.Fill = false;
+			// Container child hbox8.Gtk.Box+BoxChild
+			this.fixed3 = new global::Gtk.Fixed ();
+			this.fixed3.Name = "fixed3";
+			this.fixed3.HasWindow = false;
+			this.hbox8.Add (this.fixed3);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.fixed3]));
+			w10.PackType = ((global::Gtk.PackType)(1));
+			w10.Position = 3;
+			this.vbox4.Add (this.hbox8);
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.hbox8]));
+			w11.Position = 2;
+			w11.Expand = false;
+			w11.Fill = false;
 			this.Add (this.vbox4);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.button473.Clicked += new global::System.EventHandler (this.OnButton473Clicked);
 		}
 	}
 }

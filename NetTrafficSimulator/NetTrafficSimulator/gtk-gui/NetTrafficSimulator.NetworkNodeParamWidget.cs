@@ -11,14 +11,13 @@ namespace NetTrafficSimulator
 		private global::Gtk.HBox hbox10;
 		private global::Gtk.Label label10;
 		private global::Gtk.Fixed fixed5;
-		private global::Gtk.Button button2;
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		private global::Gtk.NodeView nodeview1;
 		private global::Gtk.HBox hbox11;
-		private global::Gtk.Label label11;
-		private global::Gtk.ComboBox combobox3;
-		private global::Gtk.Button button1;
-		private global::Gtk.CheckButton checkbutton1;
+		private global::Gtk.Label label2;
+		private global::Gtk.ComboBox combobox2;
+		private global::Gtk.Fixed fixed2;
+		private global::Gtk.Button button472;
 
 		protected virtual void Build ()
 		{
@@ -77,23 +76,11 @@ namespace NetTrafficSimulator
 			this.hbox10.Add (this.fixed5);
 			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.hbox10 [this.fixed5]));
 			w5.Position = 1;
-			// Container child hbox10.Gtk.Box+BoxChild
-			this.button2 = new global::Gtk.Button ();
-			this.button2.Sensitive = false;
-			this.button2.CanFocus = true;
-			this.button2.Name = "button2";
-			this.button2.UseUnderline = true;
-			this.button2.Label = global::Mono.Unix.Catalog.GetString ("Delete");
-			this.hbox10.Add (this.button2);
-			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox10 [this.button2]));
-			w6.Position = 2;
+			this.vbox5.Add (this.hbox10);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox10]));
+			w6.Position = 1;
 			w6.Expand = false;
 			w6.Fill = false;
-			this.vbox5.Add (this.hbox10);
-			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox10]));
-			w7.Position = 1;
-			w7.Expand = false;
-			w7.Fill = false;
 			// Container child vbox5.Gtk.Box+BoxChild
 			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
 			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -104,61 +91,58 @@ namespace NetTrafficSimulator
 			this.nodeview1.Name = "nodeview1";
 			this.GtkScrolledWindow.Add (this.nodeview1);
 			this.vbox5.Add (this.GtkScrolledWindow);
-			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow]));
-			w9.Position = 2;
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow]));
+			w8.Position = 2;
 			// Container child vbox5.Gtk.Box+BoxChild
 			this.hbox11 = new global::Gtk.HBox ();
 			this.hbox11.Name = "hbox11";
 			this.hbox11.Spacing = 6;
 			// Container child hbox11.Gtk.Box+BoxChild
-			this.label11 = new global::Gtk.Label ();
-			this.label11.Name = "label11";
-			this.label11.LabelProp = global::Mono.Unix.Catalog.GetString ("Connect link");
-			this.hbox11.Add (this.label11);
-			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.label11]));
-			w10.Position = 0;
+			this.label2 = new global::Gtk.Label ();
+			this.label2.Name = "label2";
+			this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("Default route");
+			this.hbox11.Add (this.label2);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.label2]));
+			w9.Position = 0;
+			w9.Expand = false;
+			w9.Fill = false;
+			// Container child hbox11.Gtk.Box+BoxChild
+			this.combobox2 = global::Gtk.ComboBox.NewText ();
+			this.combobox2.Name = "combobox2";
+			this.hbox11.Add (this.combobox2);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.combobox2]));
+			w10.Position = 1;
 			w10.Expand = false;
 			w10.Fill = false;
 			// Container child hbox11.Gtk.Box+BoxChild
-			this.combobox3 = global::Gtk.ComboBox.NewText ();
-			this.combobox3.Name = "combobox3";
-			this.hbox11.Add (this.combobox3);
-			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.combobox3]));
-			w11.Position = 1;
-			w11.Expand = false;
-			w11.Fill = false;
+			this.fixed2 = new global::Gtk.Fixed ();
+			this.fixed2.Name = "fixed2";
+			this.fixed2.HasWindow = false;
+			this.hbox11.Add (this.fixed2);
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.fixed2]));
+			w11.Position = 2;
 			// Container child hbox11.Gtk.Box+BoxChild
-			this.button1 = new global::Gtk.Button ();
-			this.button1.CanFocus = true;
-			this.button1.Name = "button1";
-			this.button1.UseUnderline = true;
-			this.button1.Label = global::Mono.Unix.Catalog.GetString ("Connect");
-			this.hbox11.Add (this.button1);
-			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.button1]));
-			w12.Position = 2;
+			this.button472 = new global::Gtk.Button ();
+			this.button472.CanFocus = true;
+			this.button472.Name = "button472";
+			this.button472.UseUnderline = true;
+			this.button472.Label = global::Mono.Unix.Catalog.GetString ("Change");
+			this.hbox11.Add (this.button472);
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.button472]));
+			w12.Position = 3;
 			w12.Expand = false;
 			w12.Fill = false;
-			// Container child hbox11.Gtk.Box+BoxChild
-			this.checkbutton1 = new global::Gtk.CheckButton ();
-			this.checkbutton1.CanFocus = true;
-			this.checkbutton1.Name = "checkbutton1";
-			this.checkbutton1.Label = global::Mono.Unix.Catalog.GetString ("Default route");
-			this.checkbutton1.DrawIndicator = true;
-			this.checkbutton1.UseUnderline = true;
-			this.hbox11.Add (this.checkbutton1);
-			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.hbox11 [this.checkbutton1]));
-			w13.PackType = ((global::Gtk.PackType)(1));
-			w13.Position = 3;
 			this.vbox5.Add (this.hbox11);
-			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox11]));
-			w14.Position = 3;
-			w14.Expand = false;
-			w14.Fill = false;
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.hbox11]));
+			w13.Position = 3;
+			w13.Expand = false;
+			w13.Fill = false;
 			this.Add (this.vbox5);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.button472.Clicked += new global::System.EventHandler (this.OnButton422Clicked);
 		}
 	}
 }

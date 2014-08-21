@@ -759,16 +759,43 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.ComboBox" id="combobox2">
+              <widget class="Gtk.Label" id="label3">
                 <property name="MemberName" />
-                <property name="IsTextCombo">True</property>
-                <property name="Items" translatable="yes" />
+                <property name="LabelProp" translatable="yes">label3</property>
               </widget>
               <packing>
                 <property name="Position">1</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="button473">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Change</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnButton473Clicked" />
+              </widget>
+              <packing>
+                <property name="PackType">End</property>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Fixed" id="fixed3">
+                <property name="MemberName" />
+                <property name="HasWindow">False</property>
+              </widget>
+              <packing>
+                <property name="PackType">End</property>
+                <property name="Position">3</property>
+                <property name="AutoSize">True</property>
               </packing>
             </child>
           </widget>
@@ -851,22 +878,6 @@
                 <property name="AutoSize">True</property>
               </packing>
             </child>
-            <child>
-              <widget class="Gtk.Button" id="button2">
-                <property name="MemberName" />
-                <property name="Sensitive">False</property>
-                <property name="CanFocus">True</property>
-                <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Delete</property>
-                <property name="UseUnderline">True</property>
-              </widget>
-              <packing>
-                <property name="Position">2</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -897,9 +908,9 @@
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Label" id="label11">
+              <widget class="Gtk.Label" id="label2">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Connect link</property>
+                <property name="LabelProp" translatable="yes">Default route</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -909,7 +920,7 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.ComboBox" id="combobox3">
+              <widget class="Gtk.ComboBox" id="combobox2">
                 <property name="MemberName" />
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
@@ -922,33 +933,29 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Button" id="button1">
+              <widget class="Gtk.Fixed" id="fixed2">
                 <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Connect</property>
-                <property name="UseUnderline">True</property>
+                <property name="HasWindow">False</property>
               </widget>
               <packing>
                 <property name="Position">2</property>
                 <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
               </packing>
             </child>
             <child>
-              <widget class="Gtk.CheckButton" id="checkbutton1">
+              <widget class="Gtk.Button" id="button472">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
-                <property name="Label" translatable="yes">Default route</property>
-                <property name="DrawIndicator">True</property>
-                <property name="HasLabel">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Change</property>
                 <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnButton422Clicked" />
               </widget>
               <packing>
-                <property name="PackType">End</property>
                 <property name="Position">3</property>
                 <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
               </packing>
             </child>
           </widget>
