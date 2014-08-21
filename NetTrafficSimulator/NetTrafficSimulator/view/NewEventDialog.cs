@@ -1,9 +1,11 @@
 using System;
+using log4net;
 
 namespace NetTrafficSimulator
 {
 	public partial class NewEventDialog : Gtk.Dialog
 	{
+		static readonly ILog log = LogManager.GetLogger(typeof(NewEventDialog));
 		SimulationModel sm;
 		public SimulationModel.Event generated_event;
 		public NewEventDialog (string node,NetworkModel nm,SimulationModel sm)
@@ -28,6 +30,7 @@ namespace NetTrafficSimulator
 		{
 			sm.SetEvent (label9.Text, combobox3.ActiveText, spinbutton1.ValueAsInt, (decimal)spinbutton2.Value);
 			generated_event = new SimulationModel.Event(label9.Text,combobox3.ActiveText,spinbutton1.ValueAsInt,(decimal)spinbutton2.Value);
+			log.Debug ("Generated ev:" + generated_event.node1 + "," + generated_event.node2 + "," + generated_event.size + "," + generated_event.when);
 		}
 	}
 }

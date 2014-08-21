@@ -1,10 +1,12 @@
 using System;
+using log4net;
 
 namespace NetTrafficSimulator
 {
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class EndNodeEventsWidget : Gtk.Bin
 	{
+		static readonly ILog log = LogManager.GetLogger(typeof(EndNodeEventsWidget));
 		Gtk.ListStore store;
 		public string name;
 		NetworkModel nm;
@@ -22,7 +24,7 @@ namespace NetTrafficSimulator
 			nodeview3.AppendColumn (toCol);
 			nodeview3.AppendColumn (whenCol);
 			nodeview3.AppendColumn (sizeCol);
-			store = new Gtk.ListStore (typeof(string),typeof(int),typeof(int));
+			store = new Gtk.ListStore (typeof(string),typeof(int),typeof(double));
 			nodeview3.Model = store;
 			Gtk.CellRendererText toCell = new Gtk.CellRendererText ();
 			toCol.PackStart (toCell, true);
@@ -51,14 +53,14 @@ namespace NetTrafficSimulator
 		{
 			NewEventDialog ned = new NewEventDialog (name, nm, sm);
 			if (ned.Run () == (int)Gtk.ResponseType.Ok) {
-				store.AppendValues (ned.generated_event.node2, ned.generated_event.when, ned.generated_event.size);
+				log.Debug (ned.generated_event.node2+", "+ned.generated_event.size+", "+ned.generated_event.when);
+				store.AppendValues (ned.generated_event.node2, ned.generated_event.when, (double)ned.generated_event.size);
 			}
 			ned.Destroy ();
 		}
 
 		NetTrafficSimulator.SimulationModel.Event ev;
 		Gtk.TreeIter ti;
-		bool selected;
 
 		protected void OnNodeview3CursorChanged (object sender, EventArgs e)
 		{
@@ -68,7 +70,7 @@ namespace NetTrafficSimulator
 			if (selection.GetSelected (out model, out iter)) {
 				string to = model.GetValue (iter, 0) as string;
 				int when = (int)model.GetValue (iter, 1);
-				int size = (int)model.GetValue (iter, 2);
+				decimal size = (decimal)(double)model.GetValue (iter, 2);
 
 				ev = new SimulationModel.Event (name,to, when, size);
 				ti = iter;
