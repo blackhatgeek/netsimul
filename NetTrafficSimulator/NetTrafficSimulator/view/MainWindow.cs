@@ -423,33 +423,45 @@ public partial class MainWindow: Gtk.Window
 				md.Destroy ();
 			} else {
 				string[] rel = nm.GetRelatedLinks (GtkLabel13.Text);
+				int t = nm.GetNodeType (GtkLabel13.Text);
+
+				string msg = "Remove node: " + GtkLabel13.Text + "?\n";
+
+				System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events_to_remove = new System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> ();
+				if ((t == NetTrafficSimulator.NetworkModel.END_NODE) || (t == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
+					msg+="\nRelated events to be removed:\n";
+					System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents ();
+					System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
+					while (node.Next!=null) {
+						if (node.Value.node1.Equals (GtkLabel13.Text)||node.Value.node2.Equals(GtkLabel13.Text)) {
+							msg += "\t" + node.Value.node1 + " -> " + node.Value.node2 + " at " + node.Value.when + " of size " + node.Value.size+"\n";
+							events_to_remove.AddLast (node.Value);
+						}
+						node = node.Next;
+					}
+				}
 				if (rel.Length != 0) {
-					string msg = "Removing node: " + GtkLabel13.Text + "\nFollowing links connected to the node are about to be removed as well:\n";
+					msg += "\nRelated links to be removed:\n";
 					foreach (string l in rel) {
 						msg += "\t" + l + "\n";
 					}
-					msg += "Proceed?";
-					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, msg);
-					if (md.Run () == (int)ResponseType.Yes) {
-						foreach (string l in rel) {
-							nm.RemoveLink (l);
-						}
-						nm.RemoveNode (GtkLabel13.Text);
-						node_names=nm.GetNodeNames();
-						link_names=nm.GetLinkNames();
-						loadLinksBox ();
-						loadNodesBox ();
-					}
-					md.Destroy ();
-				} else {
-					MessageDialog md = new MessageDialog (this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,"Remove node: " + GtkLabel13.Text + "?");
-					if (md.Run () == (int)ResponseType.Yes) {
-						nm.RemoveNode (GtkLabel13.Text);
-						node_names=nm.GetNodeNames();
-						loadNodesBox ();
-					}
-					md.Destroy ();
 				}
+
+				MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, msg);
+				if (md.Run () == (int)ResponseType.Yes) {
+					foreach (string l in rel) {
+						nm.RemoveLink (l);
+					}
+					foreach (NetTrafficSimulator.SimulationModel.Event ev in events_to_remove) {
+						sm.GetEvents ().Remove (ev);
+					}
+					nm.RemoveNode (GtkLabel13.Text);
+					node_names=nm.GetNodeNames();
+					link_names=nm.GetLinkNames();
+					loadLinksBox ();
+					loadNodesBox ();
+				}
+				md.Destroy ();
 			}
 		}
 	}
