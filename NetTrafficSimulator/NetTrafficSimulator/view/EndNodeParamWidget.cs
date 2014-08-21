@@ -22,7 +22,7 @@ namespace NetTrafficSimulator
 			this.name = nname;
 			this.sm = sm;
 			this.mw = mw;
-			this.label1.Text = nm.GetEndpointNodeLink (nname);
+			this.label6.Text = nm.GetEndpointNodeLink (nname);
 			this.entry1.Text = nname;
 			this.spinbutton2.Value = nm.GetEndNodeMaxPacketSize (nname);
 			this.spinbutton1.Value = nm.GetEndpointNodeAddr (nname);

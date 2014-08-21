@@ -1153,10 +1153,10 @@
               <widget class="Gtk.SpinButton" id="spinbutton5">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
-                <property name="Upper">100</property>
-                <property name="PageIncrement">10</property>
-                <property name="StepIncrement">1</property>
-                <property name="ClimbRate">1</property>
+                <property name="Upper">1</property>
+                <property name="PageIncrement">0.1</property>
+                <property name="StepIncrement">0.01</property>
+                <property name="ClimbRate">0.1</property>
                 <property name="Numeric">True</property>
               </widget>
               <packing>
@@ -3386,10 +3386,10 @@
                   <widget class="Gtk.SpinButton" id="spinbutton4">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Upper">100</property>
-                    <property name="PageIncrement">10</property>
-                    <property name="StepIncrement">1</property>
-                    <property name="ClimbRate">1</property>
+                    <property name="Upper">1</property>
+                    <property name="PageIncrement">0.1</property>
+                    <property name="StepIncrement">0.01</property>
+                    <property name="ClimbRate">0.1</property>
                     <property name="Numeric">True</property>
                   </widget>
                   <packing>

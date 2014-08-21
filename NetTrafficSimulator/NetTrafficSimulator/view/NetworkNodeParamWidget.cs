@@ -90,7 +90,8 @@ namespace NetTrafficSimulator
 					}
 				}
 
-				nm.SetNetworkNodeDefaultRoute (name, combobox2.ActiveText);
+				if(nm.HaveLink(combobox2.ActiveText))
+					nm.SetNetworkNodeDefaultRoute (name, combobox2.ActiveText);
 			}
 		}
 	}

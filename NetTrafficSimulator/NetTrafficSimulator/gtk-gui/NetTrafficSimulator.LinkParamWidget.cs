@@ -161,11 +161,11 @@ namespace NetTrafficSimulator
 			w13.Expand = false;
 			w13.Fill = false;
 			// Container child hbox16.Gtk.Box+BoxChild
-			this.spinbutton5 = new global::Gtk.SpinButton (0, 100, 1);
+			this.spinbutton5 = new global::Gtk.SpinButton (0, 1, 0.01);
 			this.spinbutton5.CanFocus = true;
 			this.spinbutton5.Name = "spinbutton5";
-			this.spinbutton5.Adjustment.PageIncrement = 10;
-			this.spinbutton5.ClimbRate = 1;
+			this.spinbutton5.Adjustment.PageIncrement = 0.1;
+			this.spinbutton5.ClimbRate = 0.1;
 			this.spinbutton5.Numeric = true;
 			this.hbox16.Add (this.spinbutton5);
 			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox16 [this.spinbutton5]));

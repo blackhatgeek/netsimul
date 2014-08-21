@@ -644,6 +644,13 @@ namespace NetTrafficSimulator
 			} else
 				return false;
 		}
+
+		public bool HaveLink(string name){
+			if (name == null)
+				return false;
+			else
+				return link_records.ContainsKey (name);
+		}
 	}
 }
 

@@ -378,6 +378,7 @@ public partial class MainWindow: Gtk.Window
 			GtkLabel13.UseMarkup = true;
 		} else if (GtkAlignment2.Child is NetTrafficSimulator.NetworkNodeWidget) {
 			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.NetworkNodeWidget).ParamWidget.name + "</b>";
+			GtkLabel13.UseMarkup = true;
 		}
 	}
 
