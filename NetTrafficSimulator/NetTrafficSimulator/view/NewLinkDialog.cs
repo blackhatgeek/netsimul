@@ -12,17 +12,27 @@ namespace NetTrafficSimulator
 		{
 			this.Build ();
 			this.nm = nm;
-			this.linkparamwidget2.LoadParams (nm, "",mw);
+			foreach (String node in nm.GetNodeNames()) {
+				combobox4.AppendText (node);
+				combobox5.AppendText (node);
+			}
+			combobox4.Active = 1;
+			combobox5.Active = 1;
 		}
 
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			if (nm != null) {
 				try {
-					nm.SetConnected (linkparamwidget2.GetN1Name (), linkparamwidget2.GetN2Name (), linkparamwidget2.GetName (), linkparamwidget2.GetCapacity (), linkparamwidget2.GetToggleProbability ());     
-					this.link_name = linkparamwidget2.GetName ();
-					this.node1 = linkparamwidget2.GetN1Name ();
-					this.node2 = linkparamwidget2.GetN2Name ();
+					link_name = entry1.Text;
+					node1 = combobox4.ActiveText;
+					node2 = combobox5.ActiveText;
+					int capacity = spinbutton3.ValueAsInt;
+					decimal tp = (decimal)spinbutton4.Value;
+					if(nm.CanSetConnected(node1,node2,link_name,capacity,tp)){
+						nm.SetConnected(node1,node2,link_name,capacity,tp);
+
+					} else this.Respond(Gtk.ResponseType.Reject);
 				} catch (ArgumentException ae) {
 					log.Debug ("Caught exception: " + ae.Message);
 					this.Respond (Gtk.ResponseType.Reject);

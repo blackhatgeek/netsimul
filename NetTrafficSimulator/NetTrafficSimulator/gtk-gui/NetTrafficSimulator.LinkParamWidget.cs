@@ -39,6 +39,7 @@ namespace NetTrafficSimulator
 			this.hbox12.Spacing = 6;
 			// Container child hbox12.Gtk.Box+BoxChild
 			this.label12 = new global::Gtk.Label ();
+			this.label12.WidthRequest = 130;
 			this.label12.Name = "label12";
 			this.label12.LabelProp = global::Mono.Unix.Catalog.GetString ("Name");
 			this.hbox12.Add (this.label12);
@@ -66,6 +67,7 @@ namespace NetTrafficSimulator
 			this.hbox13.Spacing = 6;
 			// Container child hbox13.Gtk.Box+BoxChild
 			this.label13 = new global::Gtk.Label ();
+			this.label13.WidthRequest = 130;
 			this.label13.Name = "label13";
 			this.label13.LabelProp = global::Mono.Unix.Catalog.GetString ("Node");
 			this.hbox13.Add (this.label13);
@@ -92,6 +94,7 @@ namespace NetTrafficSimulator
 			this.hbox14.Spacing = 6;
 			// Container child hbox14.Gtk.Box+BoxChild
 			this.label14 = new global::Gtk.Label ();
+			this.label14.WidthRequest = 130;
 			this.label14.Name = "label14";
 			this.label14.LabelProp = global::Mono.Unix.Catalog.GetString ("Node");
 			this.hbox14.Add (this.label14);
@@ -118,6 +121,7 @@ namespace NetTrafficSimulator
 			this.hbox15.Spacing = 6;
 			// Container child hbox15.Gtk.Box+BoxChild
 			this.label15 = new global::Gtk.Label ();
+			this.label15.WidthRequest = 130;
 			this.label15.Name = "label15";
 			this.label15.LabelProp = global::Mono.Unix.Catalog.GetString ("Capacity");
 			this.hbox15.Add (this.label15);
@@ -148,6 +152,7 @@ namespace NetTrafficSimulator
 			this.hbox16.Spacing = 6;
 			// Container child hbox16.Gtk.Box+BoxChild
 			this.label16 = new global::Gtk.Label ();
+			this.label16.WidthRequest = 130;
 			this.label16.Name = "label16";
 			this.label16.LabelProp = global::Mono.Unix.Catalog.GetString ("Toggle probability");
 			this.hbox16.Add (this.label16);

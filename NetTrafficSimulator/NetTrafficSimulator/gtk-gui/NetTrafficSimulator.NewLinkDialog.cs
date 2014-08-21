@@ -6,7 +6,21 @@ namespace NetTrafficSimulator
 	{
 		private global::Gtk.VBox vbox3;
 		private global::Gtk.Label label4;
-		private global::NetTrafficSimulator.LinkParamWidget linkparamwidget2;
+		private global::Gtk.HBox hbox5;
+		private global::Gtk.Label label14;
+		private global::Gtk.Entry entry1;
+		private global::Gtk.HBox hbox6;
+		private global::Gtk.Label label15;
+		private global::Gtk.ComboBox combobox4;
+		private global::Gtk.HBox hbox7;
+		private global::Gtk.Label label16;
+		private global::Gtk.ComboBox combobox5;
+		private global::Gtk.HBox hbox8;
+		private global::Gtk.Label label17;
+		private global::Gtk.SpinButton spinbutton3;
+		private global::Gtk.HBox hbox9;
+		private global::Gtk.Label label18;
+		private global::Gtk.SpinButton spinbutton4;
 		private global::Gtk.Button buttonCancel;
 		private global::Gtk.Button buttonOk;
 
@@ -34,25 +48,160 @@ namespace NetTrafficSimulator
 			w2.Expand = false;
 			w2.Fill = false;
 			// Container child vbox3.Gtk.Box+BoxChild
-			this.linkparamwidget2 = new global::NetTrafficSimulator.LinkParamWidget ();
-			this.linkparamwidget2.Events = ((global::Gdk.EventMask)(256));
-			this.linkparamwidget2.Name = "linkparamwidget2";
-			this.vbox3.Add (this.linkparamwidget2);
-			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.linkparamwidget2]));
-			w3.Position = 1;
+			this.hbox5 = new global::Gtk.HBox ();
+			this.hbox5.Name = "hbox5";
+			this.hbox5.Spacing = 6;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.label14 = new global::Gtk.Label ();
+			this.label14.WidthRequest = 130;
+			this.label14.Name = "label14";
+			this.label14.LabelProp = global::Mono.Unix.Catalog.GetString ("Name");
+			this.hbox5.Add (this.label14);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.label14]));
+			w3.Position = 0;
 			w3.Expand = false;
 			w3.Fill = false;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.entry1 = new global::Gtk.Entry ();
+			this.entry1.CanFocus = true;
+			this.entry1.Name = "entry1";
+			this.entry1.IsEditable = true;
+			this.entry1.InvisibleChar = '●';
+			this.hbox5.Add (this.entry1);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox5 [this.entry1]));
+			w4.Position = 1;
+			this.vbox3.Add (this.hbox5);
+			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox5]));
+			w5.Position = 1;
+			w5.Expand = false;
+			w5.Fill = false;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.hbox6 = new global::Gtk.HBox ();
+			this.hbox6.Name = "hbox6";
+			this.hbox6.Spacing = 6;
+			// Container child hbox6.Gtk.Box+BoxChild
+			this.label15 = new global::Gtk.Label ();
+			this.label15.WidthRequest = 130;
+			this.label15.Name = "label15";
+			this.label15.LabelProp = global::Mono.Unix.Catalog.GetString ("Node");
+			this.hbox6.Add (this.label15);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox6 [this.label15]));
+			w6.Position = 0;
+			w6.Expand = false;
+			w6.Fill = false;
+			// Container child hbox6.Gtk.Box+BoxChild
+			this.combobox4 = global::Gtk.ComboBox.NewText ();
+			this.combobox4.Name = "combobox4";
+			this.hbox6.Add (this.combobox4);
+			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox6 [this.combobox4]));
+			w7.Position = 1;
+			w7.Expand = false;
+			w7.Fill = false;
+			this.vbox3.Add (this.hbox6);
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox6]));
+			w8.Position = 2;
+			w8.Expand = false;
+			w8.Fill = false;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.hbox7 = new global::Gtk.HBox ();
+			this.hbox7.Name = "hbox7";
+			this.hbox7.Spacing = 6;
+			// Container child hbox7.Gtk.Box+BoxChild
+			this.label16 = new global::Gtk.Label ();
+			this.label16.WidthRequest = 130;
+			this.label16.Name = "label16";
+			this.label16.LabelProp = global::Mono.Unix.Catalog.GetString ("Node");
+			this.hbox7.Add (this.label16);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox7 [this.label16]));
+			w9.Position = 0;
+			w9.Expand = false;
+			w9.Fill = false;
+			// Container child hbox7.Gtk.Box+BoxChild
+			this.combobox5 = global::Gtk.ComboBox.NewText ();
+			this.combobox5.Name = "combobox5";
+			this.hbox7.Add (this.combobox5);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox7 [this.combobox5]));
+			w10.Position = 1;
+			w10.Expand = false;
+			w10.Fill = false;
+			this.vbox3.Add (this.hbox7);
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox7]));
+			w11.Position = 3;
+			w11.Expand = false;
+			w11.Fill = false;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.hbox8 = new global::Gtk.HBox ();
+			this.hbox8.Name = "hbox8";
+			this.hbox8.Spacing = 6;
+			// Container child hbox8.Gtk.Box+BoxChild
+			this.label17 = new global::Gtk.Label ();
+			this.label17.WidthRequest = 130;
+			this.label17.Name = "label17";
+			this.label17.LabelProp = global::Mono.Unix.Catalog.GetString ("Capacity");
+			this.hbox8.Add (this.label17);
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.label17]));
+			w12.Position = 0;
+			w12.Expand = false;
+			w12.Fill = false;
+			// Container child hbox8.Gtk.Box+BoxChild
+			this.spinbutton3 = new global::Gtk.SpinButton (0, 100, 1);
+			this.spinbutton3.CanFocus = true;
+			this.spinbutton3.Name = "spinbutton3";
+			this.spinbutton3.Adjustment.PageIncrement = 10;
+			this.spinbutton3.ClimbRate = 1;
+			this.spinbutton3.Numeric = true;
+			this.hbox8.Add (this.spinbutton3);
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.spinbutton3]));
+			w13.Position = 1;
+			w13.Expand = false;
+			w13.Fill = false;
+			this.vbox3.Add (this.hbox8);
+			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox8]));
+			w14.Position = 4;
+			w14.Expand = false;
+			w14.Fill = false;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.hbox9 = new global::Gtk.HBox ();
+			this.hbox9.Name = "hbox9";
+			this.hbox9.Spacing = 6;
+			// Container child hbox9.Gtk.Box+BoxChild
+			this.label18 = new global::Gtk.Label ();
+			this.label18.WidthRequest = 130;
+			this.label18.Name = "label18";
+			this.label18.LabelProp = global::Mono.Unix.Catalog.GetString ("Toggle probability");
+			this.hbox9.Add (this.label18);
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.label18]));
+			w15.Position = 0;
+			w15.Expand = false;
+			w15.Fill = false;
+			// Container child hbox9.Gtk.Box+BoxChild
+			this.spinbutton4 = new global::Gtk.SpinButton (0, 100, 1);
+			this.spinbutton4.CanFocus = true;
+			this.spinbutton4.Name = "spinbutton4";
+			this.spinbutton4.Adjustment.PageIncrement = 10;
+			this.spinbutton4.ClimbRate = 1;
+			this.spinbutton4.Numeric = true;
+			this.hbox9.Add (this.spinbutton4);
+			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.spinbutton4]));
+			w16.Position = 1;
+			w16.Expand = false;
+			w16.Fill = false;
+			this.vbox3.Add (this.hbox9);
+			global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hbox9]));
+			w17.Position = 5;
+			w17.Expand = false;
+			w17.Fill = false;
 			w1.Add (this.vbox3);
-			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(w1 [this.vbox3]));
-			w4.Position = 0;
-			w4.Expand = false;
-			w4.Fill = false;
+			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(w1 [this.vbox3]));
+			w18.Position = 0;
+			w18.Expand = false;
+			w18.Fill = false;
 			// Internal child NetTrafficSimulator.NewLinkDialog.ActionArea
-			global::Gtk.HButtonBox w5 = this.ActionArea;
-			w5.Name = "dialog1_ActionArea";
-			w5.Spacing = 10;
-			w5.BorderWidth = ((uint)(5));
-			w5.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
+			global::Gtk.HButtonBox w19 = this.ActionArea;
+			w19.Name = "dialog1_ActionArea";
+			w19.Spacing = 10;
+			w19.BorderWidth = ((uint)(5));
+			w19.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.buttonCancel = new global::Gtk.Button ();
 			this.buttonCancel.CanDefault = true;
@@ -62,9 +211,9 @@ namespace NetTrafficSimulator
 			this.buttonCancel.UseUnderline = true;
 			this.buttonCancel.Label = "gtk-cancel";
 			this.AddActionWidget (this.buttonCancel, -6);
-			global::Gtk.ButtonBox.ButtonBoxChild w6 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w5 [this.buttonCancel]));
-			w6.Expand = false;
-			w6.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w20 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w19 [this.buttonCancel]));
+			w20.Expand = false;
+			w20.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.buttonOk = new global::Gtk.Button ();
 			this.buttonOk.CanDefault = true;
@@ -74,15 +223,15 @@ namespace NetTrafficSimulator
 			this.buttonOk.UseUnderline = true;
 			this.buttonOk.Label = "gtk-ok";
 			this.AddActionWidget (this.buttonOk, -5);
-			global::Gtk.ButtonBox.ButtonBoxChild w7 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w5 [this.buttonOk]));
-			w7.Position = 1;
-			w7.Expand = false;
-			w7.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w21 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w19 [this.buttonOk]));
+			w21.Position = 1;
+			w21.Expand = false;
+			w21.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 400;
-			this.DefaultHeight = 251;
+			this.DefaultHeight = 226;
 			this.Show ();
 			this.buttonOk.Clicked += new global::System.EventHandler (this.OnButtonOkClicked);
 		}
