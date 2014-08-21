@@ -162,7 +162,7 @@ namespace NetTrafficSimulator
 
 				if ((nl != null) && (ttr != null)) {
 					log.Debug ("Have <simulation>, have <events>");
-					sm = new SimulationModel (nl.Count);
+					sm = new SimulationModel ();
 
 					log.Debug ("Parsing events");
 					for (int i=0; i<nl.Count; i++) {
@@ -192,7 +192,7 @@ namespace NetTrafficSimulator
 					throw new Exception ("Model corrupt");
 			} else {
 				log.Debug ("No events in model");
-				sm = new SimulationModel (0);
+				sm = new SimulationModel ();
 			}
 			sm.Time = time;
 			sm.MaxHop = max_hop;

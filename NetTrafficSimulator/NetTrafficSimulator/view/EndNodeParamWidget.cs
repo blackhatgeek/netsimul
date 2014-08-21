@@ -37,28 +37,30 @@ namespace NetTrafficSimulator
 
 		protected void OnButton277Clicked (object sender, EventArgs e)
 		{
-			if (!entry1.Text.Equals(name)) {
-				try{
-					nm.SetNodeName(name,entry1.Text);
-					log.Debug("Name changed");
-					name=entry1.Text;
-					mw.NodeNameChanged();
-				}catch(ArgumentException){
-					Gtk.MessageDialog md = new Gtk.MessageDialog(mw,Gtk.DialogFlags.DestroyWithParent,Gtk.MessageType.Error,Gtk.ButtonsType.Ok,"Name change failed");
-					md.Run ();
-					md.Destroy ();
-					entry1.Text = name;
+			if ((sm != null) && (nm != null) && (mw != null)) {
+				if (!entry1.Text.Equals (name)) {
+					try {
+						nm.SetNodeName (name, entry1.Text);
+						log.Debug ("Name changed");
+						name = entry1.Text;
+						mw.NodeNameChanged ();
+					} catch (ArgumentException) {
+						Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Name change failed");
+						md.Run ();
+						md.Destroy ();
+						entry1.Text = name;
+					}
 				}
-			}
 
-			nm.SetEndpointNodeAddr (name, spinbutton1.ValueAsInt);
-			if (this.radiobutton1.Active) {
-				sm.SetRandomTalker (name);
-			} else {
-				sm.UnsetRandomTalker (name);
+				nm.SetEndpointNodeAddr (name, spinbutton1.ValueAsInt);
+				if (this.radiobutton1.Active) {
+					sm.SetRandomTalker (name);
+				} else {
+					sm.UnsetRandomTalker (name);
+				}
+				nm.SetEndNodeMaxPacketSize (name, this.spinbutton2.ValueAsInt);
 			}
-			nm.SetEndNodeMaxPacketSize (name, this.spinbutton2.ValueAsInt);
 		}
 	}
 }
-
+	

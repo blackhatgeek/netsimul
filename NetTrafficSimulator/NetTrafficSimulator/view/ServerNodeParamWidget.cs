@@ -25,19 +25,20 @@ namespace NetTrafficSimulator
 
 		protected void OnButton473Clicked (object sender, EventArgs e)
 		{
-			if (!entry3.Text.Equals (name)) {
-				try{
-					nm.SetNodeName(name,entry3.Text);
-					name=entry3.Text;
-					mw.NodeNameChanged();
-				}catch(ArgumentException){
-					Gtk.MessageDialog md = new Gtk.MessageDialog(mw,Gtk.DialogFlags.DestroyWithParent,Gtk.MessageType.Error,Gtk.ButtonsType.Ok,"Name change failed");
-					md.Run ();
-					md.Destroy ();
-					entry3.Text = name;
+			if ((nm != null) && (mw != null)) {
+				if (!entry3.Text.Equals (name)) {
+					try {
+						nm.SetNodeName (name, entry3.Text);
+						name = entry3.Text;
+						mw.NodeNameChanged ();
+					} catch (ArgumentException) {
+						Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Name change failed");
+						md.Run ();
+						md.Destroy ();
+						entry3.Text = name;
+					}
 				}
 			}
-
 			nm.SetEndpointNodeAddr (name, spinbutton3.ValueAsInt);
 		}
 	}

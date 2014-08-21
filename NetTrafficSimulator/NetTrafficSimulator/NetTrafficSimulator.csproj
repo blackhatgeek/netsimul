@@ -136,6 +136,8 @@
     <Compile Include="gtk-gui\NetTrafficSimulator.NewNodeDialog.cs" />
     <Compile Include="view\NewLinkDialog.cs" />
     <Compile Include="gtk-gui\NetTrafficSimulator.NewLinkDialog.cs" />
+    <Compile Include="view\NewEventDialog.cs" />
+    <Compile Include="gtk-gui\NetTrafficSimulator.NewEventDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -158,7 +158,7 @@ namespace NetTrafficSimulator
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 194;
-			this.DefaultHeight = 208;
+			this.DefaultHeight = 127;
 			this.Show ();
 			this.buttonOk.Clicked += new global::System.EventHandler (this.btnOKClicked);
 		}

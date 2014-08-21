@@ -8,11 +8,11 @@ namespace NetTrafficSimulator
 		static readonly ILog log = LogManager.GetLogger (typeof(NewLinkDialog));
 		NetworkModel nm;
 		public string link_name,node1,node2;
-		public NewLinkDialog (NetworkModel nm)
+		public NewLinkDialog (NetworkModel nm,MainWindow mw)
 		{
 			this.Build ();
 			this.nm = nm;
-			this.linkparamwidget2.LoadParams (nm, "");
+			this.linkparamwidget2.LoadParams (nm, "",mw);
 		}
 
 		protected void OnButtonOkClicked (object sender, EventArgs e)

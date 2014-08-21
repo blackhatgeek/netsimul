@@ -79,6 +79,7 @@ namespace NetTrafficSimulator
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.button2.Clicked += new global::System.EventHandler (this.OnButton2Clicked);
 		}
 	}
 }

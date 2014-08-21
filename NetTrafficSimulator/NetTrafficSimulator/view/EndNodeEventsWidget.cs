@@ -7,6 +7,8 @@ namespace NetTrafficSimulator
 	{
 		Gtk.ListStore store;
 		public string name;
+		NetworkModel nm;
+		SimulationModel sm;
 		public EndNodeEventsWidget ()
 		{
 			this.Build ();
@@ -33,14 +35,25 @@ namespace NetTrafficSimulator
 			sizeCol.AddAttribute (sizeCell, "text", 2);
 		}
 
-		public void LoadParams(SimulationModel sm,String nname){
-			this.name = name;
-			SimulationModel.Event[] evs = sm.GetEvents ();
+		public void LoadParams(NetworkModel nm,SimulationModel sm,String nname){
+			this.nm = nm;
+			this.sm = sm;
+			this.name = nname;
+			System.Collections.Generic.LinkedList<SimulationModel.Event> evs = sm.GetEvents ();
 			foreach (SimulationModel.Event e in evs) {
 				if (e.node1.Equals (nname)) {
 					store.AppendValues (e.node2, e.when, e.size);
 				}
 			}
+		}
+
+		protected void OnButton2Clicked (object sender, EventArgs e)
+		{
+			NewEventDialog ned = new NewEventDialog (name, nm, sm);
+			if (ned.Run () == (int)Gtk.ResponseType.Ok) {
+				store.AppendValues (ned.generated_event.node2, ned.generated_event.when, ned.generated_event.size);
+			}
+			ned.Destroy ();
 		}
 	}
 }

@@ -358,8 +358,8 @@ namespace NetTrafficSimulator
 						l.Attributes.Append (tp);
 					}
 				}
-				SimulationModel.Event[] event_ar = sm.GetEvents ();
-				if (event_ar.Length > 0) {
+				LinkedList<SimulationModel.Event> event_ar = sm.GetEvents ();
+				if (event_ar.Count > 0) {
 					XmlElement events = xs.CreateElement ("events");
 					simulation.AppendChild (events);
 

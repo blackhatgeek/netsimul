@@ -16,7 +16,7 @@ namespace NetTrafficSimulator
 		public void SetUp ()
 		{
 			int t = new Random ().Next ();
-			SimulationModel sm = new SimulationModel(0);
+			SimulationModel sm = new SimulationModel();
 			sm.Time = t;
 			Assert.AreEqual (t, sm.Time);
 		}
@@ -28,7 +28,7 @@ namespace NetTrafficSimulator
 		 */ 
 		public void NegativeTime()
 		{
-			new SimulationModel (0).Time=-1;
+			new SimulationModel ().Time=-1;
 
 		}
 	}

@@ -20,6 +20,8 @@ namespace NetTrafficSimulator
 		private global::Gtk.HBox hbox16;
 		private global::Gtk.Label label16;
 		private global::Gtk.SpinButton spinbutton5;
+		private global::Gtk.Button button618;
+		private global::Gtk.Fixed fixed4;
 
 		protected virtual void Build ()
 		{
@@ -165,16 +167,37 @@ namespace NetTrafficSimulator
 			w14.Position = 1;
 			w14.Expand = false;
 			w14.Fill = false;
-			this.vbox6.Add (this.hbox16);
-			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.hbox16]));
-			w15.Position = 4;
+			// Container child hbox16.Gtk.Box+BoxChild
+			this.button618 = new global::Gtk.Button ();
+			this.button618.CanFocus = true;
+			this.button618.Name = "button618";
+			this.button618.UseUnderline = true;
+			this.button618.Label = global::Mono.Unix.Catalog.GetString ("Change");
+			this.hbox16.Add (this.button618);
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox16 [this.button618]));
+			w15.PackType = ((global::Gtk.PackType)(1));
+			w15.Position = 2;
 			w15.Expand = false;
 			w15.Fill = false;
+			// Container child hbox16.Gtk.Box+BoxChild
+			this.fixed4 = new global::Gtk.Fixed ();
+			this.fixed4.Name = "fixed4";
+			this.fixed4.HasWindow = false;
+			this.hbox16.Add (this.fixed4);
+			global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox16 [this.fixed4]));
+			w16.PackType = ((global::Gtk.PackType)(1));
+			w16.Position = 3;
+			this.vbox6.Add (this.hbox16);
+			global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.hbox16]));
+			w17.Position = 4;
+			w17.Expand = false;
+			w17.Fill = false;
 			this.Add (this.vbox6);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.button618.Clicked += new global::System.EventHandler (this.OnButton618Clicked);
 		}
 	}
 }

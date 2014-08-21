@@ -76,20 +76,22 @@ namespace NetTrafficSimulator
 
 		protected void OnButton422Clicked (object sender, EventArgs e)
 		{
-			if (!entry4.Text.Equals (name)) {
-				try{
-					nm.SetNodeName(name,entry4.Text);
-					name=entry4.Text;
-					mw.NodeNameChanged();
-				}catch(ArgumentException){
-					Gtk.MessageDialog md = new Gtk.MessageDialog(mw,Gtk.DialogFlags.DestroyWithParent,Gtk.MessageType.Error,Gtk.ButtonsType.Ok,"Name change failed");
-					md.Run ();
-					md.Destroy ();
-					entry4.Text = name;
+			if ((nm != null) && (mw != null)) {
+				if (!entry4.Text.Equals (name)) {
+					try {
+						nm.SetNodeName (name, entry4.Text);
+						name = entry4.Text;
+						mw.NodeNameChanged ();
+					} catch (ArgumentException) {
+						Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Name change failed");
+						md.Run ();
+						md.Destroy ();
+						entry4.Text = name;
+					}
 				}
-			}
 
-			nm.SetNetworkNodeDefaultRoute (name, combobox2.ActiveText);
+				nm.SetNetworkNodeDefaultRoute (name, combobox2.ActiveText);
+			}
 		}
 	}
 }

@@ -205,10 +205,10 @@ namespace NetTrafficSimulator
 			log.Debug ("Create events");
 			if ((framework_model != null)&&(network_model!=null)) {
 				log.Debug ("User defined simulation events");
-				traced = simulation_model.GetEvents ().Length;
+				traced = simulation_model.GetEvents ().Count;
 				this.tracedPackets = new Packet[traced];
-				for (int i = 0; i < traced; i++) {
-					SimulationModel.Event e = simulation_model.GetEvents () [i];
+				int i = 0;
+				foreach(SimulationModel.Event e in simulation_model.GetEvents()){
 					Node from_node; 
 					int from_addr = network_model.GetEndpointNodeAddr (e.node1);
 					if (node_names.TryGetValue (e.node1, out from_node)) {
@@ -223,6 +223,7 @@ namespace NetTrafficSimulator
 							throw new ArgumentException ("Must send from END NODE to SERVER NODE");
 					} else
 						throw new ArgumentException ("Node not found: " + e.node1);
+					i++;
 				}
 				//random talkers
 				log.Debug ("Random talkers events");
@@ -230,7 +231,7 @@ namespace NetTrafficSimulator
 					Random r = new Random ();
 					//kolik eventu
 					int events = r.Next (simulation_model.Time);
-					for (int i=0; i<=events; i++) {
+					for (i=0; i<=events; i++) {
 						//cas
 						int time = r.Next (simulation_model.Time);
 						//server
@@ -252,7 +253,7 @@ namespace NetTrafficSimulator
 					Random r = new Random ();
 					//kolik togglu
 					int toggles = r.Next (framework_model.Time);
-					for (int i=0; i<=toggles; i++) {
+					for (i=0; i<=toggles; i++) {
 						//cas
 						int time = r.Next (framework_model.Time);
 						decimal random = (decimal)r.NextDouble ();

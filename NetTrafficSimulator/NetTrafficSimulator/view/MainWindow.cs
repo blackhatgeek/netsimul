@@ -256,7 +256,7 @@ public partial class MainWindow: Gtk.Window
 			case END:
 				NetTrafficSimulator.EndNodeWidget ew = new NetTrafficSimulator.EndNodeWidget ();
 				ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (),this);
-				ew.EventWidget.LoadParams (sm, model.GetValue (iter, 0).ToString ());
+				ew.EventWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString ());
 				if (rm != null)
 					ew.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 				GtkAlignment2.Child = ew;
@@ -288,7 +288,7 @@ public partial class MainWindow: Gtk.Window
 			GtkLabel13.Text = "<b>" + model.GetValue (iter, 0).ToString () + "</b>";
 			GtkLabel13.UseMarkup = true;
 			NetTrafficSimulator.LinkWidget lw = new NetTrafficSimulator.LinkWidget ();
-			lw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString ());
+			lw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (),this);
 			if (rm != null)
 				lw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
 			GtkAlignment2.Child = lw;
@@ -300,7 +300,7 @@ public partial class MainWindow: Gtk.Window
 	protected void newModelHandler (object sender, EventArgs e)
 	{
 		nm = new NetTrafficSimulator.NetworkModel ();
-		sm = new NetTrafficSimulator.SimulationModel (0);
+		sm = new NetTrafficSimulator.SimulationModel ();
 		linkListStore.Clear ();
 		nodeListStore.Clear ();
 	}
@@ -372,12 +372,21 @@ public partial class MainWindow: Gtk.Window
 			GtkLabel13.Text = "<b>"+(GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name+"</b>";
 			GtkLabel13.UseMarkup = true;
 			(GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).EventWidget.name = (GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name;
+		}// else if 
+	}
+
+	public void LinkChanged(){
+		link_names = nm.GetLinkNames ();
+		loadLinksBox ();
+		if (GtkAlignment2.Child is NetTrafficSimulator.LinkWidget) {
+			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.LinkWidget).ParamWidget.GetName () + "</b>";
+			GtkLabel13.UseMarkup = true;
 		}
 	}
 
 	protected void OnAddLinkActionActivated (object sender, EventArgs e)
 	{
-		NetTrafficSimulator.NewLinkDialog nld = new NetTrafficSimulator.NewLinkDialog (nm);
+		NetTrafficSimulator.NewLinkDialog nld = new NetTrafficSimulator.NewLinkDialog (nm,this);
 		switch (nld.Run ()) {
 		case (int)ResponseType.Reject:
 			nld.Destroy ();

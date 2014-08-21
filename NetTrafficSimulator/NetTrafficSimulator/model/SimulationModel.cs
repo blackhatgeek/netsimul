@@ -14,9 +14,7 @@ namespace NetTrafficSimulator
 		private int time;
 
 		private const int DEFAULT_MAX_HOP = 30;
-		private int maxHop,eventCount;
-
-		private readonly int events;
+		private int maxHop;
 
 		private HashSet<string> randomTalkers;
 
@@ -34,21 +32,16 @@ namespace NetTrafficSimulator
 			public int when;
 			public decimal size;
 		}
-		private Event[] evs;
+		private LinkedList<Event> events;
 
 		/**
 		 * Create new simulation model with defined events count
 		 */
-		public SimulationModel (int events)
+		public SimulationModel ()
 		{
 			maxHop = DEFAULT_MAX_HOP;
 			this.randomTalkers = new HashSet<string> ();
-			if (events >= 0) {
-				this.events = events;
-				this.evs = new Event[events];
-				this.eventCount = 0;
-			} else
-				throw new ArgumentOutOfRangeException ("Event number must be non negative");
+			this.events = new LinkedList<Event> ();
 		}
 	
 		/**
@@ -92,18 +85,15 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException event counter overflow
 		 */
 		public void SetEvent(string node1,string node2,int when,decimal size){
-			if (eventCount < events) {
-				evs [eventCount] = new Event (node1, node2, when, size);
-				eventCount++;
-			}else throw new ArgumentException("Event counter overflow");
+			events.AddLast(new Event (node1, node2, when, size));
 		}
 
 		/**
 		 * Returns array of scheduled events
 		 * @return events scheduled
 		 */
-		public Event[] GetEvents(){
-			return evs;
+		public LinkedList<Event> GetEvents(){
+			return events;
 		}
 
 		/**
