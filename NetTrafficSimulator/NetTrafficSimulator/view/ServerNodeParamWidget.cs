@@ -7,7 +7,7 @@ namespace NetTrafficSimulator
 	{
 		MainWindow mw;
 		NetworkModel nm;
-		string name;
+		public string name;
 
 		public ServerNodeParamWidget ()
 		{

@@ -10,7 +10,7 @@ namespace NetTrafficSimulator
 		Gtk.ListStore store;
 		MainWindow mw;
 		NetworkModel nm;
-		string name;
+		public string name;
 		public NetworkNodeParamWidget ()
 		{
 			this.Build ();

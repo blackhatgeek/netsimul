@@ -370,10 +370,15 @@ public partial class MainWindow: Gtk.Window
 		node_names = nm.GetNodeNames ();
 		loadNodesBox ();
 		if (GtkAlignment2.Child is NetTrafficSimulator.EndNodeWidget) {
-			GtkLabel13.Text = "<b>"+(GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name+"</b>";
+			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name + "</b>";
 			GtkLabel13.UseMarkup = true;
 			(GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).EventWidget.name = (GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name;
-		}// else if 
+		} else if (GtkAlignment2.Child is NetTrafficSimulator.ServerNodeWidget) {
+			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.ServerNodeWidget).ParamWidget.name + "</b>";
+			GtkLabel13.UseMarkup = true;
+		} else if (GtkAlignment2.Child is NetTrafficSimulator.NetworkNodeWidget) {
+			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.NetworkNodeWidget).ParamWidget.name + "</b>";
+		}
 	}
 
 	public void LinkChanged(){
@@ -506,7 +511,6 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnAboutActionActivated (object sender, EventArgs e)
 	{
-		//AboutDialog ab = new AboutDialog ();
 		NetTrafficSimulator.AboutDialog ab = new NetTrafficSimulator.AboutDialog ();
 		ab.Run ();
 		ab.Destroy ();
