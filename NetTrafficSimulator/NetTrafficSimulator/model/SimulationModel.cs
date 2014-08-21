@@ -85,7 +85,10 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentException event counter overflow
 		 */
 		public void SetEvent(string node1,string node2,int when,decimal size){
-			events.AddLast(new Event (node1, node2, when, size));
+			if ((when >= 0) && (size >= 0.0m)) {
+				events.AddLast (new Event (node1, node2, when, size));
+			} else
+				throw new ArgumentException ("Can't set event");
 		}
 
 		/**

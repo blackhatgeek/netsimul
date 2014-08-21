@@ -7,12 +7,16 @@ namespace NetTrafficSimulator
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(NewEventDialog));
 		SimulationModel sm;
+		NetworkModel nm;
+		MainWindow mw;
 		public SimulationModel.Event generated_event;
-		public NewEventDialog (string node,NetworkModel nm,SimulationModel sm)
+		public NewEventDialog (string node,NetworkModel nm,SimulationModel sm,MainWindow mw)
 		{
 			this.Build ();
 
 			this.sm = sm;
+			this.nm = nm;
+			this.mw = mw;
 
 			this.spinbutton1.Adjustment.Upper = sm.Time;
 			this.label9.Text = node;
@@ -28,9 +32,21 @@ namespace NetTrafficSimulator
 
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
-			sm.SetEvent (label9.Text, combobox3.ActiveText, spinbutton1.ValueAsInt, (decimal)spinbutton2.Value);
-			generated_event = new SimulationModel.Event(label9.Text,combobox3.ActiveText,spinbutton1.ValueAsInt,(decimal)spinbutton2.Value);
-			log.Debug ("Generated ev:" + generated_event.node1 + "," + generated_event.node2 + "," + generated_event.size + "," + generated_event.when);
+			log.Debug ("OK clicked");
+			if (mw == null)
+				log.Error ("Main window null");
+			if (nm.HaveNode (combobox3.ActiveText)) {
+				log.Debug ("Have node");
+				try{
+					sm.SetEvent (label9.Text, combobox3.ActiveText, spinbutton1.ValueAsInt, (decimal)spinbutton2.Value);
+					generated_event = new SimulationModel.Event (label9.Text, combobox3.ActiveText, spinbutton1.ValueAsInt, (decimal)spinbutton2.Value);
+					log.Debug ("Generated ev:" + generated_event.node1 + "," + generated_event.node2 + "," + generated_event.size + "," + generated_event.when);
+				}catch(ArgumentException){
+					this.Respond (Gtk.ResponseType.Reject);
+				}
+			} else {
+				this.Respond (Gtk.ResponseType.Reject);
+			}
 		}
 	}
 }

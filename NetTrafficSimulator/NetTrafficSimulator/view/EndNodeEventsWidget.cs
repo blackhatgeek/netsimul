@@ -11,6 +11,7 @@ namespace NetTrafficSimulator
 		public string name;
 		NetworkModel nm;
 		SimulationModel sm;
+		MainWindow mw;
 		public EndNodeEventsWidget ()
 		{
 			this.Build ();
@@ -37,9 +38,10 @@ namespace NetTrafficSimulator
 			sizeCol.AddAttribute (sizeCell, "text", 2);
 		}
 
-		public void LoadParams(NetworkModel nm,SimulationModel sm,String nname){
+		public void LoadParams(NetworkModel nm,SimulationModel sm,String nname,MainWindow mw){
 			this.nm = nm;
 			this.sm = sm;
+			this.mw = mw;
 			this.name = nname;
 			System.Collections.Generic.LinkedList<SimulationModel.Event> evs = sm.GetEvents ();
 			foreach (SimulationModel.Event e in evs) {
@@ -52,12 +54,20 @@ namespace NetTrafficSimulator
 		protected void OnButton2Clicked (object sender, EventArgs e)
 		{
 			if((nm!=null)&&(sm!=null)){
-				NewEventDialog ned = new NewEventDialog (name, nm, sm);
-				if (ned.Run () == (int)Gtk.ResponseType.Ok) {
-					log.Debug (ned.generated_event.node2+", "+ned.generated_event.size+", "+ned.generated_event.when);
+				NewEventDialog ned = new NewEventDialog (name, nm, sm,mw);
+				int response = ned.Run ();
+				if (response == (int)Gtk.ResponseType.Ok) {
+					log.Debug (ned.generated_event.node2 + ", " + ned.generated_event.size + ", " + ned.generated_event.when);
 					store.AppendValues (ned.generated_event.node2, ned.generated_event.when, (double)ned.generated_event.size);
+					ned.Destroy ();
+				} else if (response == (int)Gtk.ResponseType.Reject) {
+					ned.Destroy ();
+					Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Create event failed");
+					md.Run ();
+					md.Destroy ();
+				} else {
+					ned.Destroy ();
 				}
-				ned.Destroy ();
 			}
 		}
 

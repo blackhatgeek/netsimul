@@ -82,7 +82,10 @@ namespace NetTrafficSimulator
 		 */
 		//UPDATED LOCALLY
 		public bool HaveNode(string name){
-			return this.node_records.ContainsKey(name);
+			if (name != null)
+				return this.node_records.ContainsKey (name);
+			else
+				return false;
 		}
 
 		//"seznam nodes" - dictionary
