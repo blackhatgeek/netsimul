@@ -177,8 +177,19 @@ public partial class MainWindow: Gtk.Window
 
 			if (fd.Run () == (int)ResponseType.Accept) {
 				result_path = fd.CurrentFolder;
-				NetTrafficSimulator.Storer storer = new NetTrafficSimulator.Storer (fd.Filename);
-				storer.StoreResultModel (rm);
+				bool store = true;
+				if(File.Exists(fd.Filename)){
+					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "File exists! Overwrite?");
+					if (md.Run() == (int)ResponseType.Yes) {
+						File.Delete (fd.Filename);
+					} else
+						store = false;
+					md.Destroy ();
+				}
+				if (store) {
+					NetTrafficSimulator.Storer storer = new NetTrafficSimulator.Storer (fd.Filename);
+					storer.StoreResultModel (rm);
+				}
 			}
 			fd.Destroy ();
 		} else {
@@ -424,4 +435,37 @@ public partial class MainWindow: Gtk.Window
 			}
 		}
 	}
+
+	protected void OnSaveModelAsActionActivated (object sender, EventArgs e)
+	{
+		if ((nm!=null)&&(sm != null)) {
+			FileChooserDialog fd = new Gtk.FileChooserDialog ("Save results as ", this, FileChooserAction.Save, "Cancel", ResponseType.Close, "Save", ResponseType.Accept);
+			if (model_path != null)
+				fd.SetCurrentFolder (model_path);
+
+			if (fd.Run () == (int)ResponseType.Accept) {
+				model_path = fd.CurrentFolder;
+				bool store = true;
+				if(File.Exists(fd.Filename)){
+					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "File exists! Overwrite?");
+					if (md.Run() == (int)ResponseType.Yes) {
+						File.Delete (fd.Filename);
+					} else
+						store = false;
+					md.Destroy ();
+				}
+				if (store) {
+					NetTrafficSimulator.Storer storer = new NetTrafficSimulator.Storer (fd.Filename);
+					storer.StoreModel (nm, sm);
+				}
+			}
+			fd.Destroy ();
+		} else {
+			MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "Model not loaded! Load or create model first.");
+			md.Run ();
+			md.Destroy ();
+		}
+	}
+
+	
 }

@@ -278,6 +278,118 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		public void StoreModel(NetworkModel nm,SimulationModel sm){
+			if ((nm != null) && (sm != null)) {
+				XmlElement simulation = xs.CreateElement ("simulation");
+				xs.AppendChild (simulation);
+				XmlAttribute time_run = xs.CreateAttribute ("time_run");
+				time_run.Value = sm.Time + "";
+				simulation.Attributes.Append (time_run);
+				XmlAttribute max_hop = xs.CreateAttribute ("max_hop");
+				max_hop.Value = sm.MaxHop + "";
+				simulation.Attributes.Append (max_hop);
+				XmlAttribute version = xs.CreateAttribute ("version");
+				version.Value = "0.05";
+				simulation.Attributes.Append (version);
+				XmlElement model = xs.CreateElement ("model");
+				simulation.AppendChild (model);
+				if (nm.NodeCount > 0) {
+					XmlElement nodes = xs.CreateElement ("nodes");
+					model.AppendChild (nodes);
+					string[] node_names = nm.GetNodeNames ();
+					foreach (string node in node_names) {
+						XmlAttribute name = xs.CreateAttribute ("name");
+						name.Value = node;
+						switch (nm.GetNodeType (node)) {
+						case NetworkModel.END_NODE:
+							XmlElement end = xs.CreateElement ("end");
+							end.Attributes.Append (name);
+							XmlAttribute addr = xs.CreateAttribute ("address");
+							addr.Value = nm.GetEndpointNodeAddr (node) + "";
+							end.Attributes.Append (addr);
+							XmlAttribute mps = xs.CreateAttribute ("mps");
+							mps.Value = nm.GetEndNodeMaxPacketSize (node) + "";
+							end.Attributes.Append (mps);
+							XmlAttribute rt = xs.CreateAttribute ("randomTalk");
+							rt.Value = sm.IsRandomTalker (node) + "";
+							end.Attributes.Append (rt);
+							nodes.AppendChild (end);
+							break;
+						case NetworkModel.SERVER_NODE:
+							XmlElement server = xs.CreateElement ("server");
+							server.Attributes.Append (name);
+							XmlAttribute addr1 = xs.CreateAttribute ("address");
+							addr1.Value = nm.GetEndpointNodeAddr (node) + "";
+							server.Attributes.Append (addr1);
+							nodes.AppendChild (server);
+							break;
+						case NetworkModel.NETWORK_NODE:
+							XmlElement network = xs.CreateElement ("network");
+							network.Attributes.Append (name);
+							XmlAttribute der = xs.CreateAttribute ("default");
+							der.Value = nm.GetNetworkNodeDefaultRoute (node);
+							network.AppendChild (der);
+							nodes.AppendChild (network);
+							break;
+						}
+					}
+				}
+				if (nm.GetLinkCount () > 0) {
+					XmlElement links = xs.CreateElement ("links");
+					model.AppendChild (links);
+					string[] link_names = nm.GetLinkNames ();
+					foreach (string link in link_names) {
+						XmlElement l = xs.CreateElement ("link");
+						links.AppendChild (l);
+						XmlAttribute name = xs.CreateAttribute ("name");
+						name.Value = link;
+						l.Attributes.Append (name);
+						XmlAttribute node1 = xs.CreateAttribute ("node1");
+						node1.Value = nm.GetLinkNode1 (link);
+						l.Attributes.Append (node1);
+						XmlAttribute node2 = xs.CreateAttribute ("node2");
+						node2.Value = nm.GetLinkNode2 (link);
+						l.Attributes.Append (node2);
+						XmlAttribute capacity = xs.CreateAttribute ("capacity");
+						capacity.Value = nm.GetLinkCapacity (link) + "";
+						l.Attributes.Append (capacity);
+						XmlAttribute tp = xs.CreateAttribute ("toggle_probability");
+						tp.Value = nm.GetLinkToggleProbability (link) + "";
+						l.Attributes.Append (tp);
+					}
+				}
+				SimulationModel.Event[] event_ar = sm.GetEvents ();
+				if (event_ar.Length > 0) {
+					XmlElement events = xs.CreateElement ("events");
+					simulation.AppendChild (events);
+
+					foreach (SimulationModel.Event e in event_ar) {
+						XmlElement ev = xs.CreateElement ("event");
+						events.AppendChild (ev);
+
+						XmlAttribute who = xs.CreateAttribute ("who");
+						who.Value = e.node1;
+						ev.Attributes.Append (who);
+
+						XmlAttribute when = xs.CreateAttribute ("when");
+						when.Value = e.when + "";
+						ev.Attributes.Append (when);
+
+						XmlAttribute where = xs.CreateAttribute ("where");
+						where.Value = e.node2;
+						ev.Attributes.Append (where);
+
+						XmlAttribute size = xs.CreateAttribute ("size");
+						size.Value = e.size + "";
+						ev.Attributes.Append (size);
+					}
+				}
+				xs.WriteContentTo (xw);
+				xw.Flush ();
+				xw.Close ();
+			} else
+				throw new ArgumentException ("Model null");
+		}
 		
 		private void resultSchemaValidationEventHandler(object sender, ValidationEventArgs e)
 		{
