@@ -55,6 +55,48 @@ namespace NetTrafficSimulator
 			}
 			ned.Destroy ();
 		}
+
+		NetTrafficSimulator.SimulationModel.Event ev;
+		Gtk.TreeIter ti;
+		bool selected;
+
+		protected void OnNodeview3CursorChanged (object sender, EventArgs e)
+		{
+			Gtk.TreeSelection selection = (sender as Gtk.NodeView).Selection;
+			Gtk.TreeModel model;
+			Gtk.TreeIter iter;
+			if (selection.GetSelected (out model, out iter)) {
+				string to = model.GetValue (iter, 0) as string;
+				int when = (int)model.GetValue (iter, 1);
+				int size = (int)model.GetValue (iter, 2);
+
+				ev = new SimulationModel.Event (name,to, when, size);
+				ti = iter;
+
+				button1.Sensitive = true;
+			} else
+				button1.Sensitive = false;
+		}
+
+
+		protected void OnButton1Clicked (object sender, EventArgs e)
+		{
+				System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents (),
+							toRemove=new System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event>();
+				System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
+				while (node.Next!=null) {
+					if (node.Value.node1.Equals (ev.node1)&&node.Value.node2.Equals(ev.node2)&&
+					    	(node.Value.size==ev.size)&&(node.Value.when==ev.when)) {
+								toRemove.AddLast (node.Value);
+					}
+					node = node.Next;
+				}
+				foreach(NetTrafficSimulator.SimulationModel.Event evt in toRemove){
+					events.Remove (evt);
+				}
+
+				store.Remove (ref ti);
+		}
 	}
 }
 

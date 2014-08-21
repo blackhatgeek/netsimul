@@ -79,7 +79,9 @@ namespace NetTrafficSimulator
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.nodeview3.CursorChanged += new global::System.EventHandler (this.OnNodeview3CursorChanged);
 			this.button2.Clicked += new global::System.EventHandler (this.OnButton2Clicked);
+			this.button1.Clicked += new global::System.EventHandler (this.OnButton1Clicked);
 		}
 	}
 }

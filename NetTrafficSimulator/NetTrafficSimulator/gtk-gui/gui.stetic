@@ -1215,6 +1215,7 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
+                <signal name="CursorChanged" handler="OnNodeview3CursorChanged" />
               </widget>
             </child>
           </widget>
@@ -1261,6 +1262,7 @@
                 <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Delete</property>
                 <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnButton1Clicked" />
               </widget>
               <packing>
                 <property name="PackType">End</property>
