@@ -31,11 +31,15 @@ namespace NetTrafficSimulator
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			if (nm != null) {
-				if (nm.HaveNode (this.entry1.Text)) {
-					this.Respond (Gtk.ResponseType.Reject);
-				} else {
-					nm.AddNode (this.entry1.Text, ntype);
-					this.node_name = this.entry1.Text;
+				if (this.entry1.Text.Contains ("\r") || this.entry1.Text.Contains ("\n") || this.entry1.Text.Contains("\t") || this.entry1.Text.EndsWith (" ") || this.entry1.Text.StartsWith (" ") || this.entry1.Text.Contains ("  "))
+					this.Respond (Gtk.ResponseType.No);
+				else {
+					if (nm.HaveNode (this.entry1.Text)) {
+						this.Respond (Gtk.ResponseType.Reject);
+					} else {
+						nm.AddNode (this.entry1.Text, ntype);
+						this.node_name = this.entry1.Text;
+					}
 				}
 			} else
 				throw new ArgumentNullException ("Network model null");

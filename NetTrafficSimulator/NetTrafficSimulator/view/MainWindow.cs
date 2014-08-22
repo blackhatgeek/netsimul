@@ -331,6 +331,12 @@ public partial class MainWindow: Gtk.Window
 					md.Run ();
 					md.Destroy ();
 					break;
+				case (int)ResponseType.No:
+					nend.Destroy ();
+					MessageDialog md1 = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Node name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Node was not added.");
+					md1.Run ();
+					md1.Destroy ();
+					break;
 				case (int)ResponseType.Ok:
 					string dsc = "";
 					switch (ntype) {
@@ -401,6 +407,12 @@ public partial class MainWindow: Gtk.Window
 				MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Error occured, link was not added!");
 				md.Run ();
 				md.Destroy ();
+				break;
+			case (int)ResponseType.No:
+				nld.Destroy ();
+				MessageDialog md1 = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Link name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Link was not added.");
+				md1.Run ();
+				md1.Destroy ();
 				break;
 			case (int)ResponseType.Ok:
 				linkListStore.AppendValues (nld.link_name, nld.node1, nld.node2);
