@@ -39,16 +39,22 @@ namespace NetTrafficSimulator
 		{
 			if ((sm != null) && (nm != null) && (mw != null)) {
 				if (!entry1.Text.Equals (name)) {
-					try {
-						nm.SetNodeName (name, entry1.Text);
-						log.Debug ("Name changed");
-						name = entry1.Text;
-						mw.NodeNameChanged ();
-					} catch (ArgumentException) {
-						Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Name change failed");
-						md.Run ();
-						md.Destroy ();
-						entry1.Text = name;
+					if (this.entry1.Text.Contains ("\r") || this.entry1.Text.Contains ("\n") || this.entry1.Text.Contains ("\t") || this.entry1.Text.EndsWith (" ") || this.entry1.Text.StartsWith (" ") || this.entry1.Text.Contains ("  ")) {
+						Gtk.MessageDialog md1 = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Node name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Name was not changed.");
+						md1.Run ();
+						md1.Destroy ();
+					} else {
+						try {
+							nm.SetNodeName (name, entry1.Text);
+							log.Debug ("Name changed");
+							name = entry1.Text;
+							mw.NodeNameChanged ();
+						} catch (ArgumentException) {
+							Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Name change failed");
+							md.Run ();
+							md.Destroy ();
+							entry1.Text = name;
+						}
 					}
 				}
 
