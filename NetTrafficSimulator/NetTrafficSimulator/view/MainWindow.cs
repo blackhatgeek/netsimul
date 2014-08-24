@@ -4,6 +4,8 @@ using System.Xml.Schema;
 using Gtk;
 using log4net;
 
+/**
+ */
 public partial class MainWindow: Gtk.Window
 {	
 	NetTrafficSimulator.NetworkModel nm;
@@ -17,6 +19,8 @@ public partial class MainWindow: Gtk.Window
 
 	const string END = "END", SERVER = "SERVER", NETWORK = "NETWORK";
 
+	/**
+	*/
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
@@ -66,11 +70,16 @@ public partial class MainWindow: Gtk.Window
 		treeview4.CursorChanged += new EventHandler (linkTreeCursorChanged);
 	}
 
+	/**
+	*/
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
 		Application.Quit ();
 		a.RetVal = true;
 	}
+
+	/**
+	*/
 	protected void loadFromFileHandler (object sender, EventArgs ev)
 	{
 			FileChooserDialog fc = new Gtk.FileChooserDialog ("Model to load", this, FileChooserAction.Open, 
@@ -134,6 +143,8 @@ public partial class MainWindow: Gtk.Window
 			fc.Destroy ();
 	}
 
+	/**
+	*/
 	protected void OnParametersMenuClick (object sender, EventArgs ev){
 		if (sm != null) {
 			NetTrafficSimulator.SimulationParametersDialog spd = new NetTrafficSimulator.SimulationParametersDialog (sm);
@@ -149,6 +160,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	protected void OnRunMenuClick (object sender, EventArgs ev){
 		if ((nm != null) && (sm != null)) {
 			NetTrafficSimulator.SimulationController sc = new NetTrafficSimulator.SimulationController (nm, sm);
@@ -164,10 +177,14 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	protected void exitHandler (object sender, EventArgs ev){
 		Application.Quit ();
 	}
 
+	/**
+	*/
 	protected void saveResultsHandler(object sender,EventArgs ev){
 		if (rm != null) {
 			FileChooserDialog fd = new Gtk.FileChooserDialog ("Save results as ", this, FileChooserAction.Save, "Cancel", ResponseType.Close, "Save", ResponseType.Accept);
@@ -200,6 +217,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	private void loadNodesBox(){
 		nodeListStore.Clear ();
 		if (node_names != null) {
@@ -228,6 +247,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	private void loadLinksBox(){
 		linkListStore.Clear ();
 		foreach (string link in link_names) {
@@ -236,6 +257,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	private void nodeTreeCursorChanged(object sender,EventArgs e){
 		TreeSelection selection = (sender as TreeView).Selection;
 		TreeModel model;
@@ -277,6 +300,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	private void linkTreeCursorChanged(object sender,EventArgs e){
 		TreeSelection selection = (sender as TreeView).Selection;
 		TreeModel model;
@@ -298,6 +323,8 @@ public partial class MainWindow: Gtk.Window
 
 	}
 
+	/**
+	*/
 	protected void newModelHandler (object sender, EventArgs e)
 	{
 		nm = new NetTrafficSimulator.NetworkModel ();
@@ -305,21 +332,31 @@ public partial class MainWindow: Gtk.Window
 		linkListStore.Clear ();
 		nodeListStore.Clear ();
 	}
-	
+
+	/**
+	*/
 	protected void onAddNewEndNode (object sender, EventArgs e)
 	{
 		addNode (NetTrafficSimulator.NetworkModel.END_NODE);
 	}
+
+	/**
+	*/
 	protected void onAddNetNode (object sender, EventArgs e)
 	{
 		addNode (NetTrafficSimulator.NetworkModel.NETWORK_NODE);
 	}
+
+	/**
+	*/
 	protected void onAddServNode (object sender, EventArgs e)
 	{
 		addNode (NetTrafficSimulator.NetworkModel.SERVER_NODE);
 	}
 
 
+	/**
+	*/
 	private void addNode(int ntype){
 		if ((ntype == NetTrafficSimulator.NetworkModel.END_NODE) || (ntype == NetTrafficSimulator.NetworkModel.NETWORK_NODE) || (ntype == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
 			if (nm != null) {
@@ -371,6 +408,8 @@ public partial class MainWindow: Gtk.Window
 			throw new ArgumentException ("Invalid node type: " + ntype);
 	}
 
+	/**
+	*/
 	public void NodeNameChanged(){
 		log.Debug ("Triggered node name change");
 		node_names = nm.GetNodeNames ();
@@ -388,6 +427,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	public void LinkChanged(){
 		link_names = nm.GetLinkNames ();
 		loadLinksBox ();
@@ -397,6 +438,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	protected void OnAddLinkActionActivated (object sender, EventArgs e)
 	{
 		if (nm != null) {
@@ -430,6 +473,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	protected void OnDeleteButtonClicked (object sender, EventArgs e)
 	{
 		if (nm != null) {
@@ -497,6 +542,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	protected void OnSaveModelAsActionActivated (object sender, EventArgs e)
 	{
 		if ((nm!=null)&&(sm != null)) {
@@ -528,6 +575,8 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 
+	/**
+	*/
 	protected void OnAboutActionActivated (object sender, EventArgs e)
 	{
 		NetTrafficSimulator.AboutDialog ab = new NetTrafficSimulator.AboutDialog ();

@@ -3,11 +3,17 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	public partial class NewLinkDialog : Gtk.Dialog
 	{
 		static readonly ILog log = LogManager.GetLogger (typeof(NewLinkDialog));
 		NetworkModel nm;
+		/**
+		 */
 		public string link_name,node1,node2;
+		/**
+		 */
 		public NewLinkDialog (NetworkModel nm,MainWindow mw)
 		{
 			this.Build ();
@@ -20,6 +26,8 @@ namespace NetTrafficSimulator
 			combobox5.Active = 1;
 		}
 
+		/**
+		 */
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			if (nm != null) {

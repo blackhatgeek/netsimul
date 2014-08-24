@@ -3,15 +3,21 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class EndNodeEventsWidget : Gtk.Bin
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(EndNodeEventsWidget));
 		Gtk.ListStore store;
+		/**
+		 */
 		public string name;
 		NetworkModel nm;
 		SimulationModel sm;
 		MainWindow mw;
+		/**
+		 */
 		public EndNodeEventsWidget ()
 		{
 			this.Build ();
@@ -38,6 +44,8 @@ namespace NetTrafficSimulator
 			sizeCol.AddAttribute (sizeCell, "text", 2);
 		}
 
+		/**
+		 */
 		public void LoadParams(NetworkModel nm,SimulationModel sm,String nname,MainWindow mw){
 			this.nm = nm;
 			this.sm = sm;
@@ -51,6 +59,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		protected void OnButton2Clicked (object sender, EventArgs e)
 		{
 			if((nm!=null)&&(sm!=null)){
@@ -74,6 +84,8 @@ namespace NetTrafficSimulator
 		NetTrafficSimulator.SimulationModel.Event ev;
 		Gtk.TreeIter ti;
 
+		/**
+		 */
 		protected void OnNodeview3CursorChanged (object sender, EventArgs e)
 		{
 			Gtk.TreeSelection selection = (sender as Gtk.NodeView).Selection;
@@ -92,7 +104,8 @@ namespace NetTrafficSimulator
 				button1.Sensitive = false;
 		}
 
-
+		/**
+		 */
 		protected void OnButton1Clicked (object sender, EventArgs e)
 		{
 				System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents (),

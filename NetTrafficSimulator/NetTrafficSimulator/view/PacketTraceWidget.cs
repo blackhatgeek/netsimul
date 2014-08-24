@@ -4,11 +4,15 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class PacketTraceWidget : Gtk.Bin
 	{
 		Gtk.ListStore store;
 		static readonly ILog log = LogManager.GetLogger(typeof(PacketTraceWidget));
+		/**
+		 */
 		public PacketTraceWidget ()
 		{
 			this.Build ();
@@ -33,6 +37,8 @@ namespace NetTrafficSimulator
 			timeCol.AddAttribute (timeCell, "text", 1);
 		}
 
+		/**
+		 */
 		public void Load(ResultModel rm){
 			log.Debug ("Loading packet traces");
 			LinkedList<KeyValuePair<string,int>>[] traces = rm.GetPacketTraces ();

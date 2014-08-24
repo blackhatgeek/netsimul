@@ -6,6 +6,8 @@ using log4net.Config;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	class MainClass
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(MainClass));

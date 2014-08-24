@@ -223,6 +223,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		public static string GetSchema(){
 			return schema;
 		}

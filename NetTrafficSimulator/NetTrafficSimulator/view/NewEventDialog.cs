@@ -3,13 +3,19 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	public partial class NewEventDialog : Gtk.Dialog
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(NewEventDialog));
 		SimulationModel sm;
 		NetworkModel nm;
 		MainWindow mw;
+		/**
+		 */
 		public SimulationModel.Event generated_event;
+		/**
+		 */
 		public NewEventDialog (string node,NetworkModel nm,SimulationModel sm,MainWindow mw)
 		{
 			this.Build ();
@@ -30,6 +36,8 @@ namespace NetTrafficSimulator
 			combobox3.Active = 0;
 		}
 
+		/**
+		 */
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			log.Debug ("OK clicked");

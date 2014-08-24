@@ -2,18 +2,26 @@ using System;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class ServerNodeParamWidget : Gtk.Bin
 	{
 		MainWindow mw;
 		NetworkModel nm;
+		/**
+		 */
 		public string name;
 
+		/**
+		 */
 		public ServerNodeParamWidget ()
 		{
 			this.Build ();
 		}
 
+		/**
+		 */
 		public void LoadParams(NetworkModel nm,String nname,MainWindow mw){
 			this.mw=mw;
 			this.nm = nm;
@@ -23,6 +31,8 @@ namespace NetTrafficSimulator
 			this.label3.Text = nm.GetEndpointNodeLink (nname);
 		}
 
+		/**
+		 */
 		protected void OnButton473Clicked (object sender, EventArgs e)
 		{
 			if ((nm != null) && (mw != null)) {

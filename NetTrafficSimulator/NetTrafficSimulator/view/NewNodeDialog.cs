@@ -2,11 +2,17 @@ using System;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	public partial class NewNodeDialog : Gtk.Dialog
 	{
 		NetTrafficSimulator.NetworkModel nm;
+		/**
+		 */
 		public string node_name;
 		int ntype;
+		/**
+		 */
 		public NewNodeDialog (NetworkModel nm,int ntype)
 		{
 			this.Build ();
@@ -28,6 +34,8 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("Invalid node type: " + ntype);
 		}
 
+		/**
+		 */
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			if (nm != null) {

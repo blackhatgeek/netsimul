@@ -68,6 +68,8 @@ namespace NetTrafficSimulator
 				}
 			}
 
+			/**
+		 	*/
 			public override string ToString ()
 			{
 				return string.Format ("[DataEnvelope: Data={0}, Source={1}, Destination={2}, Steps={3}]", Data, Source, Destination,Steps);
@@ -127,6 +129,8 @@ namespace NetTrafficSimulator
 		private bool active;
 		private string name;
 
+		/**
+		 */
 		public decimal Capacity{
 			get{
 				return this.capacity;
@@ -206,10 +210,8 @@ namespace NetTrafficSimulator
 			if (p != null) {
 				if (((origin == a) && (destination == b)) || ((origin == b) && (destination == a))) {
 					if (active) {
-						//carried++;
 						log.Debug ("(" + name + ") Link active, carried");
 						DataEnvelope de = new DataEnvelope (p, origin, destination,model.Time);
-						//queue.Enqueue (de);
 						de.Next = null;
 						if(queue_tail!=null)
 							queue_tail.Next = de;
@@ -231,6 +233,8 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("Packet null");
 		}
 
+		/**
+		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			if(model==null)
@@ -455,6 +459,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		public override string ToString ()
 		{
 			return name;

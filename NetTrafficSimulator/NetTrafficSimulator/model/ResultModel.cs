@@ -8,6 +8,8 @@ namespace NetTrafficSimulator
 	 */
 	public class ResultModel
 	{
+		/**
+		 */
 		private class EndNodeResult
 		{
 			string name;
@@ -81,6 +83,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		private class ServerNodeResult
 		{
 			string name;
@@ -138,10 +142,10 @@ namespace NetTrafficSimulator
 					return avgWaitTime;
 				}
 			}
-
-
 		}
 
+		/**
+		 */
 		private class NetworkNodeResult
 		{
 			string name;
@@ -228,6 +232,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		private	class LinkResult
 		{
 			string name;
@@ -369,6 +375,7 @@ namespace NetTrafficSimulator
 		 * @param serverNodes amount of server nodes
 		 * @param networkNodes amount of network nodes
 		 * @param linkNodes amount of links
+		 * @param traced amount of traced packets
 		 */
 		public ResultModel (int endNodes,int serverNodes,int networkNodes,int linkNodes,int traced)
 		{
@@ -491,6 +498,8 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("Link counter exceeded: "+linkCount);
 		}
 
+		/**
+		 */
 		public void SetPacketTrace(Packet p){
 			if (p.Traced) {
 				if (tracer < traced) {
@@ -535,6 +544,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		private EndNodeResult getENR(string name){
 			EndNodeResult enr;
 			if (endNodeNames.TryGetValue (name, out enr))
@@ -906,6 +917,8 @@ namespace NetTrafficSimulator
 			return getLR (name).PercentageDataLostInCarry;
 		}
 
+		/**
+		 */
 		public LinkedList<KeyValuePair<string,int>>[] GetPacketTraces(){
 			return traces;
 		}

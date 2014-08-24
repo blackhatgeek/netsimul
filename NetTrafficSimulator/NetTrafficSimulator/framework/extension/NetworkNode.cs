@@ -11,15 +11,14 @@ namespace NetTrafficSimulator
 	{
 		const int update=3,flush=6,expiry=3;
 		static readonly ILog log = LogManager.GetLogger (typeof(NetworkNode));
-		readonly int max;//,update_timer=10;//TODO
+		readonly int max;
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
 		RoutingTable rt;
 		int[] interface_use_count;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped,rm_received,rm_sent;
-		int delay;//, scheduled_update;
+		int delay;
 		Link def_r;
-		//private Timer update, invalid;
 
 		/**
 		 * Creates a new network node with given name and interfaces count
@@ -47,15 +46,6 @@ namespace NetTrafficSimulator
 				this.rt = new RoutingTable (flush,expiry,max,m);
 				this.last_process = 0;
 				this.dropped = 0;
-
-				//nastavit se do stavu UPDATE_TIMER
-				//poslat REQUESTY vsem okolo
-
-
-				//this.scheduled_update = -1;
-				//this.update = new Timer (this);
-				//this.invalid = new Timer (this);
-				//this.update.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.TIMER), model.Time); - SIMU CONTROL
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
 		}
@@ -79,6 +69,9 @@ namespace NetTrafficSimulator
 		public void ConnectLink(Link l,MFF_NPRG031.Model model){
 			this.ConnectLink(l,model,false);
 		}
+
+		/**
+		 */
 		public void ConnectLink(Link l,MFF_NPRG031.Model model,bool defroute){
 			log.Debug ("Connect link");
 			if (interfaces_used < interfaces_count) {
@@ -110,6 +103,8 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("No port available");
 		}
 
+		/**
+		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			switch (state.Actual) {
@@ -189,7 +184,6 @@ namespace NetTrafficSimulator
 		private Link selectDestination(Packet p){
 			if (p is RoutingMessage) {
 				log.Error ("Link for routing message");
-				//throw new Exception ();
 				return (p as RoutingMessage).Link;
 			} else {
 				log.Debug ("Link for destination: " + p.Destination);
@@ -207,7 +201,6 @@ namespace NetTrafficSimulator
 					return def_r;
 				}
 			}
-			//throw new InvalidOperationException ("Routing through invalid link");
 		}
 
 		/**

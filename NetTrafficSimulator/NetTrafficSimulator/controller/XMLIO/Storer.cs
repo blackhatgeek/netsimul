@@ -15,6 +15,8 @@ namespace NetTrafficSimulator
 		static readonly ILog log=LogManager.GetLogger(typeof(Storer));
 		XmlDocument xs;
 		XmlTextWriter xw;
+		/**
+		 */
 		public const int decimals=2;
 
 		/**
@@ -278,6 +280,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		public void StoreModel(NetworkModel nm,SimulationModel sm){
 			if ((nm != null) && (sm != null)) {
 				log.Debug ("Create simulation el");
@@ -447,7 +451,9 @@ namespace NetTrafficSimulator
 			} else
 				throw new ArgumentException ("Model null");
 		}
-		
+
+		/**
+		 */
 		private void resultSchemaValidationEventHandler(object sender, ValidationEventArgs e)
 		{
 			if (e.Severity == XmlSeverityType.Warning)

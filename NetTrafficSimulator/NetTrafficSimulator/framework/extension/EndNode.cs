@@ -25,6 +25,8 @@ namespace NetTrafficSimulator
 			this.psizesum = 0;
 		}
 
+		/**
+		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			switch (state.Actual) {

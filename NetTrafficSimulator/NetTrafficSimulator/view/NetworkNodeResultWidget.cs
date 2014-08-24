@@ -3,15 +3,21 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class NetworkNodeResultWidget : Gtk.Bin
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(NetworkNodeResultWidget));
+		/**
+		 */
 		public NetworkNodeResultWidget ()
 		{
 			this.Build ();
 		}
 
+		/**
+		 */
 		public void LoadParams(ResultModel rm,string name){
 			try{
 				label20.Text = rm.GetNetworkNodePacketsProcessed(name)+"";

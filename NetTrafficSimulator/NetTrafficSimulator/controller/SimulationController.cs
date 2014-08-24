@@ -69,7 +69,8 @@ namespace NetTrafficSimulator
 			initializeProcesses ();
 		}
 
-
+		/**
+		 */
 		private void createNetworkNodes(){
 			log.Debug ("Create network nodes");
 			networkNodeCounter = 0;

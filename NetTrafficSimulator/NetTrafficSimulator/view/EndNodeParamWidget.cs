@@ -3,20 +3,28 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class EndNodeParamWidget : Gtk.Bin
 	{
 		static readonly ILog log = LogManager.GetLogger (typeof(EndNodeParamWidget));
 		NetworkModel nm;
 		SimulationModel sm;
+		/**
+		 */
 		public string name;
 		MainWindow mw;
 
+		/**
+		 */
 		public EndNodeParamWidget ()
 		{
 			this.Build ();
 		}
 
+		/**
+		 */
 		public void LoadParams(NetworkModel nm,SimulationModel sm,String nname, MainWindow mw){
 			this.nm = nm;
 			this.name = nname;
@@ -35,6 +43,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		protected void OnButton277Clicked (object sender, EventArgs e)
 		{
 			if ((sm != null) && (nm != null) && (mw != null)) {

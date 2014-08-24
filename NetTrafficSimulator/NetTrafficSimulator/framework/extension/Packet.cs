@@ -29,9 +29,12 @@ namespace NetTrafficSimulator
 			this.trace = false;
 		}
 
+		/**
+		 */
 		public Packet (int source, int destination,decimal size,bool trace):this(source,destination,size){
 			this.trace = trace;
-			this.journey = new LinkedList<KeyValuePair<string,int>> ();
+			if(trace)
+				this.journey = new LinkedList<KeyValuePair<string,int>> ();
 		}
 
 		/**
@@ -83,6 +86,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		public void SetNodePassedThrough(Node n,int time){
 			if (this.trace)
 				this.journey.AddLast (new KeyValuePair<string, int>(n.Name,time));
@@ -90,6 +95,8 @@ namespace NetTrafficSimulator
 				throw new ArgumentException ("Packet not set as traced!");
 		}
 
+		/**
+		 */
 		public LinkedList<KeyValuePair<string,int>> Trace{
 			get{
 				return this.journey;

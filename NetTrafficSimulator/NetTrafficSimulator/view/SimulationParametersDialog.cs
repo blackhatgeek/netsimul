@@ -2,13 +2,17 @@ using System;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	public partial class SimulationParametersDialog : Gtk.Dialog
 	{
-		//private SimulationModel sm;
+		/**
+		 */
 		public int maxHop,time;
+		/**
+		 */
 		public SimulationParametersDialog (SimulationModel sm)
 		{
-			//this.sm = sm;
 			this.maxHop = sm.MaxHop;
 			this.time = sm.Time;
 			this.Build ();
@@ -16,6 +20,8 @@ namespace NetTrafficSimulator
 			this.spinbutton2.Value = sm.Time;
 		}
 
+		/**
+		 */
 		protected void btnOKClicked (object sender, EventArgs e)
 		{
 			maxHop = spinbutton1.ValueAsInt;

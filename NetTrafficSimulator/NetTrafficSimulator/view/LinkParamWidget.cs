@@ -3,6 +3,8 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LinkParamWidget : Gtk.Bin
 	{
@@ -12,11 +14,16 @@ namespace NetTrafficSimulator
 		decimal tp;
 		NetworkModel nm;
 		static readonly ILog log = LogManager.GetLogger(typeof(LinkParamWidget));
+
+		/**
+		 */
 		public LinkParamWidget ()
 		{
 			this.Build ();
 		}
 
+		/**
+		 */
 		public void LoadParams(NetworkModel nm,String lname,MainWindow mw){
 			this.nm = nm;
 			this.name = lname;
@@ -50,26 +57,14 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		public string GetName(){
 			return this.entry5.Text;
 		}
 
-		public string GetN1Name(){
-			return this.combobox4.ActiveText;
-		}
-
-		public string GetN2Name(){
-			return this.combobox5.ActiveText;
-		}
-
-		public int GetCapacity(){
-			return this.spinbutton4.ValueAsInt;
-		}
-
-		public decimal GetToggleProbability(){
-			return (decimal)this.spinbutton5.Value;
-		}
-
+		/**
+		 */
 		protected void OnButton618Clicked (object sender, EventArgs e)
 		{
 			if (nm != null) {

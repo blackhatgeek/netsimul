@@ -117,7 +117,6 @@ namespace NetTrafficSimulator
 		 * @throws ArgumentNullException framework model null
 		 */
 		private void setRecord(Record r){
-			//r.Expired = false;
 			if (model == null)
 				throw new ArgumentNullException ("Framework model null");
 			if (r != null) {
@@ -278,6 +277,8 @@ namespace NetTrafficSimulator
 			rt.DecActiveRecs ();
 		}
 
+		/**
+		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			switch (state.Actual) {

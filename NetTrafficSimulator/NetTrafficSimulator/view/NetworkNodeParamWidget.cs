@@ -3,6 +3,8 @@ using log4net;
 
 namespace NetTrafficSimulator
 {
+	/**
+	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class NetworkNodeParamWidget : Gtk.Bin
 	{
@@ -10,7 +12,12 @@ namespace NetTrafficSimulator
 		Gtk.ListStore store;
 		MainWindow mw;
 		NetworkModel nm;
+		/**
+		 */
 		public string name;
+
+		/**
+		 */
 		public NetworkNodeParamWidget ()
 		{
 			this.Build ();
@@ -36,6 +43,8 @@ namespace NetTrafficSimulator
 
 		}
 
+		/**
+		 */
 		public void LoadParams(NetworkModel nm,String nname,MainWindow mw){
 			this.nm=nm;
 			this.mw = mw;
@@ -74,6 +83,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		protected void OnButton422Clicked (object sender, EventArgs e)
 		{
 			if ((nm != null) && (mw != null)) {

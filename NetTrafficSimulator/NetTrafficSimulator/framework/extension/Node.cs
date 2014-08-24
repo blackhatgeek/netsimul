@@ -27,6 +27,8 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			if (state != null) {
