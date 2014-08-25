@@ -77,8 +77,8 @@ namespace NetTrafficSimulator
 				if (mw != null) {
 					bool trigmwc = false;
 					if (!entry5.Text.Equals (name)) {
-						if (this.entry5.Text.Contains ("\r") || this.entry5.Text.Contains ("\n") || this.entry5.Text.Contains ("\t") || this.entry5.Text.EndsWith (" ") || this.entry5.Text.StartsWith (" ") || this.entry5.Text.Contains ("  ")) {
-							Gtk.MessageDialog md1 = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Node name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Name was not changed.");
+						if (this.entry5.Equals("")||this.entry5.Text.Contains ("\r") || this.entry5.Text.Contains ("\n") || this.entry5.Text.Contains ("\t") || this.entry5.Text.EndsWith (" ") || this.entry5.Text.StartsWith (" ") || this.entry5.Text.Contains ("  ")) {
+							Gtk.MessageDialog md1 = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Link name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Link name cannot be empty. Name was not changed.");
 							md1.Run ();
 							md1.Destroy ();
 						} else {

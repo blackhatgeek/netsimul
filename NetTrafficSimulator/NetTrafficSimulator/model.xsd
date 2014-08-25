@@ -22,7 +22,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 			</xs:sequence>
 			<xs:attribute name="time_run" use="required" type="xs:nonNegativeInteger"/>
 			<xs:attribute name="max_hop" use="optional" default="30" type="xs:positiveInteger"/>
-			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.05"/>
+			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.06"/>
 		</xs:complexType>
 		<xs:unique name="NodeName">
 			<xs:selector xpath="child::network/nodes" />
@@ -70,18 +70,36 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="tEndpoint">
-		<xs:attribute name="name" type="xs:token" use="required" />
+		<xs:attribute name="name" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:minLength value="1" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tNetwork">
-		<xs:attribute name="name" type="xs:token" use="required" />
+		<xs:attribute name="name" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:minLength value="1" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 		<xs:attribute name="default" type="xs:token" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tLink">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="link">
 				<xs:complexType>
-					<xs:attribute name="name" type="xs:token" use="required" />
+					<xs:attribute name="name" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:minLength value="1" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
 					<xs:attribute name="node1" type="xs:token" use="required" />
 					<xs:attribute name="node2" type="xs:token" use="required" />
 					<xs:attribute name="capacity" type="xs:nonNegativeInteger" use="required" />

@@ -43,7 +43,7 @@ namespace NetTrafficSimulator
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{
 			if (nm != null) {
-				if (this.entry1.Text.Contains ("\r") || this.entry1.Text.Contains ("\n") || this.entry1.Text.Contains("\t") || this.entry1.Text.EndsWith (" ") || this.entry1.Text.StartsWith (" ") || this.entry1.Text.Contains ("  "))
+				if (this.entry1.Text.Equals("")||this.entry1.Text.Contains ("\r") || this.entry1.Text.Contains ("\n") || this.entry1.Text.Contains("\t") || this.entry1.Text.EndsWith (" ") || this.entry1.Text.StartsWith (" ") || this.entry1.Text.Contains ("  "))
 					this.Respond (Gtk.ResponseType.No);
 				else {
 					if (nm.HaveNode (this.entry1.Text)) {

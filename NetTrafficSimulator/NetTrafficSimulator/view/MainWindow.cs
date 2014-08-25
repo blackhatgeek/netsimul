@@ -272,26 +272,18 @@ public partial class MainWindow: Gtk.Window
 		TreeModel model;
 		TreeIter iter;
 		if (selection.GetSelected (out model, out iter)) {
-			log.Debug ("Get selected");
 			//node name ... model.GetValue(iter,0);
 			//node type ... model.GetValue(iter,1);
-			log.Debug ("Destroying current ...");
 			if(GtkAlignment2.Child!=null)
 				GtkAlignment2.Child.Destroy();
-			log.Debug ("Destroyed");
-			log.Debug ("Get text");
 			GtkLabel13.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
 			GtkLabel13.UseMarkup = true;
-			log.Debug ("Get s");
 			object o = model.GetValue (iter, 1);
 			if(o!=null){
-				log.Debug ("O not null");
 				string s = o.ToString();
 			if (s != null) {
-					log.Debug ("S not null ... " + s);
 				switch (s) {
 					case SERVER:
-						log.Debug ("Create SNW");
 						NetTrafficSimulator.ServerNodeWidget sw = new NetTrafficSimulator.ServerNodeWidget ();
 						if (sw.ParamWidget == null) {
 							log.Error ("Param widget null");
@@ -412,7 +404,7 @@ public partial class MainWindow: Gtk.Window
 					break;
 				case (int)ResponseType.No:
 					nend.Destroy ();
-					MessageDialog md1 = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Node name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Node was not added.");
+					MessageDialog md1 = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Node name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Node name cannot be empty. Node was not added.");
 					md1.Run ();
 					md1.Destroy ();
 					break;
@@ -500,7 +492,7 @@ public partial class MainWindow: Gtk.Window
 				break;
 			case (int)ResponseType.No:
 				nld.Destroy ();
-				MessageDialog md1 = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Link name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Link was not added.");
+				MessageDialog md1 = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Link name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Link name cannot be empty. Link was not added.");
 				md1.Run ();
 				md1.Destroy ();
 				break;
