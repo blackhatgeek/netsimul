@@ -47,7 +47,7 @@ namespace NetTrafficSimulator
 			this.entry4.CanFocus = true;
 			this.entry4.Name = "entry4";
 			this.entry4.IsEditable = true;
-			this.entry4.InvisibleChar = '●';
+			this.entry4.InvisibleChar = ' ';
 			this.hbox9.Add (this.entry4);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.entry4]));
 			w2.Position = 1;

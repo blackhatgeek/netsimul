@@ -310,7 +310,7 @@ public partial class MainWindow
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
-		this.DefaultWidth = 845;
+		this.DefaultWidth = 901;
 		this.DefaultHeight = 577;
 		this.Show ();
 		this.LoadModelAction.Activated += new global::System.EventHandler (this.loadFromFileHandler);

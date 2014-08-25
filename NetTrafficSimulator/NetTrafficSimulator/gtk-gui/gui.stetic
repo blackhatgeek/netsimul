@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Release/NetTrafficSimulator.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="845 577">
+  <widget class="Gtk.Window" id="MainWindow" design-size="901 577">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -442,7 +442,7 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="IsEditable">True</property>
-                <property name="InvisibleChar">●</property>
+                <property name="InvisibleChar"> </property>
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -686,7 +686,7 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="IsEditable">True</property>
-                <property name="InvisibleChar">●</property>
+                <property name="InvisibleChar"> </property>
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -837,7 +837,7 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="IsEditable">True</property>
-                <property name="InvisibleChar">●</property>
+                <property name="InvisibleChar"> </property>
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -998,7 +998,7 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="IsEditable">True</property>
-                <property name="InvisibleChar">●</property>
+                <property name="InvisibleChar"> </property>
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -1514,7 +1514,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.EndNodeWidget" design-size="229 696">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.EndNodeWidget" design-size="418 696">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -1832,7 +1832,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.ServerNodeWidget" design-size="300 244">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.ServerNodeWidget" design-size="418 244">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -1894,7 +1894,7 @@
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel1">
+              <widget class="Gtk.Label" id="GtkLabel2">
                 <property name="MemberName" />
                 <property name="LabelProp" translatable="yes">&lt;b&gt;Results&lt;/b&gt;</property>
                 <property name="UseMarkup">True</property>
@@ -2770,7 +2770,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.LinkWidget" design-size="300 333">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.LinkWidget" design-size="509 469">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -3102,7 +3102,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
-                    <property name="InvisibleChar">●</property>
+                    <property name="InvisibleChar"> </property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -3112,19 +3112,6 @@
               </widget>
               <packing>
                 <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Label" id="label3">
-                <property name="MemberName" />
-                <property name="Visible">False</property>
-                <property name="LabelProp" translatable="yes">label3</property>
-              </widget>
-              <packing>
-                <property name="Position">2</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
@@ -3231,7 +3218,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
-                    <property name="InvisibleChar">●</property>
+                    <property name="InvisibleChar"> </property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>

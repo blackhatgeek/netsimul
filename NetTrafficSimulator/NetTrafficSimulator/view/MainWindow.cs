@@ -267,43 +267,71 @@ public partial class MainWindow: Gtk.Window
 	 * Changed cursor in nodes box - load and show appropriade widget
 	*/
 	private void nodeTreeCursorChanged(object sender,EventArgs e){
+		log.Debug ("nodeTreeCursorChanged");
 		TreeSelection selection = (sender as TreeView).Selection;
 		TreeModel model;
 		TreeIter iter;
 		if (selection.GetSelected (out model, out iter)) {
+			log.Debug ("Get selected");
 			//node name ... model.GetValue(iter,0);
 			//node type ... model.GetValue(iter,1);
-			GtkAlignment2.Child.Destroy();
+			log.Debug ("Destroying current ...");
+			if(GtkAlignment2.Child!=null)
+				GtkAlignment2.Child.Destroy();
+			log.Debug ("Destroyed");
+			log.Debug ("Get text");
 			GtkLabel13.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
 			GtkLabel13.UseMarkup = true;
-			switch (model.GetValue (iter, 1).ToString()) {
-			case SERVER:
-				NetTrafficSimulator.ServerNodeWidget sw = new NetTrafficSimulator.ServerNodeWidget ();
-				sw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (),this);
-				if (rm != null)
-					sw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
-				GtkAlignment2.Child = sw;
-				break;
-			case END:
-				NetTrafficSimulator.EndNodeWidget ew = new NetTrafficSimulator.EndNodeWidget ();
-				ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (),this);
-				ew.EventWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (),this);
-				if (rm != null)
-					ew.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
-				GtkAlignment2.Child = ew;
-				break;
-			case NETWORK:
-				NetTrafficSimulator.NetworkNodeWidget nw = new NetTrafficSimulator.NetworkNodeWidget ();
-				nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (),this);
-				if (rm != null)
-					nw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
-				GtkAlignment2.Child = nw;
-				break;
-			default:
-				break;
-			}
+			log.Debug ("Get s");
+			object o = model.GetValue (iter, 1);
+			if(o!=null){
+				log.Debug ("O not null");
+				string s = o.ToString();
+			if (s != null) {
+					log.Debug ("S not null ... " + s);
+				switch (s) {
+					case SERVER:
+						log.Debug ("Create SNW");
+						NetTrafficSimulator.ServerNodeWidget sw = new NetTrafficSimulator.ServerNodeWidget ();
+						if (sw.ParamWidget == null) {
+							log.Error ("Param widget null");
+							break;
+						}
+					sw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (), this);
+					if (rm != null)
+						sw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+					GtkAlignment2.Child = sw;
+					break;
+				case END:
+					NetTrafficSimulator.EndNodeWidget ew = new NetTrafficSimulator.EndNodeWidget ();
+						if (ew.ParamWidget == null) {
+							log.Error ("Param widget null");
+							break;
+						}
+					ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (), this);
+					ew.EventWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (), this);
+					if (rm != null)
+						ew.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+					GtkAlignment2.Child = ew;
+					break;
+				case NETWORK:
+					NetTrafficSimulator.NetworkNodeWidget nw = new NetTrafficSimulator.NetworkNodeWidget ();
+						if (nw.ParamWidget == null) {
+							log.Error ("Param widget null");
+							break;
+						}
+					nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (), this);
+					if (rm != null)
+						nw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+					GtkAlignment2.Child = nw;
+					break;
+				default:
+					break;
+				}
 
-			GtkAlignment2.Child.Visible = true;
+				GtkAlignment2.Child.Visible = true;
+			}
+			}
 		}
 	}
 
