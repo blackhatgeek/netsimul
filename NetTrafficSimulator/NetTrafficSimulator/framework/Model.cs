@@ -62,8 +62,6 @@ namespace MFF_NPRG031
 				} else
 					Finish = true;
 			}
-			foreach (Event e in K.GetK())
-				log.Debug ("<Remainder> WHO:" + e.who + " WHAT:" + e.what + " WHEN:" + e.when);
 			log.Info ("Simulation finished at time " + Time);
 			return Time;
 		}

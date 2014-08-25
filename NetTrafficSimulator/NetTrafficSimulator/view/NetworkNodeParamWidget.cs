@@ -4,6 +4,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
+	 * Widget with parameters of a network node
 	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class NetworkNodeParamWidget : Gtk.Bin
@@ -13,10 +14,12 @@ namespace NetTrafficSimulator
 		MainWindow mw;
 		NetworkModel nm;
 		/**
+		 * Network node's name
 		 */
 		public string name;
 
 		/**
+		 * Built the widget,  initialize nodeview for connected links
 		 */
 		public NetworkNodeParamWidget ()
 		{
@@ -44,6 +47,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Load parameters from models to GUI
 		 */
 		public void LoadParams(NetworkModel nm,String nname,MainWindow mw){
 			this.nm=nm;
@@ -84,6 +88,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Change button - carefully save current name and save default route. 
 		 */
 		protected void OnButton422Clicked (object sender, EventArgs e)
 		{

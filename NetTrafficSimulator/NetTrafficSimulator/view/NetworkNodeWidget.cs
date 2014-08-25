@@ -3,11 +3,13 @@ using System;
 namespace NetTrafficSimulator
 {
 	/**
+	 * NetworkNodeWidget consists of NetworkNodeParamWidget and NetworkNodeResultWidget
 	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class NetworkNodeWidget : Gtk.Bin
 	{
 		/**
+		 * Build the widget
 		 */
 		public NetworkNodeWidget ()
 		{
@@ -15,6 +17,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * The param widget
 		 */
 		public NetworkNodeParamWidget ParamWidget{
 			get{
@@ -23,6 +26,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * The result widget
 		 */
 		public NetworkNodeResultWidget ResultWidget{
 			get{

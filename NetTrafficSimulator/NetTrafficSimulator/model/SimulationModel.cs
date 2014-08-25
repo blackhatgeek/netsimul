@@ -92,7 +92,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Returns array of scheduled events
+		 * Returns list of scheduled events
 		 * @return events scheduled
 		 */
 		public LinkedList<Event> GetEvents(){
@@ -108,6 +108,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Mark node as not a random talker
 		 */
 		public void UnsetRandomTalker(string nodeName){
 			randomTalkers.Remove (nodeName);

@@ -5,6 +5,7 @@ using Gtk;
 using log4net;
 
 /**
+ * Main window of the application
  */
 public partial class MainWindow: Gtk.Window
 {	
@@ -20,6 +21,7 @@ public partial class MainWindow: Gtk.Window
 	const string END = "END", SERVER = "SERVER", NETWORK = "NETWORK";
 
 	/**
+	 * Build the view, set up nodes tree view and links tree view
 	*/
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -71,15 +73,10 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
-	*/
-	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
-	{
-		Application.Quit ();
-		a.RetVal = true;
-	}
-
-	/**
-	*/
+	 * File - load model menu
+	 * Show FileChooserDialog, try to set up loader and load models, based on models load nodes box and links box
+	 * on exception show message dialog
+	 */
 	protected void loadFromFileHandler (object sender, EventArgs ev)
 	{
 			FileChooserDialog fc = new Gtk.FileChooserDialog ("Model to load", this, FileChooserAction.Open, 
@@ -144,6 +141,8 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Simulation - parameters menu item
+	 * Show SimulationParametersDialog - if OK button was clicked, set parameters in SimulationModel
 	*/
 	protected void OnParametersMenuClick (object sender, EventArgs ev){
 		if (sm != null) {
@@ -161,6 +160,8 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Simulation - Run menu item
+	 * Set up SimulationController, Run simulation, Get result model and load traces to PacketTraceWidget
 	*/
 	protected void OnRunMenuClick (object sender, EventArgs ev){
 		if ((nm != null) && (sm != null)) {
@@ -178,12 +179,15 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * File - Exit simulator
 	*/
 	protected void exitHandler (object sender, EventArgs ev){
 		Application.Quit ();
 	}
 
 	/**
+	 * File - save results as
+	 * Show filechooser dialog, if file exists ask and delete file, set up storer and store results model
 	*/
 	protected void saveResultsHandler(object sender,EventArgs ev){
 		if (rm != null) {
@@ -218,6 +222,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Load node names to nodes box
 	*/
 	private void loadNodesBox(){
 		nodeListStore.Clear ();
@@ -248,6 +253,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Load link names into link box
 	*/
 	private void loadLinksBox(){
 		linkListStore.Clear ();
@@ -258,6 +264,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Changed cursor in nodes box - load and show appropriade widget
 	*/
 	private void nodeTreeCursorChanged(object sender,EventArgs e){
 		TreeSelection selection = (sender as TreeView).Selection;
@@ -301,6 +308,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Changed cursor in links box - load and show widget
 	*/
 	private void linkTreeCursorChanged(object sender,EventArgs e){
 		TreeSelection selection = (sender as TreeView).Selection;
@@ -324,6 +332,8 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * File - New model
+	 * Create new NM, SM clear node and link boxes
 	*/
 	protected void newModelHandler (object sender, EventArgs e)
 	{
@@ -334,6 +344,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Add new end node
 	*/
 	protected void onAddNewEndNode (object sender, EventArgs e)
 	{
@@ -341,6 +352,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Add new network node
 	*/
 	protected void onAddNetNode (object sender, EventArgs e)
 	{
@@ -348,6 +360,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Add new server node
 	*/
 	protected void onAddServNode (object sender, EventArgs e)
 	{
@@ -356,6 +369,7 @@ public partial class MainWindow: Gtk.Window
 
 
 	/**
+	 * Set up and show NewNodeDialog, if all goes well update nodes box
 	*/
 	private void addNode(int ntype){
 		if ((ntype == NetTrafficSimulator.NetworkModel.END_NODE) || (ntype == NetTrafficSimulator.NetworkModel.NETWORK_NODE) || (ntype == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
@@ -409,6 +423,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Trigger for node name change from a widget - get new node names and load nodes box
 	*/
 	public void NodeNameChanged(){
 		log.Debug ("Triggered node name change");
@@ -428,6 +443,8 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Tigger for link name change
+	 * load link names and load links box
 	*/
 	public void LinkChanged(){
 		link_names = nm.GetLinkNames ();
@@ -439,6 +456,8 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Model - Add link
+	 * Show NewLinkDialog and if OK then update links box
 	*/
 	protected void OnAddLinkActionActivated (object sender, EventArgs e)
 	{
@@ -474,6 +493,7 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Delete button clicked - remove node or link
 	*/
 	protected void OnDeleteButtonClicked (object sender, EventArgs e)
 	{
@@ -543,6 +563,8 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * File - save model as
+	 * Show dialog - create storer - store model
 	*/
 	protected void OnSaveModelAsActionActivated (object sender, EventArgs e)
 	{
@@ -576,6 +598,8 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	/**
+	 * Help - About
+	 * Show about dialog
 	*/
 	protected void OnAboutActionActivated (object sender, EventArgs e)
 	{

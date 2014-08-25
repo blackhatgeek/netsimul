@@ -4,12 +4,14 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
+	 * LinkResultWidget shows results of a link
 	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LinkResultWidget : Gtk.Bin
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(LinkResultWidget));
 		/**
+		 * Build the widget
 		 */
 		public LinkResultWidget ()
 		{
@@ -17,6 +19,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Load params from ResultModel
 		 */
 		public void LoadParams(ResultModel rm,string name){
 			try{

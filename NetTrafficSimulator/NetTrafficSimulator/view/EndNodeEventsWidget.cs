@@ -4,19 +4,22 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	*/
+	 * EndNodeEventsWidget shows events scheduled for an EndNode
+	 */
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class EndNodeEventsWidget : Gtk.Bin
 	{
 		static readonly ILog log = LogManager.GetLogger(typeof(EndNodeEventsWidget));
 		Gtk.ListStore store;
 		/**
+		 * EndNode name
 		 */
 		public string name;
 		NetworkModel nm;
 		SimulationModel sm;
 		MainWindow mw;
 		/**
+		 * Create new EndNodeEventsWidget - initialize nodeview to show table of events
 		 */
 		public EndNodeEventsWidget ()
 		{
@@ -45,6 +48,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Load events to the EndNodeEventsWidget for the node name specified
 		 */
 		public void LoadParams(NetworkModel nm,SimulationModel sm,String nname,MainWindow mw){
 			this.nm = nm;
@@ -60,6 +64,8 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Add button - show NewEventDialog and if OK was clicked there and addition was not rejected, add new event to the table
+		 * If addition was rejected (as result of Exception from SimulationModel) the error message will be shown
 		 */
 		protected void OnButton2Clicked (object sender, EventArgs e)
 		{
@@ -85,6 +91,7 @@ namespace NetTrafficSimulator
 		Gtk.TreeIter ti;
 
 		/**
+		 * On cursor change note selected event (for deletion)
 		 */
 		protected void OnNodeview3CursorChanged (object sender, EventArgs e)
 		{
@@ -105,24 +112,26 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * On delete button clicked remove sellected event
 		 */
 		protected void OnButton1Clicked (object sender, EventArgs e)
 		{
-				System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents (),
-							toRemove=new System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event>();
+			System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents ();
+			NetTrafficSimulator.SimulationModel.Event toRemove = new SimulationModel.Event();
+			bool init = false;
 				System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
 				while (node.Next!=null) {
 					if (node.Value.node1.Equals (ev.node1)&&node.Value.node2.Equals(ev.node2)&&
 					    	(node.Value.size==ev.size)&&(node.Value.when==ev.when)) {
-								toRemove.AddLast (node.Value);
+								toRemove = node.Value;
+								init = true;
+								break;
 					}
 					node = node.Next;
 				}
-				foreach(NetTrafficSimulator.SimulationModel.Event evt in toRemove){
-					events.Remove (evt);
-				}
-
-				store.Remove (ref ti);
+			if(init)
+				events.Remove (toRemove);
+			store.Remove (ref ti);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
+	 * Dialog to set up a new event
 	*/
 	public partial class NewEventDialog : Gtk.Dialog
 	{
@@ -12,9 +13,11 @@ namespace NetTrafficSimulator
 		NetworkModel nm;
 		MainWindow mw;
 		/**
+		 * The generated event
 		 */
 		public SimulationModel.Event generated_event;
 		/**
+		 * Build the dialog - populate combobox with servers, show node name, set max time as simulation time to run
 		 */
 		public NewEventDialog (string node,NetworkModel nm,SimulationModel sm,MainWindow mw)
 		{
@@ -37,6 +40,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Button OK - Set event in SimulationModel if possible
 		 */
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{

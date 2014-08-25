@@ -5,7 +5,7 @@ namespace NetTrafficSimulator
 	/**
 	 * Abstract EndpointNode. EndpointNode is node where packets are generated or where packets are to flow. This class combines common properties of EndNode and ServerNode
 	 */
-	public abstract class EndpointNode:Node,IAddressable
+	public abstract class EndpointNode:Node
 	{
 		private readonly int address;
 		private Link link;

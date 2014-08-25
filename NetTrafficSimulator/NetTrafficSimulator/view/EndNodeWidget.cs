@@ -3,11 +3,13 @@ using System;
 namespace NetTrafficSimulator
 {
 	/**
+	 * EndNodeWidget is composed of EndNodeParamWidget, EndNodeEventsWidget and EndNodeResultWidget
 	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class EndNodeWidget : Gtk.Bin
 	{
 		/**
+		 * Build the widget
 		 */
 		public EndNodeWidget ()
 		{
@@ -16,6 +18,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Get param widget
 		 */
 		public EndNodeParamWidget ParamWidget{
 			get{
@@ -24,6 +27,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Get result widget
 		 */
 		public EndNodeResultWidget ResultWidget{
 			get{
@@ -32,6 +36,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Get events widget
 		 */
 		public EndNodeEventsWidget EventWidget{
 			get{

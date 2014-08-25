@@ -5,7 +5,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	 * NetworkNode is routing packets through the network
+	 * NetworkNode is routing packets through the network using Routing Information Protocol
 	 */
 	public class NetworkNode:Node
 	{
@@ -60,7 +60,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * If possible add link and appropriate record to routing table
+		 * If possible add link and appropriate record to routing table as non-default route
 		 * @param l Link to connect
 		 * @param model Framework model
 		 * @throws ArgumentException if no port is available
@@ -71,6 +71,12 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * If possible add link and appropriate record to routing table
+		 * @param l link to connect
+		 * @param model Framework model
+		 * @param defroute link to be used as default route?
+		 * @throws ArgumentException if no port is available, link not connected to this NetworkNode
+		 * @throws ArgumentNullException on link name null, node null, endpoint node null, link null
 		 */
 		public void ConnectLink(Link l,MFF_NPRG031.Model model,bool defroute){
 			log.Debug ("Connect link");
@@ -104,6 +110,13 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * On RECEIVE, increase hop counter and either drop or process data - if data is not routing message, schedule forward, 
+		 * if data is request, send response, if data is response, update routing table
+		 * On SEND pass data to link
+		 * On UPDATE_TIMER, send response and schedule update timer
+		 * @throws ArgumentNullException packet null on RECEIVE or SEND, link null on SEND
+		 * @throws InvalidOperationException invalid request or response as link is not present in interfaces
+		 * @throws ArgumentException no internal record for link to use on SEND, state not SEND, RECEIVE or UPDATE_TIMER
 		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
@@ -124,14 +137,14 @@ namespace NetTrafficSimulator
 						Request r = state.Data as Request;
 						log.Debug ("(" + Name + ") Received routing message - request");
 						if (!verifyRM (r))
-							throw new Exception ("Invalid request - link not present in interfaces: " + r.Link.Name);
+							throw new InvalidOperationException ("Invalid request - link not present in interfaces: " + r.Link.Name);
 						sendResponse (r.Link, model);
 					} else if (state.Data is Response) {
 						rm_received++;
 						log.Debug ("(" + Name + ") Received routing message - response");
 						Response r = state.Data as Response;
 						if (!verifyRM (r))
-							throw new Exception ("Invalid response - link not present in interfaces: " + r.Link.Name);
+							throw new InvalidOperationException ("Invalid response - link not present in interfaces: " + r.Link.Name);
 						updateRT (r.Table,r.Link);
 					}
 					else
@@ -168,7 +181,7 @@ namespace NetTrafficSimulator
 				this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.UPDATE_TIMER), model.Time + update);
 				break;
 			default:
-				throw new ArgumentException ("[NetworkNode "+Name+"] Neplatny stav: "+state);
+				throw new ArgumentException ("[NetworkNode "+Name+"] Invalid state: "+state);
 			}
 			base.ProcessEvent (state, model);
 		}
@@ -208,6 +221,7 @@ namespace NetTrafficSimulator
 		 * @param p Packet to forward
 		 * @param l Link to use (result of selectDestination)
 		 * @param model the Model
+		 * @throws InvalidOperationException same packet to schedule twice
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
 			if (l != null) {
@@ -327,8 +341,7 @@ namespace NetTrafficSimulator
 		/**
  		 * Send response - our routing table
  		 * @param model Framework model
- 		 * @throws ArgmentNullException Model null or interfaces null or RoutingTable null
- 		 * @throws Exception Link null
+ 		 * @throws ArgmentNullException Model null or interfaces null or RoutingTable null or Link null
 		 */
 		private void sendResponse(MFF_NPRG031.Model model){
 			if (model == null)
@@ -342,7 +355,7 @@ namespace NetTrafficSimulator
 					log.Debug ("(" + Name + ") Sending response to " + l.GetPartner (this).Name + " via " + l.Name);
 					scheduleForward (new Response (l, rt), l, model);
 				} else
-					throw new Exception ("Link null in send response");
+					throw new ArgumentNullException ("Link null in send response");
 			}
 		}
 

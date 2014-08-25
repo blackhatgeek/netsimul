@@ -3,6 +3,7 @@ using System;
 namespace NetTrafficSimulator
 {
 	/**
+	 * Widget with parameters of a server node
 	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class ServerNodeParamWidget : Gtk.Bin
@@ -10,10 +11,12 @@ namespace NetTrafficSimulator
 		MainWindow mw;
 		NetworkModel nm;
 		/**
+		 * Node name
 		 */
 		public string name;
 
 		/**
+		 * Build the widget
 		 */
 		public ServerNodeParamWidget ()
 		{
@@ -21,6 +24,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Load parameters from models
 		 */
 		public void LoadParams(NetworkModel nm,String nname,MainWindow mw){
 			this.mw=mw;
@@ -32,6 +36,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Change button - set address, carefully change name if needed
 		 */
 		protected void OnButton473Clicked (object sender, EventArgs e)
 		{

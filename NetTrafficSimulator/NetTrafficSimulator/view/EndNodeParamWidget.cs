@@ -4,7 +4,8 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	*/
+	 * Widget with parameters of an EndNode
+	 */
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class EndNodeParamWidget : Gtk.Bin
 	{
@@ -12,11 +13,13 @@ namespace NetTrafficSimulator
 		NetworkModel nm;
 		SimulationModel sm;
 		/**
+		 * EndNode name
 		 */
 		public string name;
 		MainWindow mw;
 
 		/**
+		 * Build EndNodeWidget
 		 */
 		public EndNodeParamWidget ()
 		{
@@ -24,6 +27,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Load parameters from models
 		 */
 		public void LoadParams(NetworkModel nm,SimulationModel sm,String nname, MainWindow mw){
 			this.nm = nm;
@@ -44,6 +48,9 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Change button
+		 * Set parameters to the current values in widget fields
+		 * Special care is exercised for name change as it serves as ID
 		 */
 		protected void OnButton277Clicked (object sender, EventArgs e)
 		{

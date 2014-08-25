@@ -106,7 +106,6 @@
     <property name="MemberName" />
     <property name="Title" translatable="yes">NetSimul</property>
     <property name="WindowPosition">CenterOnParent</property>
-    <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />

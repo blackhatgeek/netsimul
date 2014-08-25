@@ -3,11 +3,13 @@ using System;
 namespace NetTrafficSimulator
 {
 	/**
+	 * Link widget is composed of LinkParamWidget and LinkResultWidget
 	*/
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LinkWidget : Gtk.Bin
 	{
 		/**
+		 * Build the widget
 		 */
 		public LinkWidget ()
 		{
@@ -15,6 +17,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Get the param widget
 		 */
 		public LinkParamWidget ParamWidget{
 			get{
@@ -23,6 +26,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Get the result widget
 		 */
 		public LinkResultWidget ResultWidget{
 			get{

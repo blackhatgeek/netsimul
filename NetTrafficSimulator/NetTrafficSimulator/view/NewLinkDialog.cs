@@ -4,15 +4,18 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
+	 * Dialog to create a new link
 	*/
 	public partial class NewLinkDialog : Gtk.Dialog
 	{
 		static readonly ILog log = LogManager.GetLogger (typeof(NewLinkDialog));
 		NetworkModel nm;
 		/**
+		 * Link name and connected node's names
 		 */
 		public string link_name,node1,node2;
 		/**
+		 * Build the dialog, load node names in combo boxes
 		 */
 		public NewLinkDialog (NetworkModel nm,MainWindow mw)
 		{
@@ -27,6 +30,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Button OK - try to create a link in NetworkModel
 		 */
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{

@@ -3,13 +3,20 @@ using System;
 namespace NetTrafficSimulator
 {
 	/**
+	 * Dialog to show parameters of a simulation
 	*/
 	public partial class SimulationParametersDialog : Gtk.Dialog
 	{
 		/**
+		 * Max hop counter value
 		 */
-		public int maxHop,time;
+		public int maxHop;
 		/**
+		 * Time to run the simulation
+		 */
+		public int time;
+		/**
+		 * Build the dialog, load parameters from model
 		 */
 		public SimulationParametersDialog (SimulationModel sm)
 		{
@@ -21,6 +28,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Set public values with new modified ones
 		 */
 		protected void btnOKClicked (object sender, EventArgs e)
 		{

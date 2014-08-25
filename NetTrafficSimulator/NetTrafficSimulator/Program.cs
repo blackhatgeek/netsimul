@@ -7,6 +7,7 @@ using log4net.Config;
 namespace NetTrafficSimulator
 {
 	/**
+	 * Entry point for the application sets up logger, loads XMLIO or GUI
 	*/
 	class MainClass
 	{

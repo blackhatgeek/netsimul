@@ -5,9 +5,9 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	 * Connector between Nodes
+	 * Connection between Nodes
 	 */
-	public class Link:MFF_NPRG031.Process,INamable
+	public class Link:MFF_NPRG031.Process
 	{
 		private MFF_NPRG031.Model model;
 		//DATA ENVELOPE
@@ -130,6 +130,7 @@ namespace NetTrafficSimulator
 		private string name;
 
 		/**
+		 * How much data the link can deliver per time unit
 		 */
 		public decimal Capacity{
 			get{
@@ -140,12 +141,13 @@ namespace NetTrafficSimulator
 		/**
 		 * Creates a new link between two nodes with given capacity which specifies how many data the link will be able to deliver per time unit
 		 * @param name		link name
-		 * @param capacity	how many data a link can deliver per time unit
+		 * @param capacity	how much data the link can deliver per time unit
 		 * @param a			node at one end
 		 * @param b			node at other end
 		 * @param model		framework model
 		 * @throws	ArgumentOutOfRangeException Negative link capacity
 		 * @throws	ArgumentNullException any node null
+		 * @throws	ArgumentException nodes are same
 		 */
 		public Link (String name,decimal capacity, Node a,Node b,MFF_NPRG031.Model model)
 		{
@@ -234,31 +236,36 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * On RECEIVE remove DataEnvelopes from queue until queue is empty and while sum of data is smaller than capacity and schedule SEND, state can't have data here
+		 * On SEND schedule receive of destination node, state must have data here
+		 * On TOGGLE switch link state
+		 * @throws ArgumentException data not null on RECEIVE, data not DataEnvelope on SEND, state not SEND, RECEIVE or TOGGLE
+		 * @throws ArgumentOutOfRangeException negative packet size
+		 * @throws ArgumentNullException Model null, data dequeued null, packet null, data null on SEND
 		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
 			if(model==null)
-				throw new ArgumentException("Model null");
+				throw new ArgumentNullException("Model null");
 			if (state != null) {
 				log.Debug ("State " + state + ", time " + model.Time);
 				switch (state.Actual) {
 				case MFF_NPRG031.State.state.RECEIVE:
 					if (state.Data != null)
-						throw new ArgumentException ("Link state should not bear data for RECEIVE");
+						throw new ArgumentException ("Link state can't have data for RECEIVE");
 					decimal chunk = 0;
 					while ((chunk<capacity)&&queue_head!=null) {
 						DataEnvelope de = queue_head;//dequeue
 						if (de == null)
-							throw new ArgumentException ("DE null");
+							throw new ArgumentNullException ("DE null");
 						else {
-							queue_head = de.Next;//dequeue
 							if (de.Multistage (capacity - chunk)) {
-								//vlozit zpet na zacatek queue
+								//ponechat ve fronte
 								log.Debug ("Multistage delivery");
-								queue_head = de;
 								chunk = capacity;
-								this.Schedule (model.K, state, model.Time + 1);
+								//neplanovat SEND
 							} else {//dopravime cely packet (zbytek packetu) v tomto kroku
+								queue_head = de.Next;//dequeue
 								log.Debug ("Will deliver in one step");
 								if (de.Data.Size > 0)
 									chunk += de.Data.Size;
@@ -269,7 +276,7 @@ namespace NetTrafficSimulator
 								MFF_NPRG031.State s = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, de);
 								if (s.Data == null)
 									log.Error ("State data null");
-								this.Schedule (model.K, s, model.Time + de.Steps);
+								this.Schedule (model.K, s, model.Time+1);
 							}
 						}
 					}
@@ -279,7 +286,7 @@ namespace NetTrafficSimulator
 				case MFF_NPRG031.State.state.SEND:
 					if (active) {
 						if (state.Data == null)
-							throw new ArgumentException ("Link state should bear data for SEND");
+							throw new ArgumentNullException ("Link state must have data for SEND");
 						if (!(state.Data is DataEnvelope))
 							throw new ArgumentException ("Link state data should be DataEnvelope for SEND");
 						DataEnvelope daen = state.Data as DataEnvelope;
@@ -460,6 +467,8 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * String representation of a link is it's name
+		 * @return the link name
 		 */
 		public override string ToString ()
 		{

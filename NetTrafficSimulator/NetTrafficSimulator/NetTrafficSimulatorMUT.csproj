@@ -87,8 +87,6 @@
     <Compile Include="framework\extension\Link.cs" />
     <Compile Include="framework\extension\Packet.cs" />
     <Compile Include="framework\extension\Node.cs" />
-    <Compile Include="misc\INamable.cs" />
-    <Compile Include="misc\IAddressable.cs" />
     <Compile Include="model\ResultModel.cs" />
     <Compile Include="controller\XMLIO\Storer.cs" />
     <Compile Include="controller\XMLIO\Loader.cs" />
@@ -141,7 +139,6 @@
     <Folder Include="model\" />
     <Folder Include="controller\" />
     <Folder Include="framework\extension\" />
-    <Folder Include="misc\" />
     <Folder Include="view\" />
   </ItemGroup>
 </Project>

@@ -26,6 +26,11 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * On SEND pass state data to the link
+		 * On RECEIVE, if state data is not RoutingMessage, mark received or malreceived packet
+		 * @param state SEND or RECEIVE with non-null appropriate data on SEND
+		 * @param model Framework model
+		 * @throws ArgumentException no data to send or incorrect state
 		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{
@@ -53,7 +58,7 @@ namespace NetTrafficSimulator
 				}
 				break;
 			default:
-				throw new ArgumentException ("[EndNode "+Name+"] Neplatny stav: "+state);
+				throw new ArgumentException ("[EndNode "+Name+"] Incorrect state: "+state);
 			}
 			base.ProcessEvent (state, model);
 		}

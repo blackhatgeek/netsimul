@@ -5,7 +5,7 @@ namespace NetTrafficSimulator
 	/**
 	 * Abstract node
 	 */
-	public abstract class Node:MFF_NPRG031.Process,INamable
+	public abstract class Node:MFF_NPRG031.Process
 	{
 		private string name;
 		/**
@@ -28,6 +28,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * If state's data is a traced packet, mark this node as passed through at particular time
 		 */
 		public override void ProcessEvent (MFF_NPRG031.State state, MFF_NPRG031.Model model)
 		{

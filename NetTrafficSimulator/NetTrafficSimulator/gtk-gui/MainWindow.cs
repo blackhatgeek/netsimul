@@ -313,7 +313,6 @@ public partial class MainWindow
 		this.DefaultWidth = 845;
 		this.DefaultHeight = 577;
 		this.Show ();
-		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.LoadModelAction.Activated += new global::System.EventHandler (this.loadFromFileHandler);
 		this.SaveModelAsAction.Activated += new global::System.EventHandler (this.OnSaveModelAsActionActivated);
 		this.SaveResultsAsAction.Activated += new global::System.EventHandler (this.saveResultsHandler);

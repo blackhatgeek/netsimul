@@ -3,15 +3,18 @@ using System;
 namespace NetTrafficSimulator
 {
 	/**
-	*/
+	 * Dialog to create a new node - only set the name, other parameters in widget
+	 */
 	public partial class NewNodeDialog : Gtk.Dialog
 	{
 		NetTrafficSimulator.NetworkModel nm;
 		/**
+		 * Node name
 		 */
 		public string node_name;
 		int ntype;
 		/**
+		 * Build the dialog - set label based on node type
 		 */
 		public NewNodeDialog (NetworkModel nm,int ntype)
 		{
@@ -35,6 +38,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * OK clicked - add node to NetworkModel
 		 */
 		protected void OnButtonOkClicked (object sender, EventArgs e)
 		{

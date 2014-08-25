@@ -9,6 +9,9 @@ namespace MFF_NPRG031
 	 */
 	public class Calendar
 	{
+		/**
+		 * Calendar is a list of events
+		 */
 		List<Event> calendar = new List<Event>();
 		const int MAX = 0x7FFFFFFF;
 		readonly int TTR;
@@ -65,14 +68,6 @@ namespace MFF_NPRG031
 		{
 			foreach (Event u in calendar)
 				if (u.who == p) { calendar.Remove(u); break; }
-		}
-
-		/**
-		 * Returns inner calendar for testing
-		 * @return list of events
-		 */ 
-		public List<Event> GetK(){
-			return calendar;
 		}
 	}
 }

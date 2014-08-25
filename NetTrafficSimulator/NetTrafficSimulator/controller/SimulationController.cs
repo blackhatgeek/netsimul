@@ -92,7 +92,7 @@ namespace NetTrafficSimulator
 			}
 		}
 		/**
-		 * For each node in Network Model create an appropriate Node instance and store it in nodes array. Nodes array and counters are initialized here. Address set here for nodes requiring an address.
+		 * For each endpoint node in Network Model create an appropriate EndpointNode instance and store it in nodes array. 
 		 * @throws InvalidOperationException if found unidentified node type
 		 */
 		private void createEndpointNodes(){
@@ -135,10 +135,9 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * <p>For each pair of nodes where connection is marked, create a new Link instance and register the link to each node. New links are stored in LinkedList<Link> links 
-		 * initialized here (as their count is unknown)</p>
-		 * @throws InvalidOperationException if any node is of unidentified type, the network model is null, the nodes array is null or length of the nodes array don't match node 
-		 * count in the network model
+		 * <p>For each link, create a new Link instance and register the link to each node.</p>
+		 * @throws InvalidOperationException if framework model is not initialized
+		 * @throws ArgumentException if node from framework model is not found in local records
 		 */
 		private void createLinks(){
 			log.Debug ("Create links");
@@ -205,6 +204,7 @@ namespace NetTrafficSimulator
 		private void createEvents(){
 			log.Debug ("Create events");
 			if ((framework_model != null)&&(network_model!=null)) {
+				//user events
 				log.Debug ("User defined simulation events");
 				traced = simulation_model.GetEvents ().Count;
 				this.tracedPackets = new Packet[traced];

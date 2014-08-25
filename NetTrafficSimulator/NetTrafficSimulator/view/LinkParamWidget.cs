@@ -4,7 +4,8 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	*/
+	 * Widget with parameters of a link
+	 */
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LinkParamWidget : Gtk.Bin
 	{
@@ -16,6 +17,7 @@ namespace NetTrafficSimulator
 		static readonly ILog log = LogManager.GetLogger(typeof(LinkParamWidget));
 
 		/**
+		 * Build th link param widget
 		 */
 		public LinkParamWidget ()
 		{
@@ -23,6 +25,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Load params from models
 		 */
 		public void LoadParams(NetworkModel nm,String lname,MainWindow mw){
 			this.nm = nm;
@@ -58,12 +61,15 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Get link name
 		 */
 		public string GetName(){
 			return this.entry5.Text;
 		}
 
 		/**
+		 * Change button
+		 * Try to set parameters to the values currently in fields or show dialogs and recover from exceptions
 		 */
 		protected void OnButton618Clicked (object sender, EventArgs e)
 		{
