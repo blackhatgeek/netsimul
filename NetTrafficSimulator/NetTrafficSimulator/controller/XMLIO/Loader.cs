@@ -175,6 +175,7 @@ namespace NetTrafficSimulator
 						int when = Convert.ToInt32 (ev.Attributes.GetNamedItem ("when").Value);
 						string loc = ev.Attributes.GetNamedItem ("where").Value;
 						decimal size = Convert.ToDecimal (ev.Attributes.GetNamedItem ("size").Value);
+						log.Debug ("WHO: " + who + " WHEN: " + when + " WHERE: " + loc + " SIZE:" + size);
 						//verifikace: who je EN, loc je SN, velikost je nezap.
 						if (en.ContainsKey (who)) {
 							if (sn.Contains (loc)) {

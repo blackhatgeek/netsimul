@@ -174,6 +174,7 @@ public partial class MainWindow: Gtk.Window
 	*/
 	protected void OnRunMenuClick (object sender, EventArgs ev){
 		if ((nm != null) && (sm != null)) {
+			packettracewidget1.Clear ();
 			NetTrafficSimulator.SimulationController sc = new NetTrafficSimulator.SimulationController (nm, sm);
 			log.Info ("Loaded data, created models and controller, starting simulation");
 			sc.Run ();

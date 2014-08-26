@@ -54,6 +54,13 @@ namespace NetTrafficSimulator
 			} else
 				log.Warn ("Load traces from ResultModel to PacketTraceWidget - Result model null");
 		}
+
+		/**
+		 * Clear widget before new run
+		 */
+		public void Clear(){
+			this.store.Clear ();
+		}
 	}
 }
 

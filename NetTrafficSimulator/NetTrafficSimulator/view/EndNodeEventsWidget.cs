@@ -58,7 +58,7 @@ namespace NetTrafficSimulator
 			System.Collections.Generic.LinkedList<SimulationModel.Event> evs = sm.GetEvents ();
 			foreach (SimulationModel.Event e in evs) {
 				if (e.node1.Equals (nname)) {
-					store.AppendValues (e.node2, e.when, e.size);
+					store.AppendValues (e.node2, e.when, (double)e.size);
 				}
 			}
 		}
