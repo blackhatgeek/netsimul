@@ -123,6 +123,7 @@ namespace NetTrafficSimulator
 				case NetworkModel.SERVER_NODE:
 					log.Debug ("SN:" + name);
 					ServerNode sn = new ServerNode (name, network_model.GetEndpointNodeAddr (name));
+					servers [serverNodeCounter] = sn;
 					node_names.Add (name, sn);
 					nodes [nodeCounter] = sn;
 					serverNodeCounter++;
@@ -206,45 +207,51 @@ namespace NetTrafficSimulator
 			if ((framework_model != null)&&(network_model!=null)) {
 				//user events
 				log.Debug ("User defined simulation events");
-				traced = simulation_model.GetEvents ().Count;
-				this.tracedPackets = new Packet[traced];
-				int i = 0;
-				foreach(SimulationModel.Event e in simulation_model.GetEvents()){
-					Node from_node; 
-					int from_addr = network_model.GetEndpointNodeAddr (e.node1);
-					if (node_names.TryGetValue (e.node1, out from_node)) {
-						if (from_node is EndNode && network_model.GetNodeType (e.node2).Equals (NetworkModel.SERVER_NODE)) {
-							//schedule node e.node1 to state SEND (with packet from e.node1 to e.node2 of e.size as parameter) at time e.when
-							Packet p = new Packet (from_addr, network_model.GetEndpointNodeAddr (e.node2), e.size, true);
-							tracedPackets[i] = p;
-							MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND,p);
-							MFF_NPRG031.Event ev = new MFF_NPRG031.Event (from_node, st, e.when);
-							framework_model.K.Schedule (ev);
+				LinkedList<SimulationModel.Event> evs = simulation_model.GetEvents ();
+				if (evs != null) {
+					this.tracedPackets = new Packet[evs.Count];
+					int i = 0;
+					foreach (SimulationModel.Event e in simulation_model.GetEvents()) {
+						Node from_node; 
+						int from_addr = network_model.GetEndpointNodeAddr (e.node1);
+						if (node_names.TryGetValue (e.node1, out from_node)) {
+							if (from_node is EndNode && network_model.GetNodeType (e.node2).Equals (NetworkModel.SERVER_NODE)) {
+								//schedule node e.node1 to state SEND (with packet from e.node1 to e.node2 of e.size as parameter) at time e.when
+								Packet p = new Packet (from_addr, network_model.GetEndpointNodeAddr (e.node2), e.size, true);
+								tracedPackets [i] = p;
+								MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p);
+								MFF_NPRG031.Event ev = new MFF_NPRG031.Event (from_node, st, e.when);
+								framework_model.K.Schedule (ev);
+							} else
+								throw new ArgumentException ("Must send from END NODE to SERVER NODE");
 						} else
-							throw new ArgumentException ("Must send from END NODE to SERVER NODE");
-					} else
-						throw new ArgumentException ("Node not found: " + e.node1);
-					i++;
+							throw new ArgumentException ("Node not found: " + e.node1);
+						i++;
+					}
 				}
 				//random talkers
-				log.Debug ("Random talkers events");
-				foreach (EndNode en in randomTalkers) {
-					Random r = new Random ();
-					//kolik eventu
-					int events = r.Next (simulation_model.Time);
-					for (i=0; i<=events; i++) {
-						//cas
-						int time = r.Next (simulation_model.Time);
-						//server
-						int server = r.Next (serverNodeCounter);
-						//size
-						int sizeUpper = network_model.GetEndNodeMaxPacketSize (en.Name);
-						decimal size = r.Next (sizeUpper) + (decimal)r.NextDouble ();
-						MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, new Packet (en.Address, servers [server].Address, size));
-						framework_model.K.Schedule(new MFF_NPRG031.Event(en,st,time));
-						log.Debug("Scheduled random talker: "+en.Name+" at "+time+" to "+servers[server].Name+" size "+size);
+				if ((randomTalkers.Count>0)&&(servers.Length > 0)) {
+					log.Debug ("Random talkers events");
+					foreach (EndNode en in randomTalkers) {
+						Random r = new Random ();
+						//kolik eventu
+						int events = r.Next (simulation_model.Time);
+						for (int i=0; i<=events; i++) {
+							//cas
+							int time = r.Next (simulation_model.Time);
+							//server
+							int server = r.Next (serverNodeCounter);
+							//size
+							int sizeUpper = network_model.GetEndNodeMaxPacketSize (en.Name);
+							decimal size = r.Next (sizeUpper) + (decimal)r.NextDouble ();
+
+							MFF_NPRG031.State st = new MFF_NPRG031.State (
+								MFF_NPRG031.State.state.SEND, 
+								new Packet (en.Address, servers [server].Address, size));
+							framework_model.K.Schedule (new MFF_NPRG031.Event (en, st, time));
+							log.Debug ("Scheduled random talker: " + en.Name + " at " + time + " to " + servers [server].Name + " size " + size);
+						}
 					}
-						
 				}
 				//link toggles
 				log.Debug ("Link toggles");
@@ -254,7 +261,7 @@ namespace NetTrafficSimulator
 					Random r = new Random ();
 					//kolik togglu
 					int toggles = r.Next (framework_model.Time);
-					for (i=0; i<=toggles; i++) {
+					for (int i=0; i<=toggles; i++) {
 						//cas
 						int time = r.Next (framework_model.Time);
 						decimal random = (decimal)r.NextDouble ();
@@ -264,7 +271,6 @@ namespace NetTrafficSimulator
 							log.Debug ("Scheduled link toggle: " + l.Name + " at " + time);
 						}
 					}
-
 				}
 			}else throw new InvalidOperationException ("[SimulationController.createEvents] FrameworkModel or NetworkModel null");
 		}
@@ -288,13 +294,13 @@ namespace NetTrafficSimulator
 					result_model.SetNewNetworkNodeResult (nn.Name,nn.PacketsProcessed,nn.TimeWaited,nn.GetPercentageTimeIdle(framework_model),nn.AverageWaitTime,nn.PacketsDropped,nn.PercentagePacketsDropped,nn.RoutingMessagesSent,nn.RoutingMessagesReceived,nn.RoutingMessagesPercentageProcessed);
 				}
 			}
-		if (framework_model != null)
-			foreach (Link l in links) {
-				result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.GetActiveTime (framework_model), l.PassiveTime, l.GetPercentageTimeIdle (framework_model), l.DataCarried, l.GetAvgDataCarriedPerTic (framework_model),
+			if (framework_model != null)
+				foreach (Link l in links) {
+					result_model.SetNewLinkResult (l.Name, l.PacketsCarried, l.GetActiveTime (framework_model), l.PassiveTime, l.GetPercentageTimeIdle (framework_model), l.DataCarried, l.GetAvgDataCarriedPerTic (framework_model),
 				                               l.GetAvgLinkUsage (framework_model), l.DataSent, l.DataLost, l.PercentageDataLost, l.PercentageDataDelivered, l.PercentageDataLostInCarry);
-			}
-		else
-			throw new InvalidOperationException ("[SimulationController.PopulateResultModel] Framework model not created");
+				}
+			else
+				throw new InvalidOperationException ("[SimulationController.PopulateResultModel] Framework model not created");
 			if (tracedPackets != null)
 				foreach (Packet p in tracedPackets)
 					result_model.SetPacketTrace (p);
