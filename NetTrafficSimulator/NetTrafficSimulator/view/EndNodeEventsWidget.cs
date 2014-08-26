@@ -120,15 +120,17 @@ namespace NetTrafficSimulator
 			NetTrafficSimulator.SimulationModel.Event toRemove = new SimulationModel.Event();
 			bool init = false;
 				System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
-				while (node.Next!=null) {
-					if (node.Value.node1.Equals (ev.node1)&&node.Value.node2.Equals(ev.node2)&&
-					    	(node.Value.size==ev.size)&&(node.Value.when==ev.when)) {
-								toRemove = node.Value;
-								init = true;
-								break;
-					}
-					node = node.Next;
+			do {
+				log.Debug (node.Value.node1 + "\t" + node.Value.node2 + "\t" + node.Value.size + "\t" + node.Value.when);
+				if (node.Value.node1.Equals (ev.node1) && node.Value.node2.Equals (ev.node2) &&
+					(node.Value.size == ev.size) && (node.Value.when == ev.when)) {
+					toRemove = node.Value;
+					log.Debug ("To delete:" + toRemove.node1 + "\t" + toRemove.node2 + "\t" + toRemove.size + "\t" + toRemove.when);
+					init = true;
+					break;
 				}
+				node = node.Next;
+			} while(node.Next!=null);
 			if(init)
 				events.Remove (toRemove);
 			store.Remove (ref ti);

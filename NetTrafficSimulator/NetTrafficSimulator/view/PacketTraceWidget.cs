@@ -59,6 +59,7 @@ namespace NetTrafficSimulator
 		 * Clear widget before new run
 		 */
 		public void Clear(){
+			log.Debug ("Clear trace");
 			this.store.Clear ();
 		}
 	}

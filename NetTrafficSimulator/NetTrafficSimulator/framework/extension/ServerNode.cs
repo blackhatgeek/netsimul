@@ -10,13 +10,13 @@ namespace NetTrafficSimulator
 	public class ServerNode:EndpointNode
 	{
 		private static readonly ILog log=LogManager.GetLogger(typeof(ServerNode));
-		private int process,last_wait;
+		private int process,last_send;
 		/**
 		 * Creates a ServerNode with given name and address
 		 */
 		public ServerNode (String name,int address):base(name,address)
 		{
-			this.last_wait = -1;
+			this.last_send = -1;
 			this.process = 0;
 			this.time_wait = 0;
 		}
@@ -34,12 +34,8 @@ namespace NetTrafficSimulator
 					log.Debug ("(" + Name + ") Received routing message, never mind");
 				else {
 					if (state.Data.Destination == this.Address) {
-						int t = 0;
-						if (last_wait < model.Time) {
-							t = wait_time (model.Time);
-							time_wait += t;
-							last_wait = model.Time;
-						}
+						int t = wait_time (model.Time,model);
+						time_wait += t;
 						this.process++;
 						log.Debug ("(" + Name + ") Received at time " + model.Time + " waiting for " + t + ", total waited " + time_wait + " total processed " + process + " sending at " + (model.Time + t));
 						sendResponse (generateResponse (state.Data), model.Time + t, model);
@@ -106,9 +102,17 @@ namespace NetTrafficSimulator
 		 * Generates a wait time
 		 * @return 1
 		 */
-		protected int wait_time(int max){
+		protected int wait_time(int max,MFF_NPRG031.Model m){
 			int r = new Random ().Next (max);
-			return r>0?r:1;
+			int wait =  r>0?r:1;
+			log.Debug ("Random wait:" + wait);
+			if (last_send != -1) {
+				int shift = (last_send - m.Time) > 0 ? (last_send - m.Time) : 0;
+				log.Debug ("Last send:" + last_send + "\tTime:" + m.Time + "\tSpan" + (shift) + "\tWait shift:" + (wait + shift));
+				wait += shift;//kolik casu zbyva do posledniho odeslani + novy cekaci cas = celkovy cas nutny na cekani
+			}
+			last_send = m.Time + wait;
+			return wait;
 		}
 
 	}
