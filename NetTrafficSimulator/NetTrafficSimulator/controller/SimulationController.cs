@@ -21,7 +21,6 @@ namespace NetTrafficSimulator
 		private LinkedList<NetworkNode> routers;//TODO: count counts and make an array
 		private Packet[] tracedPackets;
 		private Dictionary<string,Node> node_names;
-		private int traced;
 		private string[] node_names_array;
 		private Link[] links;
 
@@ -279,6 +278,7 @@ namespace NetTrafficSimulator
 		 * Stores statistics into Result Model
 		 */
 		private void PopulateResultModel(){
+			int traced = (tracedPackets == null) ? 0 : tracedPackets.Length;
 			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, linkCounter,traced);
 			foreach (Node n in nodes) {
 				if (n is EndNode) {
@@ -301,9 +301,12 @@ namespace NetTrafficSimulator
 				}
 			else
 				throw new InvalidOperationException ("[SimulationController.PopulateResultModel] Framework model not created");
-			if (tracedPackets != null)
-				foreach (Packet p in tracedPackets)
+			if (tracedPackets != null) {
+				foreach (Packet p in tracedPackets) {
+					log.Debug ("From: " + p.Source + " to " + p.Destination + " size " + p.Size + " hop " + p.Hop + " traced " + p.Traced);
 					result_model.SetPacketTrace (p);
+				}
+			}
 			else
 				throw new InvalidOperationException ("[SimulationController.PopulateResultModel] Traced packets not initialized");
 		}

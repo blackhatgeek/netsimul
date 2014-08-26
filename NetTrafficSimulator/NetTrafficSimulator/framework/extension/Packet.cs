@@ -37,7 +37,7 @@ namespace NetTrafficSimulator
 			this.destination = destination;
 			this.size = size;
 			this.hopcounter = 0;
-			this.trace = false;
+			this.trace = trace;
 			if(trace)
 				this.journey = new LinkedList<KeyValuePair<string,int>> ();
 		}
