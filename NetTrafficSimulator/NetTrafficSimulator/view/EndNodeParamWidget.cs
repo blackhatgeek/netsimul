@@ -60,6 +60,7 @@ namespace NetTrafficSimulator
 						Gtk.MessageDialog md1 = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Node name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Node name cannot be empty. Name was not changed.");
 						md1.Run ();
 						md1.Destroy ();
+						entry1.Text = name;
 					} else {
 						try {
 							nm.SetNodeName (name, entry1.Text);

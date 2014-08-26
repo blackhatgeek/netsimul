@@ -284,6 +284,8 @@ namespace NetTrafficSimulator
 							(X as EndpointNodeRecord).link = lr;
 						} else {
 							(X as NetworkNodeRecord).links.Add (lr);
+							if ((X as NetworkNodeRecord).links.Count == 1)
+								(X as NetworkNodeRecord).default_route = lr;
 						}
 						if (Y is EndpointNodeRecord) {
 							(Y as EndpointNodeRecord).link = lr;
@@ -519,6 +521,10 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * Sets a default route for a network node
+		 * @param node network node name
+		 * @param link link name
+		 * @throws ArgumentException link not connected to the network node, link not found, node not network node, node not found
 		 */
 		public void SetNetworkNodeDefaultRoute(string node,string link){
 			NodeRecord nr;
@@ -539,12 +545,19 @@ namespace NetTrafficSimulator
 		}
 
 		/**
+		 * For network node return it's default route
+		 * @param name network node name
+		 * @return default route
+		 * @throws ArgumentException node not network nod
 		 */
 		public string GetNetworkNodeDefaultRoute(string node){
 			NodeRecord nr;
 			if (node_records.TryGetValue (node,out nr)) {
 				if (nr is NetworkNodeRecord) {
-					return (nr as NetworkNodeRecord).default_route.name;
+					if ((nr as NetworkNodeRecord).default_route != null)
+						return (nr as NetworkNodeRecord).default_route.name;
+					else
+						return null;
 				} else
 					throw new ArgumentException ("Node not network node: " + node);
 			} else
