@@ -84,7 +84,9 @@ public partial class MainWindow: Gtk.Window
 			if (model_path != null)
 				fc.SetCurrentFolder(model_path);
 			if (fc.Run () == (int)ResponseType.Accept) {
-				model_path = fc.CurrentFolder;
+				System.IO.FileInfo fi = new FileInfo (fc.Filename);
+				model_path = fi.DirectoryName;
+				log.Debug ("Model path:" + model_path);
 				try{
 					NetTrafficSimulator.Loader loader = new NetTrafficSimulator.Loader (fc.Filename);
 					nm = loader.LoadNM ();
@@ -132,6 +134,13 @@ public partial class MainWindow: Gtk.Window
 					log.Debug(e.StackTrace);
 					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error,
 				                                          ButtonsType.Close, e.Message);
+					md.Run ();
+					md.Destroy ();
+				}catch(Exception e){
+					log.Fatal (e.Message);
+					log.Debug (e.StackTrace);
+					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error,
+					                                      ButtonsType.Close, e.Message);
 					md.Run ();
 					md.Destroy ();
 				}
@@ -198,7 +207,9 @@ public partial class MainWindow: Gtk.Window
 				fd.SetCurrentFolder (model_path);
 
 			if (fd.Run () == (int)ResponseType.Accept) {
-				result_path = fd.CurrentFolder;
+				System.IO.FileInfo fi = new FileInfo (fd.Filename);
+				result_path = fi.DirectoryName;
+				log.Debug ("Result path: " + result_path);
 				bool store = true;
 				if(File.Exists(fd.Filename)){
 					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "File exists! Overwrite?");
@@ -589,12 +600,14 @@ public partial class MainWindow: Gtk.Window
 	protected void OnSaveModelAsActionActivated (object sender, EventArgs e)
 	{
 		if ((nm!=null)&&(sm != null)) {
-			FileChooserDialog fd = new Gtk.FileChooserDialog ("Save results as ", this, FileChooserAction.Save, "Cancel", ResponseType.Close, "Save", ResponseType.Accept);
+			FileChooserDialog fd = new Gtk.FileChooserDialog ("Save model as ", this, FileChooserAction.Save, "Cancel", ResponseType.Close, "Save", ResponseType.Accept);
 			if (model_path != null)
 				fd.SetCurrentFolder (model_path);
 
 			if (fd.Run () == (int)ResponseType.Accept) {
-				model_path = fd.CurrentFolder;
+				System.IO.FileInfo fi = new FileInfo (fd.Filename);
+				model_path = fi.DirectoryName;
+				log.Debug ("Model path: "+model_path);
 				bool store = true;
 				if(File.Exists(fd.Filename)){
 					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "File exists! Overwrite?");

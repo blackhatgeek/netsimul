@@ -10,14 +10,15 @@ namespace NetTrafficSimulator
 	public class ServerNode:EndpointNode
 	{
 		private static readonly ILog log=LogManager.GetLogger(typeof(ServerNode));
-		private int time_waited,process;
+		private int process,last_wait;
 		/**
 		 * Creates a ServerNode with given name and address
 		 */
 		public ServerNode (String name,int address):base(name,address)
 		{
-			this.time_waited = 0;
+			this.last_wait = -1;
 			this.process = 0;
+			this.time_wait = 0;
 		}
 
 		/**
@@ -33,10 +34,14 @@ namespace NetTrafficSimulator
 					log.Debug ("(" + Name + ") Received routing message, never mind");
 				else {
 					if (state.Data.Destination == this.Address) {
-						int t = wait_time (model.Time);
-						this.time_waited += t;
+						int t = 0;
+						if (last_wait < model.Time) {
+							t = wait_time (model.Time);
+							time_wait += t;
+							last_wait = model.Time;
+						}
 						this.process++;
-						log.Debug ("(" + Name + ") Received at time " + model.Time + " waiting for " + t + ", total waited " + time_waited + " total processed " + process + " sending at " + (model.Time + t));
+						log.Debug ("(" + Name + ") Received at time " + model.Time + " waiting for " + t + ", total waited " + time_wait + " total processed " + process + " sending at " + (model.Time + t));
 						sendResponse (generateResponse (state.Data), model.Time + t, model);
 					} else {
 						malreceived++;
@@ -82,7 +87,7 @@ namespace NetTrafficSimulator
 		public decimal AverageWaitTime{
 			get{
 				if (process != 0)
-					return (decimal)time_waited / process*1.0m;
+					return (decimal)time_wait / process*1.0m;
 				else
 					return 0.0m;
 			}

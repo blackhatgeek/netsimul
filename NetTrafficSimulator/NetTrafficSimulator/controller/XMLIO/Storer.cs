@@ -1,3 +1,4 @@
+
 using System;
 using System.Xml;
 using System.Xml.Schema;
@@ -284,6 +285,15 @@ namespace NetTrafficSimulator
 				log.Debug ("Create simulation el");
 				XmlElement simulation = xs.CreateElement ("simulation");
 				xs.AppendChild (simulation);
+				XmlAttribute xmlns = xs.CreateAttribute ("xmlns");
+				xmlns.Value = "http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0";
+				simulation.Attributes.Append (xmlns);
+				XmlAttribute xmlnsxsi = xs.CreateAttribute ("xmlns:xsi");
+				xmlnsxsi.Value = "http://www.w3.org/2001/XMLSchema-instance";
+				simulation.Attributes.Append (xmlnsxsi);
+				XmlAttribute xsischemaloc = xs.CreateAttribute("xsi:schemaLocation","http://www.w3.org/2001/XMLSchema-instance");
+				xsischemaloc.Value = "http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0 model.xsd";
+				simulation.Attributes.Append (xsischemaloc);
 
 				log.Debug ("TTR");
 				XmlAttribute time_run = xs.CreateAttribute ("time_run");
@@ -297,7 +307,7 @@ namespace NetTrafficSimulator
 
 				log.Debug ("Version");
 				XmlAttribute version = xs.CreateAttribute ("version");
-				version.Value = "0.05";
+				version.Value = "0.06";
 				simulation.Attributes.Append (version);
 
 				log.Debug ("Model");
@@ -334,7 +344,7 @@ namespace NetTrafficSimulator
 
 							log.Debug ("rt");
 							XmlAttribute rt = xs.CreateAttribute ("randomTalk");
-							rt.Value = sm.IsRandomTalker (node) + "";
+							rt.Value = (sm.IsRandomTalker (node) + "").ToLower();
 							end.Attributes.Append (rt);
 
 							log.Debug ("append end");

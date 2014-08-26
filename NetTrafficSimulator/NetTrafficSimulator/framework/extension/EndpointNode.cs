@@ -66,7 +66,7 @@ namespace NetTrafficSimulator
 		 */
 		public decimal GetPercentageTimeIdle(MFF_NPRG031.Model model){
 			if (model.Time != 0)
-				return (decimal)(model.Time-time_wait) / model.Time * 100.0m;
+				return (decimal)time_wait / model.Time * 100.0m;
 			else
 				return 100.0m;
 		}
