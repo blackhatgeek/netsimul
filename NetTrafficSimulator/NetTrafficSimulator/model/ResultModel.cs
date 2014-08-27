@@ -922,5 +922,25 @@ namespace NetTrafficSimulator
 		public LinkedList<KeyValuePair<string,int>>[] GetPacketTraces(){
 			return traces;
 		}
+
+		public void RemoveEndNodeResult(string name){
+			endNodeNames.Remove (name);
+			endNodeCount--;
+		}
+
+		public void RemoveServerNodeResult(string name){
+			serverNodeNames.Remove (name);
+			serverNodeCount--;
+		}
+
+		public void RemoveNetworkNodeResult(string name){
+			networkNodeNames.Remove (name);
+			networkNodeCount--;
+		}
+
+		public void RemoveLinkResult(string name){
+			linkNames.Remove (name);
+			linkCount--;
+		}
 	}
 }

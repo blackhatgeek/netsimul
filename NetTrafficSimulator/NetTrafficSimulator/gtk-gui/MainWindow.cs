@@ -312,6 +312,8 @@ public partial class MainWindow
 		}
 		this.DefaultWidth = 901;
 		this.DefaultHeight = 577;
+		this.frame12.Hide ();
+		this.button18.Hide ();
 		this.Show ();
 		this.LoadModelAction.Activated += new global::System.EventHandler (this.loadFromFileHandler);
 		this.SaveModelAsAction.Activated += new global::System.EventHandler (this.OnSaveModelAsActionActivated);

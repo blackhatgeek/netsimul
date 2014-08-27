@@ -91,6 +91,7 @@ public partial class MainWindow: Gtk.Window
 					NetTrafficSimulator.Loader loader = new NetTrafficSimulator.Loader (fc.Filename);
 					nm = loader.LoadNM ();
 					sm = loader.LoadSM ();
+					rm = null;
 
 					node_names=nm.GetNodeNames();
 					link_names=nm.GetLinkNames();
@@ -147,6 +148,8 @@ public partial class MainWindow: Gtk.Window
 			}
 
 			fc.Destroy ();
+			frame12.Visible = false;
+			button18.Visible = false;
 	}
 
 	/**
@@ -301,39 +304,47 @@ public partial class MainWindow: Gtk.Window
 							log.Error ("Param widget null");
 							break;
 						}
-					sw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (), this);
-					if (rm != null)
-						sw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+						sw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (), this);
+						if (rm != null)
+							sw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+						else
+							sw.ResultWidget.InitLabels ();
 					GtkAlignment2.Child = sw;
 					break;
-				case END:
-					NetTrafficSimulator.EndNodeWidget ew = new NetTrafficSimulator.EndNodeWidget ();
+					case END:
+						NetTrafficSimulator.EndNodeWidget ew = new NetTrafficSimulator.EndNodeWidget ();
 						if (ew.ParamWidget == null) {
 							log.Error ("Param widget null");
 							break;
 						}
-					ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (), this);
-					ew.EventWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (), this);
-					if (rm != null)
-						ew.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+						ew.ParamWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (), this);
+						ew.EventWidget.LoadParams (nm, sm, model.GetValue (iter, 0).ToString (), this);
+						if (rm != null)
+							ew.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+						else
+							ew.ResultWidget.InitLabels ();
 					GtkAlignment2.Child = ew;
 					break;
-				case NETWORK:
-					NetTrafficSimulator.NetworkNodeWidget nw = new NetTrafficSimulator.NetworkNodeWidget ();
+					case NETWORK:
+						NetTrafficSimulator.NetworkNodeWidget nw = new NetTrafficSimulator.NetworkNodeWidget ();
 						if (nw.ParamWidget == null) {
 							log.Error ("Param widget null");
 							break;
 						}
-					nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (), this);
-					if (rm != null)
-						nw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+						nw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (), this);
+						if (rm != null)
+							nw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+						else
+							nw.ResultWidget.InitLabels ();
 					GtkAlignment2.Child = nw;
 					break;
 				default:
 					break;
 				}
 
+				frame12.Visible = true;
 				GtkAlignment2.Child.Visible = true;
+				button18.Visible = true;
 			}
 			}
 		}
@@ -357,6 +368,10 @@ public partial class MainWindow: Gtk.Window
 			lw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (),this);
 			if (rm != null)
 				lw.ResultWidget.LoadParams (rm, model.GetValue (iter, 0).ToString ());
+			else
+				lw.ResultWidget.InitLabels ();
+			frame12.Visible = true;
+			button18.Visible = true;
 			GtkAlignment2.Child = lw;
 			GtkAlignment2.Child.Visible = true;
 		}
@@ -371,8 +386,11 @@ public partial class MainWindow: Gtk.Window
 	{
 		nm = new NetTrafficSimulator.NetworkModel ();
 		sm = new NetTrafficSimulator.SimulationModel ();
+		rm = null;
 		linkListStore.Clear ();
 		nodeListStore.Clear ();
+		frame12.Visible = false;
+		button18.Visible = false;
 	}
 
 	/**
@@ -552,9 +570,9 @@ public partial class MainWindow: Gtk.Window
 
 					System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events_to_remove = new System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> ();
 					if ((t == NetTrafficSimulator.NetworkModel.END_NODE) || (t == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
-						msg+="\nRelated events to be removed:\n";
 						System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents ();
 						if(events.Count>0){
+							msg+="\nRelated events to be removed:\n";
 							System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
 							while (node.Next!=null) {
 								if (node.Value.node1.Equals (GtkLabel13.Text)||node.Value.node2.Equals(GtkLabel13.Text)) {
@@ -576,10 +594,25 @@ public partial class MainWindow: Gtk.Window
 					if (md.Run () == (int)ResponseType.Yes) {
 						foreach (string l in rel) {
 							nm.RemoveLink (l);
+							try{
+								rm.RemoveLinkResult(l);
+							}catch(ArgumentException ex){
+								log.Debug(ex.Message);
+							}
 						}
 						foreach (NetTrafficSimulator.SimulationModel.Event ev in events_to_remove) {
 							sm.GetEvents ().Remove (ev);
 						}
+						try{
+							switch(nm.GetNodeType(GtkLabel13.Text)){
+							case NetTrafficSimulator.NetworkModel.END_NODE: rm.RemoveEndNodeResult(GtkLabel13.Text); break;
+							case NetTrafficSimulator.NetworkModel.SERVER_NODE: rm.RemoveServerNodeResult(GtkLabel13.Text); break;
+							case NetTrafficSimulator.NetworkModel.NETWORK_NODE: rm.RemoveNetworkNodeResult(GtkLabel13.Text);break;
+							}
+						}catch(ArgumentException ex){
+							log.Debug(ex.Message);
+						}
+
 						nm.RemoveNode (GtkLabel13.Text);
 						node_names=nm.GetNodeNames();
 						link_names=nm.GetLinkNames();
@@ -588,6 +621,8 @@ public partial class MainWindow: Gtk.Window
 					}
 					md.Destroy ();
 				}
+				this.frame12.Visible=false;
+				this.button18.Visible=false;
 			}catch(ArgumentException ae){
 				log.Debug (ae.Message);
 			}

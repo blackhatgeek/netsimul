@@ -50,7 +50,7 @@ namespace NetTrafficSimulator
 			// Container child hbox18.Gtk.Box+BoxChild
 			this.label23 = new global::Gtk.Label ();
 			this.label23.Name = "label23";
-			this.label23.LabelProp = global::Mono.Unix.Catalog.GetString ("label23");
+			this.label23.LabelProp = global::Mono.Unix.Catalog.GetString ("N/A");
 			this.hbox18.Add (this.label23);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox18 [this.label23]));
 			w2.Position = 1;

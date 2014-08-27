@@ -33,6 +33,15 @@ namespace NetTrafficSimulator
 				log.Debug (ae.Message);
 			}
 		}
+
+		public void InitLabels(){
+			label23.Text = "N/A";
+			label24.Text = "N/A";
+			label25.Text = "N/A";
+			label26.Text = "N/A";
+			label27.Text = "N/A";
+			label28.Text = "N/A";
+		}
 	}
 }
 
