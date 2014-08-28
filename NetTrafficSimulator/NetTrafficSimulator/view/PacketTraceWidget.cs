@@ -10,7 +10,8 @@ namespace NetTrafficSimulator
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class PacketTraceWidget : Gtk.Bin
 	{
-		Gtk.ListStore store;
+		Gtk.TreeStore store;
+
 		static readonly ILog log = LogManager.GetLogger(typeof(PacketTraceWidget));
 		/**
 		 * Build the widget - set up treeview
@@ -26,7 +27,7 @@ namespace NetTrafficSimulator
 			treeview1.AppendColumn (nameCol);
 			treeview1.AppendColumn (timeCol);
 
-			store = new Gtk.ListStore (typeof(string), typeof(int));
+			store = new Gtk.TreeStore (typeof(string), typeof(int));
 			treeview1.Model = store;
 
 			Gtk.CellRendererText nameCell = new Gtk.CellRendererText ();
@@ -46,9 +47,14 @@ namespace NetTrafficSimulator
 			if (rm != null) {
 				log.Debug ("Loading packet traces");
 				LinkedList<KeyValuePair<string,int>>[] traces = rm.GetPacketTraces ();
-				foreach (LinkedList<KeyValuePair<string,int>> ll in traces) {
-					foreach (KeyValuePair<string,int> kvp in ll) {
-						store.AppendValues (kvp.Key, kvp.Value);
+				int i = 0;
+				if (traces.Length != 0) {
+					foreach (LinkedList<KeyValuePair<string,int>> ll in traces) {
+						Gtk.TreeIter node = store.AppendValues (ll.First.Value.Key+"->"+ll.Last.Value.Key,ll.First.Value.Value);
+						foreach (KeyValuePair<string,int> kvp in ll) {
+							store.AppendValues (node, kvp.Key, kvp.Value);
+						}
+						i++;
 					}
 				}
 			} else
