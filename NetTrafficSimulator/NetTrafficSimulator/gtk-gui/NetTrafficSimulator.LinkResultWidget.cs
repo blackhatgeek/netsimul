@@ -140,7 +140,7 @@ namespace NetTrafficSimulator
 			// Container child hbox22.Gtk.Box+BoxChild
 			this.label32 = new global::Gtk.Label ();
 			this.label32.Name = "label32";
-			this.label32.LabelProp = global::Mono.Unix.Catalog.GetString ("Percentage time idle");
+			this.label32.LabelProp = global::Mono.Unix.Catalog.GetString ("Percent time idle");
 			this.hbox22.Add (this.label32);
 			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox22 [this.label32]));
 			w10.Position = 0;
@@ -302,7 +302,7 @@ namespace NetTrafficSimulator
 			// Container child hbox4.Gtk.Box+BoxChild
 			this.label4 = new global::Gtk.Label ();
 			this.label4.Name = "label4";
-			this.label4.LabelProp = global::Mono.Unix.Catalog.GetString ("Percentage data lost");
+			this.label4.LabelProp = global::Mono.Unix.Catalog.GetString ("Percent data lost");
 			this.hbox4.Add (this.label4);
 			global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.label4]));
 			w28.Position = 0;

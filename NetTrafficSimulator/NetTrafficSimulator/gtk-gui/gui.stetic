@@ -1766,7 +1766,7 @@
             <child>
               <widget class="Gtk.Label" id="label4">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Percentage time idle</property>
+                <property name="LabelProp" translatable="yes">Percent time idle</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2452,7 +2452,7 @@
             <child>
               <widget class="Gtk.Label" id="label32">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Percentage time idle</property>
+                <property name="LabelProp" translatable="yes">Percent time idle</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -2668,7 +2668,7 @@
             <child>
               <widget class="Gtk.Label" id="label4">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Percentage data lost</property>
+                <property name="LabelProp" translatable="yes">Percent data lost</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
