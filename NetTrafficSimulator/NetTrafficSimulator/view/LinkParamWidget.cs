@@ -116,7 +116,7 @@ namespace NetTrafficSimulator
 									n1 = combobox4.ActiveText;
 								}
 								if (combobox5.Active != active2) {
-									trigmwc = false;
+									trigmwc = true;
 									active2 = combobox5.Active;
 									n2 = combobox5.ActiveText;
 								}

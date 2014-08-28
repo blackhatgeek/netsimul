@@ -47,12 +47,15 @@ namespace NetTrafficSimulator
 		 */
 		private int SNCount;
 
+		private int maxaddr;
+
 		/**
 		 * Creates a NetworkModel
 		 */
 		public NetworkModel ()
 		{
-				this.SNCount = 0;
+			this.SNCount = 0;
+			this.maxaddr = 0;
 		}
 
 		/**
@@ -284,13 +287,19 @@ namespace NetTrafficSimulator
 							(X as EndpointNodeRecord).link = lr;
 						} else {
 							(X as NetworkNodeRecord).links.Add (lr);
-							if ((X as NetworkNodeRecord).links.Count == 1)
+							if ((X as NetworkNodeRecord).links.Count == 1) {
+								log.Debug ("Making link " + lname + " default for " + X.name);
 								(X as NetworkNodeRecord).default_route = lr;
+							}
 						}
 						if (Y is EndpointNodeRecord) {
 							(Y as EndpointNodeRecord).link = lr;
 						} else {
 							(Y as NetworkNodeRecord).links.Add (lr);
+							if ((Y as NetworkNodeRecord).links.Count == 1) {
+								log.Debug ("Making link " + lname + " default for " + Y.name);
+								(Y as NetworkNodeRecord).default_route = lr;
+							}
 						}
 						link_records.Add (lname, lr);
 					} else
@@ -407,6 +416,8 @@ namespace NetTrafficSimulator
 			NodeRecord nr;
 			if (node_records.TryGetValue (name, out nr)) {
 				if (nr is EndpointNodeRecord) {
+					if (addr > maxaddr)
+						maxaddr = addr;
 					(nr as EndpointNodeRecord).addr = addr;
 				} else
 					throw new ArgumentException ("Node not endpoint node: " + name);
@@ -614,8 +625,14 @@ namespace NetTrafficSimulator
 		 */
 		public bool IsLinkDefaultRouteForNetworkNode(string node,string link){
 			NodeRecord nr;
+			if ((node == null) || (link == null))
+				throw new ArgumentNullException ();
 			if (node_records.TryGetValue (node, out nr)) {
+				if(nr==null)
+					throw new ArgumentException("Node record null");
 				if (nr is NetworkNodeRecord) {
+					if ((nr as NetworkNodeRecord).default_route == null)
+						return false;
 					return (nr as NetworkNodeRecord).default_route.name.Equals (link);
 				}else throw new ArgumentException("Node not network node: "+node);
 			} else
@@ -784,6 +801,12 @@ namespace NetTrafficSimulator
 				return false;
 			else
 				return link_records.ContainsKey (name);
+		}
+
+		public int MaxAddr{
+			get{
+				return this.maxaddr;
+			}
 		}
 	}
 }

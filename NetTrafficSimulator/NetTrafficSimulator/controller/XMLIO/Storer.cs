@@ -74,7 +74,7 @@ namespace NetTrafficSimulator
 						packetsReceived.Value = rm.GetEndNodePacketsReceived (endNodeName)+"";
 						endNode.Attributes.Append (packetsReceived);
 
-						XmlAttribute packetsMalreceived = xs.CreateAttribute ("packetsMalreceived");
+						XmlAttribute packetsMalreceived = xs.CreateAttribute ("packetsMisrouted");
 						packetsMalreceived.Value = rm.GetEndNodePacketsMalreceived (endNodeName)+"";
 						endNode.Attributes.Append (packetsMalreceived);
 

@@ -1376,7 +1376,7 @@
             <child>
               <widget class="Gtk.Label" id="label19">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Packets malreceived</property>
+                <property name="LabelProp" translatable="yes">Packets misrouted</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -1694,7 +1694,7 @@
             <child>
               <widget class="Gtk.Label" id="label2">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Packets malreceived</property>
+                <property name="LabelProp" translatable="yes">Packets misrouted</property>
               </widget>
               <packing>
                 <property name="Position">0</property>

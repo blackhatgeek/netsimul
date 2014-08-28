@@ -57,7 +57,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
-			<xs:attribute name="version" use="required" fixed="0.03"/>
+			<xs:attribute name="version" use="required" fixed="0.04"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tEndNode">
@@ -65,7 +65,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsSent" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsReceived" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="packetsMalreceived" type="xs:timeWaited" use="required" />
+		<xs:attribute name="packetsMisrouted" type="xs:timeWaited" use="required" />
 		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
 		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />
 		<xs:attribute name="averagePacketSize" type="xs:decimal" use="required" />
@@ -74,7 +74,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 		<xs:attribute name="name" type="xs:ID" use="required" />
 		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsProcessed" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="packetsMalreceived" type="xs:nonNegativeInteger" use="required" />
+		<xs:attribute name="packetsMisrouted" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="timeWaited" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="percentageTimeIdle" type="xs:decimal" use="required" />
 		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />

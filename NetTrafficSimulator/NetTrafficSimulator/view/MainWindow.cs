@@ -17,6 +17,7 @@ public partial class MainWindow: Gtk.Window
 	TreeViewColumn nodeNameColumn,nodeTypeColumn,linkNameColumn,linkNodeAColumn,linkNodeBColumn;
 	string[] node_names,link_names;
 	string model_path,result_path;
+	int addrcounter;
 
 	const string END = "END", SERVER = "SERVER", NETWORK = "NETWORK";
 
@@ -95,6 +96,8 @@ public partial class MainWindow: Gtk.Window
 
 					node_names=nm.GetNodeNames();
 					link_names=nm.GetLinkNames();
+
+					addrcounter = nm.MaxAddr;
 
 					//naplnit nodes
 					loadNodesBox();
@@ -391,6 +394,7 @@ public partial class MainWindow: Gtk.Window
 		nodeListStore.Clear ();
 		frame12.Visible = false;
 		button18.Visible = false;
+		addrcounter = 0;
 	}
 
 	/**
@@ -398,6 +402,11 @@ public partial class MainWindow: Gtk.Window
 	*/
 	protected void onAddNewEndNode (object sender, EventArgs e)
 	{
+		if (addrcounter == int.MaxValue) {
+			log.Warn ("Address overflow");
+			addrcounter = -1;
+		}
+		addrcounter++;
 		addNode (NetTrafficSimulator.NetworkModel.END_NODE);
 	}
 
@@ -414,6 +423,11 @@ public partial class MainWindow: Gtk.Window
 	*/
 	protected void onAddServNode (object sender, EventArgs e)
 	{
+		if (addrcounter == int.MaxValue) {
+			log.Warn ("Address overflow");
+			addrcounter = -1;
+		}
+		addrcounter++;
 		addNode (NetTrafficSimulator.NetworkModel.SERVER_NODE);
 	}
 
@@ -424,7 +438,7 @@ public partial class MainWindow: Gtk.Window
 	private void addNode(int ntype){
 		if ((ntype == NetTrafficSimulator.NetworkModel.END_NODE) || (ntype == NetTrafficSimulator.NetworkModel.NETWORK_NODE) || (ntype == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
 			if (nm != null) {
-				NetTrafficSimulator.NewNodeDialog nend = new NetTrafficSimulator.NewNodeDialog (nm, ntype);
+				NetTrafficSimulator.NewNodeDialog nend = new NetTrafficSimulator.NewNodeDialog (nm, ntype, addrcounter);
 				switch (nend.Run ()) {
 				case (int)ResponseType.Reject:
 					nend.Destroy ();
@@ -547,13 +561,17 @@ public partial class MainWindow: Gtk.Window
 	*/
 	protected void OnDeleteButtonClicked (object sender, EventArgs e)
 	{
+		log.Debug ("Delete");
 		if (nm != null) {
 			try{
 				if (GtkAlignment2.Child is NetTrafficSimulator.LinkWidget) {
+					log.Debug("Delete link");
 					string[] rel = nm.GetRelatedNodes(GtkLabel13.Text);
 					string msg = "Remove link "+GtkLabel13.Text+"?\n\nAffected nodes:\n";
-					foreach (string n in rel) {
-						msg += "\t" + n + "\n";
+					if(rel!=null){
+						foreach (string n in rel) {
+							msg += "\t" + n + "\n";
+						}
 					}
 					MessageDialog md  = new MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,msg);
 					if (md.Run () == (int)ResponseType.Yes) {
@@ -563,6 +581,7 @@ public partial class MainWindow: Gtk.Window
 					}
 					md.Destroy ();
 				} else {
+					log.Debug("Delete node");
 					string[] rel = nm.GetRelatedLinks (GtkLabel13.Text);
 					int t = nm.GetNodeType (GtkLabel13.Text);
 
@@ -571,46 +590,60 @@ public partial class MainWindow: Gtk.Window
 					System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events_to_remove = new System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> ();
 					if ((t == NetTrafficSimulator.NetworkModel.END_NODE) || (t == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
 						System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events = sm.GetEvents ();
-						if(events.Count>0){
-							msg+="\nRelated events to be removed:\n";
-							System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
-							while (node.Next!=null) {
-								if (node.Value.node1.Equals (GtkLabel13.Text)||node.Value.node2.Equals(GtkLabel13.Text)) {
-									msg += "\t" + node.Value.node1 + " -> " + node.Value.node2 + " at " + node.Value.when + " of size " + node.Value.size+"\n";
-									events_to_remove.AddLast (node.Value);
+						if(events!=null){
+							log.Debug("Related events");
+							if(events.Count>0){
+								msg+="\nRelated events to be removed:\n";
+								System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
+								while (node.Next!=null) {
+									if (node.Value.node1.Equals (GtkLabel13.Text)||node.Value.node2.Equals(GtkLabel13.Text)) {
+										msg += "\t" + node.Value.node1 + " -> " + node.Value.node2 + " at " + node.Value.when + " of size " + node.Value.size+"\n";
+										events_to_remove.AddLast (node.Value);
+									}
+									node = node.Next;
 								}
-								node = node.Next;
 							}
 						}
 					}
-					if (rel.Length != 0) {
-						msg += "\nRelated links to be removed:\n";
-						foreach (string l in rel) {
-							msg += "\t" + l + "\n";
+					log.Debug("Related links");
+					if(rel!=null){
+						if (rel.Length != 0) {
+							msg += "\nRelated links to be removed:\n";
+							foreach (string l in rel) {
+								msg += "\t" + l + "\n";
+							}
 						}
 					}
 
 					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, msg);
 					if (md.Run () == (int)ResponseType.Yes) {
-						foreach (string l in rel) {
-							nm.RemoveLink (l);
-							try{
-								rm.RemoveLinkResult(l);
-							}catch(ArgumentException ex){
-								log.Debug(ex.Message);
+						log.Debug("Dialog response Yes");
+						if(rel!=null){
+							log.Debug("Removing links");
+							foreach (string l in rel) {
+								nm.RemoveLink (l);
+								try{
+									rm.RemoveLinkResult(l);
+								}catch(ArgumentException ex){
+									log.Debug(ex.Message);
+								}
 							}
 						}
+						log.Debug("Removing events");
 						foreach (NetTrafficSimulator.SimulationModel.Event ev in events_to_remove) {
 							sm.GetEvents ().Remove (ev);
 						}
-						try{
-							switch(nm.GetNodeType(GtkLabel13.Text)){
-							case NetTrafficSimulator.NetworkModel.END_NODE: rm.RemoveEndNodeResult(GtkLabel13.Text); break;
-							case NetTrafficSimulator.NetworkModel.SERVER_NODE: rm.RemoveServerNodeResult(GtkLabel13.Text); break;
-							case NetTrafficSimulator.NetworkModel.NETWORK_NODE: rm.RemoveNetworkNodeResult(GtkLabel13.Text);break;
+						if(rm!=null){
+							log.Debug("Removing results");
+							try{
+								switch(nm.GetNodeType(GtkLabel13.Text)){
+								case NetTrafficSimulator.NetworkModel.END_NODE: rm.RemoveEndNodeResult(GtkLabel13.Text); break;
+								case NetTrafficSimulator.NetworkModel.SERVER_NODE: rm.RemoveServerNodeResult(GtkLabel13.Text); break;
+								case NetTrafficSimulator.NetworkModel.NETWORK_NODE: rm.RemoveNetworkNodeResult(GtkLabel13.Text);break;
+								}
+							}catch(ArgumentException ex){
+								log.Debug(ex.Message);
 							}
-						}catch(ArgumentException ex){
-							log.Debug(ex.Message);
 						}
 
 						nm.RemoveNode (GtkLabel13.Text);

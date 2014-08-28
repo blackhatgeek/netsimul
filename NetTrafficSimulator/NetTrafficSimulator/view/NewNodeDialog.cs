@@ -12,11 +12,11 @@ namespace NetTrafficSimulator
 		 * Node name
 		 */
 		public string node_name;
-		int ntype;
+		int ntype,addr;
 		/**
 		 * Build the dialog - set label based on node type
 		 */
-		public NewNodeDialog (NetworkModel nm,int ntype)
+		public NewNodeDialog (NetworkModel nm,int ntype,int addrcount)
 		{
 			this.Build ();
 			this.nm = nm;
@@ -33,6 +33,7 @@ namespace NetTrafficSimulator
 					label1.Text = "Add new server node";
 					break;
 				}
+				this.addr = addrcount;
 			}else
 				throw new ArgumentException ("Invalid node type: " + ntype);
 		}
@@ -50,6 +51,9 @@ namespace NetTrafficSimulator
 						this.Respond (Gtk.ResponseType.Reject);
 					} else {
 						nm.AddNode (this.entry1.Text, ntype);
+						if ((ntype == NetworkModel.END_NODE) || (ntype == NetworkModel.SERVER_NODE)) {
+							nm.SetEndpointNodeAddr (this.entry1.Text, addr);
+						}
 						this.node_name = this.entry1.Text;
 					}
 				}

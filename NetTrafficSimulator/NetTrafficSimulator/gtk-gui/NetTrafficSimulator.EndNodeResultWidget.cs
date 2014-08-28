@@ -95,7 +95,7 @@ namespace NetTrafficSimulator
 			// Container child hbox20.Gtk.Box+BoxChild
 			this.label19 = new global::Gtk.Label ();
 			this.label19.Name = "label19";
-			this.label19.LabelProp = global::Mono.Unix.Catalog.GetString ("Packets malreceived");
+			this.label19.LabelProp = global::Mono.Unix.Catalog.GetString ("Packets misrouted");
 			this.hbox20.Add (this.label19);
 			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox20 [this.label19]));
 			w7.Position = 0;
