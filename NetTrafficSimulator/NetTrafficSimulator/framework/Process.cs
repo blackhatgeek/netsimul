@@ -21,7 +21,7 @@ namespace MFF_NPRG031
 		 * Remove the process from calendar
 		 * @param calendar Calendar to remove process from
 		 */
-		public void ZrusPlan(Calendar calendar)
+		public void CancelPlan(Calendar calendar)
 		{
 			calendar.Remove(this);
 		}

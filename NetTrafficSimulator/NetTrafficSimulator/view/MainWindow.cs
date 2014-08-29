@@ -392,6 +392,7 @@ public partial class MainWindow: Gtk.Window
 		rm = null;
 		linkListStore.Clear ();
 		nodeListStore.Clear ();
+		packettracewidget1.Clear ();
 		frame12.Visible = false;
 		button18.Visible = false;
 		addrcounter = 0;
@@ -445,12 +446,14 @@ public partial class MainWindow: Gtk.Window
 					MessageDialog md = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Duplicate node name! Node names must remain unique in the model. Node was not added.");
 					md.Run ();
 					md.Destroy ();
+					addrcounter--;
 					break;
 				case (int)ResponseType.No:
 					nend.Destroy ();
 					MessageDialog md1 = new MessageDialog (this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Node name cannot contain: LF,CR,tab,spaces at the beginning or at the end, multiple spaces next to each other. Node name cannot be empty. Node was not added.");
 					md1.Run ();
 					md1.Destroy ();
+					addrcounter--;
 					break;
 				case (int)ResponseType.Ok:
 					string dsc = "";
@@ -474,6 +477,7 @@ public partial class MainWindow: Gtk.Window
 					nend.Destroy ();
 					break;
 				default:
+					addrcounter--;
 					nend.Destroy ();
 					break;
 				}

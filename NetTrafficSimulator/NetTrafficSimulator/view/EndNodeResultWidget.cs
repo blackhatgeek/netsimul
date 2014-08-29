@@ -34,6 +34,9 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		/**
+		 * Set all labels as "N/A"
+		 */
 		public void InitLabels(){
 			label23.Text = "N/A";
 			label24.Text = "N/A";

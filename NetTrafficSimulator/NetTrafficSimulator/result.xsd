@@ -57,7 +57,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
-			<xs:attribute name="version" use="required" fixed="0.04"/>
+			<xs:attribute name="version" use="required" fixed="0.06"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tEndNode">

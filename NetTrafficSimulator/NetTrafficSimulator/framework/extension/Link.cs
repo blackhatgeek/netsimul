@@ -304,7 +304,7 @@ namespace NetTrafficSimulator
 					active = !active;
 					if (!active) {
 						active_time += model.Time - last_toggle;
-						this.ZrusPlan (model.K);
+						this.CancelPlan (model.K);
 						log.Debug ("Link " + name + " removed from Calendar, active time " + active_time);
 					} else {
 						inactive_time += model.Time - last_toggle;

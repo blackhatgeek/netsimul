@@ -13,8 +13,13 @@ namespace NetTrafficSimulator
 		 */
 		private int time;
 
+		/**
+		 * Default max hop
+		 */
 		private const int DEFAULT_MAX_HOP = 30;
 		private int maxHop;
+
+		private bool traceRandom;
 
 		private HashSet<string> randomTalkers;
 
@@ -37,11 +42,15 @@ namespace NetTrafficSimulator
 		/**
 		 * Create new simulation model with defined events count
 		 */
-		public SimulationModel ()
+		public SimulationModel (bool traceRandom)
 		{
 			maxHop = DEFAULT_MAX_HOP;
 			this.randomTalkers = new HashSet<string> ();
 			this.events = new LinkedList<Event> ();
+			this.traceRandom = traceRandom;
+		}
+
+		public SimulationModel():this(false){
 		}
 	
 		/**
@@ -121,6 +130,15 @@ namespace NetTrafficSimulator
 		 */
 		public bool IsRandomTalker(string node){
 			return randomTalkers.Contains (node);
+		}
+
+		/**
+		 * Do we trace random packets?
+		 */
+		public bool TraceRandom{
+			get{
+				return traceRandom;
+			}
 		}
 	}
 }

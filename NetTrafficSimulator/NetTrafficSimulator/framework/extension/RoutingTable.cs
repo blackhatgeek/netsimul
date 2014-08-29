@@ -90,7 +90,7 @@ namespace NetTrafficSimulator
 				}
 				if ((rec.Expired)|| (rec.Metric >= r.Metric)) {
 					//update
-					rec.ZrusPlan (model.K);
+					rec.CancelPlan (model.K);
 					records.Remove (rec);
 					bestRoute.Remove (r.Address);
 
@@ -121,7 +121,7 @@ namespace NetTrafficSimulator
 				throw new ArgumentNullException ("Framework model null");
 			if (r != null) {
 				if (!((r.Route.A is EndpointNode) || (r.Route.B is EndpointNode))) {
-					r.ZrusPlan (model.K);
+					r.CancelPlan (model.K);
 					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.INVALID_TIMER), (model.Time + expiry_timer));
 					r.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.FLUSH_TIMER), (model.Time + flush_timer));
 				}
@@ -273,7 +273,7 @@ namespace NetTrafficSimulator
 		 * Set record as expired (it will decrease activeRecord counter in the routing table
 		 */
 		private void setExpired(){
-			this.expired = false;
+			this.expired = true;
 			rt.DecActiveRecs ();
 		}
 

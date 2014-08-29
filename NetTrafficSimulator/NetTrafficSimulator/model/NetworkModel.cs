@@ -5,9 +5,7 @@ using log4net;
 namespace NetTrafficSimulator
 {
 	/**
-	 * <p>NetworkModel generates network map based on data provided by user.</p>
-	 * <p>Network map is a graph represented as adjacency matrix.</p>
-	 * <p>Node can be of type END_NODE, SERVER_NODE, NETWORK_NODE or UNIDENTIFIED_NODE</p>
+	 * NetworkModel holds information about the network - nodes and their types and additional information, links and their properties
 	 */
 	public class NetworkModel
 	{
@@ -557,7 +555,7 @@ namespace NetTrafficSimulator
 
 		/**
 		 * For network node return it's default route
-		 * @param name network node name
+		 * @param node network node name
 		 * @return default route
 		 * @throws ArgumentException node not network nod
 		 */
