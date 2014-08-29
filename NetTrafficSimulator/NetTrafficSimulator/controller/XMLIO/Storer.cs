@@ -51,7 +51,7 @@ namespace NetTrafficSimulator
 				XmlNode result = xs.CreateElement ("result");
 
 				XmlAttribute version = xs.CreateAttribute ("version");
-				version.Value = "0.04";
+				version.Value = "0.07";
 				result.Attributes.Append (version);
 
 				if (rm.EndNodeNames.Length != 0) {
@@ -173,6 +173,48 @@ namespace NetTrafficSimulator
 						XmlAttribute percentageProcessedRoutingPackets = xs.CreateAttribute ("percentProcessedRoutingPackets");
 						percentageProcessedRoutingPackets.Value = Math.Round(rm.GetNetworkNodePercentageRoutingPackets (networkNodeName),decimals) + "";
 						networkNode.Attributes.Append (percentageProcessedRoutingPackets);
+
+						NetworkNode.IfaceUse[] iu = rm.GetNetworkNodeIfaceUse (networkNodeName);
+						foreach (NetworkNode.IfaceUse rec in iu) {
+							XmlElement iface_use = xs.CreateElement ("linkUsage");
+							XmlAttribute iname = xs.CreateAttribute ("name");
+							iname.Value = rec.lname;
+							iface_use.Attributes.Append (iname);
+
+							XmlAttribute psent = xs.CreateAttribute ("packetsSent");
+							psent.Value = rec.psent+"";
+							iface_use.Attributes.Append (psent);
+
+							XmlAttribute ppsent = xs.CreateAttribute ("percentPacketsSent");
+							ppsent.Value = Math.Round(rec.ppsent,decimals)+"";
+							iface_use.Attributes.Append (ppsent);
+
+							XmlAttribute rpsent = xs.CreateAttribute ("rankPacketsSent");
+							rpsent.Value = rec.rpsent + "";
+							iface_use.Attributes.Append (rpsent);
+
+							XmlAttribute dsent = xs.CreateAttribute ("dataSent");
+							dsent.Value = Math.Round(rec.dsent,decimals)+"";
+							iface_use.Attributes.Append (dsent);
+
+							XmlAttribute pdsent = xs.CreateAttribute ("percentDataSent");
+							pdsent.Value = Math.Round(rec.pdsent,decimals)+"";
+							iface_use.Attributes.Append (pdsent);
+
+							XmlAttribute rdsent = xs.CreateAttribute ("rankDataSent");
+							rdsent.Value = rec.rdsent + "";
+							iface_use.Attributes.Append (rdsent);
+
+							networkNode.AppendChild (iface_use);
+						}
+
+						XmlAttribute dpr = xs.CreateAttribute ("dataProcessed");
+						dpr.Value = Math.Round(rm.GetNetworkNodeDataProcessed (networkNodeName),decimals)+"";
+						networkNode.Attributes.Append (dpr);
+
+						XmlAttribute dppt = xs.CreateAttribute ("dataProcessedPerTic");
+						dppt.Value = Math.Round(rm.GetNetworkNodeDataProcessedPerTic (networkNodeName),decimals)+"";
+						networkNode.Attributes.Append (dppt);
 
 						networkNodes.AppendChild (networkNode);
 					}
@@ -307,7 +349,7 @@ namespace NetTrafficSimulator
 
 				log.Debug ("Version");
 				XmlAttribute version = xs.CreateAttribute ("version");
-				version.Value = "0.06";
+				version.Value = "0.07";
 				simulation.Attributes.Append (version);
 
 				log.Debug ("Model");
@@ -374,6 +416,19 @@ namespace NetTrafficSimulator
 							XmlAttribute der = xs.CreateAttribute ("default");
 							der.Value = nm.GetNetworkNodeDefaultRoute (node);
 							network.Attributes.Append (der);
+
+							log.Debug ("timers");
+							XmlAttribute update = xs.CreateAttribute ("update");
+							update.Value = nm.GetNetworkNodeUpdateTimer (node)+"";
+							network.Attributes.Append (update);
+
+							XmlAttribute expiry = xs.CreateAttribute ("expiry");
+							expiry.Value = nm.GetNetworkNodeExpiryTimer (node)+"";
+							network.Attributes.Append (expiry);
+
+							XmlAttribute flush = xs.CreateAttribute ("flush");
+							flush.Value = nm.GetNetworkNodeFlushTimer (node)+"";
+							network.Attributes.Append (flush);
 
 							log.Debug("append network");
 							nodes.AppendChild (network);

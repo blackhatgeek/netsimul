@@ -157,8 +157,13 @@ namespace NetTrafficSimulator
 			decimal avgWaitTime;
 			decimal percPacketsDropped;
 			decimal percRoute;
+			decimal dapro;
+			decimal pedapro;
+			NetworkNode.IfaceUse[] iface_use;
 
-			public NetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal precPDropped,int rsent,int rrec,decimal prm){
+			public NetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,
+			                         decimal precPDropped,int rsent,int rrec,decimal prm, NetworkNode.IfaceUse[] iface_use, 
+			                         decimal dapro, decimal pedapro){
 				this.name=name;
 				this.packetsProcessed=packetsProcessed;
 				this.timeWaited=timeWaited;
@@ -169,6 +174,9 @@ namespace NetTrafficSimulator
 				this.route_sent=rsent;
 				this.route_received=rrec;
 				this.percRoute=prm;
+				this.iface_use = iface_use;
+				this.dapro = dapro;
+				this.pedapro = pedapro;
 			}
 
 			public string Name{
@@ -230,6 +238,24 @@ namespace NetTrafficSimulator
 					return percRoute;
 				}
 			}
+
+			public NetworkNode.IfaceUse[] IfaceUse{
+				get{
+					return iface_use;
+				}
+			}
+
+			public decimal DataProcessed{
+				get{
+					return dapro;
+				}
+			}
+
+			public decimal DataProcessedPerTic{
+				get{
+					return pedapro;
+				}
+			}
 		}
 
 		/**
@@ -244,6 +270,7 @@ namespace NetTrafficSimulator
 			decimal dataCarried;
 			decimal dataPerTic;
 			decimal usage;
+
 
 			decimal dataSent,dataLost,pDataLost,pDataDelivered,pLostInCary;
 
@@ -461,12 +488,12 @@ namespace NetTrafficSimulator
 		 * @param rpack percentage of routing packets in packetsProcessed
 		 * @throws ArgumentException Network node counter exceeded amount of network nodes set in constructor
 		 */
-		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal percPacketsDropped,int rsent,int rreceived,decimal rpack){
+		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal percPacketsDropped,int rsent,int rreceived,decimal rpack,NetworkNode.IfaceUse[] iface_use,decimal dapro,decimal pedapro){
 			if (networkNodeCount < networkNodeLimit) {
 				networkNodes [networkNodeCount] = name;
 				if (networkNodeNames.ContainsKey (name))
 					networkNodeNames.Remove (name);
-				networkNodeNames.Add (name, new NetworkNodeResult (name, packetsProcessed, timeWaited, timeIdle, avgWaitTime, dropped, percPacketsDropped,rsent,rreceived,rpack));
+				networkNodeNames.Add (name, new NetworkNodeResult (name, packetsProcessed, timeWaited, timeIdle, avgWaitTime, dropped, percPacketsDropped,rsent,rreceived,rpack,iface_use,dapro,pedapro));
 				networkNodeCount++;
 			} else
 				throw new ArgumentException ("Network node counter exceeded");
@@ -787,6 +814,18 @@ namespace NetTrafficSimulator
 		 */
 		public decimal GetNetworkNodePercentageRoutingPackets(string name){
 			return getNNR (name).PercentageRoutePackets;
+		}
+
+		public NetworkNode.IfaceUse[] GetNetworkNodeIfaceUse(string name){
+			return getNNR (name).IfaceUse;
+		}
+
+		public decimal GetNetworkNodeDataProcessed(string name){
+			return getNNR (name).DataProcessed;
+		}
+
+		public decimal GetNetworkNodeDataProcessedPerTic(string name){
+			return getNNR (name).DataProcessedPerTic;
 		}
 
 		/**

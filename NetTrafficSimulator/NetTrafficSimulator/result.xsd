@@ -43,7 +43,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 											<xs:choice minOccurs="1" maxOccurs="unbounded">
 						 					<xs:element name="step">
 						 						<xs:complexType>
-						 							<xs:attribute name="name" type="xs:string" />
+						 							<xs:attribute name="name" type="xs:token" />
 						 							<xs:attribute name="time" type="xs:nonNegativeInteger" />
 						 						</xs:complexType>
 						 					</xs:element>
@@ -57,11 +57,11 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
-			<xs:attribute name="version" use="required" fixed="0.06"/>
+			<xs:attribute name="version" use="required" fixed="0.07"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="tEndNode">
-		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="name" type="xs:token" use="required" />
 		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsSent" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsReceived" type="xs:nonNegativeInteger" use="required" />
@@ -71,16 +71,16 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 		<xs:attribute name="averagePacketSize" type="xs:decimal" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tServerNode">
-		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="name" type="xs:token" use="required" />
 		<xs:attribute name="address" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsProcessed" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="packetsMisrouted" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="timeWaited" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="percentageTimeIdle" type="xs:decimal" use="required" />
+		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
 		<xs:attribute name="averageWaitTime" type="xs:decimal" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tNetworkNode">
-		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="name" type="xs:token" use="required" />
 		<xs:attribute name="packetsProcessed" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="timeWaited" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
@@ -89,16 +89,35 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/result/v0" xmlns:ns="h
 		<xs:attribute name="percentPacketsDropped" type="xs:decimal" use="required" />
 		<xs:attribute name="routingPacketsSent" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="routingPacketsReceived" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="percentageProcessedRoutingPackets" type="xs:nonNegativeInteger" use="required"/>
+		<xs:attribute name="percentProcessedRoutingPackets" type="xs:nonNegativeInteger" use="required"/>
+		<xs:element name="linkUsage" minOccurs="0" maxOccurs="unbounded">
+			<xs:complexType>
+				<xs:attribute name="name" type="xs:token" use="required" />
+				<xs:attribute name="packetsSent" type="xs:nonNegativeInteger" use="required" />
+				<xs:attribute name="percentPacketsSent" type="xs:decimal" use="required" />
+				<xs:attribute name="rankPacketsSent" type="xs:positiveInteger" use="required" />
+				<xs:attribute name="dataSent" type="xs:decimal" use="required" />
+				<xs:attribute name="percentDataSent" type="xs:decimal" use="required" />
+				<xs:attribute name="rankDataSent" type="xs:positiveInteger" use="required" />
+			</xs:complexType>
+		</xs:element>
+		<xs:attribute name="dataProcessed" type="xs:decimal" use="required" />
+		<xs:attribute name="dataProcessedPerTic" type="xs:decimal" use="required" />
 	</xs:complexType>
 	<xs:complexType name="tLink">
-		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="name" type="xs:token" use="required" />
 		<xs:attribute name="packetsCarried" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="packetsDropped" type="xs:nonNegativeInteger" use="required" />
-		<xs:attribute name="dropPercentage" type="xs:decimal" use="required" />
 		<xs:attribute name="activeTime" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="passiveTime" type="xs:nonNegativeInteger" use="required" />
 		<xs:attribute name="percentTimeIdle" type="xs:decimal" use="required" />
+		<xs:attribute name="dataCarried" type="xs:decimal" use="required" />
+		<xs:attribute name="dataPerTic" type="xs:decimal" use="required" />
+		<xs:attribute name="usage" type="xs:decimal" use="required" />
+		<xs:attribute name="dataSent" type="xs:decimal" use="required" />
+		<xs:attribute name="dataLost" type="xs:decimal" use="required" />
+		<xs:attribute name="percentDataLost" type="xs:decimal" use="required" />
+		<xs:attribute name="percentDataDelivered" type="xs:decimal" use="required" />
+		<xs:attribute name="percentLostInCarry" type="xs:decimal" use="required" />
 	</xs:complexType>
 </xs:schema>
 

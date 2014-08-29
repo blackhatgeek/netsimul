@@ -84,20 +84,20 @@ namespace NetTrafficSimulator
 					nm.AddNode (name, NetworkModel.NETWORK_NODE);
 					string lname = node.Attributes.GetNamedItem ("default").Value;
 					if (node.HasAttribute ("update")) {
-						nm.SetNetworkNodeUpdateTimer (name, Convert.ToInt32 (node.Attributes.GetNamedItem ("update")));
+						nm.SetNetworkNodeUpdateTimer (name, Convert.ToInt32 (node.Attributes.GetNamedItem ("update").Value));
 					} else {
 						nm.SetNetworkNodeUpdateTimer (name, 3);
 					}
 					int expiry;
 					if (node.HasAttribute ("expiry")) {
-						expiry = Convert.ToInt32 (node.Attributes.GetNamedItem ("expiry"));
+						expiry = Convert.ToInt32 (node.Attributes.GetNamedItem ("expiry").Value);
 
 					} else {
 						expiry = 3;
 					}
 					nm.SetNetworkNodeExpiryTimer (name, expiry);
 					if (node.HasAttribute ("flush")) {
-						int flush = Convert.ToInt32 (node.Attributes.GetNamedItem ("flush"));
+						int flush = Convert.ToInt32 (node.Attributes.GetNamedItem ("flush").Value);
 						if (flush > expiry) {
 							nm.SetNetworkNodeFlushTimer (name, flush);
 						} else {

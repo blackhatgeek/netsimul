@@ -9,14 +9,16 @@ namespace NetTrafficSimulator
 	 */
 	public class NetworkNode:Node
 	{
-		readonly int update,flush,expiry;
+		readonly int update;
 		static readonly ILog log = LogManager.GetLogger (typeof(NetworkNode));
 		readonly int max;
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
 		RoutingTable rt;
-		int[] interface_use_count;
+		int[] iface_psent;
+		decimal[] iface_dsent;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped,rm_received,rm_sent;
+		decimal dproc;
 		int delay;
 		Link def_r;
 
@@ -50,7 +52,8 @@ namespace NetTrafficSimulator
 			this.max = max;
 			if (interfaces_count >= 0) {
 				this.interfaces = new Link[interfaces_count];
-				this.interface_use_count = new int[interfaces_count];
+				this.iface_psent = new int[interfaces_count];
+				this.iface_dsent = new decimal[interfaces_count];
 				this.interfaces_count = interfaces_count;
 				this.interfaces_used = 0;
 				this.delay = 1;
@@ -61,8 +64,7 @@ namespace NetTrafficSimulator
 				this.last_process = 0;
 				this.dropped = 0;
 				this.update = update;
-				this.expiry = expiry;
-				this.flush = flush;
+				this.dproc = 0.0m;
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
 		}
@@ -182,6 +184,8 @@ namespace NetTrafficSimulator
 								log.Debug ("Sending routing message");
 								processed++;
 								rm_sent++;
+							} else {
+								dproc += p.Size;
 							}
 							l.Carry (p, this, l.GetPartner (this));
 						} else
@@ -221,7 +225,8 @@ namespace NetTrafficSimulator
 				if (link != null) {
 					for (int i=0; i<interfaces_used; i++) {
 						if (link.Equals (interfaces [i])) {
-							interface_use_count [i]++;
+							iface_psent [i]++;
+							iface_dsent [i] += p.Size;
 							return link;
 						}
 					}
@@ -414,6 +419,121 @@ namespace NetTrafficSimulator
 			}
 		}
 
+		public struct IfaceUse{
+			public readonly string lname;
+			public readonly int psent;
+			public readonly decimal dsent,ppsent,pdsent;
+			public int rpsent, rdsent;
+
+			public IfaceUse(string link, int packets, decimal data,decimal percPackets,decimal percData){
+				this.lname = link;
+				this.psent = packets;
+				this.dsent = data;
+				this.ppsent = percPackets;
+				this.pdsent = percData;
+				this.rpsent = 0;
+				this.rdsent = 0;
+			}
+		}
+
+		public IfaceUse[] GetLinkUsage(){
+			log.Debug ("Get link usage (" + Name+")");
+			IfaceUse[] res = new IfaceUse[interfaces_used];
+			log.Debug ("Populate array");
+			int up = processed - rm_sent - rm_received;
+			log.Debug ("UP:" + up);
+			for (int i=0; i<interfaces_used; i++) {
+				log.Debug ("Interface " + i+"\niface_psent:"+iface_psent[i]+"\niface_dsent:"+iface_dsent[i]);
+				decimal pp = (up>0)? (decimal)(iface_psent[i])/up*100.0m : 0.0m;
+				decimal pd = (dproc>0)? (decimal)(iface_dsent[i])/dproc*100.0m : 0.0m;
+				res [i] = new IfaceUse (interfaces [i].Name, iface_psent [i], iface_dsent [i],pp,pd);
+			}
+			log.Debug ("Sort packets");
+			sortUsagePackets (ref res, 0, interfaces_used - 1);
+			for (int i=0; i<interfaces_used; i++) {
+				res [i].rpsent = interfaces_used - i;
+				log.Debug (res [i].rpsent);
+			}
+			log.Debug ("Sort data");
+			sortUsageData (ref res, 0, interfaces_used - 1);
+			for (int i=0; i<interfaces_used; i++) {
+				res [i].rdsent = interfaces_used-i;
+				log.Debug (res [i].rdsent);
+			}
+			return res;
+		}
+
+		public decimal DataProcessed{
+			get{
+				return dproc;
+			}
+		}
+
+		public decimal DataProcessedPerTic(MFF_NPRG031.Model fm){
+			if (fm != null) {
+				return (fm.Time>0)?(decimal)(dproc/fm.Time)*1.0m:0.0m;
+			} else
+				throw new ArgumentException ("Model null");
+		}
+
+		//setridi podle psent, poradi ulozi do rpsent, pouzije QS
+		private void sortUsagePackets(ref IfaceUse[] iu,int start,int stop){
+			log.Debug ("sUP(" + start + "," + stop);
+			int k, i, j;
+			IfaceUse x;
+			i = start;
+			j = stop;
+			k = iu [(start + stop) / 2].psent;
+			do{
+				while(iu[i].psent<k) i++;
+				while(iu[j].psent>k) j--;
+				if(i<j){
+					x = iu[i];
+					iu[i]=iu[j];
+					iu[j]=x;
+					i++;
+					j--;
+				} else if (i==j){
+					i++;
+					j--;
+
+				}
+			} while (i<=j);
+			if (start < j)
+				sortUsagePackets (ref iu, start, j);
+			if (i < stop)
+				sortUsagePackets (ref iu, i, stop);
+		} 
+
+		//setridi podle dsent, poradi ulozi do dsent, pouzije QS
+		private void sortUsageData(ref IfaceUse[] iu, int start, int stop){
+			log.Debug ("sUD(" + start + "," + stop);
+			decimal k; 
+			int i, j;
+			IfaceUse x;
+			i = start;
+			j = stop;
+			k = iu [(start + stop) / 2].dsent;
+			do{
+				while(iu[i].dsent<k) i++;
+				while(iu[j].dsent>k) j--;
+				if(i<j){
+					x = iu[i];
+					iu[i]=iu[j];
+					iu[j]=x;
+					i++;
+					j--;
+				} else if (i==j){
+					i++;
+					j--;
+
+				}
+			} while (i<=j);
+			if (start < j)
+				sortUsagePackets (ref iu, start, j);
+			if (i < stop)
+				sortUsagePackets (ref iu, i, stop);
+		}
 	}
 }
 
