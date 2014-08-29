@@ -85,6 +85,10 @@ namespace NetTrafficSimulator
 				}
 				combobox2.Active = def;
 			}
+
+			this.spinbutton1.Value = nm.GetNetworkNodeUpdateTimer (nname);
+			this.spinbutton2.Value = nm.GetNetworkNodeExpiryTimer (nname);
+			this.spinbutton3.Value = nm.GetNetworkNodeFlushTimer (nname);
 		}
 
 		/**
@@ -115,6 +119,17 @@ namespace NetTrafficSimulator
 
 				if(nm.HaveLink(combobox2.ActiveText))
 					nm.SetNetworkNodeDefaultRoute (name, combobox2.ActiveText);
+				nm.SetNetworkNodeUpdateTimer(name,this.spinbutton1.ValueAsInt);
+				nm.SetNetworkNodeExpiryTimer (name, this.spinbutton2.ValueAsInt);
+				if (this.spinbutton3.ValueAsInt > this.spinbutton2.ValueAsInt) {
+					nm.SetNetworkNodeFlushTimer (name, this.spinbutton3.ValueAsInt);
+				} else {
+					Gtk.MessageDialog md = new Gtk.MessageDialog (mw, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok, "Flush timer must be greater than expiry timer. Setting to "+(this.spinbutton2.ValueAsInt+1));
+					md.Run ();
+					md.Destroy ();
+					this.spinbutton3.Value = this.spinbutton2.ValueAsInt+1;
+					nm.SetNetworkNodeFlushTimer (name,this.spinbutton3.ValueAsInt);
+				}
 			}
 		}
 	}

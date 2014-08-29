@@ -80,7 +80,10 @@ namespace NetTrafficSimulator
 				case NetworkModel.NETWORK_NODE:
 					log.Debug ("NN:" + name);
 					int interfaces = network_model.GetNetworkNodeInterfacesCount (name);
-					NetworkNode nn = new NetworkNode (name, interfaces, simulation_model.MaxHop, framework_model);
+					int expiry = network_model.GetNetworkNodeExpiryTimer (name);
+					int update = network_model.GetNetworkNodeUpdateTimer (name);
+					int flush = network_model.GetNetworkNodeFlushTimer (name);
+					NetworkNode nn = new NetworkNode (name, interfaces, simulation_model.MaxHop, framework_model,update,expiry,flush);
 					nodes [nodeCounter] = nn;
 					node_names.Add (name, nn);
 					networkNodeCounter++;

@@ -9,7 +9,7 @@ namespace NetTrafficSimulator
 	 */
 	public class NetworkNode:Node
 	{
-		const int update=3,flush=6,expiry=3;
+		readonly int update,flush,expiry;
 		static readonly ILog log = LogManager.GetLogger (typeof(NetworkNode));
 		readonly int max;
 		Link[] interfaces;
@@ -22,6 +22,7 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Creates a new network node with given name and interfaces count
+		 * Timers are set to default values: update = 3, expiry = 3, flush = 6
 		 * The delay is set fixed as 1
 		 * @param name Human readable node name
 		 * @param interfaces_count How many ports does the network node have
@@ -29,8 +30,21 @@ namespace NetTrafficSimulator
 		 * @param m Framework model
 		 * @throws ArgumentException on negative interfaces_count
 		 */
-		public NetworkNode (String name,int interfaces_count,int max,MFF_NPRG031.Model m):base(name)
+		public NetworkNode (String name,int interfaces_count,int max,MFF_NPRG031.Model m):this(name,interfaces_count,max,m,3,3,6)
 		{
+
+		}
+
+		/**
+		 * Creates a new network node with given name, interfaces count and timers
+		 * The delay is set fixed as 1
+		 * @param name Human readable node name
+		 * @param interfaces_count How many ports does the network node have
+		 * @param max Max hop count for a packet
+		 * @param m Framework model
+		 * @throws ArgumentException on negative interfaces_count
+		 */
+		public NetworkNode(String name,int interfaces_count,int max,MFF_NPRG031.Model m,int update,int expiry,int flush):base(name){
 			if (m == null)
 				throw new ArgumentNullException ("Model null");
 			this.max = max;
@@ -46,6 +60,9 @@ namespace NetTrafficSimulator
 				this.rt = new RoutingTable (flush,expiry,max,m);
 				this.last_process = 0;
 				this.dropped = 0;
+				this.update = update;
+				this.expiry = expiry;
+				this.flush = flush;
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
 		}

@@ -22,7 +22,7 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 			</xs:sequence>
 			<xs:attribute name="time_run" use="required" type="xs:nonNegativeInteger"/>
 			<xs:attribute name="max_hop" use="optional" default="30" type="xs:positiveInteger"/>
-			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.06"/>
+			<xs:attribute name="version" use="required" type="xs:decimal" fixed="0.07"/>
 		</xs:complexType>
 		<xs:unique name="NodeName">
 			<xs:selector xpath="child::network/nodes" />
@@ -88,6 +88,9 @@ targetNamespace="http://ms.mff.cuni.cz/~mansuroa/netsimul/model/v0" xmlns:ns="ht
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="default" type="xs:token" use="required" />
+		<xs:attribute name="update" type="xs:positiveInteger" use="optional" default="3" />
+		<xs:attribute name="expiry" type="xs:positiveInteger" use="optional" default="3" />
+		<xs:attribute name="flush" type="xs:positiveInteger" use="optional" default="6" />		
 	</xs:complexType>
 	<xs:complexType name="tLink">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">

@@ -181,6 +181,10 @@ namespace NetTrafficSimulator
 		 	*/
 			public LinkRecord default_route;
 			/**
+			 */
+			public int update=3,expiry=3,flush=6;
+
+			/**
 		 	*/
 			public NetworkNodeRecord(string name):base(name){
 				type = NetworkModel.NETWORK_NODE;
@@ -801,11 +805,92 @@ namespace NetTrafficSimulator
 				return link_records.ContainsKey (name);
 		}
 
+		/**
+		 */
 		public int MaxAddr{
 			get{
 				return this.maxaddr;
 			}
 		}
+
+		/**
+		 */
+		public void SetNetworkNodeUpdateTimer(string name,int update){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					(nr as NetworkNodeRecord).update = update;
+				} else
+					throw new ArgumentException ("Node not NetworkNode " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+
+		/**
+		 */
+		public void SetNetworkNodeExpiryTimer(string name,int expiry){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					(nr as NetworkNodeRecord).expiry = expiry;
+				} else
+					throw new ArgumentException ("Node not NetworkNode " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+
+		/**
+		 */
+		public void SetNetworkNodeFlushTimer(string name,int flush){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					(nr as NetworkNodeRecord).flush = flush;
+				} else
+					throw new ArgumentException ("Node not NetworkNode " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+
+		/**
+		 */
+		public int GetNetworkNodeUpdateTimer(string name){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					return (nr as NetworkNodeRecord).update;
+				} else
+					throw new ArgumentException ("Node not NetworkNode " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+
+		/**
+		 */
+		public int GetNetworkNodeExpiryTimer(string name){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					return (nr as NetworkNodeRecord).expiry;
+				} else
+					throw new ArgumentException ("Node not NetworkNode " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+
+		/**
+		 */
+		public int GetNetworkNodeFlushTimer(string name){
+			NodeRecord nr;
+			if (node_records.TryGetValue (name, out nr)) {
+				if (nr is NetworkNodeRecord) {
+					return (nr as NetworkNodeRecord).flush;
+				} else
+					throw new ArgumentException ("Node not NetworkNode " + name);
+			} else
+				throw new ArgumentException ("Node not found: " + name);
+		}
+
 	}
 }
 
