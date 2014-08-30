@@ -110,7 +110,7 @@ namespace NetTrafficSimulator
 						packetsProcessed.Value = rm.GetServerNodePacketsProcessed (serverNodeName) + "";
 						serverNode.Attributes.Append (packetsProcessed);
 
-						XmlAttribute packetsMalreceived = xs.CreateAttribute ("packetsMalreceived");
+						XmlAttribute packetsMalreceived = xs.CreateAttribute ("packetsMisrouted");
 						packetsMalreceived.Value = rm.GetServerNodePacketsMalreceived (serverNodeName)+"";
 						serverNode.Attributes.Append (packetsMalreceived);
 
@@ -470,7 +470,7 @@ namespace NetTrafficSimulator
 
 						log.Debug("tp");
 						XmlAttribute tp = xs.CreateAttribute ("toggle_probability");
-						tp.Value = nm.GetLinkToggleProbability (link) + "";
+						tp.Value = Math.Round(nm.GetLinkToggleProbability (link),decimals) + "";
 						l.Attributes.Append (tp);
 					}
 				}
