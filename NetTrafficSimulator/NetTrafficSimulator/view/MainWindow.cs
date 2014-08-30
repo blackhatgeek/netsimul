@@ -165,6 +165,7 @@ public partial class MainWindow: Gtk.Window
 			if (spd.Run () == (int)ResponseType.Ok) {
 				sm.MaxHop = spd.maxHop;
 				sm.Time = spd.time;
+				sm.TraceRandom = spd.random;
 			}
 			spd.Destroy ();
 		} else {

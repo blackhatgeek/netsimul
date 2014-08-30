@@ -139,6 +139,9 @@ namespace NetTrafficSimulator
 			get{
 				return traceRandom;
 			}
+			set{
+				this.traceRandom = value;
+			}
 		}
 	}
 }

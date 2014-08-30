@@ -19,7 +19,7 @@ namespace NetTrafficSimulator
 		private ServerNode[] servers;
 		private LinkedList<EndNode> randomTalkers;//TODO: count counts and make an array
 		private LinkedList<NetworkNode> routers;//TODO: count counts and make an array
-		private Packet[] tracedPackets;
+		private LinkedList<Packet> tracedPackets;
 		private Dictionary<string,Node> node_names;
 		private string[] node_names_array;
 		private Link[] links;
@@ -210,8 +210,8 @@ namespace NetTrafficSimulator
 				//user events
 				log.Debug ("User defined simulation events");
 				LinkedList<SimulationModel.Event> evs = simulation_model.GetEvents ();
+				this.tracedPackets = new LinkedList<Packet> ();
 				if (evs != null) {
-					this.tracedPackets = new Packet[evs.Count];
 					int i = 0;
 					foreach (SimulationModel.Event e in simulation_model.GetEvents()) {
 						Node from_node; 
@@ -220,7 +220,7 @@ namespace NetTrafficSimulator
 							if (from_node is EndNode && network_model.GetNodeType (e.node2).Equals (NetworkModel.SERVER_NODE)) {
 								//schedule node e.node1 to state SEND (with packet from e.node1 to e.node2 of e.size as parameter) at time e.when
 								Packet p = new Packet (from_addr, network_model.GetEndpointNodeAddr (e.node2), e.size, true);
-								tracedPackets [i] = p;
+								tracedPackets.AddLast(p);
 								MFF_NPRG031.State st = new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p);
 								MFF_NPRG031.Event ev = new MFF_NPRG031.Event (from_node, st, e.when);
 								framework_model.K.Schedule (ev);
@@ -233,7 +233,7 @@ namespace NetTrafficSimulator
 				}
 				//random talkers
 				if ((randomTalkers.Count>0)&&(servers.Length > 0)) {
-					log.Debug ("Random talkers events");
+					log.Debug ("Random talkers events (traced: "+simulation_model.TraceRandom+")");
 					foreach (EndNode en in randomTalkers) {
 						Random r = new Random ();
 						//kolik eventu
@@ -249,7 +249,9 @@ namespace NetTrafficSimulator
 
 							MFF_NPRG031.State st = new MFF_NPRG031.State (
 								MFF_NPRG031.State.state.SEND, 
-								new Packet (en.Address, servers [server].Address, size));
+								new Packet (en.Address, servers [server].Address, size,simulation_model.TraceRandom));
+							if (simulation_model.TraceRandom)
+								tracedPackets.AddLast (st.Data);
 							framework_model.K.Schedule (new MFF_NPRG031.Event (en, st, time));
 							log.Debug ("Scheduled random talker: " + en.Name + " at " + time + " to " + servers [server].Name + " size " + size);
 						}
@@ -281,7 +283,7 @@ namespace NetTrafficSimulator
 		 * Stores statistics into Result Model
 		 */
 		private void PopulateResultModel(){
-			int traced = (tracedPackets == null) ? 0 : tracedPackets.Length;
+			int traced = (tracedPackets == null) ? 0 : tracedPackets.Count;
 			result_model = new ResultModel (endNodeCounter, serverNodeCounter, networkNodeCounter, linkCounter,traced);
 			foreach (Node n in nodes) {
 				if (n is EndNode) {

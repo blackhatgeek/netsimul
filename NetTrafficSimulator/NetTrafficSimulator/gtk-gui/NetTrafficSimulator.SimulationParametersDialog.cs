@@ -13,6 +13,10 @@ namespace NetTrafficSimulator
 		private global::Gtk.HBox hbox1;
 		private global::Gtk.Label label2;
 		private global::Gtk.SpinButton spinbutton2;
+		private global::Gtk.HBox hbox4;
+		private global::Gtk.Label label4;
+		private global::Gtk.RadioButton radiobutton1;
+		private global::Gtk.RadioButton radiobutton2;
 		private global::Gtk.Fixed fixed3;
 		private global::Gtk.Label GtkLabel2;
 		private global::Gtk.Button buttonCancel;
@@ -103,14 +107,52 @@ namespace NetTrafficSimulator
 			w7.Expand = false;
 			w7.Fill = false;
 			// Container child vbox2.Gtk.Box+BoxChild
+			this.hbox4 = new global::Gtk.HBox ();
+			this.hbox4.Name = "hbox4";
+			this.hbox4.Spacing = 6;
+			// Container child hbox4.Gtk.Box+BoxChild
+			this.label4 = new global::Gtk.Label ();
+			this.label4.Name = "label4";
+			this.label4.LabelProp = global::Mono.Unix.Catalog.GetString ("Trace random packets");
+			this.hbox4.Add (this.label4);
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.label4]));
+			w8.Position = 0;
+			w8.Expand = false;
+			w8.Fill = false;
+			// Container child hbox4.Gtk.Box+BoxChild
+			this.radiobutton1 = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("Yes"));
+			this.radiobutton1.CanFocus = true;
+			this.radiobutton1.Name = "radiobutton1";
+			this.radiobutton1.DrawIndicator = true;
+			this.radiobutton1.UseUnderline = true;
+			this.radiobutton1.Group = new global::GLib.SList (global::System.IntPtr.Zero);
+			this.hbox4.Add (this.radiobutton1);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.radiobutton1]));
+			w9.Position = 1;
+			// Container child hbox4.Gtk.Box+BoxChild
+			this.radiobutton2 = new global::Gtk.RadioButton (global::Mono.Unix.Catalog.GetString ("No"));
+			this.radiobutton2.CanFocus = true;
+			this.radiobutton2.Name = "radiobutton2";
+			this.radiobutton2.DrawIndicator = true;
+			this.radiobutton2.UseUnderline = true;
+			this.radiobutton2.Group = this.radiobutton1.Group;
+			this.hbox4.Add (this.radiobutton2);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.radiobutton2]));
+			w10.Position = 2;
+			this.vbox2.Add (this.hbox4);
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.hbox4]));
+			w11.Position = 2;
+			w11.Expand = false;
+			w11.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
 			this.fixed3 = new global::Gtk.Fixed ();
 			this.fixed3.Name = "fixed3";
 			this.fixed3.HasWindow = false;
 			this.vbox2.Add (this.fixed3);
-			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.fixed3]));
-			w8.Position = 2;
-			w8.Expand = false;
-			w8.Fill = false;
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.fixed3]));
+			w12.Position = 3;
+			w12.Expand = false;
+			w12.Fill = false;
 			this.GtkAlignment2.Add (this.vbox2);
 			this.frame1.Add (this.GtkAlignment2);
 			this.GtkLabel2 = new global::Gtk.Label ();
@@ -119,16 +161,16 @@ namespace NetTrafficSimulator
 			this.GtkLabel2.UseMarkup = true;
 			this.frame1.LabelWidget = this.GtkLabel2;
 			w1.Add (this.frame1);
-			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(w1 [this.frame1]));
-			w11.Position = 0;
-			w11.Expand = false;
-			w11.Fill = false;
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(w1 [this.frame1]));
+			w15.Position = 0;
+			w15.Expand = false;
+			w15.Fill = false;
 			// Internal child NetTrafficSimulator.SimulationParametersDialog.ActionArea
-			global::Gtk.HButtonBox w12 = this.ActionArea;
-			w12.Name = "dialog1_ActionArea";
-			w12.Spacing = 10;
-			w12.BorderWidth = ((uint)(5));
-			w12.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
+			global::Gtk.HButtonBox w16 = this.ActionArea;
+			w16.Name = "dialog1_ActionArea";
+			w16.Spacing = 10;
+			w16.BorderWidth = ((uint)(5));
+			w16.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.buttonCancel = new global::Gtk.Button ();
 			this.buttonCancel.CanDefault = true;
@@ -138,9 +180,9 @@ namespace NetTrafficSimulator
 			this.buttonCancel.UseUnderline = true;
 			this.buttonCancel.Label = "gtk-cancel";
 			this.AddActionWidget (this.buttonCancel, -6);
-			global::Gtk.ButtonBox.ButtonBoxChild w13 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w12 [this.buttonCancel]));
-			w13.Expand = false;
-			w13.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w17 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w16 [this.buttonCancel]));
+			w17.Expand = false;
+			w17.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.buttonOk = new global::Gtk.Button ();
 			this.buttonOk.CanDefault = true;
@@ -150,15 +192,15 @@ namespace NetTrafficSimulator
 			this.buttonOk.UseUnderline = true;
 			this.buttonOk.Label = "gtk-ok";
 			this.AddActionWidget (this.buttonOk, -5);
-			global::Gtk.ButtonBox.ButtonBoxChild w14 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w12 [this.buttonOk]));
-			w14.Position = 1;
-			w14.Expand = false;
-			w14.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w18 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w16 [this.buttonOk]));
+			w18.Position = 1;
+			w18.Expand = false;
+			w18.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 194;
-			this.DefaultHeight = 127;
+			this.DefaultWidth = 260;
+			this.DefaultHeight = 154;
 			this.Show ();
 			this.buttonOk.Clicked += new global::System.EventHandler (this.btnOKClicked);
 		}
