@@ -96,6 +96,7 @@ namespace NetTrafficSimulator
 			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
 			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
 			this.nodeview1 = new global::Gtk.NodeView ();
+			this.nodeview1.HeightRequest = 200;
 			this.nodeview1.CanFocus = true;
 			this.nodeview1.Name = "nodeview1";
 			this.GtkScrolledWindow.Add (this.nodeview1);

@@ -811,7 +811,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeParamWidget" design-size="305 383">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeParamWidget" design-size="305 407">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -895,6 +895,7 @@
             <child>
               <widget class="Gtk.NodeView" id="nodeview1">
                 <property name="MemberName" />
+                <property name="HeightRequest">200</property>
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
               </widget>
@@ -2041,7 +2042,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeResultWidget" design-size="302 211">
+  <widget class="Gtk.Bin" id="NetTrafficSimulator.NetworkNodeResultWidget" design-size="839 549">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
@@ -2370,6 +2371,49 @@
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Frame" id="frame1">
+            <property name="MemberName" />
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+                    <property name="MemberName" />
+                    <property name="ShadowType">In</property>
+                    <child>
+                      <widget class="Gtk.NodeView" id="nodeview1">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">800</property>
+                        <property name="HeightRequest">200</property>
+                        <property name="CanFocus">True</property>
+                        <property name="ShowScrollbars">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Link usage&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">9</property>
+            <property name="AutoSize">True</property>
           </packing>
         </child>
       </widget>

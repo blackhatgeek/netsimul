@@ -32,6 +32,11 @@ namespace NetTrafficSimulator
 		private global::Gtk.HBox hbox18;
 		private global::Gtk.Label label19;
 		private global::Gtk.Label label28;
+		private global::Gtk.Frame frame1;
+		private global::Gtk.Alignment GtkAlignment;
+		private global::Gtk.ScrolledWindow GtkScrolledWindow;
+		private global::Gtk.NodeView nodeview1;
+		private global::Gtk.Label GtkLabel;
 
 		protected virtual void Build ()
 		{
@@ -286,6 +291,35 @@ namespace NetTrafficSimulator
 			w27.Position = 8;
 			w27.Expand = false;
 			w27.Fill = false;
+			// Container child vbox5.Gtk.Box+BoxChild
+			this.frame1 = new global::Gtk.Frame ();
+			this.frame1.Name = "frame1";
+			this.frame1.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment.Name = "GtkAlignment";
+			this.GtkAlignment.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
+			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this.nodeview1 = new global::Gtk.NodeView ();
+			this.nodeview1.WidthRequest = 800;
+			this.nodeview1.HeightRequest = 200;
+			this.nodeview1.CanFocus = true;
+			this.nodeview1.Name = "nodeview1";
+			this.GtkScrolledWindow.Add (this.nodeview1);
+			this.GtkAlignment.Add (this.GtkScrolledWindow);
+			this.frame1.Add (this.GtkAlignment);
+			this.GtkLabel = new global::Gtk.Label ();
+			this.GtkLabel.Name = "GtkLabel";
+			this.GtkLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Link usage</b>");
+			this.GtkLabel.UseMarkup = true;
+			this.frame1.LabelWidget = this.GtkLabel;
+			this.vbox5.Add (this.frame1);
+			global::Gtk.Box.BoxChild w31 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.frame1]));
+			w31.Position = 9;
 			this.Add (this.vbox5);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
