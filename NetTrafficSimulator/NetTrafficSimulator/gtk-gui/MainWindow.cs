@@ -37,18 +37,14 @@ public partial class MainWindow
 	private global::Gtk.Frame frame12;
 	private global::Gtk.Alignment GtkAlignment2;
 	private global::NetTrafficSimulator.EndNodeWidget endnodewidget2;
-	private global::Gtk.Label GtkLabel13;
+	private global::Gtk.Label GtkLabel15;
 	private global::Gtk.HBox hbox9;
-	private global::Gtk.Fixed fixed2;
+	private global::Gtk.Fixed fixed3;
 	private global::Gtk.Button button18;
 	private global::Gtk.Frame frame4;
 	private global::Gtk.Alignment TheAlignment;
 	private global::NetTrafficSimulator.PacketTraceWidget packettracewidget1;
-	private global::Gtk.Label GtkLabel15;
-	private global::Gtk.HBox hbox8;
-	private global::Gtk.Fixed fixed4;
-	private global::Gtk.Fixed fixed3;
-	private global::Gtk.ProgressBar progressbar1;
+	private global::Gtk.Label GtkLabel17;
 
 	protected virtual void Build ()
 	{
@@ -208,11 +204,11 @@ public partial class MainWindow
 		this.endnodewidget2.Name = "endnodewidget2";
 		this.GtkAlignment2.Add (this.endnodewidget2);
 		this.frame12.Add (this.GtkAlignment2);
-		this.GtkLabel13 = new global::Gtk.Label ();
-		this.GtkLabel13.Name = "GtkLabel13";
-		this.GtkLabel13.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>GtkFrame</b>");
-		this.GtkLabel13.UseMarkup = true;
-		this.frame12.LabelWidget = this.GtkLabel13;
+		this.GtkLabel15 = new global::Gtk.Label ();
+		this.GtkLabel15.Name = "GtkLabel15";
+		this.GtkLabel15.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>GtkFrame</b>");
+		this.GtkLabel15.UseMarkup = true;
+		this.frame12.LabelWidget = this.GtkLabel15;
 		this.vbox5.Add (this.frame12);
 		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.frame12]));
 		w14.Position = 0;
@@ -221,11 +217,11 @@ public partial class MainWindow
 		this.hbox9.Name = "hbox9";
 		this.hbox9.Spacing = 6;
 		// Container child hbox9.Gtk.Box+BoxChild
-		this.fixed2 = new global::Gtk.Fixed ();
-		this.fixed2.Name = "fixed2";
-		this.fixed2.HasWindow = false;
-		this.hbox9.Add (this.fixed2);
-		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.fixed2]));
+		this.fixed3 = new global::Gtk.Fixed ();
+		this.fixed3.Name = "fixed3";
+		this.fixed3.HasWindow = false;
+		this.hbox9.Add (this.fixed3);
+		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox9 [this.fixed3]));
 		w15.Position = 0;
 		// Container child hbox9.Gtk.Box+BoxChild
 		this.button18 = new global::Gtk.Button ();
@@ -263,11 +259,11 @@ public partial class MainWindow
 		this.packettracewidget1.Name = "packettracewidget1";
 		this.TheAlignment.Add (this.packettracewidget1);
 		this.frame4.Add (this.TheAlignment);
-		this.GtkLabel15 = new global::Gtk.Label ();
-		this.GtkLabel15.Name = "GtkLabel15";
-		this.GtkLabel15.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Packet traces</b>");
-		this.GtkLabel15.UseMarkup = true;
-		this.frame4.LabelWidget = this.GtkLabel15;
+		this.GtkLabel17 = new global::Gtk.Label ();
+		this.GtkLabel17.Name = "GtkLabel17";
+		this.GtkLabel17.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Packet traces</b>");
+		this.GtkLabel17.UseMarkup = true;
+		this.frame4.LabelWidget = this.GtkLabel17;
 		this.hbox2.Add (this.frame4);
 		global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.frame4]));
 		w21.PackType = ((global::Gtk.PackType)(1));
@@ -277,41 +273,12 @@ public partial class MainWindow
 		this.vbox1.Add (this.hbox2);
 		global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
 		w22.Position = 1;
-		// Container child vbox1.Gtk.Box+BoxChild
-		this.hbox8 = new global::Gtk.HBox ();
-		this.hbox8.Name = "hbox8";
-		this.hbox8.Spacing = 6;
-		// Container child hbox8.Gtk.Box+BoxChild
-		this.fixed4 = new global::Gtk.Fixed ();
-		this.fixed4.Name = "fixed4";
-		this.fixed4.HasWindow = false;
-		this.hbox8.Add (this.fixed4);
-		global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.fixed4]));
-		w23.Position = 0;
-		// Container child hbox8.Gtk.Box+BoxChild
-		this.fixed3 = new global::Gtk.Fixed ();
-		this.fixed3.Name = "fixed3";
-		this.fixed3.HasWindow = false;
-		this.hbox8.Add (this.fixed3);
-		global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.fixed3]));
-		w24.Position = 1;
-		// Container child hbox8.Gtk.Box+BoxChild
-		this.progressbar1 = new global::Gtk.ProgressBar ();
-		this.progressbar1.Name = "progressbar1";
-		this.hbox8.Add (this.progressbar1);
-		global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.hbox8 [this.progressbar1]));
-		w25.Position = 2;
-		this.vbox1.Add (this.hbox8);
-		global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox8]));
-		w26.Position = 2;
-		w26.Expand = false;
-		w26.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
 		this.DefaultWidth = 901;
-		this.DefaultHeight = 577;
+		this.DefaultHeight = 602;
 		this.frame12.Hide ();
 		this.button18.Hide ();
 		this.Show ();

@@ -19,13 +19,12 @@ namespace NetTrafficSimulator
 		decimal[] iface_dsent;
 		int interfaces_count,interfaces_used,processed,time_wait,last_process,dropped,rm_received,rm_sent;
 		decimal dproc;
-		int delay;
+		int last_send;
 		Link def_r;
 
 		/**
 		 * Creates a new network node with given name and interfaces count
 		 * Timers are set to default values: update = 3, expiry = 3, flush = 6
-		 * The delay is set fixed as 1
 		 * @param name Human readable node name
 		 * @param interfaces_count How many ports does the network node have
 		 * @param max Max hop count for a packet
@@ -39,7 +38,6 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Creates a new network node with given name, interfaces count and timers
-		 * The delay is set fixed as 1
 		 * @param name Human readable node name
 		 * @param interfaces_count How many ports does the network node have
 		 * @param max Max hop count for a packet
@@ -56,7 +54,6 @@ namespace NetTrafficSimulator
 				this.iface_dsent = new decimal[interfaces_count];
 				this.interfaces_count = interfaces_count;
 				this.interfaces_used = 0;
-				this.delay = 1;
 				this.processed = 0;
 				this.time_wait = 0;
 				this.schedule = new Dictionary<Packet, Link> ();
@@ -65,6 +62,7 @@ namespace NetTrafficSimulator
 				this.dropped = 0;
 				this.update = update;
 				this.dproc = 0.0m;
+				this.last_send = -1;
 			} else
 				throw new ArgumentException ("[NetworkNode] Negative interface count");
 		}
@@ -239,7 +237,7 @@ namespace NetTrafficSimulator
 		}
 
 		/**
-		 * Given the packet and the link to use, schedule SEND for the link with packet included at time T+delay
+		 * Given the packet and the link to use, schedule SEND for the link with packet included at time T+wait_time
 		 * @param p Packet to forward
 		 * @param l Link to use (result of selectDestination)
 		 * @param model the Model
@@ -247,11 +245,12 @@ namespace NetTrafficSimulator
 		 */
 		private void scheduleForward(Packet p,Link l,MFF_NPRG031.Model model){
 			if (l != null) {
-				log.Debug ("(" + Name + ") Routing via link " + l + " at " + (model.Time + delay));
+				int wait = wait_time (model.Time, model);
+				log.Debug ("(" + Name + ") Routing via link " + l + " at " + (model.Time + wait));
 				if (schedule.ContainsKey (p))
 					throw new InvalidOperationException ("Same packet to schedule twice");
 				this.schedule.Add (p, l);
-				this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), model.Time + delay);
+				this.Schedule (model.K, new MFF_NPRG031.State (MFF_NPRG031.State.state.SEND, p), model.Time + wait);
 			} else {
 				log.Warn ("(" + Name + ") No link to " + p.Destination + " packet dropped");
 				dropped++;
@@ -533,6 +532,23 @@ namespace NetTrafficSimulator
 				sortUsagePackets (ref iu, start, j);
 			if (i < stop)
 				sortUsagePackets (ref iu, i, stop);
+		}
+
+		/**
+		 * Generates a wait time
+		 * @return random wait time
+		 */
+		protected int wait_time(int max,MFF_NPRG031.Model m){
+			int r = new Random ().Next (max);
+			int wait =  r>0?r:1;
+			log.Debug ("Random wait:" + wait);
+			if (last_send != -1) {
+				int shift = (last_send - m.Time) > 0 ? (last_send - m.Time) : 0;
+				log.Debug ("Last send:" + last_send + "\tTime:" + m.Time + "\tSpan" + (shift) + "\tWait shift:" + (wait + shift));
+				wait += shift;//kolik casu zbyva do posledniho odeslani + novy cekaci cas = celkovy cas nutny na cekani
+			}
+			last_send = m.Time + wait;
+			return wait;
 		}
 	}
 }

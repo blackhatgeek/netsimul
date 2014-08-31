@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Release/NetTrafficSimulator.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="901 577">
+  <widget class="Gtk.Window" id="MainWindow" design-size="901 602">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -266,7 +266,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="GtkLabel13">
+                      <widget class="Gtk.Label" id="GtkLabel15">
                         <property name="MemberName" />
                         <property name="LabelProp" translatable="yes">&lt;b&gt;GtkFrame&lt;/b&gt;</property>
                         <property name="UseMarkup">True</property>
@@ -286,7 +286,7 @@
                     <property name="MemberName" />
                     <property name="Spacing">6</property>
                     <child>
-                      <widget class="Gtk.Fixed" id="fixed2">
+                      <widget class="Gtk.Fixed" id="fixed3">
                         <property name="MemberName" />
                         <property name="HasWindow">False</property>
                       </widget>
@@ -348,7 +348,7 @@
                   </widget>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="GtkLabel15">
+                  <widget class="Gtk.Label" id="GtkLabel17">
                     <property name="MemberName" />
                     <property name="LabelProp" translatable="yes">&lt;b&gt;Packet traces&lt;/b&gt;</property>
                     <property name="UseMarkup">True</property>
@@ -370,47 +370,6 @@
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.HBox" id="hbox8">
-            <property name="MemberName" />
-            <property name="Spacing">6</property>
-            <child>
-              <widget class="Gtk.Fixed" id="fixed4">
-                <property name="MemberName" />
-                <property name="HasWindow">False</property>
-              </widget>
-              <packing>
-                <property name="Position">0</property>
-                <property name="AutoSize">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Fixed" id="fixed3">
-                <property name="MemberName" />
-                <property name="HasWindow">False</property>
-              </widget>
-              <packing>
-                <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.ProgressBar" id="progressbar1">
-                <property name="MemberName" />
-              </widget>
-              <packing>
-                <property name="Position">2</property>
-                <property name="AutoSize">True</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="Position">2</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>

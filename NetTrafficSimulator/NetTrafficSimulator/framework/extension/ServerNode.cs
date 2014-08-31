@@ -100,7 +100,7 @@ namespace NetTrafficSimulator
 
 		/**
 		 * Generates a wait time
-		 * @return 1
+		 * @return random wait time
 		 */
 		protected int wait_time(int max,MFF_NPRG031.Model m){
 			int r = new Random ().Next (max);

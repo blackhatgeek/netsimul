@@ -295,8 +295,8 @@ public partial class MainWindow: Gtk.Window
 			//node type ... model.GetValue(iter,1);
 			if(GtkAlignment2.Child!=null)
 				GtkAlignment2.Child.Destroy();
-			GtkLabel13.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
-			GtkLabel13.UseMarkup = true;
+			GtkLabel15.Text = "<b>"+model.GetValue (iter, 0).ToString()+"</b>";
+			GtkLabel15.UseMarkup = true;
 			object o = model.GetValue (iter, 1);
 			if(o!=null){
 				string s = o.ToString();
@@ -366,8 +366,8 @@ public partial class MainWindow: Gtk.Window
 			//node A    ... model.GetValue(iter,1);
 			//node B    ... model.GetValue(iter,2);
 			GtkAlignment2.Child.Destroy ();
-			GtkLabel13.Text = "<b>" + model.GetValue (iter, 0).ToString () + "</b>";
-			GtkLabel13.UseMarkup = true;
+			GtkLabel15.Text = "<b>" + model.GetValue (iter, 0).ToString () + "</b>";
+			GtkLabel15.UseMarkup = true;
 			NetTrafficSimulator.LinkWidget lw = new NetTrafficSimulator.LinkWidget ();
 			lw.ParamWidget.LoadParams (nm, model.GetValue (iter, 0).ToString (),this);
 			if (rm != null)
@@ -499,15 +499,15 @@ public partial class MainWindow: Gtk.Window
 		node_names = nm.GetNodeNames ();
 		loadNodesBox ();
 		if (GtkAlignment2.Child is NetTrafficSimulator.EndNodeWidget) {
-			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name + "</b>";
-			GtkLabel13.UseMarkup = true;
+			GtkLabel15.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name + "</b>";
+			GtkLabel15.UseMarkup = true;
 			(GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).EventWidget.name = (GtkAlignment2.Child as NetTrafficSimulator.EndNodeWidget).ParamWidget.name;
 		} else if (GtkAlignment2.Child is NetTrafficSimulator.ServerNodeWidget) {
-			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.ServerNodeWidget).ParamWidget.name + "</b>";
-			GtkLabel13.UseMarkup = true;
+			GtkLabel15.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.ServerNodeWidget).ParamWidget.name + "</b>";
+			GtkLabel15.UseMarkup = true;
 		} else if (GtkAlignment2.Child is NetTrafficSimulator.NetworkNodeWidget) {
-			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.NetworkNodeWidget).ParamWidget.name + "</b>";
-			GtkLabel13.UseMarkup = true;
+			GtkLabel15.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.NetworkNodeWidget).ParamWidget.name + "</b>";
+			GtkLabel15.UseMarkup = true;
 		}
 	}
 
@@ -519,8 +519,8 @@ public partial class MainWindow: Gtk.Window
 		link_names = nm.GetLinkNames ();
 		loadLinksBox ();
 		if (GtkAlignment2.Child is NetTrafficSimulator.LinkWidget) {
-			GtkLabel13.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.LinkWidget).ParamWidget.GetName () + "</b>";
-			GtkLabel13.UseMarkup = true;
+			GtkLabel15.Text = "<b>" + (GtkAlignment2.Child as NetTrafficSimulator.LinkWidget).ParamWidget.GetName () + "</b>";
+			GtkLabel15.UseMarkup = true;
 		}
 	}
 
@@ -571,8 +571,8 @@ public partial class MainWindow: Gtk.Window
 			try{
 				if (GtkAlignment2.Child is NetTrafficSimulator.LinkWidget) {
 					log.Debug("Delete link");
-					string[] rel = nm.GetRelatedNodes(GtkLabel13.Text);
-					string msg = "Remove link "+GtkLabel13.Text+"?\n\nAffected nodes:\n";
+					string[] rel = nm.GetRelatedNodes(GtkLabel15.Text);
+					string msg = "Remove link "+GtkLabel15.Text+"?\n\nAffected nodes:\n";
 					if(rel!=null){
 						foreach (string n in rel) {
 							msg += "\t" + n + "\n";
@@ -580,17 +580,17 @@ public partial class MainWindow: Gtk.Window
 					}
 					MessageDialog md  = new MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,msg);
 					if (md.Run () == (int)ResponseType.Yes) {
-						nm.RemoveLink (GtkLabel13.Text);
+						nm.RemoveLink (GtkLabel15.Text);
 						link_names=nm.GetLinkNames();
 						loadLinksBox ();
 					}
 					md.Destroy ();
 				} else {
 					log.Debug("Delete node");
-					string[] rel = nm.GetRelatedLinks (GtkLabel13.Text);
-					int t = nm.GetNodeType (GtkLabel13.Text);
+					string[] rel = nm.GetRelatedLinks (GtkLabel15.Text);
+					int t = nm.GetNodeType (GtkLabel15.Text);
 
-					string msg = "Remove node: " + GtkLabel13.Text + "?\n";
+					string msg = "Remove node: " + GtkLabel15.Text + "?\n";
 
 					System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> events_to_remove = new System.Collections.Generic.LinkedList<NetTrafficSimulator.SimulationModel.Event> ();
 					if ((t == NetTrafficSimulator.NetworkModel.END_NODE) || (t == NetTrafficSimulator.NetworkModel.SERVER_NODE)) {
@@ -601,7 +601,7 @@ public partial class MainWindow: Gtk.Window
 								msg+="\nRelated events to be removed:\n";
 								System.Collections.Generic.LinkedListNode<NetTrafficSimulator.SimulationModel.Event> node = events.First;
 								while (node.Next!=null) {
-									if (node.Value.node1.Equals (GtkLabel13.Text)||node.Value.node2.Equals(GtkLabel13.Text)) {
+									if (node.Value.node1.Equals (GtkLabel15.Text)||node.Value.node2.Equals(GtkLabel15.Text)) {
 										msg += "\t" + node.Value.node1 + " -> " + node.Value.node2 + " at " + node.Value.when + " of size " + node.Value.size+"\n";
 										events_to_remove.AddLast (node.Value);
 									}
@@ -641,17 +641,17 @@ public partial class MainWindow: Gtk.Window
 						if(rm!=null){
 							log.Debug("Removing results");
 							try{
-								switch(nm.GetNodeType(GtkLabel13.Text)){
-								case NetTrafficSimulator.NetworkModel.END_NODE: rm.RemoveEndNodeResult(GtkLabel13.Text); break;
-								case NetTrafficSimulator.NetworkModel.SERVER_NODE: rm.RemoveServerNodeResult(GtkLabel13.Text); break;
-								case NetTrafficSimulator.NetworkModel.NETWORK_NODE: rm.RemoveNetworkNodeResult(GtkLabel13.Text);break;
+								switch(nm.GetNodeType(GtkLabel15.Text)){
+								case NetTrafficSimulator.NetworkModel.END_NODE: rm.RemoveEndNodeResult(GtkLabel15.Text); break;
+								case NetTrafficSimulator.NetworkModel.SERVER_NODE: rm.RemoveServerNodeResult(GtkLabel15.Text); break;
+								case NetTrafficSimulator.NetworkModel.NETWORK_NODE: rm.RemoveNetworkNodeResult(GtkLabel15.Text);break;
 								}
 							}catch(ArgumentException ex){
 								log.Debug(ex.Message);
 							}
 						}
 
-						nm.RemoveNode (GtkLabel13.Text);
+						nm.RemoveNode (GtkLabel15.Text);
 						node_names=nm.GetNodeNames();
 						link_names=nm.GetLinkNames();
 						loadLinksBox ();
