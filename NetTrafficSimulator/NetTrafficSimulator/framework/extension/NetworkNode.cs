@@ -14,6 +14,7 @@ namespace NetTrafficSimulator
 		readonly int max;
 		Link[] interfaces;
 		Dictionary<Packet,Link> schedule;
+		Dictionary<Packet,int> iface_pkt;
 		RoutingTable rt;
 		int[] iface_psent;
 		decimal[] iface_dsent;
@@ -60,6 +61,7 @@ namespace NetTrafficSimulator
 				this.processed = 0;
 				this.time_wait = 0;
 				this.schedule = new Dictionary<Packet, Link> ();
+				this.iface_pkt = new Dictionary<Packet, int> ();
 				this.rt = new RoutingTable (flush,expiry,max,m);
 				this.last_process = 0;
 				this.dropped = 0;
@@ -186,7 +188,13 @@ namespace NetTrafficSimulator
 								processed++;
 								rm_sent++;
 							} else {
-								dproc += p.Size;
+								int itf;
+								if (iface_pkt.TryGetValue (p, out itf)) {
+									dproc += p.Size;
+									iface_psent [itf]++;
+									iface_dsent [itf] += p.Size;
+								} else
+									throw new ArgumentNullException ("No iface");
 							}
 							l.Carry (p, this, l.GetPartner (this));
 						} else
@@ -226,8 +234,7 @@ namespace NetTrafficSimulator
 				if (link != null) {
 					for (int i=0; i<interfaces_used; i++) {
 						if (link.Equals (interfaces [i])) {
-							iface_psent [i]++;
-							iface_dsent [i] += p.Size;
+							this.iface_pkt.Add (p, i);
 							return link;
 						}
 					}
