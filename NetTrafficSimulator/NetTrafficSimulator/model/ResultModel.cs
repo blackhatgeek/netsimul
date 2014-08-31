@@ -486,6 +486,9 @@ namespace NetTrafficSimulator
 		 * @param rsent routing packets sent
 		 * @param rreceived routing packets received
 		 * @param rpack percentage of routing packets in packetsProcessed
+		 * @param iface_use interface use statistics
+		 * @param dapro amount data processed
+		 * @param pedapro percentage of data processed
 		 * @throws ArgumentException Network node counter exceeded amount of network nodes set in constructor
 		 */
 		public void SetNewNetworkNodeResult(string name,int packetsProcessed,int timeWaited,decimal timeIdle,decimal avgWaitTime,int dropped,decimal percPacketsDropped,int rsent,int rreceived,decimal rpack,NetworkNode.IfaceUse[] iface_use,decimal dapro,decimal pedapro){

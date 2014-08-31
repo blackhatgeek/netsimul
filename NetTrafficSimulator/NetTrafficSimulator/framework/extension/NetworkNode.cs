@@ -42,6 +42,9 @@ namespace NetTrafficSimulator
 		 * @param interfaces_count How many ports does the network node have
 		 * @param max Max hop count for a packet
 		 * @param m Framework model
+		 * @param update Update timer
+		 * @param expiry Expiry timer
+		 * @param flush Flush timer
 		 * @throws ArgumentException on negative interfaces_count
 		 */
 		public NetworkNode(String name,int interfaces_count,int max,MFF_NPRG031.Model m,int update,int expiry,int flush):base(name){

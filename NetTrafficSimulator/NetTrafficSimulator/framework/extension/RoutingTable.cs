@@ -78,36 +78,38 @@ namespace NetTrafficSimulator
 			Record rec;
 			if (model == null)
 				throw new ArgumentNullException ("Model null");
-			int expiry = model.Time + expiry_timer;
-			int flush = model.Time + flush_timer;
-			if (bestRoute == null)
-				throw new ArgumentNullException ("bestRoute null");
-			if (bestRoute.TryGetValue (r.Address, out rec)) {
-				if (rec == null) {
-					log.Warn("Got null as record - setting new");
-					setRecord (r);
-					log.Debug ("New record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry+" FLUSH "+flush);
-				}
-				if ((rec.Expired)|| (rec.Metric >= r.Metric)) {
-					//update
-					rec.CancelPlan (model.K);
-					records.Remove (rec);
-					bestRoute.Remove (r.Address);
+			if (!r.Expired) {
+				int expiry = model.Time + expiry_timer;
+				int flush = model.Time + flush_timer;
+				if (bestRoute == null)
+					throw new ArgumentNullException ("bestRoute null");
+				if (bestRoute.TryGetValue (r.Address, out rec)) {
+					if (rec == null) {
+						log.Warn ("Got null as record - setting new");
+						setRecord (r);
+						log.Debug ("New record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry + " FLUSH " + flush);
+					}
+					if ((rec.Expired) || (rec.Metric >= r.Metric)) {
+						//update
+						rec.CancelPlan (model.K);
+						records.Remove (rec);
+						bestRoute.Remove (r.Address);
 
-					setRecord (r);
-					log.Debug ("Updated expired record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry+" FLUSH "+flush);
+						setRecord (r);
+						log.Debug ("Updated expired record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry + " FLUSH " + flush);
+					} else {
+						//no modify
+						log.Debug ("Worse record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry + " FLUSH " + flush);
+					}
 				} else {
-					//no modify
-					log.Debug ("Worse record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry + " FLUSH "+flush);
+					//new
+					setRecord (r);
+					if (r.Route == null)
+						throw new ArgumentNullException ("Link null");
+					if (r.Route.Name == null)
+						throw new ArgumentNullException ("Link name null");
+					log.Debug ("New record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry + " FLUSH " + flush);
 				}
-			} else {
-				//new
-				setRecord (r);
-				if (r.Route == null)
-					throw new ArgumentNullException ("Link null");
-				if (r.Route.Name == null)
-					throw new ArgumentNullException ("Link name null");
-				log.Debug ("New record: TO " + r.Address + " VIA " + r.Route + " METRIC " + r.Metric + " EXPIRY " + expiry+" FLUSH "+flush);
 			}
 		}
 
